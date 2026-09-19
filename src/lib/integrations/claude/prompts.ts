@@ -1,4 +1,4 @@
-import { GOAL_TO_FORMULAS, HOOK_FORMULAS, HOOK_RULES, type EngagementGoal } from "@/lib/generation/hooks";
+import { GOAL_TO_FORMULAS, HOOK_FORMULAS, HOOK_RULES } from "@/lib/generation/hooks";
 import { COMMENT_CONSTRAINTS, COMMENT_TEMPLATES, SUBSTANTIVE_COMMENT_CHECKLIST } from "@/lib/generation/comments";
 import { REPLY_CONSTRAINTS, REPLY_TEMPLATES } from "@/lib/generation/replies";
 import type {

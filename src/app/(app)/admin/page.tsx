@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { desc, eq, gte, sql } from "drizzle-orm";
+import { eq, gte, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { apiUsageLog, participants, queueItems, queues } from "@/lib/db/schema";
 import { getCurrentParticipant, hasRole } from "@/lib/auth/session";

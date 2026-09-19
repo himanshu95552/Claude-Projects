@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
   clearedCustomers,
@@ -21,7 +21,7 @@ import {
   generateReply,
   generateReshareCommentary,
 } from "@/lib/generation/generate";
-import { canAdvanceToConnect } from "./ladder";
+import { canAdvanceToConnect, stageIndex } from "./ladder";
 import { needsReview, computeReviewSlaDueAt } from "./governance";
 import { estimateQueueMinutes } from "./queue-order";
 import { DemoResearchProvider, type ResearchProvider } from "./research-signals";
@@ -172,8 +172,6 @@ export async function generateQueueForParticipant(
   const replies = await researchProvider.findRepliesForTargets(ownedTargets, forDate);
 
   const itemsToInsert: Array<Omit<NewQueueItem, "queueId" | "position">> = [];
-  let position = 0;
-  const nextPosition = () => position++;
 
   const reviewTier = participant.reviewTier;
 
@@ -321,6 +319,70 @@ export async function generateQueueForParticipant(
           metadata: { stageEvidence: evidence },
         },
         meta.governanceFlags,
+      ),
+    );
+  }
+
+  // 6. AMPLIFY — company-page-amplification.md: 2 of N participants
+  // rotate per company post, never all of them ("reads as five people
+  // who happened to find it worth sharing, not a mandated broadcast").
+  // No company-page posting flow exists yet in this build (gated behind
+  // the Community Management API approval, same as the source plan
+  // flags it — see docs/ARCHITECTURE.md known gaps), so the "company
+  // post" this reshares is a deterministic weekly placeholder rather
+  // than a real published page post.
+  const weekNumber = Math.floor(forDate.getTime() / (7 * 86_400_000));
+  const allActive = await db
+    .select({ id: participants.id, fullName: participants.fullName })
+    .from(participants)
+    .where(inArray(participants.status, ["active"]))
+    .orderBy(participants.id);
+
+  if (allActive.length >= 2) {
+    const rotationStart = weekNumber % allActive.length;
+    const rotationPair = [allActive[rotationStart], allActive[(rotationStart + 1) % allActive.length]];
+    const isInRotation = rotationPair.some((p) => p.id === participantId);
+
+    if (isInRotation) {
+      const { output, meta } = await generateReshareCommentary({
+        ...envelope,
+        companyPost: {
+          text: `[DEMO] This week's Alpha Nodus company page post on ${envelope.participant.lane.pillars[0] ?? "the category"}.`,
+          publishedAt: forDate.toISOString(),
+        },
+        rotationParticipantNames: rotationPair.map((p) => p.fullName),
+      });
+      itemsToInsert.push(
+        withReview(
+          {
+            type: "amplify_reshare",
+            fulfillment: "manual_link",
+            content: output.text,
+            status: "pending",
+            metadata: { rotationWeek: String(weekNumber), companyPostId: output.companyPostId },
+          },
+          meta.governanceFlags,
+        ),
+      );
+    }
+  }
+
+  const followInviteTargets = ownedTargets
+    .filter((t) => stageIndex(t.stage) >= stageIndex("warm_up") && t.stage !== "retired")
+    .slice(0, 2);
+  for (const target of followInviteTargets) {
+    itemsToInsert.push(
+      withReview(
+        {
+          type: "amplify_follow_invite",
+          fulfillment: "manual_link",
+          content: `Invite ${target.name} (${target.title ?? "target"}) to follow the Alpha Nodus page.`,
+          targetId: target.id,
+          sourcePostUrl: target.linkedinUrl,
+          status: "pending",
+          metadata: {},
+        },
+        [],
       ),
     );
   }

@@ -13,9 +13,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex-1 flex flex-col">
       <header className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-3xl px-4 flex items-center justify-between h-14">
-          <Link href="/queue" className="font-semibold text-sm">
-            Alpha Nodus Advocacy
+        <div className="mx-auto max-w-3xl px-4 flex items-center justify-between gap-2 h-14">
+          <Link href="/queue" className="font-semibold text-sm shrink-0">
+            <span className="hidden sm:inline">Alpha Nodus Advocacy</span>
+            <span className="sm:hidden">Advocacy</span>
           </Link>
           <NavLinks isAdmin={isAdmin} />
         </div>

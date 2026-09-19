@@ -19,7 +19,11 @@ export function NotificationsCard() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    setSupported(typeof window !== "undefined" && "serviceWorker" in navigator && "PushManager" in window);
+    // Feature-detecting a browser API at mount time, not deriving state
+    // from props/state already available during render — the case this
+    // lint rule doesn't cover (react.dev/learn/you-might-not-need-an-effect).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSupported("serviceWorker" in navigator && "PushManager" in window);
     fetch("/api/push/subscribe")
       .then((r) => r.json())
       .then((data) => setConfigured(data.configured));

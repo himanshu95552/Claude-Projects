@@ -159,7 +159,7 @@ export function PersonaClient({
                   <input
                     type="range" min={0} max={100} value={sliders[key]}
                     onChange={(e) => setSliders((s) => ({ ...s, [key]: Number(e.target.value) }))}
-                    className="w-full"
+                    className="w-full accent-[var(--accent)]"
                   />
                   <div className="flex justify-between text-[11px] text-muted"><span>{lowLabel}</span><span>{highLabel}</span></div>
                 </div>

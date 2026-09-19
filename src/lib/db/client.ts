@@ -9,7 +9,6 @@ import * as schema from "./schema";
  * this guard, which would otherwise leak connections).
  */
 declare global {
-  // eslint-disable-next-line no-var
   var __dbClient: ReturnType<typeof postgres> | undefined;
 }
 

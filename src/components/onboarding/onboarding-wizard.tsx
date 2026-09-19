@@ -10,7 +10,6 @@ import { CONSENT_TEXT } from "./consent-text";
 type Lane = { id: string; name: string; targetsPersona: string; pillars: string[] };
 
 const STEPS = ["identity", "consent", "lane", "voice", "cadence", "schedule", "tour"] as const;
-type Step = (typeof STEPS)[number];
 
 const SLIDER_LABELS: Array<{ key: keyof Sliders; label: string; lowLabel: string; highLabel: string }> = [
   { key: "formality", label: "Formality", lowLabel: "Casual", highLabel: "Formal" },
@@ -126,7 +125,7 @@ export function OnboardingWizard({
           {step === "identity" && (
             <div className="space-y-3">
               <h1 className="text-lg font-semibold">Who you are</h1>
-              <p className="text-sm text-muted">Confirm this is your real identity — the program only works if it's really you.</p>
+              <p className="text-sm text-muted">Confirm this is your real identity — the program only works if it&apos;s really you.</p>
               <label className="block text-sm font-medium">Full name<Input className="mt-1" value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
               <label className="block text-sm font-medium">Role at Alpha Nodus<Input className="mt-1" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} /></label>
             </div>
@@ -140,7 +139,7 @@ export function OnboardingWizard({
               </div>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" className="mt-1" checked={consentAgreed} onChange={(e) => setConsentAgreed(e.target.checked)} />
-                <span>I've read this and agree to participate on these terms. I understand I can edit or reject any draft, and leave at any time.</span>
+                <span>I&apos;ve read this and agree to participate on these terms. I understand I can edit or reject any draft, and leave at any time.</span>
               </label>
             </div>
           )}
@@ -148,7 +147,7 @@ export function OnboardingWizard({
           {step === "lane" && (
             <div className="space-y-3">
               <h1 className="text-lg font-semibold">Your lane</h1>
-              <p className="text-sm text-muted">What you'll own and why nobody else covers it. One lane per person.</p>
+              <p className="text-sm text-muted">What you&apos;ll own and why nobody else covers it. One lane per person.</p>
               <div className="space-y-2">
                 {lanes.map((lane) => (
                   <label key={lane.id} className={`block border rounded-lg p-3 cursor-pointer ${laneId === lane.id ? "border-accent bg-accent-muted" : "border-border"}`}>
@@ -166,7 +165,7 @@ export function OnboardingWizard({
             <div className="space-y-4">
               <h1 className="text-lg font-semibold">Your voice</h1>
               <p className="text-sm text-muted">
-                Paste a few things you've actually written (LinkedIn posts, emails, Slack messages), separated by
+                Paste a few things you&apos;ve actually written (LinkedIn posts, emails, Slack messages), separated by
                 blank lines. Optional, but this is what stops drafts sounding generic.
               </p>
               <Textarea rows={5} placeholder="Paste writing samples here..." value={writingSamples} onChange={(e) => setWritingSamples(e.target.value)} />
@@ -186,7 +185,7 @@ export function OnboardingWizard({
               </div>
 
               <label className="block text-sm font-medium">
-                Rules in your own words (one per line) — e.g. "I never use exclamation marks"
+                Rules in your own words (one per line) — e.g. &quot;I never use exclamation marks&quot;
                 <Textarea className="mt-1" rows={3} value={voiceRules} onChange={(e) => setVoiceRules(e.target.value)} />
               </label>
             </div>
@@ -215,7 +214,7 @@ export function OnboardingWizard({
 
           {step === "tour" && (
             <div className="space-y-3">
-              <h1 className="text-lg font-semibold">You're set up</h1>
+              <h1 className="text-lg font-semibold">You&apos;re set up</h1>
               <ul className="text-sm space-y-2 text-muted list-disc list-inside">
                 <li>Your daily queue shows up each morning — publish, comments, replies, follow, connect, in order.</li>
                 <li>Every card is editable, and skipping is fine — just say why. Skips are the most valuable feedback in the system.</li>
