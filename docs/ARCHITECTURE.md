@@ -148,6 +148,25 @@ finished:
 | **Instagram/Facebook are thin by design** | OAuth + publish exist; no IG-specific content generation, no carousel builder | Deliberately deferred — the source plan's own day-60 cut decision; build out only if the data says to |
 | **Push subscription unverifiable in a network-restricted dev sandbox** | Every other layer (SW registration, VAPID key derivation, server send logic with 404/410 cleanup) verified directly | Confirm on an unrestricted deployment — the code doesn't change, only the environment it runs in |
 
+### 7a · In-house social platform feature audit (Sept 2026)
+
+Researched against what professional social media management tools
+(Buffer, Hootsuite, Sprout Social) and 2026 industry guides consider
+table-stakes, then decided against this app's actual scope — a B2B
+employee-advocacy program for one company, not a general-purpose agency
+tool:
+
+| Feature | Status | Why |
+|---|---|---|
+| Content calendar (month grid, team view) | **Built** — `/calendar` | Named explicitly across every "must-have features" source; `queues`/`queueItems` already keyed by date made it a natural fit. Team scope (admin/operator) directly answers the research's "spot gaps and overlap" use case. |
+| UTM-tagged links | **Built** — `src/domain/utm.ts`, wired into creative briefs' CTA | Ties directly into the analytics `clicks` field, which otherwise had no attribution story. Deliberately not a redirect/click-tracking *service* (see below) — just correct link tagging for whatever analytics the destination site already runs. |
+| Asset library (reusable approved images/logos) | **Not built** | No image-generation or file-storage layer exists in this build (creative briefs are text specs, not rendered assets — see the gap below). A reference-only library (name + external URL + tags) would be a thin wrapper with no real payoff until actual asset generation/storage exists; revisit together. |
+| Unified inbox / social listening / engagement monitoring | **Not built** | Requires broad read access to comments, mentions, and DMs across platforms — access most platforms restrict or gate behind enterprise partnership tiers, the same constraint `platform-api-capabilities.md` already documents for posting. `DemoResearchProvider`'s interface is the seam if a real monitoring/search service is ever contracted. |
+| Competitor benchmarking | **Not built** | Needs a third-party data source (scraping or a paid competitive-intelligence API) this build has no budget or contract for. Would layer cleanly on top of the existing `metric_snapshots`/`analytics.ts` shape once one exists. |
+| Link-in-bio page | **Not built, out of scope** | A landing page for a personal bio link solves a creator-monetization problem this program doesn't have — participants are pointing prospects to Alpha Nodus's own site, not a link hub. |
+| Multi-brand management | **Not built, out of scope** | Single brand (Alpha Nodus/AN27) by design — the entire brand-guidelines and knowledge-base layer assumes exactly one brand voice. |
+| Rendered creative assets (actual banner images) | **Not built** — briefs are text specs, not images | Documented in `creative.ts`'s own doc comment from when the briefs feature was built: no image-generation API is wired in. The creative brief is deliberately everything a designer or an image-gen pipeline needs to produce the asset without re-deriving brand rules or platform specs — wiring an actual image model is the next step once one's selected. |
+
 ## 8 · Where to extend things
 
 - **New queue item type:** add to `queueItemTypeEnum` (schema), the

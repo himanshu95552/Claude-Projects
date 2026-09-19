@@ -204,7 +204,9 @@ export function ItemCard({
           />
         )}
 
-        {item.type === "publish" && <CreativeBriefPanel queueItemId={item.id} />}
+        {item.type === "publish" && (
+          <CreativeBriefPanel queueItemId={item.id} pillar={item.metadata.pillar} platform={item.platform} />
+        )}
 
         {item.type === "publish" && isDone && (
           <LogMetricsPanel queueItemId={item.id} platform={item.platform as Platform} />

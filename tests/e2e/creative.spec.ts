@@ -68,4 +68,19 @@ test.describe("Creative brief (banner) generation", () => {
     await expect(page.getByRole("button", { name: "Regenerating…" })).toHaveCount(0);
     await expect(page.locator("text=/\\d+ slides/").first()).toBeVisible();
   });
+
+  test("a carousel brief's CTA can be turned into a copyable UTM-tagged link", async ({ page }) => {
+    await loginAs(page, EMAIL);
+
+    await page.locator("text=Generate banner").first().click();
+    await page.locator("button", { hasText: "Carousel" }).first().click();
+    await page.getByRole("button", { name: "Generate", exact: true }).click();
+    await expect(page.locator("text=/\\d+ slides/").first()).toBeVisible();
+
+    const urlInput = page.locator('input[type="url"]');
+    await expect(urlInput).toBeVisible();
+    await urlInput.fill("https://alphanodus.com/demo");
+    await page.getByRole("button", { name: /Copy tracked link/ }).click();
+    await expect(page.getByRole("button", { name: "Copied" })).toBeVisible();
+  });
 });

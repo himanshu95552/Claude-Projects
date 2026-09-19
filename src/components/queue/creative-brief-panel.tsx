@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { CreativeBrief } from "@/lib/db/schema";
+import { buildUtmLink } from "@/domain/utm";
 
 type Format = "static" | "carousel" | "trending";
 
@@ -30,7 +31,15 @@ async function generateBrief(queueItemId: string, format: Format) {
   return data as { brief: CreativeBrief; isDemoContent: boolean; governanceFlags: string[] };
 }
 
-export function CreativeBriefPanel({ queueItemId }: { queueItemId: string }) {
+export function CreativeBriefPanel({
+  queueItemId,
+  pillar,
+  platform,
+}: {
+  queueItemId: string;
+  pillar?: string;
+  platform: string;
+}) {
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [format, setFormat] = useState<Format>("static");
@@ -38,6 +47,9 @@ export function CreativeBriefPanel({ queueItemId }: { queueItemId: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCompliance, setShowCompliance] = useState(false);
+  const [baseUrl, setBaseUrl] = useState("");
+  const [utmError, setUtmError] = useState<string | null>(null);
+  const [copiedUtm, setCopiedUtm] = useState(false);
 
   async function handleToggle() {
     const willOpen = !open;
@@ -119,9 +131,46 @@ export function CreativeBriefPanel({ queueItemId }: { queueItemId: string }) {
               </div>
 
               {latest.cta && (
-                <p className="text-xs">
-                  <strong>CTA:</strong> {latest.cta}
-                </p>
+                <div className="text-xs space-y-2">
+                  <p>
+                    <strong>CTA:</strong> {latest.cta}
+                  </p>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      placeholder="Destination URL for a tracked link (e.g. https://alphanodus.com/demo)"
+                      value={baseUrl}
+                      onChange={(e) => {
+                        setBaseUrl(e.target.value);
+                        setUtmError(null);
+                        setCopiedUtm(false);
+                      }}
+                      className="flex-1 rounded border border-border bg-surface px-2 py-1"
+                    />
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={async () => {
+                        if (!baseUrl.trim()) return;
+                        try {
+                          const link = buildUtmLink(baseUrl.trim(), {
+                            source: platform,
+                            campaign: pillar ?? "general",
+                            content: latest.format,
+                          });
+                          await navigator.clipboard.writeText(link);
+                          setCopiedUtm(true);
+                          setUtmError(null);
+                        } catch (err) {
+                          setUtmError(err instanceof Error ? err.message : "Couldn't build link");
+                        }
+                      }}
+                    >
+                      {copiedUtm ? "Copied" : "Copy tracked link"}
+                    </Button>
+                  </div>
+                  {utmError && <p className="text-danger">{utmError}</p>}
+                </div>
               )}
 
               {latest.brandComplianceNotes.length > 0 && (
