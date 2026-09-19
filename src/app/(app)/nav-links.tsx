@@ -8,6 +8,7 @@ const links = [
   { href: "/queue", label: "Queue" },
   { href: "/persona", label: "Persona" },
   { href: "/weekly", label: "Weekly" },
+  { href: "/analytics", label: "Analytics" },
 ];
 
 export function NavLinks({ isAdmin }: { isAdmin: boolean }) {

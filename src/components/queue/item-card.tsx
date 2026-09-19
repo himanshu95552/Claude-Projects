@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CreativeBriefPanel } from "./creative-brief-panel";
 import { RegeneratePanel } from "./regenerate-panel";
+import { LogMetricsPanel } from "./log-metrics-panel";
+import type { Platform } from "@/lib/creative/types";
 
 async function patchItem(id: string, body: unknown) {
   const res = await fetch(`/api/queue/items/${id}`, {
@@ -203,6 +205,10 @@ export function ItemCard({
         )}
 
         {item.type === "publish" && <CreativeBriefPanel queueItemId={item.id} />}
+
+        {item.type === "publish" && isDone && (
+          <LogMetricsPanel queueItemId={item.id} platform={item.platform as Platform} />
+        )}
 
         {showSkip && !isResolved && (
           <div className="mt-3 flex gap-2">
