@@ -8,7 +8,12 @@ const baseEnvelope = {
   storyBank: [],
   governance: { clearedCustomers: [], bannedClaims: [], phiCheck: false },
   recentPosts: [],
-  config: { targetLength: [1300, 2500] as [number, number], hookRotation: true },
+  config: {
+    targetLength: [1300, 2500] as [number, number],
+    hookRotation: true,
+    draftingModel: "claude-sonnet-5",
+    researchModel: "claude-haiku-4-5",
+  },
 };
 
 describe("assertConnectionNoteGate", () => {

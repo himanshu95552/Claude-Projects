@@ -35,6 +35,8 @@ export type GenerationEnvelope = {
   config: {
     targetLength: [number, number];
     hookRotation: boolean;
+    draftingModel: string;
+    researchModel: string;
   };
 };
 
