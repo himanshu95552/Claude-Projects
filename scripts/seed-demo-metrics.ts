@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./load-env";
 import { db } from "../src/lib/db/client";
 import { metricSnapshots, participants, queueItems, queues } from "../src/lib/db/schema";
 import { and, eq } from "drizzle-orm";

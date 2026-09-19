@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./load-env";
 import { runNightlyJob } from "../src/domain/nightly-job";
 
 // CLI entrypoint: `npm run nightly-job` or `tsx scripts/nightly-job.ts [YYYY-MM-DD]`
