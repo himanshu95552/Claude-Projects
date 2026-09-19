@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
 
   // Always behave the same way whether or not the participant exists, so
   // the response can't be used to probe the roster.
+  let magicLinkUrl: string | null = null;
   if (participant) {
     const token = generateToken();
     await db.insert(magicLinkTokens).values({
@@ -61,8 +62,17 @@ export async function POST(req: NextRequest) {
       expiresAt: new Date(Date.now() + TOKEN_TTL_MINUTES * 60 * 1000),
     });
 
-    const magicLinkUrl = `${getEnv().APP_URL}/api/auth/callback?token=${token}`;
+    magicLinkUrl = `${getEnv().APP_URL}/api/auth/callback?token=${token}`;
     await sendMagicLinkEmail({ to: email, magicLinkUrl });
+  }
+
+  // Dev/test convenience: outside production, the link is already exposed
+  // via the console-mailer fallback (sendMagicLinkEmail) when no email
+  // provider is configured, so returning it here too — for the e2e suite
+  // to read directly instead of scraping server logs — adds no new
+  // exposure. Never included in production.
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.json({ ok: true, magicLinkUrl });
   }
 
   return NextResponse.json({ ok: true });

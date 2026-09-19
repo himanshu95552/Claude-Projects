@@ -78,7 +78,11 @@ export const queueItems = pgTable("queue_items", {
 
   explain: jsonb("explain").$type<QueueItemExplain>().notNull().default({}),
 
-  targetId: uuid("target_id").references(() => targets.id),
+  // set null (not cascade/restrict): a queue item is a historical record
+  // of what was drafted and acted on — it should survive the target being
+  // removed, just losing the link, rather than blocking the delete or
+  // disappearing itself.
+  targetId: uuid("target_id").references(() => targets.id, { onDelete: "set null" }),
   sourcePostUrl: text("source_post_url"),
 
   status: queueItemStatusEnum("status").notNull().default("pending"),
