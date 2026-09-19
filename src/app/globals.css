@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/*
+ * Product UI design tokens. Deliberately separate from
+ * 05-brand/arc-tokens.css, which START-HERE.md scopes to marketing
+ * surfaces only ("not the Gravity product UI, which has its own system").
+ * A neutral, accessible, dark-mode-aware system for the app itself.
+ */
+:root {
+  --background: #f7f7f8;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #e5e5e8;
+  --foreground: #16161a;
+  --muted: #6b6b76;
+
+  --accent: #4f46e5;
+  --accent-foreground: #ffffff;
+  --accent-muted: #eef0fd;
+
+  --success: #16794f;
+  --success-muted: #e6f5ee;
+  --warning: #92620a;
+  --warning-muted: #fdf3e0;
+  --danger: #b3261e;
+  --danger-muted: #fbeaea;
+
+  --focus-ring: #4f46e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d0d10;
+    --surface: #17171b;
+    --surface-raised: #1e1e23;
+    --border: #2a2a30;
+    --foreground: #f0f0f2;
+    --muted: #9a9aa4;
+
+    --accent: #818cf8;
+    --accent-foreground: #0d0d10;
+    --accent-muted: #1f2145;
+
+    --success: #4ade80;
+    --success-muted: #123423;
+    --warning: #fbbf24;
+    --warning-muted: #3a2c07;
+    --danger: #f87171;
+    --danger-muted: #3a1616;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-muted: var(--accent-muted);
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-muted: var(--warning-muted);
+  --color-danger: var(--danger);
+  --color-danger-muted: var(--danger-muted);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+* {
+  border-color: var(--border);
+}
