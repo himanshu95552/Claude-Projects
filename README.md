@@ -26,7 +26,10 @@ constraint, not a design preference.
 ## What's actually built
 
 Every module in the original build spec's phases 1–5, plus a deliberately
-thin phase 6 (the source plan itself scopes phase 6 that way):
+thin phase 6 (the source plan itself scopes phase 6 that way), plus a
+later expansion — X support, brand-guided creative briefs, mark &
+regenerate, smart analytics, and a content calendar — all called out
+below:
 
 - **Auth** — magic-link sign-in, no passwords, role-based access
   (participant / operator / admin)
@@ -54,11 +57,30 @@ thin phase 6 (the source plan itself scopes phase 6 that way):
   keys configured
 - **LinkedIn** — real OAuth (`w_member_social`), real publish, and
   transparent token refresh before the 60-day expiry ever bites
+- **X (Twitter)** — real OAuth 2.0 + PKCE, real publish (single post or
+  auto-thread past 280 chars), a companion post generated in its own
+  isolated call for every LinkedIn publish item once connected
 - **Instagram / Facebook** — intentionally thin, per the build spec's
   own scoping ("day-60 cut decision")
+- **Alpha Nodus / Gravity knowledge base** — company facts, product
+  positioning, real client proof points, and the claims-control matrix
+  wired directly into every generation call and into governance's
+  automated flagging, not just documentation
+- **Brand-guided creative briefs** — on-brand banner copy (static,
+  carousel, or trending format) sized correctly per platform from 2026
+  research, plus a UTM-tagged link generator for the CTA
+- **Mark & regenerate** — flag specific lines in any generated item,
+  say what's wrong, and get a genuinely different draft from a fresh
+  isolated model call, with full revision history
+- **Smart analytics** — a per-platform engagement score weighted by
+  each platform's own 2026 algorithm research (saves/shares far above
+  likes), rule-based insights that refuse to fire without enough data,
+  and a program-wide rollup for admins
+- **Content calendar** — a month grid over the queue data, with a
+  team-wide view for admins to spot posting gaps and overlap
 - **PWA** — installable, a service worker, real web push
 
-Everything above is covered by 74 unit tests and 13 end-to-end tests
+Everything above is covered by 141 unit tests and 19 end-to-end tests
 (`npm test`, `npm run test:e2e`) and has been exercised in an actual
 browser against real seed data, not just typechecked.
 
@@ -88,12 +110,15 @@ for notifications. Reasoning for each choice: [`docs/ARCHITECTURE.md`](docs/ARCH
 src/
   app/            Next.js routes — pages and API routes side by side
   components/     UI, grouped by feature (queue/, persona/, admin/, onboarding/, pwa/, ui/)
-  domain/         Business logic with no framework dependency (ladder, governance, queue-builder...)
+  domain/         Business logic with no framework dependency (ladder, governance,
+                   queue-builder, regenerate, analytics, calendar, utm...)
   lib/
     db/           Drizzle schema + migrations
     config/       The versioned global→lane→participant settings engine
     generation/   The ported LinkedIn methodology + Claude prompt contracts
-    integrations/ LinkedIn / Meta / Claude API clients, token encryption
+    integrations/ LinkedIn / X / Meta / Claude API clients, token encryption
+    creative/     Platform + format → dimension/tips specs for banner briefs
+    knowledge/    Alpha Nodus / Gravity facts, brand system, governance claims matrix
     auth/         Magic-link + session logic
     push/         Web push sending
 scripts/          seed.ts, migrate.ts, nightly-job.ts — all runnable directly

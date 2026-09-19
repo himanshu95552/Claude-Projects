@@ -57,10 +57,11 @@ CRON_SECRET=<openssl rand -hex 24>
 ```
 
 Add the optional integrations (`ANTHROPIC_API_KEY`, `LINKEDIN_CLIENT_ID`
-/ `_SECRET`, etc.) the same way, following `docs/SETUP.md §6` for how to
-obtain each one. **Update the redirect URLs registered with LinkedIn/Meta
-to your production `APP_URL`** — they were pointed at `localhost` during
-local setup and OAuth will fail silently against the wrong one.
+/ `_SECRET`, `X_CLIENT_ID` / `_SECRET`, etc.) the same way, following
+`docs/SETUP.md §6` for how to obtain each one. **Update the redirect
+URLs registered with LinkedIn/X/Meta to your production `APP_URL`** —
+they were pointed at `localhost` during local setup and OAuth will fail
+silently against the wrong one.
 
 ## 4 · Wire up the nightly job
 

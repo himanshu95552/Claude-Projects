@@ -60,7 +60,7 @@ alphanodus_advocacy` after installing Postgres normally, point
 npm run db:migrate
 ```
 
-This creates all 17 tables. Then, optionally:
+This creates all 19 tables. Then, optionally:
 
 ```bash
 npm run db:seed
@@ -146,6 +146,27 @@ starting 24 hours before expiry (`src/lib/integrations/linkedin/account.ts`).
 If a refresh token itself has expired (~365 days), Persona shows an
 "expired" badge with a reconnect button — nothing silently breaks.
 
+### X / Twitter (real "Post to X" button)
+
+1. Create a project and app at
+   [developer.x.com](https://developer.x.com) with **OAuth 2.0** enabled
+   (this app uses the PKCE flow, not OAuth 1.0a)
+2. Under User authentication settings, request the scopes `tweet.read
+   tweet.write users.read offline.access` — `offline.access` is what
+   grants a refresh token, without which reconnecting every ~2 hours is
+   the only option
+3. Add this callback URL: `<APP_URL>/api/oauth/x/callback`
+4. Copy the Client ID and Secret into `X_CLIENT_ID` / `X_CLIENT_SECRET`
+5. Restart the dev server, sign in, go to **Persona → Accounts**, click
+   **Connect X**
+
+X access tokens expire in ~2 hours (far shorter than LinkedIn's 60
+days), so the refresh margin is minutes, not days — the app refreshes
+transparently on every publish call
+(`src/lib/integrations/x/account.ts`). Once connected, every LinkedIn
+publish item in the queue gets a companion X post, generated separately
+and tuned for X's format and engagement signals rather than copy-pasted.
+
 ### Instagram / Facebook (optional, deliberately thin)
 
 1. Create an app at [developers.facebook.com](https://developers.facebook.com)
@@ -184,8 +205,8 @@ the server, then **Persona → Accounts → Enable notifications**.
 ## 7 · Run the tests
 
 ```bash
-npm test              # 74 unit tests — domain logic, config engine, generation modules
-npm run test:e2e       # 13 end-to-end tests — every screen's golden path, real browser
+npm test              # 141 unit tests — domain logic, config engine, generation modules
+npm run test:e2e       # 19 end-to-end tests — every screen's golden path, real browser
 npm run typecheck      # tsc --noEmit
 npm run lint           # eslint
 ```

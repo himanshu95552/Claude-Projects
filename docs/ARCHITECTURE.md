@@ -37,7 +37,7 @@ Participant's phone/desktop (PWA)
 Next.js app — auth, queue API, config, OAuth token vault
         ↕
   ├→ Claude API (drafting + research; DEMO_MODE fallback with no key)
-  ├→ LinkedIn / Instagram / Facebook APIs (publish on click only)
+  ├→ LinkedIn / X / Instagram / Facebook APIs (publish on click only)
   └→ Postgres (participants, queues, voice profiles, targets, config, ...)
 
 Nightly job (npm run nightly-job, or POST /api/cron/nightly-generation)

@@ -46,9 +46,23 @@ For each card:
 - **Edit it if it doesn't sound like you.** This is expected and
   valuable — your edits are literally how the app learns your voice
   better over time.
+- **Mark & regenerate if editing isn't enough.** Click any line that
+  isn't working (it highlights), optionally say what's wrong in one
+  line, and hit Regenerate — you get a genuinely different draft, not a
+  reworded version of the one you rejected, and every version stays in
+  **History** so nothing's ever lost.
 - **Post it** (or **Copy** + **Open** if there's no direct-post button
-  yet — that means LinkedIn isn't connected, or the action type is one
-  LinkedIn doesn't expose an API for at all, like connection invites).
+  yet — that means LinkedIn/X isn't connected, or the action type is one
+  the platform doesn't expose an API for at all, like connection
+  invites). A publish item on LinkedIn always gets a companion X post
+  once X is connected — generated separately, tuned for X's shorter
+  format and its own engagement signals, not a copy-paste.
+- **Generate a banner if the post needs a visual.** On any publish item,
+  **Generate banner** produces on-brand headline copy sized correctly
+  for the platform and format you pick (static, carousel, or trending) —
+  a creative brief a designer or image tool can build from, plus a
+  **Copy tracked link** button next to its CTA that tags a destination
+  URL with UTM parameters so clicks can actually be attributed later.
 - **Skip it if it's wrong**, and say why in one line. This is not a
   judgment on you — three people skipping the same draft means the
   *draft* was wrong. Skip reasons are the most useful feedback in the
@@ -69,9 +83,33 @@ it.
   points. This is what stops drafts sounding generic — the more real
   detail here, the better every draft that follows.
 - **Lane** — a reminder of what you own and why.
-- **Accounts** — connect LinkedIn (and Instagram/Facebook if your
+- **Accounts** — connect LinkedIn and X (and Instagram/Facebook if your
   program uses them) so the Post button actually posts, plus push
   notifications so you know when your queue is ready without checking.
+
+### Calendar
+
+**Calendar** lays out every scheduled or shipped post on a month grid —
+a faster way to see your own posting rhythm than scrolling the daily
+queue day by day. Admins and operators get a **Team calendar** toggle
+that shows everyone's posts on the same grid, with names, so gaps
+(nobody posting this week) and overlap (three people covering the same
+day) are visible at a glance.
+
+### Analytics
+
+**Analytics** turns whatever metrics you log against a posted item
+(impressions, reactions, comments, shares, saves, clicks — copy them
+from the platform's own analytics view, there's a **Log metrics** button
+on any posted card) into insights that actually mean something: a
+weighted engagement score per platform that counts a save or share for
+several times a like — because that's what 2026 research on each
+platform's own algorithm says predicts real reach, not raw counts — plus
+which pillar and hook formula are actually working for you, a weekly
+trend, and a flag if your highest-reach posts aren't converting to
+saves. Nothing fires as an "insight" until there's enough logged data to
+compare fairly; a lone post never gets treated as a trend. Admins and
+operators additionally see a program-wide rollup.
 
 ### Why lanes exist
 
