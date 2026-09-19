@@ -42,6 +42,7 @@ export const platformEnum = pgEnum("platform", [
   "linkedin",
   "instagram",
   "facebook",
+  "x",
 ]);
 
 export const platformAccountStatusEnum = pgEnum("platform_account_status", [
@@ -123,4 +124,17 @@ export const generationJobStatusEnum = pgEnum("generation_job_status", [
   "running",
   "succeeded",
   "failed",
+]);
+
+/** Creative brief format — matches the shapes researched platforms actually support. */
+export const creativeFormatEnum = pgEnum("creative_format", [
+  "static",
+  "carousel",
+  "trending", // short-form / meme-adjacent / reactive-to-a-moment format
+]);
+
+export const revisionSourceEnum = pgEnum("revision_source", [
+  "original",
+  "edited",
+  "regenerated",
 ]);

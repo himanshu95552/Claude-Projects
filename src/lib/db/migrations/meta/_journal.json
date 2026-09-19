@@ -15,6 +15,13 @@
       "when": 1789782652019,
       "tag": "0001_yellow_stick",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789783903636,
+      "tag": "0002_dark_skrulls",
+      "breakpoints": true
     }
   ]
 }

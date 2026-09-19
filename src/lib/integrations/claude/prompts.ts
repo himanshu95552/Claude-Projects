@@ -1,6 +1,7 @@
 import { GOAL_TO_FORMULAS, HOOK_FORMULAS, HOOK_RULES } from "@/lib/generation/hooks";
 import { COMMENT_CONSTRAINTS, COMMENT_TEMPLATES, SUBSTANTIVE_COMMENT_CHECKLIST } from "@/lib/generation/comments";
 import { REPLY_CONSTRAINTS, REPLY_TEMPLATES } from "@/lib/generation/replies";
+import { buildKnowledgeContext } from "@/lib/knowledge";
 import type {
   CommentGenerationInput,
   ConnectionNoteInput,
@@ -38,7 +39,10 @@ export function buildCachedSystemPrefix(envelope: GenerationEnvelope): string {
     "Story bank (draw on at least one entry per post — this is what stops drafts reading generic):",
     ...envelope.storyBank.map((s) => `- [${s.kind}] ${s.content}`),
     "",
-    "Governance — Alpha Nodus / Gravity facts, cleared customers, and compliance rules:",
+    "Alpha Nodus / Gravity knowledge base — the accuracy source for any company/product fact, stat, or proof point:",
+    buildKnowledgeContext(),
+    "",
+    "Governance — cleared customers and compliance rules:",
     `- Cleared customer names (only these may be referenced, and only with real specifics): ${envelope.governance.clearedCustomers.join(", ") || "none"}`,
     envelope.governance.bannedClaims.length
       ? `- Never claim: ${envelope.governance.bannedClaims.join("; ")}`

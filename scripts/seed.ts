@@ -9,6 +9,7 @@ import {
   voiceProfiles,
 } from "../src/lib/db/schema";
 import { writeConfig } from "../src/lib/config/resolve";
+import { CLIENT_STORIES, NAMEABLE_CLIENTS } from "../src/lib/knowledge/proof";
 
 /**
  * Seeds the real program data from the handoff package:
@@ -110,12 +111,12 @@ async function main() {
   const categoryEducation = allLanes.find((l) => l.slug === "category-education")!;
   const industryPov = allLanes.find((l) => l.slug === "industry-pov")!;
 
-  console.log("Seeding governance: cleared customers...");
-  const clearedNames = [
-    "Radiology Partners", "Atlantic Medical Imaging", "Bright Light Medical Imaging",
-    "Inspira Health", "Premier Radiology", "Pueblo Medical Imaging", "CareFirst Imaging",
-    "The Radiology Clinic", "Advanced Medical Imaging", "RMI", "Intercity Radiology", "MRI Associates",
-  ];
+  console.log("Seeding governance: cleared customers (from the knowledge base)...");
+  // Both quoted client stories and name-freely clients are safe to reference
+  // in content per claims.ts's SAFE_WITH_LINK / SAFE_NAME_ONLY distinction --
+  // the customer_name_mentioned governance flag still fires either way, so a
+  // reviewer confirms which kind of reference is being made.
+  const clearedNames = [...CLIENT_STORIES.map((c) => c.name), ...NAMEABLE_CLIENTS];
   for (const name of clearedNames) {
     await db.insert(clearedCustomers).values({ name }).onConflictDoNothing({ target: clearedCustomers.name });
   }

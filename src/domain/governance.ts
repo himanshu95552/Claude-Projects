@@ -4,6 +4,8 @@
  * formatting. "Reviewing style is how advocacy programs die."
  */
 
+import { NEVER_IN_WRITING, UNUSABLE_STATISTICS } from "@/lib/knowledge/claims";
+
 const CUSTOMER_MENTION_PATTERN = /\b(customer|client)\b.{0,40}\b(said|told|shared|reported)\b/i;
 const PHI_RISK_KEYWORDS = [
   "patient name",
@@ -21,14 +23,24 @@ const UNVERIFIED_CLAIM_MARKERS = [
   "reimbursement outcome",
 ];
 
+/** Matches ROUTE_TO_SHAMIT (claims.ts): security certifications and KLAS scores/ratings. */
+const SECURITY_CERT_PATTERN = /\b(soc\s?2|hitrust|iso\s?27001|hipaa[- ]certified)\b/i;
+const KLAS_SCORE_PATTERN = /\bklas\b.{0,30}\b(score|rating|rank|award|#\d|top\s?\d)/i;
+
 export type ReviewFlag =
   | "customer_name_mentioned"
   | "possible_phi"
   | "unverified_claim"
-  | "confidential_info_risk";
+  | "confidential_info_risk"
+  | "banned_claim"
+  | "unsourced_statistic"
+  | "needs_shamit_routing";
 
 /**
- * Flags content for the four things governance.md says marketing reviews.
+ * Flags content for the four things governance.md says marketing reviews,
+ * plus the knowledge brief's claims-control matrix (§5 of the brief,
+ * ported to src/lib/knowledge/claims.ts) -- these are Alpha Nodus/Gravity-
+ * specific accuracy rules, additive to the generic four.
  * `clearedCustomerNames` should be the live cleared_customers table so a
  * newly-cleared customer stops triggering a flag without a code change.
  */
@@ -53,6 +65,20 @@ export function evaluateGovernanceFlags(params: {
 
   if (UNVERIFIED_CLAIM_MARKERS.some((kw) => lower.includes(kw))) {
     flags.push("unverified_claim");
+  }
+
+  if (NEVER_IN_WRITING.some((phrase) => lower.includes(phrase.toLowerCase()))) {
+    flags.push("banned_claim");
+  }
+
+  if (UNUSABLE_STATISTICS.some((stat) => lower.includes(stat.toLowerCase()))) {
+    flags.push("unsourced_statistic");
+  }
+
+  // Matches claims.ts's ROUTE_TO_SHAMIT rule: security certifications and
+  // KLAS scores/ratings are never stated proactively; route to Shamit.
+  if (SECURITY_CERT_PATTERN.test(params.text) || KLAS_SCORE_PATTERN.test(params.text)) {
+    flags.push("needs_shamit_routing");
   }
 
   return flags;

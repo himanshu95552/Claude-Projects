@@ -12,4 +12,6 @@ export * from "./auth";
 export * from "./push";
 export * from "./generation";
 export * from "./weekly-summary";
+export * from "./creative";
+export * from "./revisions";
 export * from "./relations";

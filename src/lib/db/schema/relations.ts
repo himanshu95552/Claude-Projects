@@ -8,6 +8,8 @@ import { queues, queueItems } from "./queue";
 import { sessions } from "./auth";
 import { pushSubscriptions } from "./push";
 import { weeklySummaries } from "./weekly-summary";
+import { creativeBriefs } from "./creative";
+import { queueItemRevisions } from "./revisions";
 
 export const participantsRelations = relations(participants, ({ one, many }) => ({
   lane: one(lanes, {
@@ -65,7 +67,7 @@ export const queuesRelations = relations(queues, ({ one, many }) => ({
   items: many(queueItems),
 }));
 
-export const queueItemsRelations = relations(queueItems, ({ one }) => ({
+export const queueItemsRelations = relations(queueItems, ({ one, many }) => ({
   queue: one(queues, {
     fields: [queueItems.queueId],
     references: [queues.id],
@@ -74,6 +76,8 @@ export const queueItemsRelations = relations(queueItems, ({ one }) => ({
     fields: [queueItems.targetId],
     references: [targets.id],
   }),
+  creativeBriefs: many(creativeBriefs),
+  revisions: many(queueItemRevisions),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

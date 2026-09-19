@@ -176,7 +176,7 @@ export const GLOBAL_DEFAULTS: ResolvedSettings = {
     postLengthMax: 2500,
     hookRotation: true,
     carouselsPerWeek: 0,
-    bannedPhrases: ["excited to announce", "game-changer", "thrilled to share"],
+    bannedPhrases: ["excited to announce", "game-changer", "thrilled to share", "revolutionary", "replaces your RIS"],
     ctaStyle: "genuine-question",
   },
   voice: {
@@ -196,7 +196,7 @@ export const GLOBAL_DEFAULTS: ResolvedSettings = {
     reviewTier: "standard",
     specialChecks: [],
     reviewSlaHours: 4,
-    reviewTriggers: ["customer_name_mentioned", "unverified_claim", "phi_risk"],
+    reviewTriggers: ["customer_name_mentioned", "unverified_claim", "phi_risk", "banned_claim", "unsourced_statistic", "needs_shamit_routing"],
   },
   model: {
     draftingModel: "claude-sonnet-5",
