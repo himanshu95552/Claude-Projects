@@ -1,10 +1,10 @@
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { lanes, storyBankEntries, voiceProfiles } from "@/lib/db/schema";
+import { lanes, platformAccounts, storyBankEntries, voiceProfiles } from "@/lib/db/schema";
 import { getCurrentParticipant } from "@/lib/auth/session";
 import { PersonaClient } from "@/components/persona/persona-client";
 import { connectionStatus, getLinkedInAccount } from "@/lib/integrations/linkedin/account";
-import { isLinkedInConfigured } from "@/lib/env";
+import { isLinkedInConfigured, isMetaConfigured } from "@/lib/env";
 
 export default async function PersonaPage() {
   const participant = await getCurrentParticipant();
@@ -16,6 +16,18 @@ export default async function PersonaPage() {
     status: connectionStatus(linkedInAccount),
     handle: linkedInAccount?.handle ?? null,
     expiresAt: linkedInAccount?.expiresAt?.toISOString() ?? null,
+  };
+
+  const metaAccounts = await db
+    .select()
+    .from(platformAccounts)
+    .where(eq(platformAccounts.participantId, participant.id));
+  const instagram = metaAccounts.find((a) => a.platform === "instagram");
+  const facebook = metaAccounts.find((a) => a.platform === "facebook");
+  const meta = {
+    configured: isMetaConfigured(),
+    instagramConnected: Boolean(instagram && !instagram.revokedAt),
+    facebookConnected: Boolean(facebook && !facebook.revokedAt),
   };
 
   const [voiceProfile] = await db
@@ -50,6 +62,7 @@ export default async function PersonaPage() {
       storyBank={storyBank.map((s) => ({ id: s.id, kind: s.kind, content: s.content }))}
       lane={lane ? { name: lane.name, targetsPersona: lane.targetsPersona, pillars: lane.pillars, doRules: lane.doRules, dontRules: lane.dontRules } : null}
       linkedIn={linkedIn}
+      meta={meta}
     />
   );
 }

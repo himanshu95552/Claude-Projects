@@ -36,6 +36,7 @@ type VoiceProfile = {
 type StoryEntry = { id: string; kind: string; content: string };
 type Lane = { name: string; targetsPersona: string; pillars: string[]; doRules: string[]; dontRules: string[] } | null;
 type LinkedInInfo = { configured: boolean; status: string; handle: string | null; expiresAt: string | null };
+type MetaInfo = { configured: boolean; instagramConnected: boolean; facebookConnected: boolean };
 
 const TABS = ["voice", "story-bank", "lane", "accounts"] as const;
 
@@ -44,11 +45,13 @@ export function PersonaClient({
   storyBank: initialStoryBank,
   lane,
   linkedIn,
+  meta,
 }: {
   voiceProfile: VoiceProfile;
   storyBank: StoryEntry[];
   lane: Lane;
   linkedIn: LinkedInInfo;
+  meta: MetaInfo;
 }) {
   const [tab, setTab] = useState<(typeof TABS)[number]>("voice");
   const [sliders, setSliders] = useState<Sliders>(voiceProfile?.sliders ?? DEFAULT_SLIDERS);
@@ -308,6 +311,31 @@ export function PersonaClient({
             )}
           </CardBody>
         </Card>
+
+        <Card>
+          <CardBody className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-medium">Instagram &amp; Facebook</h2>
+              <div className="flex gap-1">
+                <Badge tone={meta.instagramConnected ? "success" : "neutral"}>Instagram {meta.instagramConnected ? "connected" : "off"}</Badge>
+                <Badge tone={meta.facebookConnected ? "success" : "neutral"}>Facebook {meta.facebookConnected ? "connected" : "off"}</Badge>
+              </div>
+            </div>
+            <p className="text-xs text-muted">
+              Low-priority track by design — repurposed content only, reviewed at day 60. Connecting is optional.
+            </p>
+            {meta.configured ? (
+              <a href="/api/oauth/meta/start">
+                <Button size="sm" variant="secondary" type="button">Connect Instagram / Facebook</Button>
+              </a>
+            ) : (
+              <p className="text-xs text-muted">
+                Not configured on this deployment — an admin needs to set META_APP_ID / META_APP_SECRET.
+              </p>
+            )}
+          </CardBody>
+        </Card>
+
         <NotificationsCard />
         </div>
       )}

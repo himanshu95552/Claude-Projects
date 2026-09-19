@@ -79,3 +79,8 @@ export function isPushConfigured(): boolean {
   const env = getEnv();
   return Boolean(env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY);
 }
+
+export function isMetaConfigured(): boolean {
+  const env = getEnv();
+  return Boolean(env.META_APP_ID && env.META_APP_SECRET);
+}
