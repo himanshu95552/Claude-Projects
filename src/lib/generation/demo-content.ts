@@ -43,6 +43,19 @@ export function demoXPostText(pillar: string): string {
   return `[DEMO] A 280-char X post for "${pillar}" would appear here — one sharp idea repurposed from the LinkedIn draft, written for replies and bookmarks, not likes.`;
 }
 
+export function demoRegeneratedText(reason: string, markedCount: number): string {
+  return [
+    `[DEMO REGENERATED — connect ANTHROPIC_API_KEY to generate a real revision]`,
+    "",
+    markedCount > 0
+      ? `A rewrite addressing the ${markedCount} marked line(s) would appear here.`
+      : "A full rewrite of the draft would appear here.",
+    reason ? `Feedback used: "${reason}"` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 export function demoCreativeBriefSlides(pillar: string, slideCount: number): Array<{ heading: string; subheading?: string; bodyText?: string }> {
   if (slideCount === 1) {
     return [

@@ -25,7 +25,11 @@ export const queueItemRevisions = pgTable("queue_item_revisions", {
   source: revisionSourceEnum("source").notNull(),
   reason: text("reason"), // why regenerated / what was edited
 
-  createdByParticipantId: uuid("created_by_participant_id").references(() => participants.id),
+  // set null, not cascade/restrict — same rule as queue_items.target_id and
+  // reviewed_by_participant_id: a revision is a historical record of what
+  // was drafted and why, and should survive the person who triggered it
+  // being removed from the roster.
+  createdByParticipantId: uuid("created_by_participant_id").references(() => participants.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

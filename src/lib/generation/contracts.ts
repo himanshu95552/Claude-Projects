@@ -120,6 +120,34 @@ export type CreativeBriefGenerationOutput = {
   explain: ExplainBlock;
 };
 
+// --- 1d. Regeneration (mark & regenerate) ---------------------------------
+
+/**
+ * The generic "I don't want this, try again" path for ANY queue item type
+ * -- unlike the other contracts, this doesn't re-derive from the original
+ * research signal (a comment's target post, a connection note's stage
+ * evidence, etc.); it revises the existing draft against explicit
+ * feedback. That's a deliberate scope choice: re-running the original
+ * research step isn't possible after the fact for several item types
+ * (the "activity signal" a comment was drafted from isn't persisted), so
+ * "regenerate" means "produce a materially different draft addressing
+ * this feedback," not "re-run the pipeline from scratch."
+ */
+export type RegenerationInput = GenerationEnvelope & {
+  itemType: string; // queue_item_type — informs prompt framing only
+  platform: Platform;
+  pillar?: string;
+  previousContent: string;
+  markedExcerpts: string[]; // specific lines/sentences the user flagged as not working
+  reason: string; // free-text: what's wrong, or what to change
+  constraints: { maxChars?: number; mustEndWithQuestion?: boolean };
+};
+
+export type RegenerationOutput = {
+  text: string;
+  explain: ExplainBlock;
+};
+
 // --- 2. Comment ----------------------------------------------------------
 
 export type CommentGenerationInput = GenerationEnvelope & {

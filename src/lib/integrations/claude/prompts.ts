@@ -9,6 +9,7 @@ import type {
   CreativeBriefGenerationInput,
   GenerationEnvelope,
   PostGenerationInput,
+  RegenerationInput,
   ReplyGenerationInput,
   ReshareCommentaryInput,
   XPostGenerationInput,
@@ -142,6 +143,35 @@ export function buildCreativeBriefPrompt(input: CreativeBriefGenerationInput): {
     .join("\n");
 
   return { system, prompt: "Generate the creative brief now." };
+}
+
+export function buildRegenerationPrompt(input: RegenerationInput): { system: string; prompt: string } {
+  const { constraints } = input;
+  const system = [
+    `Task: rewrite this ${input.itemType.replace(/_/g, " ")} for ${input.platform} -- a materially different draft, not a light edit.`,
+    input.pillar ? `Pillar: ${input.pillar}.` : "",
+    "",
+    `Previous draft: "${input.previousContent}"`,
+    "",
+    input.markedExcerpts.length
+      ? [
+          "The person marked these specific lines as not working -- fix the actual problem in each, don't just rephrase around it:",
+          ...input.markedExcerpts.map((e) => `- "${e}"`),
+        ].join("\n")
+      : "No specific lines were marked -- treat the whole draft as up for revision.",
+    input.reason ? `\nWhat they said is wrong / what to change: "${input.reason}"` : "",
+    "",
+    constraints.maxChars ? `Hard limit: ${constraints.maxChars} characters.` : "",
+    constraints.mustEndWithQuestion ? "Must end with a genuine question." : "",
+    "",
+    "This is a fresh attempt, not a continuation -- don't just patch the flagged lines in place, reconsider the whole idea if the feedback calls for it. Keep whatever wasn't flagged and is working.",
+    "",
+    "Respond with JSON only: { text, explain: { whyThisHook, whatYouAdd } }",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return { system, prompt: "Generate the revised draft now." };
 }
 
 export function buildCommentPrompt(input: CommentGenerationInput): { system: string; prompt: string } {

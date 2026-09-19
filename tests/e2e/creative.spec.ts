@@ -7,9 +7,8 @@ import { lanes, participants, queueItems, queues } from "../../src/lib/db/schema
 const EMAIL = "e2e-creative@alphanodus.com";
 
 test.describe("Creative brief (banner) generation", () => {
-  let queueItemId: string;
-
   test.beforeEach(async () => {
+    await deleteParticipant(EMAIL); // idempotent — guards against a prior run's afterEach not completing
     await ensureParticipant({ email: EMAIL, fullName: "E2E Creative", status: "active" });
 
     const [lane] = await db.select().from(lanes).limit(1);
@@ -22,18 +21,14 @@ test.describe("Creative brief (banner) generation", () => {
       .values({ participantId: participant.id, forDate: todayStr, totalCount: 1 })
       .returning();
 
-    const [item] = await db
-      .insert(queueItems)
-      .values({
-        queueId: queue.id,
-        type: "publish",
-        fulfillment: "api_publish",
-        content: "Roughly a dozen handoffs happen between an imaging order arriving and the claim being paid.",
-        status: "pending",
-        metadata: { pillar: "ROI" },
-      })
-      .returning();
-    queueItemId = item.id;
+    await db.insert(queueItems).values({
+      queueId: queue.id,
+      type: "publish",
+      fulfillment: "api_publish",
+      content: "Roughly a dozen handoffs happen between an imaging order arriving and the claim being paid.",
+      status: "pending",
+      metadata: { pillar: "ROI" },
+    });
   });
 
   test.afterEach(async () => {
@@ -45,7 +40,7 @@ test.describe("Creative brief (banner) generation", () => {
     await expect(page).toHaveURL(/\/queue/);
 
     await page.locator("text=Generate banner").first().click();
-    await page.locator("button", { hasText: "Generate" }).first().click();
+    await page.getByRole("button", { name: "Generate", exact: true }).click();
 
     await expect(page.locator("text=/\\d+×\\d+px/").first()).toBeVisible();
     await expect(page.locator("text=/\\[DEMO\\]/").first()).toBeVisible();
@@ -59,14 +54,18 @@ test.describe("Creative brief (banner) generation", () => {
 
     await page.locator("text=Generate banner").first().click();
     await page.locator("button", { hasText: "Carousel" }).first().click();
-    await page.locator("button", { hasText: "Generate" }).first().click();
+    await page.getByRole("button", { name: "Generate", exact: true }).click();
 
     await expect(page.locator("text=/\\d+ slides/")).toBeVisible();
     await expect(page.locator("text=Slide 1").first()).toBeVisible();
 
     // Regenerate produces a fresh isolated brief (new row), button label flips to "Regenerate".
-    await expect(page.locator("button", { hasText: "Regenerate" })).toBeVisible();
-    await page.locator("button", { hasText: "Regenerate" }).click();
+    const regenerateBtn = page.getByRole("button", { name: "Regenerate", exact: true });
+    await expect(regenerateBtn).toBeVisible();
+    await regenerateBtn.click();
+    // Wait for the in-flight request to settle (busy label reverts) before the
+    // test ends — otherwise afterEach's cleanup can race a still-open POST.
+    await expect(page.getByRole("button", { name: "Regenerating…" })).toHaveCount(0);
     await expect(page.locator("text=/\\d+ slides/").first()).toBeVisible();
   });
 });

@@ -6,6 +6,7 @@ import {
   buildConnectionNotePrompt,
   buildCreativeBriefPrompt,
   buildPostPrompt,
+  buildRegenerationPrompt,
   buildReplyPrompt,
   buildReshareCommentaryPrompt,
   buildXPostPrompt,
@@ -16,6 +17,7 @@ import {
   demoConnectionNote,
   demoCreativeBriefSlides,
   demoPostText,
+  demoRegeneratedText,
   demoReplyText,
   demoReshareCommentary,
   demoXPostText,
@@ -30,6 +32,8 @@ import type {
   CreativeBriefGenerationOutput,
   PostGenerationInput,
   PostGenerationOutput,
+  RegenerationInput,
+  RegenerationOutput,
   ReplyGenerationInput,
   ReplyGenerationOutput,
   ReshareCommentaryInput,
@@ -270,6 +274,45 @@ export async function generateCreativeBrief(
     },
     meta,
   };
+}
+
+/**
+ * "Mark & regenerate" — same isolated-call rule as every other generate*
+ * function: a fresh prompt built from the previous draft + marked lines +
+ * reason, never a continuation of the call that produced that draft (and
+ * never a continuation of a PRIOR regenerate either — each click is its
+ * own session, so five regenerates in a row can't drift into a back-and-
+ * forth the model is "remembering").
+ */
+export async function generateRegeneratedContent(
+  input: RegenerationInput,
+): Promise<{ output: RegenerationOutput; meta: GenerationMeta }> {
+  if (isDemoMode()) {
+    const text = demoRegeneratedText(input.reason, input.markedExcerpts.length);
+    const meta = attachMeta(text, { inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 }, true, {
+      clearedCustomerNames: input.governance.clearedCustomers,
+      phiCheckRequired: input.governance.phiCheck,
+    });
+    return {
+      output: { text, explain: { whatYouAdd: "[DEMO] Placeholder rationale." } },
+      meta,
+    };
+  }
+
+  const model = modelForJob("draft", input.config);
+  const { system, prompt } = buildRegenerationPrompt(input);
+  const cachedPrefix = buildCachedSystemPrefix(input);
+  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
+
+  const parsed = parseJsonResponse(result.text, { text: result.text, explain: {} });
+  const meta = attachMeta(
+    parsed.text,
+    { inputTokens: result.inputTokens, outputTokens: result.outputTokens, cachedInputTokens: result.cachedInputTokens },
+    false,
+    { clearedCustomerNames: input.governance.clearedCustomers, phiCheckRequired: input.governance.phiCheck },
+  );
+
+  return { output: { text: parsed.text, explain: parsed.explain ?? {} }, meta };
 }
 
 export async function generateComment(

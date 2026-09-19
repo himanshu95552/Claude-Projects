@@ -2,14 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { queueItems, queues, targets } from "@/lib/db/schema";
+import { queueItemRevisions, queueItems, queues, targets } from "@/lib/db/schema";
 import { requireParticipant, AuthError } from "@/lib/auth/session";
 import { advanceStage } from "@/domain/ladder";
+import { regenerateQueueItem } from "@/domain/regenerate";
 
 const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("done"), platformPostId: z.string().optional() }),
   z.object({ action: z.literal("skip"), reason: z.string().min(1, "A skip reason is required") }),
   z.object({ action: z.literal("edit"), editedContent: z.string() }),
+  z.object({
+    action: z.literal("regenerate"),
+    markedExcerpts: z.array(z.string()).default([]),
+    reason: z.string().default(""),
+  }),
 ]);
 
 /**
@@ -35,6 +41,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ it
     if (body.action === "edit") {
       await db.update(queueItems).set({ editedContent: body.editedContent }).where(eq(queueItems.id, itemId));
       return NextResponse.json({ ok: true });
+    }
+
+    if (body.action === "regenerate") {
+      const result = await regenerateQueueItem(participant, item, {
+        markedExcerpts: body.markedExcerpts,
+        reason: body.reason,
+      });
+      return NextResponse.json({ ok: true, ...result });
     }
 
     if (body.action === "skip") {
@@ -66,6 +80,32 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ it
   } catch (err) {
     if (err instanceof AuthError) return NextResponse.json({ error: err.message }, { status: 401 });
     if (err instanceof z.ZodError) return NextResponse.json({ error: err.issues[0]?.message }, { status: 400 });
+    throw err;
+  }
+}
+
+/** Revision history for one item — the audit trail behind "mark & regenerate". */
+export async function GET(req: NextRequest, { params }: { params: Promise<{ itemId: string }> }) {
+  try {
+    const participant = await requireParticipant();
+    const { itemId } = await params;
+
+    const [item] = await db.select().from(queueItems).where(eq(queueItems.id, itemId)).limit(1);
+    if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const [queue] = await db.select().from(queues).where(eq(queues.id, item.queueId)).limit(1);
+    if (!queue || queue.participantId !== participant.id) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    const revisions = await db
+      .select()
+      .from(queueItemRevisions)
+      .where(eq(queueItemRevisions.queueItemId, itemId))
+      .orderBy(queueItemRevisions.createdAt);
+
+    return NextResponse.json({ revisions });
+  } catch (err) {
+    if (err instanceof AuthError) return NextResponse.json({ error: err.message }, { status: 401 });
     throw err;
   }
 }

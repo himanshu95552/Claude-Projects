@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CreativeBriefPanel } from "./creative-brief-panel";
+import { RegeneratePanel } from "./regenerate-panel";
 
 async function patchItem(id: string, body: unknown) {
   const res = await fetch(`/api/queue/items/${id}`, {
@@ -191,6 +192,14 @@ export function ItemCard({
             Connect {item.platform === "x" ? "X" : "LinkedIn"} from the Persona tab to post directly — for now, copy
             the text and post manually.
           </p>
+        )}
+
+        {!isResolved && !editing && (
+          <RegeneratePanel
+            itemId={item.id}
+            content={displayContent}
+            onRegenerated={(text) => onUpdate({ editedContent: text })}
+          />
         )}
 
         {item.type === "publish" && <CreativeBriefPanel queueItemId={item.id} />}
