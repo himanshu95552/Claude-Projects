@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { CreativeBriefPanel } from "./creative-brief-panel";
 
 async function patchItem(id: string, body: unknown) {
   const res = await fetch(`/api/queue/items/${id}`, {
@@ -191,6 +192,8 @@ export function ItemCard({
             the text and post manually.
           </p>
         )}
+
+        {item.type === "publish" && <CreativeBriefPanel queueItemId={item.id} />}
 
         {showSkip && !isResolved && (
           <div className="mt-3 flex gap-2">

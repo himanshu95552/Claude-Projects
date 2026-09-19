@@ -2,9 +2,11 @@ import { GOAL_TO_FORMULAS, HOOK_FORMULAS, HOOK_RULES } from "@/lib/generation/ho
 import { COMMENT_CONSTRAINTS, COMMENT_TEMPLATES, SUBSTANTIVE_COMMENT_CHECKLIST } from "@/lib/generation/comments";
 import { REPLY_CONSTRAINTS, REPLY_TEMPLATES } from "@/lib/generation/replies";
 import { buildKnowledgeContext } from "@/lib/knowledge";
+import { AN27_COLORS, COMPOSITION_RULES, VOICE_RULES } from "@/lib/knowledge/brand";
 import type {
   CommentGenerationInput,
   ConnectionNoteInput,
+  CreativeBriefGenerationInput,
   GenerationEnvelope,
   PostGenerationInput,
   ReplyGenerationInput,
@@ -108,6 +110,38 @@ export function buildXPostPrompt(input: XPostGenerationInput): { system: string;
     .join("\n");
 
   return { system, prompt: "Generate the X post now." };
+}
+
+export function buildCreativeBriefPrompt(input: CreativeBriefGenerationInput): { system: string; prompt: string } {
+  const { spec } = input;
+  const slideCount = spec.maxSlides === 1 ? 1 : spec.idealSlides ?? spec.minSlides;
+
+  const system = [
+    `Task: write a brand-guided creative brief for a ${input.format} banner on ${input.platform}, illustrating the "${input.pillar}" pillar.`,
+    `This is a BRIEF, not a rendered image -- write the copy that goes ON the image (headings/subheadings/body), not a description of the image.`,
+    `Canvas: ${spec.widthPx}x${spec.heightPx}px, ${spec.aspectRatio}. Slide count: ${spec.minSlides === spec.maxSlides ? spec.maxSlides : `write exactly ${slideCount} slides (allowed range ${spec.minSlides}-${spec.maxSlides})`}.`,
+    "",
+    `Source post this banner accompanies (illustrate its single sharpest idea -- don't caption-dump the whole post onto the image): "${input.sourceMaterial}"`,
+    "",
+    `Format-specific guidance (researched, ${input.platform}/${input.format}):`,
+    ...spec.tips.map((t) => `- ${t}`),
+    "",
+    "AN27 brand rules -- every slide must follow these:",
+    ...VOICE_RULES.map((r) => `- ${r}`),
+    ...COMPOSITION_RULES.hardRules.map((r) => `- ${r}`),
+    `- Colors available: heading text ${AN27_COLORS.headingText}, body text ${AN27_COLORS.bodyText}, surfaces ${AN27_COLORS.surface}/${AN27_COLORS.canvas}, arc gradient ${AN27_COLORS.arc.orange} -> ${AN27_COLORS.arc.magenta} -> ${AN27_COLORS.arc.blue} (as one of the six arc "moments" per page -- never re-derived, never blurred).`,
+    `- Typography: headings in Inter 600, body in Inter 400. Sentence case only -- no title case, no all-caps.`,
+    "",
+    slideCount > 1
+      ? "First slide is the hook alone -- it has to earn the swipe with zero context. Middle slides carry one idea each (a step, a number, a comparison). Last slide is a single focused CTA, nothing else competing on it."
+      : "One slide: the hook line carries the whole image. Keep body text minimal -- this is glanced at, not read.",
+    "",
+    "Respond with JSON only: { slides: [{ heading, subheading?, bodyText? }], cta: string | null, brandComplianceNotes: string[] (how this brief follows the AN27 rules above, one line each), explain: { whyThisHook, whatYouAdd } }",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return { system, prompt: "Generate the creative brief now." };
 }
 
 export function buildCommentPrompt(input: CommentGenerationInput): { system: string; prompt: string } {

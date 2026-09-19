@@ -42,3 +42,19 @@ export function demoReshareCommentary(): string {
 export function demoXPostText(pillar: string): string {
   return `[DEMO] A 280-char X post for "${pillar}" would appear here — one sharp idea repurposed from the LinkedIn draft, written for replies and bookmarks, not likes.`;
 }
+
+export function demoCreativeBriefSlides(pillar: string, slideCount: number): Array<{ heading: string; subheading?: string; bodyText?: string }> {
+  if (slideCount === 1) {
+    return [
+      {
+        heading: `[DEMO] Hook headline for "${pillar}" would appear here`,
+        subheading: "[DEMO] One-line support text, connect ANTHROPIC_API_KEY to generate real copy.",
+      },
+    ];
+  }
+  return Array.from({ length: slideCount }, (_, i) => {
+    if (i === 0) return { heading: `[DEMO] Slide 1 — hook for "${pillar}"`, subheading: "[DEMO] Earns the swipe." };
+    if (i === slideCount - 1) return { heading: "[DEMO] Final slide — CTA", subheading: "[DEMO] One focused ask." };
+    return { heading: `[DEMO] Slide ${i + 1} — value point`, bodyText: "[DEMO] A step, number, or comparison would appear here." };
+  });
+}

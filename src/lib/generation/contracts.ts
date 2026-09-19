@@ -1,4 +1,6 @@
+import type { CreativeSlide } from "@/lib/db/schema/creative";
 import type { VoiceSliders } from "@/lib/db/schema";
+import type { CreativeFormat, Platform } from "@/lib/creative/types";
 import type { EngagementGoal, HookFormulaCode } from "./hooks";
 
 /**
@@ -87,6 +89,35 @@ export type XPostGenerationOutput = {
   pillar: string;
   explain: ExplainBlock;
   reviewFlags: string[];
+};
+
+// --- 1c. Creative brief (banner) ------------------------------------------
+
+/**
+ * A brand-guided visual companion, not a text repurpose of the post --
+ * this is why it takes the format/spec as explicit input rather than
+ * inferring them, and why its own isolated call is documented the same
+ * way generateXPost's is: no conversation history carried in, a fresh
+ * prompt built from the spec + brand rules + source post every time.
+ */
+export type CreativeBriefGenerationInput = GenerationEnvelope & {
+  pillar: string;
+  sourceMaterial: string; // the publish item's post text -- the idea the banner illustrates, not what it repeats verbatim
+  platform: Platform;
+  format: CreativeFormat;
+  spec: { widthPx: number; heightPx: number; aspectRatio: string; minSlides: number; maxSlides: number; idealSlides?: number; tips: string[] };
+};
+
+export type CreativeBriefGenerationOutput = {
+  platform: Platform;
+  format: CreativeFormat;
+  widthPx: number;
+  heightPx: number;
+  aspectRatio: string;
+  slides: CreativeSlide[];
+  cta: string | null;
+  brandComplianceNotes: string[];
+  explain: ExplainBlock;
 };
 
 // --- 2. Comment ----------------------------------------------------------

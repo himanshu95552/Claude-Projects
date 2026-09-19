@@ -4,6 +4,7 @@ import {
   buildCachedSystemPrefix,
   buildCommentPrompt,
   buildConnectionNotePrompt,
+  buildCreativeBriefPrompt,
   buildPostPrompt,
   buildReplyPrompt,
   buildReshareCommentaryPrompt,
@@ -13,6 +14,7 @@ import { auditHumanizedText } from "./humanizer/audit";
 import {
   demoCommentText,
   demoConnectionNote,
+  demoCreativeBriefSlides,
   demoPostText,
   demoReplyText,
   demoReshareCommentary,
@@ -24,6 +26,8 @@ import type {
   CommentGenerationOutput,
   ConnectionNoteInput,
   ConnectionNoteOutput,
+  CreativeBriefGenerationInput,
+  CreativeBriefGenerationOutput,
   PostGenerationInput,
   PostGenerationOutput,
   ReplyGenerationInput,
@@ -187,6 +191,82 @@ export async function generateXPost(
       pillar: input.pillar,
       explain: parsed.explain,
       reviewFlags: meta.governanceFlags,
+    },
+    meta,
+  };
+}
+
+/**
+ * Same isolated-call rule as generateXPost: a fresh prompt built from the
+ * spec + brand rules + the source post's text every time, never a
+ * continuation of the call that drafted that post. This is also what
+ * makes "regenerate" safe to expose in the UI -- every regenerate is a
+ * brand-new session, not a nudge on the model's prior answer, so it can't
+ * drift from the AN27 rules over repeated regenerations the way a
+ * multi-turn "make it better" conversation would.
+ */
+export async function generateCreativeBrief(
+  input: CreativeBriefGenerationInput,
+): Promise<{ output: CreativeBriefGenerationOutput; meta: GenerationMeta }> {
+  const slideCount = input.spec.maxSlides === 1 ? 1 : input.spec.idealSlides ?? input.spec.minSlides;
+
+  if (isDemoMode()) {
+    const slides = demoCreativeBriefSlides(input.pillar, slideCount);
+    const combinedText = slides.map((s) => [s.heading, s.subheading, s.bodyText].filter(Boolean).join(" ")).join(" ");
+    const meta = attachMeta(combinedText, { inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 }, true, {
+      clearedCustomerNames: input.governance.clearedCustomers,
+      phiCheckRequired: input.governance.phiCheck,
+    });
+    return {
+      output: {
+        platform: input.platform,
+        format: input.format,
+        widthPx: input.spec.widthPx,
+        heightPx: input.spec.heightPx,
+        aspectRatio: input.spec.aspectRatio,
+        slides,
+        cta: slideCount > 1 ? "[DEMO] Learn more" : null,
+        brandComplianceNotes: ["[DEMO] Brand compliance notes appear here once generation is connected."],
+        explain: { whyThisHook: "[DEMO] Placeholder rationale.", whatYouAdd: "[DEMO] Placeholder rationale." },
+      },
+      meta,
+    };
+  }
+
+  const model = modelForJob("draft", input.config);
+  const { system, prompt } = buildCreativeBriefPrompt(input);
+  const cachedPrefix = buildCachedSystemPrefix(input);
+  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
+
+  const fallbackSlides = demoCreativeBriefSlides(input.pillar, slideCount);
+  const parsed = parseJsonResponse(result.text, {
+    slides: fallbackSlides,
+    cta: null as string | null,
+    brandComplianceNotes: [] as string[],
+    explain: {},
+  });
+
+  const combinedText = parsed.slides
+    .map((s: { heading: string; subheading?: string; bodyText?: string }) => [s.heading, s.subheading, s.bodyText].filter(Boolean).join(" "))
+    .join(" ");
+  const meta = attachMeta(
+    combinedText,
+    { inputTokens: result.inputTokens, outputTokens: result.outputTokens, cachedInputTokens: result.cachedInputTokens },
+    false,
+    { clearedCustomerNames: input.governance.clearedCustomers, phiCheckRequired: input.governance.phiCheck },
+  );
+
+  return {
+    output: {
+      platform: input.platform,
+      format: input.format,
+      widthPx: input.spec.widthPx,
+      heightPx: input.spec.heightPx,
+      aspectRatio: input.spec.aspectRatio,
+      slides: parsed.slides,
+      cta: parsed.cta ?? null,
+      brandComplianceNotes: parsed.brandComplianceNotes ?? [],
+      explain: parsed.explain ?? {},
     },
     meta,
   };
