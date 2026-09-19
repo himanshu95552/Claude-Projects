@@ -5,6 +5,7 @@ import type { Queue, QueueItem } from "@/lib/db/schema";
 import { groupBySection, queueProgress, SECTION_LABELS, type QueueSection } from "@/domain/queue-order";
 import { ItemCard } from "./item-card";
 import { Card, CardBody } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export function QueueClient({
   participantName,
@@ -13,6 +14,7 @@ export function QueueClient({
   initialItems,
   linkedInConnected,
   xConnected,
+  canGenerate,
 }: {
   participantName: string;
   streakDays: number;
@@ -20,8 +22,11 @@ export function QueueClient({
   initialItems: QueueItem[];
   linkedInConnected: boolean;
   xConnected: boolean;
+  canGenerate: boolean;
 }) {
   const [items, setItems] = useState(initialItems);
+  const [generating, setGenerating] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
 
   const progress = useMemo(() => queueProgress(items), [items]);
   const groups = useMemo(() => groupBySection(items), [items]);
@@ -30,16 +35,38 @@ export function QueueClient({
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, ...patch } : i)));
   }
 
+  async function handleGenerate() {
+    setGenerating(true);
+    setGenerateError(null);
+    try {
+      const res = await fetch("/api/queue", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Generation failed");
+      window.location.reload();
+    } catch (err) {
+      setGenerateError(err instanceof Error ? err.message : "Generation failed");
+      setGenerating(false);
+    }
+  }
+
   if (!queue || items.length === 0) {
     return (
       <div>
         <h1 className="text-lg font-semibold mb-1">Hi {participantName.split(" ")[0]}</h1>
         <Card className="mt-4">
           <CardBody className="text-center py-10">
-            <p className="text-muted">
+            <p className="text-muted mb-4">
               No queue for today yet. Queues are generated overnight — check back tomorrow morning,
-              or ask your operator to run a manual generation.
+              {canGenerate ? " or generate today's now:" : " or ask your operator to run a manual generation."}
             </p>
+            {canGenerate && (
+              <>
+                <Button onClick={handleGenerate} disabled={generating}>
+                  {generating ? "Generating…" : "Generate today's queue"}
+                </Button>
+                {generateError && <p className="mt-2 text-xs text-danger">{generateError}</p>}
+              </>
+            )}
           </CardBody>
         </Card>
       </div>

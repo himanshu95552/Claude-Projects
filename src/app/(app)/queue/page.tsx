@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { queueItems, queues } from "@/lib/db/schema";
-import { getCurrentParticipant } from "@/lib/auth/session";
+import { getCurrentParticipant, hasRole } from "@/lib/auth/session";
 import { QueueClient } from "@/components/queue/queue-client";
 import { sortQueueItems } from "@/domain/queue-order";
 import { connectionStatus, getLinkedInAccount } from "@/lib/integrations/linkedin/account";
@@ -38,6 +38,7 @@ export default async function QueuePage() {
       initialItems={items}
       linkedInConnected={linkedInStatus === "connected" || linkedInStatus === "expiring_soon"}
       xConnected={xStatus === "connected"}
+      canGenerate={hasRole(participant, "admin") || hasRole(participant, "operator")}
     />
   );
 }
