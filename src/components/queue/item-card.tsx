@@ -20,9 +20,11 @@ async function patchItem(id: string, body: unknown) {
 export function ItemCard({
   item,
   onUpdate,
+  linkedInConnected,
 }: {
   item: QueueItem;
   onUpdate: (patch: Partial<QueueItem>) => void;
+  linkedInConnected: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(item.editedContent ?? item.content);
@@ -30,6 +32,10 @@ export function ItemCard({
   const [showSkip, setShowSkip] = useState(false);
   const [skipReason, setSkipReason] = useState("");
   const [busy, setBusy] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
+
+  const canPublishDirectly =
+    linkedInConnected && item.fulfillment === "api_publish" && ["publish", "first_hour_comment", "general_comment", "reply"].includes(item.type);
 
   const displayContent = item.editedContent ?? item.content;
   const isDone = item.status === "done";
@@ -55,6 +61,25 @@ export function ItemCard({
     try {
       await patchItem(item.id, { action: "done" });
       onUpdate({ status: "done", actedAt: new Date() });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handlePublish() {
+    setBusy(true);
+    setPublishError(null);
+    try {
+      const res = await fetch("/api/linkedin/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemId: item.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Publish failed");
+      onUpdate({ status: "done", actedAt: new Date(), platformPostId: data.platformPostId });
+    } catch (err) {
+      setPublishError(err instanceof Error ? err.message : "Publish failed");
     } finally {
       setBusy(false);
     }
@@ -141,10 +166,24 @@ export function ItemCard({
             <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>Edit</Button>
             <div className="flex-1" />
             <Button size="sm" variant="ghost" onClick={() => setShowSkip((v) => !v)}>Skip</Button>
-            <Button size="sm" onClick={handleMarkDone} disabled={busy}>
-              {item.fulfillment === "api_publish" ? "Mark posted" : "Mark done"}
-            </Button>
+            {canPublishDirectly ? (
+              <Button size="sm" onClick={handlePublish} disabled={busy}>
+                {busy ? "Posting…" : "Post to LinkedIn"}
+              </Button>
+            ) : (
+              <Button size="sm" onClick={handleMarkDone} disabled={busy}>
+                {item.fulfillment === "api_publish" ? "Mark posted" : "Mark done"}
+              </Button>
+            )}
           </div>
+        )}
+
+        {publishError && <p className="mt-2 text-xs text-danger">{publishError}</p>}
+
+        {!isResolved && !editing && item.fulfillment === "api_publish" && !linkedInConnected && (
+          <p className="mt-2 text-xs text-muted">
+            Connect LinkedIn from the Persona tab to post directly — for now, copy the text and post manually.
+          </p>
         )}
 
         {showSkip && !isResolved && (

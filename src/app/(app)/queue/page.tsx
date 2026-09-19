@@ -4,6 +4,7 @@ import { queueItems, queues } from "@/lib/db/schema";
 import { getCurrentParticipant } from "@/lib/auth/session";
 import { QueueClient } from "@/components/queue/queue-client";
 import { sortQueueItems } from "@/domain/queue-order";
+import { connectionStatus, getLinkedInAccount } from "@/lib/integrations/linkedin/account";
 
 export default async function QueuePage() {
   const participant = await getCurrentParticipant();
@@ -23,12 +24,16 @@ export default async function QueuePage() {
       )
     : [];
 
+  const linkedInAccount = await getLinkedInAccount(participant.id);
+  const linkedInStatus = connectionStatus(linkedInAccount);
+
   return (
     <QueueClient
       participantName={participant.fullName}
       streakDays={participant.streakDays}
       queue={queue ?? null}
       initialItems={items}
+      linkedInConnected={linkedInStatus === "connected" || linkedInStatus === "expiring_soon"}
     />
   );
 }

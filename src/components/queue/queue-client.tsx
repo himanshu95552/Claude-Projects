@@ -11,11 +11,13 @@ export function QueueClient({
   streakDays,
   queue,
   initialItems,
+  linkedInConnected,
 }: {
   participantName: string;
   streakDays: number;
   queue: Queue | null;
   initialItems: QueueItem[];
+  linkedInConnected: boolean;
 }) {
   const [items, setItems] = useState(initialItems);
 
@@ -73,7 +75,12 @@ export function QueueClient({
             </h2>
             <div className="space-y-4">
               {group.items.map((item) => (
-                <ItemCard key={item.id} item={item} onUpdate={(patch) => updateItem(item.id, patch)} />
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  onUpdate={(patch) => updateItem(item.id, patch)}
+                  linkedInConnected={linkedInConnected}
+                />
               ))}
             </div>
           </section>

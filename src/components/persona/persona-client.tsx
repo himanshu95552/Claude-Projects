@@ -34,17 +34,20 @@ type VoiceProfile = {
 
 type StoryEntry = { id: string; kind: string; content: string };
 type Lane = { name: string; targetsPersona: string; pillars: string[]; doRules: string[]; dontRules: string[] } | null;
+type LinkedInInfo = { configured: boolean; status: string; handle: string | null; expiresAt: string | null };
 
-const TABS = ["voice", "story-bank", "lane"] as const;
+const TABS = ["voice", "story-bank", "lane", "accounts"] as const;
 
 export function PersonaClient({
   voiceProfile,
   storyBank: initialStoryBank,
   lane,
+  linkedIn,
 }: {
   voiceProfile: VoiceProfile;
   storyBank: StoryEntry[];
   lane: Lane;
+  linkedIn: LinkedInInfo;
 }) {
   const [tab, setTab] = useState<(typeof TABS)[number]>("voice");
   const [sliders, setSliders] = useState<Sliders>(voiceProfile?.sliders ?? DEFAULT_SLIDERS);
@@ -134,7 +137,7 @@ export function PersonaClient({
             onClick={() => setTab(t)}
             className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px ${tab === t ? "border-accent text-accent" : "border-transparent text-muted"}`}
           >
-            {t === "voice" ? "Voice" : t === "story-bank" ? "Story bank" : "Lane"}
+            {t === "voice" ? "Voice" : t === "story-bank" ? "Story bank" : t === "lane" ? "Lane" : "Accounts"}
           </button>
         ))}
       </div>
@@ -256,6 +259,54 @@ export function PersonaClient({
         </Card>
       )}
       {tab === "lane" && !lane && <p className="text-sm text-muted">No lane assigned yet.</p>}
+
+      {tab === "accounts" && (
+        <Card>
+          <CardBody className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-medium">LinkedIn</h2>
+                {linkedIn.handle && <p className="text-xs text-muted">{linkedIn.handle}</p>}
+              </div>
+              <Badge
+                tone={
+                  linkedIn.status === "connected" ? "success" :
+                  linkedIn.status === "expiring_soon" ? "warning" :
+                  linkedIn.status === "expired" ? "danger" : "neutral"
+                }
+              >
+                {linkedIn.status.replace("_", " ")}
+              </Badge>
+            </div>
+
+            {linkedIn.status === "expiring_soon" && (
+              <p className="text-xs text-warning">
+                Your token expires soon (LinkedIn tokens last 60 days). Reconnect to keep posting directly.
+              </p>
+            )}
+            {linkedIn.status === "expired" && (
+              <p className="text-xs text-danger">
+                Your LinkedIn connection expired. Reconnect to post directly again — your queue still works
+                with copy/open in the meantime.
+              </p>
+            )}
+
+            {linkedIn.configured ? (
+              <a href="/api/oauth/linkedin/start">
+                <Button size="sm" type="button">
+                  {linkedIn.status === "not_connected" ? "Connect LinkedIn" : "Reconnect LinkedIn"}
+                </Button>
+              </a>
+            ) : (
+              <p className="text-xs text-muted">
+                LinkedIn isn&apos;t configured on this deployment yet. An admin needs to set
+                LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET — see docs/SETUP.md. Your queue works fine
+                with copy/open in the meantime.
+              </p>
+            )}
+          </CardBody>
+        </Card>
+      )}
     </div>
   );
 }
