@@ -3,6 +3,7 @@ import { db } from "@/lib/db/client";
 import { apiUsageLog, generationJobs, participants } from "@/lib/db/schema";
 import { estimateCostUsd } from "@/lib/integrations/claude/client";
 import { isDemoMode } from "@/lib/env";
+import { sendPushToParticipant } from "@/lib/push/send";
 import { generateQueueForParticipant } from "./queue-builder";
 
 /**
@@ -45,6 +46,14 @@ export async function runNightlyJob(forDate: Date = tomorrow()): Promise<{
         console.log(
           `[nightly-job] ${participant.fullName}: ${summary.itemCount} items (${summary.reviewNeededCount} need review)`,
         );
+
+        if (summary.itemCount > 0) {
+          await sendPushToParticipant(participant.id, {
+            title: "Your queue is ready",
+            body: `${summary.itemCount} item${summary.itemCount === 1 ? "" : "s"} — about ${Math.ceil(summary.itemCount * 2)} minutes`,
+            url: "/queue",
+          });
+        }
 
         if (!isDemoMode()) {
           await db.insert(apiUsageLog).values({

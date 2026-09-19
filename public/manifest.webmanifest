@@ -1,0 +1,14 @@
+{
+  "name": "Alpha Nodus Advocacy",
+  "short_name": "Advocacy",
+  "description": "The daily queue for the Alpha Nodus team-led advocacy program.",
+  "start_url": "/queue",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f8",
+  "theme_color": "#4f46e5",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -5,6 +5,7 @@ import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input, Textarea } from "@/components/ui/input";
+import { NotificationsCard } from "@/components/pwa/notifications-card";
 
 type Sliders = {
   formality: number; sentenceLength: number; hedging: number;
@@ -261,6 +262,7 @@ export function PersonaClient({
       {tab === "lane" && !lane && <p className="text-sm text-muted">No lane assigned yet.</p>}
 
       {tab === "accounts" && (
+        <div className="space-y-4">
         <Card>
           <CardBody className="space-y-3">
             <div className="flex items-center justify-between">
@@ -306,6 +308,8 @@ export function PersonaClient({
             )}
           </CardBody>
         </Card>
+        <NotificationsCard />
+        </div>
       )}
     </div>
   );
