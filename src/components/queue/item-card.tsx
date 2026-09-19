@@ -21,10 +21,12 @@ export function ItemCard({
   item,
   onUpdate,
   linkedInConnected,
+  xConnected,
 }: {
   item: QueueItem;
   onUpdate: (patch: Partial<QueueItem>) => void;
   linkedInConnected: boolean;
+  xConnected: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(item.editedContent ?? item.content);
@@ -34,8 +36,9 @@ export function ItemCard({
   const [busy, setBusy] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
 
+  const platformConnected = item.platform === "x" ? xConnected : linkedInConnected;
   const canPublishDirectly =
-    linkedInConnected && item.fulfillment === "api_publish" && ["publish", "first_hour_comment", "general_comment", "reply"].includes(item.type);
+    platformConnected && item.fulfillment === "api_publish" && ["publish", "first_hour_comment", "general_comment", "reply"].includes(item.type);
 
   const displayContent = item.editedContent ?? item.content;
   const isDone = item.status === "done";
@@ -70,7 +73,8 @@ export function ItemCard({
     setBusy(true);
     setPublishError(null);
     try {
-      const res = await fetch("/api/linkedin/publish", {
+      const endpoint = item.platform === "x" ? "/api/x/publish" : "/api/linkedin/publish";
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemId: item.id }),
@@ -106,6 +110,7 @@ export function ItemCard({
       <CardBody>
         <div className="flex items-start justify-between gap-3 mb-2">
           <div className="flex items-center gap-2 flex-wrap">
+            {item.platform === "x" && <Badge tone="neutral">X</Badge>}
             {item.metadata.pillar && <Badge tone="accent">{item.metadata.pillar}</Badge>}
             {item.metadata.isFirstHour && <Badge tone="warning">First hour</Badge>}
             {item.fulfillment === "manual_link" && <Badge tone="neutral">Manual</Badge>}
@@ -168,7 +173,7 @@ export function ItemCard({
             <Button size="sm" variant="ghost" onClick={() => setShowSkip((v) => !v)}>Skip</Button>
             {canPublishDirectly ? (
               <Button size="sm" onClick={handlePublish} disabled={busy}>
-                {busy ? "Posting…" : "Post to LinkedIn"}
+                {busy ? "Posting…" : `Post to ${item.platform === "x" ? "X" : "LinkedIn"}`}
               </Button>
             ) : (
               <Button size="sm" onClick={handleMarkDone} disabled={busy}>
@@ -180,9 +185,10 @@ export function ItemCard({
 
         {publishError && <p className="mt-2 text-xs text-danger">{publishError}</p>}
 
-        {!isResolved && !editing && item.fulfillment === "api_publish" && !linkedInConnected && (
+        {!isResolved && !editing && item.fulfillment === "api_publish" && !platformConnected && (
           <p className="mt-2 text-xs text-muted">
-            Connect LinkedIn from the Persona tab to post directly — for now, copy the text and post manually.
+            Connect {item.platform === "x" ? "X" : "LinkedIn"} from the Persona tab to post directly — for now, copy
+            the text and post manually.
           </p>
         )}
 

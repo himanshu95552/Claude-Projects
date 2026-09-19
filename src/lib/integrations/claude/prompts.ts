@@ -9,6 +9,7 @@ import type {
   PostGenerationInput,
   ReplyGenerationInput,
   ReshareCommentaryInput,
+  XPostGenerationInput,
 } from "@/lib/generation/contracts";
 
 /**
@@ -83,6 +84,30 @@ export function buildPostPrompt(input: PostGenerationInput): { system: string; p
     .join("\n");
 
   return { system, prompt: "Generate the post now." };
+}
+
+export function buildXPostPrompt(input: XPostGenerationInput): { system: string; prompt: string } {
+  const system = [
+    `Task: draft an X (Twitter) post for the "${input.pillar}" pillar.`,
+    input.allowThread
+      ? "Prefer a single post under 280 characters. If the idea genuinely needs more room, write up to ~4 short posts as a thread -- each one a complete thought, none of them padding to hit a count."
+      : "Hard limit: 280 characters. One idea, said plainly. No thread.",
+    "",
+    "X-specific rules (from 2026 platform research, distinct from LinkedIn):",
+    "- Replies and bookmarks are weighted far more heavily than likes in ranking -- write something worth replying to or saving, not just agreeing with.",
+    "- No engagement-bait patterns ('like if you agree', 'RT if...') -- these are actively detected and suppressed.",
+    "- Early-engagement velocity (the first 30-60 min) matters most -- the hook has to work with zero scroll context, X has no 'see more' truncation to rely on.",
+    "- Conversational register is fine here even if the LinkedIn voice is more formal -- X rewards replies, and nobody replies to a press release.",
+    input.sourceMaterial
+      ? `\nRepurpose from (don't translate verbatim -- find the one sharpest idea in it): ${input.sourceMaterial}`
+      : "",
+    "",
+    "Respond with JSON only: { text, explain: { whyThisTopic, whyNow } }",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return { system, prompt: "Generate the X post now." };
 }
 
 export function buildCommentPrompt(input: CommentGenerationInput): { system: string; prompt: string } {

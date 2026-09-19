@@ -38,6 +38,10 @@ const envSchema = z.object({
   META_APP_ID: z.string().optional(),
   META_APP_SECRET: z.string().optional(),
 
+  // X (Twitter) OAuth 2.0 with PKCE, tweet.write / tweet.read / users.read / offline.access scopes.
+  X_CLIENT_ID: z.string().optional(),
+  X_CLIENT_SECRET: z.string().optional(),
+
   // Web Push (VAPID) — optional; push notifications no-op without it.
   VAPID_PUBLIC_KEY: z.string().optional(),
   VAPID_PRIVATE_KEY: z.string().optional(),
@@ -83,4 +87,9 @@ export function isPushConfigured(): boolean {
 export function isMetaConfigured(): boolean {
   const env = getEnv();
   return Boolean(env.META_APP_ID && env.META_APP_SECRET);
+}
+
+export function isXConfigured(): boolean {
+  const env = getEnv();
+  return Boolean(env.X_CLIENT_ID && env.X_CLIENT_SECRET);
 }

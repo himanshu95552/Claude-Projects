@@ -7,6 +7,7 @@ import {
   buildPostPrompt,
   buildReplyPrompt,
   buildReshareCommentaryPrompt,
+  buildXPostPrompt,
 } from "@/lib/integrations/claude/prompts";
 import { auditHumanizedText } from "./humanizer/audit";
 import {
@@ -15,6 +16,7 @@ import {
   demoPostText,
   demoReplyText,
   demoReshareCommentary,
+  demoXPostText,
 } from "./demo-content";
 import { evaluateGovernanceFlags } from "@/domain/governance";
 import type {
@@ -28,6 +30,8 @@ import type {
   ReplyGenerationOutput,
   ReshareCommentaryInput,
   ReshareCommentaryOutput,
+  XPostGenerationInput,
+  XPostGenerationOutput,
 } from "./contracts";
 import { assertConnectionNoteGate, assertReshareRotationSize, modelForJob } from "./contracts";
 
@@ -127,6 +131,61 @@ export async function generatePost(
       pillar: input.pillar,
       storyBankRefs: parsed.storyBankRefs ?? [],
       explain: parsed.explain ?? {},
+      reviewFlags: meta.governanceFlags,
+    },
+    meta,
+  };
+}
+
+/**
+ * X posts are always generated in their own isolated call, never as a
+ * continuation of the LinkedIn generatePost() call above — each
+ * generate* function opens a fresh model context (a new prompt, the
+ * cached prefix, nothing else), so a companion X post never inherits
+ * conversational state from the post it was repurposed from. That's the
+ * "generate a new session so context isn't carried forward" rule applied
+ * everywhere in this module, not just here.
+ */
+export async function generateXPost(
+  input: XPostGenerationInput,
+): Promise<{ output: XPostGenerationOutput; meta: GenerationMeta }> {
+  if (isDemoMode()) {
+    const text = demoXPostText(input.pillar);
+    const meta = attachMeta(text, { inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 }, true, {
+      clearedCustomerNames: input.governance.clearedCustomers,
+      phiCheckRequired: input.governance.phiCheck,
+    });
+    return {
+      output: {
+        text,
+        charCount: text.length,
+        pillar: input.pillar,
+        explain: { whyThisTopic: "[DEMO] Placeholder rationale." },
+        reviewFlags: meta.governanceFlags,
+      },
+      meta,
+    };
+  }
+
+  const model = modelForJob("draft", input.config);
+  const { system, prompt } = buildXPostPrompt(input);
+  const cachedPrefix = buildCachedSystemPrefix(input);
+  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 600 });
+
+  const parsed = parseJsonResponse(result.text, { text: result.text, explain: { whyThisTopic: "" } });
+  const meta = attachMeta(
+    parsed.text,
+    { inputTokens: result.inputTokens, outputTokens: result.outputTokens, cachedInputTokens: result.cachedInputTokens },
+    false,
+    { clearedCustomerNames: input.governance.clearedCustomers, phiCheckRequired: input.governance.phiCheck },
+  );
+
+  return {
+    output: {
+      text: parsed.text,
+      charCount: parsed.text.length,
+      pillar: input.pillar,
+      explain: parsed.explain,
       reviewFlags: meta.governanceFlags,
     },
     meta,

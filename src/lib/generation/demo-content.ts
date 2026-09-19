@@ -38,3 +38,7 @@ export function demoConnectionNote(name: string, evidence: string): string {
 export function demoReshareCommentary(): string {
   return "[DEMO] Reshare commentary from this participant's own vantage point would appear here — 2-4 sentences adding something the original post didn't say.";
 }
+
+export function demoXPostText(pillar: string): string {
+  return `[DEMO] A 280-char X post for "${pillar}" would appear here — one sharp idea repurposed from the LinkedIn draft, written for replies and bookmarks, not likes.`;
+}

@@ -66,6 +66,29 @@ export type PostGenerationOutput = {
   reviewFlags: string[];
 };
 
+// --- 1b. X (Twitter) post -------------------------------------------------
+
+/**
+ * X's constraints are entirely different from LinkedIn's (280 chars vs.
+ * 1300-2500, no algorithmic reward for length) so this is its own
+ * contract rather than a variant of PostGenerationInput -- reusing the
+ * LinkedIn shape would mean either a 280-char LinkedIn post (wrong hook
+ * pacing) or silently ignoring the length field.
+ */
+export type XPostGenerationInput = GenerationEnvelope & {
+  pillar: string;
+  sourceMaterial?: string; // typically the companion LinkedIn post, repurposed -- not translated verbatim
+  allowThread: boolean;
+};
+
+export type XPostGenerationOutput = {
+  text: string; // may exceed 280 -- splitIntoThread() handles the actual split at publish time
+  charCount: number;
+  pillar: string;
+  explain: ExplainBlock;
+  reviewFlags: string[];
+};
+
 // --- 2. Comment ----------------------------------------------------------
 
 export type CommentGenerationInput = GenerationEnvelope & {

@@ -37,6 +37,7 @@ type StoryEntry = { id: string; kind: string; content: string };
 type Lane = { name: string; targetsPersona: string; pillars: string[]; doRules: string[]; dontRules: string[] } | null;
 type LinkedInInfo = { configured: boolean; status: string; handle: string | null; expiresAt: string | null };
 type MetaInfo = { configured: boolean; instagramConnected: boolean; facebookConnected: boolean };
+type XInfo = { configured: boolean; connected: boolean; handle: string | null };
 
 const TABS = ["voice", "story-bank", "lane", "accounts"] as const;
 
@@ -46,12 +47,14 @@ export function PersonaClient({
   lane,
   linkedIn,
   meta,
+  x,
 }: {
   voiceProfile: VoiceProfile;
   storyBank: StoryEntry[];
   lane: Lane;
   linkedIn: LinkedInInfo;
   meta: MetaInfo;
+  x: XInfo;
 }) {
   const [tab, setTab] = useState<(typeof TABS)[number]>("voice");
   const [sliders, setSliders] = useState<Sliders>(voiceProfile?.sliders ?? DEFAULT_SLIDERS);
@@ -307,6 +310,32 @@ export function PersonaClient({
                 LinkedIn isn&apos;t configured on this deployment yet. An admin needs to set
                 LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET — see docs/SETUP.md. Your queue works fine
                 with copy/open in the meantime.
+              </p>
+            )}
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardBody className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-medium">X</h2>
+                {x.handle && <p className="text-xs text-muted">{x.handle}</p>}
+              </div>
+              <Badge tone={x.connected ? "success" : "neutral"}>{x.connected ? "connected" : "not connected"}</Badge>
+            </div>
+            <p className="text-xs text-muted">
+              280-char posts repurposed from your LinkedIn drafts, generated in their own pass — tuned for replies
+              and bookmarks, not likes. Threads for anything that needs more room.
+            </p>
+            {x.configured ? (
+              <a href="/api/oauth/x/start">
+                <Button size="sm" type="button">{x.connected ? "Reconnect X" : "Connect X"}</Button>
+              </a>
+            ) : (
+              <p className="text-xs text-muted">
+                X isn&apos;t configured on this deployment yet — an admin needs to set X_CLIENT_ID and
+                X_CLIENT_SECRET. See docs/SETUP.md.
               </p>
             )}
           </CardBody>

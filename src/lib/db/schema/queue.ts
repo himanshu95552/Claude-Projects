@@ -9,6 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import {
   fulfillmentEnum,
+  platformEnum,
   queueItemStatusEnum,
   queueItemTypeEnum,
   reviewStatusEnum,
@@ -71,6 +72,11 @@ export const queueItems = pgTable("queue_items", {
 
   type: queueItemTypeEnum("type").notNull(),
   fulfillment: fulfillmentEnum("fulfillment").notNull(),
+  // Which platform this specific card targets. Defaults to linkedin since
+  // that's the primary channel everywhere in the build spec; X/Instagram/
+  // Facebook items are companion cross-posts, generated only when the
+  // participant has that platform connected (see queue-builder.ts).
+  platform: platformEnum("platform").notNull().default("linkedin"),
 
   content: text("content").notNull(),
   editedContent: text("edited_content"),

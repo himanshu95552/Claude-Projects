@@ -4,7 +4,8 @@ import { lanes, platformAccounts, storyBankEntries, voiceProfiles } from "@/lib/
 import { getCurrentParticipant } from "@/lib/auth/session";
 import { PersonaClient } from "@/components/persona/persona-client";
 import { connectionStatus, getLinkedInAccount } from "@/lib/integrations/linkedin/account";
-import { isLinkedInConfigured, isMetaConfigured } from "@/lib/env";
+import { connectionStatus as xConnectionStatus } from "@/lib/integrations/x/account";
+import { isLinkedInConfigured, isMetaConfigured, isXConfigured } from "@/lib/env";
 
 export default async function PersonaPage() {
   const participant = await getCurrentParticipant();
@@ -28,6 +29,13 @@ export default async function PersonaPage() {
     configured: isMetaConfigured(),
     instagramConnected: Boolean(instagram && !instagram.revokedAt),
     facebookConnected: Boolean(facebook && !facebook.revokedAt),
+  };
+
+  const xAccount = metaAccounts.find((a) => a.platform === "x") ?? null;
+  const x = {
+    configured: isXConfigured(),
+    connected: xConnectionStatus(xAccount) === "connected",
+    handle: xAccount?.handle ?? null,
   };
 
   const [voiceProfile] = await db
@@ -63,6 +71,7 @@ export default async function PersonaPage() {
       lane={lane ? { name: lane.name, targetsPersona: lane.targetsPersona, pillars: lane.pillars, doRules: lane.doRules, dontRules: lane.dontRules } : null}
       linkedIn={linkedIn}
       meta={meta}
+      x={x}
     />
   );
 }

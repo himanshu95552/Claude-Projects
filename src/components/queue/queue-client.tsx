@@ -12,12 +12,14 @@ export function QueueClient({
   queue,
   initialItems,
   linkedInConnected,
+  xConnected,
 }: {
   participantName: string;
   streakDays: number;
   queue: Queue | null;
   initialItems: QueueItem[];
   linkedInConnected: boolean;
+  xConnected: boolean;
 }) {
   const [items, setItems] = useState(initialItems);
 
@@ -80,6 +82,7 @@ export function QueueClient({
                   item={item}
                   onUpdate={(patch) => updateItem(item.id, patch)}
                   linkedInConnected={linkedInConnected}
+                  xConnected={xConnected}
                 />
               ))}
             </div>

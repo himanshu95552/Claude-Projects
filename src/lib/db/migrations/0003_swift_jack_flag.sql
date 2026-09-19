@@ -1,0 +1,1 @@
+ALTER TABLE "queue_items" ADD COLUMN "platform" "platform" DEFAULT 'linkedin' NOT NULL;

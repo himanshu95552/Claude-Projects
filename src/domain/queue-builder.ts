@@ -20,7 +20,9 @@ import {
   generatePost,
   generateReply,
   generateReshareCommentary,
+  generateXPost,
 } from "@/lib/generation/generate";
+import { getXAccount, connectionStatus as xConnectionStatus } from "@/lib/integrations/x/account";
 import { canAdvanceToConnect, stageIndex } from "./ladder";
 import { needsReview, computeReviewSlaDueAt } from "./governance";
 import { estimateQueueMinutes } from "./queue-order";
@@ -209,6 +211,34 @@ export async function generateQueueForParticipant(
         meta.governanceFlags,
       ),
     );
+
+    // 1b. Companion X post — only if the participant has connected X
+    // (mirrors the IG/FB "thin, opt-in" pattern rather than the LinkedIn-
+    // primary flow). Generated in its own isolated call with its own
+    // prompt — see generateXPost()'s doc comment.
+    const xAccount = await getXAccount(participantId);
+    if (xConnectionStatus(xAccount) === "connected") {
+      const { output: xOutput, meta: xMeta } = await generateXPost({
+        ...envelope,
+        pillar,
+        sourceMaterial: output.text,
+        allowThread: true,
+      });
+      itemsToInsert.push(
+        withReview(
+          {
+            type: "publish",
+            fulfillment: "api_publish",
+            content: xOutput.text,
+            explain: xOutput.explain,
+            status: "pending",
+            platform: "x",
+            metadata: { pillar: xOutput.pillar, charCount: xOutput.charCount },
+          },
+          xMeta.governanceFlags,
+        ),
+      );
+    }
   }
 
   // 2. FIRST-HOUR + GENERAL COMMENTS
