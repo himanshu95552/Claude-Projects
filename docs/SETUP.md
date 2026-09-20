@@ -109,11 +109,11 @@ npm run nightly-job                    # generates for tomorrow by default
 npm run nightly-job 2025-01-15         # or a specific date
 ```
 
-With no `ANTHROPIC_API_KEY` set, this runs in **`DEMO_MODE`** — every
-draft is clearly prefixed `[DEMO]` and the queue is fully interactive
-(edit, skip, mark done) without ever calling a paid API. This is
-deliberate: a fresh clone should be fully clickable before anyone wires
-up a real account.
+With no `ANTHROPIC_API_KEY` or `GROQ_API_KEY` set, this runs in
+**`DEMO_MODE`** — every draft is clearly prefixed `[DEMO]` and the queue
+is fully interactive (edit, skip, mark done) without ever calling a paid
+API. This is deliberate: a fresh clone should be fully clickable before
+anyone wires up a real account.
 
 ## 6 · Optional integrations
 
@@ -121,13 +121,26 @@ Each of these is independently optional. The app tells you what's
 missing wherever it matters (a "not configured" message instead of a
 broken button) rather than crashing.
 
-### Claude API (real drafts instead of `[DEMO]` placeholders)
+### Generation provider (real drafts instead of `[DEMO]` placeholders)
+
+Pick one. If both are set, Anthropic wins.
+
+**Claude API:**
 
 1. Get a key at [console.anthropic.com](https://console.anthropic.com)
 2. Set `ANTHROPIC_API_KEY` in `.env.local`
 3. Re-run `npm run nightly-job` — drafts now come from Sonnet 5 (Haiku 4.5
    for research passes), run through the humanizer audit, with prompt
    caching on the stable per-participant context
+
+**Groq (faster, usually cheaper, no prompt caching):**
+
+1. Get a key at [console.groq.com/keys](https://console.groq.com/keys)
+2. Set `GROQ_API_KEY` in `.env.local` (optionally override
+   `GROQ_DRAFTING_MODEL` / `GROQ_RESEARCH_MODEL`, default to
+   `llama-3.3-70b-versatile` / `llama-3.1-8b-instant`)
+3. Re-run `npm run nightly-job` — same humanizer audit and governance
+   checks run regardless of which provider drafted the text
 
 ### LinkedIn (real "Post to LinkedIn" button)
 

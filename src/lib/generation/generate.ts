@@ -1,5 +1,5 @@
 import { isDemoMode } from "@/lib/env";
-import { callClaude } from "@/lib/integrations/claude/client";
+import { callModel } from "@/lib/integrations/model-client";
 import {
   buildCachedSystemPrefix,
   buildCommentPrompt,
@@ -115,7 +115,7 @@ export async function generatePost(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildPostPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
 
   const parsed = parseJsonResponse(result.text, {
     text: result.text,
@@ -178,7 +178,7 @@ export async function generateXPost(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildXPostPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 600 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 600 });
 
   const parsed = parseJsonResponse(result.text, { text: result.text, explain: { whyThisTopic: "" } });
   const meta = attachMeta(
@@ -240,7 +240,7 @@ export async function generateCreativeBrief(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildCreativeBriefPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
 
   const fallbackSlides = demoCreativeBriefSlides(input.pillar, slideCount);
   const parsed = parseJsonResponse(result.text, {
@@ -302,7 +302,7 @@ export async function generateRegeneratedContent(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildRegenerationPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 1500 });
 
   const parsed = parseJsonResponse(result.text, { text: result.text, explain: {} });
   const meta = attachMeta(
@@ -340,7 +340,7 @@ export async function generateComment(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildCommentPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 800 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 800 });
 
   const parsed = parseJsonResponse(result.text, { text: result.text, variants: [result.text], explain: { whyThisPost: "", whatYouAdd: "" } });
   const meta = attachMeta(
@@ -390,7 +390,7 @@ export async function generateReply(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildReplyPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 500 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 500 });
 
   const parsed = parseJsonResponse(result.text, { text: result.text, explain: { whyThisPost: "", whatYouAdd: "" } });
   const meta = attachMeta(
@@ -435,7 +435,7 @@ export async function generateConnectionNote(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildConnectionNotePrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 300 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 300 });
 
   const parsed = parseJsonResponse(result.text, { note: result.text, explain: { whyNow: "" } });
   const meta = attachMeta(
@@ -468,7 +468,7 @@ export async function generateReshareCommentary(
   const model = modelForJob("draft", input.config);
   const { system, prompt } = buildReshareCommentaryPrompt(input);
   const cachedPrefix = buildCachedSystemPrefix(input);
-  const result = await callClaude({ model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 300 });
+  const result = await callModel({ anthropicModel: model, system, prompt, cachedSystemPrefix: cachedPrefix, maxTokens: 300 });
 
   const parsed = parseJsonResponse(result.text, { text: result.text });
   const meta = attachMeta(

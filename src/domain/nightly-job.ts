@@ -2,7 +2,7 @@ import { eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { apiUsageLog, generationJobs, participants } from "@/lib/db/schema";
 import { estimateCostUsd } from "@/lib/integrations/claude/client";
-import { isDemoMode } from "@/lib/env";
+import { activeGenerationProvider, getEnv, isDemoMode } from "@/lib/env";
 import { sendPushToParticipant } from "@/lib/push/send";
 import { generateQueueForParticipant } from "./queue-builder";
 
@@ -56,15 +56,15 @@ export async function runNightlyJob(forDate: Date = tomorrow()): Promise<{
         }
 
         if (!isDemoMode()) {
+          const provider = activeGenerationProvider();
+          const model = provider === "groq" ? getEnv().GROQ_DRAFTING_MODEL : getEnv().ANTHROPIC_DRAFTING_MODEL;
           await db.insert(apiUsageLog).values({
             generationJobId: job.id,
-            model: "claude-sonnet-5",
+            model,
             jobType: "draft",
             inputTokens: 0,
             outputTokens: 0,
-            costUsd: String(
-              estimateCostUsd({ model: "claude-sonnet-5", inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 }),
-            ),
+            costUsd: String(estimateCostUsd({ model, inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 })),
           });
         }
       } catch (err) {

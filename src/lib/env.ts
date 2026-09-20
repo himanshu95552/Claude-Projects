@@ -25,10 +25,17 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   MAIL_FROM: z.string().default("Alpha Nodus Advocacy <onboarding@example.com>"),
 
-  // Claude / Anthropic — generation is disabled (DEMO_MODE) without this.
+  // Claude / Anthropic — generation is disabled (DEMO_MODE) without this
+  // (or without GROQ_API_KEY below).
   ANTHROPIC_API_KEY: z.string().optional(),
   ANTHROPIC_DRAFTING_MODEL: z.string().default("claude-sonnet-5"),
   ANTHROPIC_RESEARCH_MODEL: z.string().default("claude-haiku-4-5"),
+
+  // Groq — alternative generation provider. Used when ANTHROPIC_API_KEY is
+  // unset; ignored (Anthropic wins) when both are set.
+  GROQ_API_KEY: z.string().optional(),
+  GROQ_DRAFTING_MODEL: z.string().default("llama-3.3-70b-versatile"),
+  GROQ_RESEARCH_MODEL: z.string().default("llama-3.1-8b-instant"),
 
   // LinkedIn OAuth (Share on LinkedIn product, w_member_social scope).
   LINKEDIN_CLIENT_ID: z.string().optional(),
@@ -71,7 +78,16 @@ export function getEnv(): Env {
 }
 
 export function isDemoMode(): boolean {
-  return !getEnv().ANTHROPIC_API_KEY;
+  const env = getEnv();
+  return !env.ANTHROPIC_API_KEY && !env.GROQ_API_KEY;
+}
+
+/** Which generation provider is actually active. Anthropic wins if both keys are set. */
+export function activeGenerationProvider(): "anthropic" | "groq" | "demo" {
+  const env = getEnv();
+  if (env.ANTHROPIC_API_KEY) return "anthropic";
+  if (env.GROQ_API_KEY) return "groq";
+  return "demo";
 }
 
 export function isLinkedInConfigured(): boolean {
