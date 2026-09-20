@@ -34,8 +34,8 @@ const envSchema = z.object({
   // Groq — alternative generation provider. Used when ANTHROPIC_API_KEY is
   // unset; ignored (Anthropic wins) when both are set.
   GROQ_API_KEY: z.string().optional(),
-  GROQ_DRAFTING_MODEL: z.string().default("llama-3.3-70b-versatile"),
-  GROQ_RESEARCH_MODEL: z.string().default("llama-3.1-8b-instant"),
+  GROQ_DRAFTING_MODEL: z.string().default("openai/gpt-oss-120b"),
+  GROQ_RESEARCH_MODEL: z.string().default("openai/gpt-oss-20b"),
 
   // LinkedIn OAuth (Share on LinkedIn product, w_member_social scope).
   LINKEDIN_CLIENT_ID: z.string().optional(),

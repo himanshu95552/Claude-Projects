@@ -138,7 +138,11 @@ Pick one. If both are set, Anthropic wins.
 1. Get a key at [console.groq.com/keys](https://console.groq.com/keys)
 2. Set `GROQ_API_KEY` in `.env.local` (optionally override
    `GROQ_DRAFTING_MODEL` / `GROQ_RESEARCH_MODEL`, default to
-   `llama-3.3-70b-versatile` / `llama-3.1-8b-instant`)
+   `openai/gpt-oss-120b` / `openai/gpt-oss-20b`). Groq's lineup changes —
+   check what your account actually has access to with:
+   ```bash
+   curl -s https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_API_KEY"
+   ```
 3. Re-run `npm run nightly-job` — same humanizer audit and governance
    checks run regardless of which provider drafted the text
 
