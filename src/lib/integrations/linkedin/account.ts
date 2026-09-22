@@ -37,6 +37,9 @@ export async function getValidAccessToken(participantId: string): Promise<string
   if (!account || !account.encryptedAccessToken) {
     throw new Error("LinkedIn is not connected for this participant.");
   }
+  if (account.revokedAt) {
+    throw new Error("This LinkedIn connection was revoked. Reconnect from the Persona tab.");
+  }
 
   const msRemaining = (account.expiresAt?.getTime() ?? 0) - Date.now();
   if (msRemaining > REFRESH_MARGIN_MS) {

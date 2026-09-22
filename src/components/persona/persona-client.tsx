@@ -70,6 +70,21 @@ export function PersonaClient({
   const [storyBank, setStoryBank] = useState(initialStoryBank);
   const [newStory, setNewStory] = useState({ kind: "anecdote", content: "" });
 
+  const [disconnecting, setDisconnecting] = useState<"linkedin" | "x" | null>(null);
+
+  async function handleDisconnect(platform: "linkedin" | "x") {
+    if (!confirm(`Disconnect ${platform === "linkedin" ? "LinkedIn" : "X"}? Nothing will be able to post there until you reconnect.`)) {
+      return;
+    }
+    setDisconnecting(platform);
+    try {
+      await fetch(`/api/oauth/${platform}/disconnect`, { method: "POST" });
+      window.location.reload();
+    } finally {
+      setDisconnecting(null);
+    }
+  }
+
   async function handleSave() {
     setSaving(true);
     setSaveMessage(null);
@@ -300,11 +315,24 @@ export function PersonaClient({
             )}
 
             {linkedIn.configured ? (
-              <a href="/api/oauth/linkedin/start">
-                <Button size="sm" type="button">
-                  {linkedIn.status === "not_connected" ? "Connect LinkedIn" : "Reconnect LinkedIn"}
-                </Button>
-              </a>
+              <div className="flex gap-2">
+                <a href="/api/oauth/linkedin/start">
+                  <Button size="sm" type="button">
+                    {linkedIn.status === "not_connected" ? "Connect LinkedIn" : "Reconnect LinkedIn"}
+                  </Button>
+                </a>
+                {linkedIn.status !== "not_connected" && (
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    type="button"
+                    onClick={() => handleDisconnect("linkedin")}
+                    disabled={disconnecting === "linkedin"}
+                  >
+                    {disconnecting === "linkedin" ? "Disconnecting…" : "Disconnect"}
+                  </Button>
+                )}
+              </div>
             ) : (
               <p className="text-xs text-muted">
                 LinkedIn isn&apos;t configured on this deployment yet. An admin needs to set
@@ -329,9 +357,22 @@ export function PersonaClient({
               and bookmarks, not likes. Threads for anything that needs more room.
             </p>
             {x.configured ? (
-              <a href="/api/oauth/x/start">
-                <Button size="sm" type="button">{x.connected ? "Reconnect X" : "Connect X"}</Button>
-              </a>
+              <div className="flex gap-2">
+                <a href="/api/oauth/x/start">
+                  <Button size="sm" type="button">{x.connected ? "Reconnect X" : "Connect X"}</Button>
+                </a>
+                {x.connected && (
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    type="button"
+                    onClick={() => handleDisconnect("x")}
+                    disabled={disconnecting === "x"}
+                  >
+                    {disconnecting === "x" ? "Disconnecting…" : "Disconnect"}
+                  </Button>
+                )}
+              </div>
             ) : (
               <p className="text-xs text-muted">
                 X isn&apos;t configured on this deployment yet — an admin needs to set X_CLIENT_ID and
