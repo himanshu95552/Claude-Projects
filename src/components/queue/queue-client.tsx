@@ -27,6 +27,7 @@ export function QueueClient({
   const [items, setItems] = useState(initialItems);
   const [generating, setGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
+  const [showRegenerateConfirm, setShowRegenerateConfirm] = useState(false);
 
   const progress = useMemo(() => queueProgress(items), [items]);
   const groups = useMemo(() => groupBySection(items), [items]);
@@ -80,8 +81,36 @@ export function QueueClient({
         <div className="text-sm text-muted flex items-center gap-3">
           {streakDays > 0 && <span>🔥 {streakDays} day streak</span>}
           <span>~{queue.estimatedMinutes} min</span>
+          {canGenerate && (
+            <button
+              onClick={() => setShowRegenerateConfirm((v) => !v)}
+              className="text-accent font-medium hover:underline"
+            >
+              Regenerate today&apos;s queue
+            </button>
+          )}
         </div>
       </div>
+
+      {showRegenerateConfirm && (
+        <Card className="mb-4 border-danger">
+          <CardBody className="flex items-center justify-between gap-3 py-3">
+            <p className="text-sm text-muted">
+              This replaces every item in today&apos;s queue — including anything already done, skipped, or
+              edited. Can&apos;t be undone.
+            </p>
+            <div className="flex gap-2 shrink-0">
+              <Button size="sm" variant="secondary" onClick={() => setShowRegenerateConfirm(false)}>
+                Cancel
+              </Button>
+              <Button size="sm" variant="danger" onClick={handleGenerate} disabled={generating}>
+                {generating ? "Regenerating…" : "Yes, regenerate"}
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+      )}
+      {generateError && <p className="mb-4 text-xs text-danger">{generateError}</p>}
 
       <div className="mb-6">
         <div className="flex justify-between text-xs text-muted mb-1">

@@ -98,4 +98,22 @@ test.describe("Generate queue button", () => {
     await page.getByRole("button", { name: "Generate today's queue" }).click();
     await expect(page.locator("text=/\\d+ of \\d+ done/")).toBeVisible({ timeout: 15_000 });
   });
+
+  test("an admin can regenerate a non-empty queue, replacing every item", async ({ page }) => {
+    const [participant] = await db.select().from(participants).where(eq(participants.email, GEN_EMAIL)).limit(1);
+    await generateQueueForParticipant(participant.id, new Date());
+
+    await loginAs(page, GEN_EMAIL);
+    await expect(page.locator("text=/\\d+ of \\d+ done/")).toBeVisible();
+    const skipButtons = page.locator("button", { hasText: "Skip" });
+    await skipButtons.first().click();
+    await page.locator('textarea[placeholder*="skipping"]').fill("test skip before regenerate");
+    await page.locator("button", { hasText: "Confirm skip" }).click();
+    await expect(page.locator("text=/Skipped:/").first()).toBeVisible();
+
+    await page.getByRole("button", { name: "Regenerate today's queue" }).click();
+    await page.getByRole("button", { name: "Yes, regenerate" }).click();
+    await expect(page.locator("text=/\\d+ of \\d+ done/")).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator("text=/Skipped:/")).toHaveCount(0);
+  });
 });
