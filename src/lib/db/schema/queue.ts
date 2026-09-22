@@ -122,6 +122,7 @@ export const queueItems = pgTable("queue_items", {
       // right now, so this is placeholder content, not a real scrape).
       targetPost?: { authorName: string; authorRole?: string; text: string; ageMinutes: number; reactions: number };
       thread?: { parentText: string; replyingToText: string };
+      targetProfile?: { name: string; title?: string; center?: string; stage: string };
       // True whenever sourcePostUrl/targetPost/thread came from fabricated
       // sample data (scripts/seed.ts's target roster, or
       // research-signals.ts's DemoResearchProvider) rather than a real

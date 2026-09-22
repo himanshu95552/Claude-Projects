@@ -10,11 +10,18 @@ import { cn } from "@/lib/utils";
 import { CreativeBriefPanel } from "./creative-brief-panel";
 import { RegeneratePanel } from "./regenerate-panel";
 import { LogMetricsPanel } from "./log-metrics-panel";
-import { LinkedInPostPreview, LinkedInThreadPreview } from "./linkedin-post-preview";
+import { LinkedInPostPreview, LinkedInProfilePreview, LinkedInThreadPreview } from "./linkedin-post-preview";
 import { avatarColor, initials } from "@/lib/avatar";
 import type { Platform } from "@/lib/creative/types";
 
-const COMMENT_SHAPED_TYPES = ["first_hour_comment", "general_comment", "reply"];
+const POST_PREVIEW_TYPES = ["first_hour_comment", "general_comment", "reply"];
+const PROFILE_PREVIEW_TYPES = ["follow", "connect", "amplify_follow_invite"];
+
+const PROFILE_ACTION_LABELS: Record<string, string> = {
+  follow: "Follow",
+  connect: "Send connection request",
+  amplify_follow_invite: "Invite to follow",
+};
 
 async function patchItem(id: string, body: unknown) {
   const res = await fetch(`/api/queue/items/${id}`, {
@@ -50,9 +57,16 @@ export function ItemCard({
   const canPublishDirectly =
     platformConnected && item.fulfillment === "api_publish" && ["publish", "first_hour_comment", "general_comment", "reply"].includes(item.type);
 
-  const isNativeStyled = item.platform === "linkedin" && COMMENT_SHAPED_TYPES.includes(item.type);
+  const showsPostPreview = item.platform === "linkedin" && POST_PREVIEW_TYPES.includes(item.type);
+  const showsProfilePreview = item.platform === "linkedin" && PROFILE_PREVIEW_TYPES.includes(item.type);
+  const isLinkedInFlavored = showsPostPreview || showsProfilePreview;
+  // Only "connect" among the profile types has a real drafted message
+  // (a connection note) — follow/amplify_follow_invite are just
+  // instructions, so they don't get the "writing a message" compose box.
+  const showsComposeBox = showsPostPreview || item.type === "connect";
   const targetPost = item.metadata.targetPost;
   const thread = item.metadata.thread;
+  const targetProfile = item.metadata.targetProfile;
   const isSampleSource = item.metadata.isSampleData === true;
 
   const displayContent = item.editedContent ?? item.content;
@@ -136,7 +150,7 @@ export function ItemCard({
           {isSkipped && <Badge tone="neutral">Skipped: {item.skipReason}</Badge>}
         </div>
 
-        {isNativeStyled && targetPost && (
+        {showsPostPreview && targetPost && (
           <LinkedInPostPreview
             authorName={targetPost.authorName}
             authorRole={targetPost.authorRole}
@@ -145,12 +159,20 @@ export function ItemCard({
             reactions={targetPost.reactions}
           />
         )}
-        {isNativeStyled && !targetPost && thread && (
+        {showsPostPreview && !targetPost && thread && (
           <LinkedInThreadPreview parentText={thread.parentText} replyingToText={thread.replyingToText} />
         )}
+        {showsProfilePreview && targetProfile && (
+          <LinkedInProfilePreview
+            name={targetProfile.name}
+            title={targetProfile.title}
+            center={targetProfile.center}
+            stage={targetProfile.stage}
+          />
+        )}
 
-        <div className={cn(isNativeStyled && "rounded-xl bg-[#f4f2ee] p-3")}>
-          {isNativeStyled && !editing && (
+        <div className={cn(showsComposeBox && "rounded-xl bg-[#f4f2ee] p-3")}>
+          {showsComposeBox && !editing && (
             <div className="mb-2 flex items-center gap-2">
               <div
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white"
@@ -159,7 +181,8 @@ export function ItemCard({
                 {initials(participantName)}
               </div>
               <p className="text-xs text-[#00000099]">
-                {item.type === "reply" ? "Replying" : "Commenting"} as {participantName}
+                {item.type === "reply" ? "Replying" : item.type === "connect" ? "Sending" : "Commenting"} as{" "}
+                {participantName}
               </p>
             </div>
           )}
@@ -183,7 +206,7 @@ export function ItemCard({
             <p
               className={cn(
                 "whitespace-pre-wrap text-sm leading-relaxed",
-                isNativeStyled && "rounded-2xl bg-white border border-border px-3 py-2",
+                showsComposeBox && "rounded-2xl bg-white border border-border px-3 py-2",
               )}
             >
               {displayContent}
@@ -211,14 +234,20 @@ export function ItemCard({
                   size="sm"
                   onClick={handlePublish}
                   disabled={busy}
-                  style={isNativeStyled ? { backgroundColor: "#0A66C2" } : undefined}
-                  className={isNativeStyled ? "rounded-full text-white" : undefined}
+                  style={isLinkedInFlavored ? { backgroundColor: "#0A66C2" } : undefined}
+                  className={isLinkedInFlavored ? "rounded-full text-white" : undefined}
                 >
                   {busy ? "Posting…" : `Post to ${item.platform === "x" ? "X" : "LinkedIn"}`}
                 </Button>
               ) : (
-                <Button size="sm" onClick={handleMarkDone} disabled={busy}>
-                  {item.fulfillment === "api_publish" ? "Mark posted" : "Mark done"}
+                <Button
+                  size="sm"
+                  onClick={handleMarkDone}
+                  disabled={busy}
+                  style={isLinkedInFlavored ? { backgroundColor: "#0A66C2" } : undefined}
+                  className={isLinkedInFlavored ? "rounded-full text-white" : undefined}
+                >
+                  {PROFILE_ACTION_LABELS[item.type] ?? (item.fulfillment === "api_publish" ? "Mark posted" : "Mark done")}
                 </Button>
               )}
             </div>

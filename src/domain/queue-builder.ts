@@ -323,7 +323,11 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: { isSampleData: true }, // no target-roster management UI exists yet — every target comes from scripts/seed.ts
+          // no target-roster management UI exists yet — every target comes from scripts/seed.ts
+          metadata: {
+            isSampleData: true,
+            targetProfile: { name: target.name, title: target.title ?? undefined, center: target.center ?? undefined, stage: target.stage },
+          },
         },
         [],
       ),
@@ -359,7 +363,11 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: { stageEvidence: evidence, isSampleData: true },
+          metadata: {
+            stageEvidence: evidence,
+            isSampleData: true,
+            targetProfile: { name: target.name, title: target.title ?? undefined, center: target.center ?? undefined, stage: target.stage },
+          },
         },
         meta.governanceFlags,
       ),
@@ -423,7 +431,10 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: { isSampleData: true },
+          metadata: {
+            isSampleData: true,
+            targetProfile: { name: target.name, title: target.title ?? undefined, center: target.center ?? undefined, stage: target.stage },
+          },
         },
         [],
       ),
