@@ -139,6 +139,7 @@ export function QueueClient({
                   onUpdate={(patch) => updateItem(item.id, patch)}
                   linkedInConnected={linkedInConnected}
                   xConnected={xConnected}
+                  participantName={participantName}
                 />
               ))}
             </div>

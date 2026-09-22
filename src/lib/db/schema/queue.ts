@@ -116,6 +116,12 @@ export const queueItems = pgTable("queue_items", {
       companyPostId?: string;
       threadHeat?: string;
       parentCommentId?: string;
+      // Snapshot of the post/thread this item is commenting/replying on —
+      // captured at generation time so the queue UI can show it later
+      // (research-signals.ts's DemoResearchProvider is the only source
+      // right now, so this is placeholder content, not a real scrape).
+      targetPost?: { authorName: string; authorRole?: string; text: string; ageMinutes: number; reactions: number };
+      thread?: { parentText: string; replyingToText: string };
     }>()
     .notNull()
     .default({}),

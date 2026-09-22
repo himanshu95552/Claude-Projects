@@ -266,7 +266,15 @@ export async function generateQueueForParticipant(
           targetId: signal.targetId,
           sourcePostUrl: signal.postUrl,
           status: "pending",
-          metadata: { isFirstHour: signal.isFirstHour },
+          metadata: {
+            isFirstHour: signal.isFirstHour,
+            targetPost: {
+              authorName: signal.targetName,
+              text: signal.postText,
+              ageMinutes: signal.postAgeMinutes,
+              reactions: signal.reactions,
+            },
+          },
         },
         meta.governanceFlags,
       ),
@@ -291,7 +299,10 @@ export async function generateQueueForParticipant(
           targetId: signal.targetId,
           sourcePostUrl: signal.threadUrl,
           status: "pending",
-          metadata: { threadHeat: output.threadHeat },
+          metadata: {
+            threadHeat: output.threadHeat,
+            thread: { parentText: signal.parentCommentText, replyingToText: signal.replyingToText },
+          },
         },
         meta.governanceFlags,
       ),

@@ -10,7 +10,11 @@ import { cn } from "@/lib/utils";
 import { CreativeBriefPanel } from "./creative-brief-panel";
 import { RegeneratePanel } from "./regenerate-panel";
 import { LogMetricsPanel } from "./log-metrics-panel";
+import { LinkedInPostPreview, LinkedInThreadPreview } from "./linkedin-post-preview";
+import { avatarColor, initials } from "@/lib/avatar";
 import type { Platform } from "@/lib/creative/types";
+
+const COMMENT_SHAPED_TYPES = ["first_hour_comment", "general_comment", "reply"];
 
 async function patchItem(id: string, body: unknown) {
   const res = await fetch(`/api/queue/items/${id}`, {
@@ -26,11 +30,13 @@ export function ItemCard({
   onUpdate,
   linkedInConnected,
   xConnected,
+  participantName,
 }: {
   item: QueueItem;
   onUpdate: (patch: Partial<QueueItem>) => void;
   linkedInConnected: boolean;
   xConnected: boolean;
+  participantName: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(item.editedContent ?? item.content);
@@ -43,6 +49,10 @@ export function ItemCard({
   const platformConnected = item.platform === "x" ? xConnected : linkedInConnected;
   const canPublishDirectly =
     platformConnected && item.fulfillment === "api_publish" && ["publish", "first_hour_comment", "general_comment", "reply"].includes(item.type);
+
+  const isNativeStyled = item.platform === "linkedin" && COMMENT_SHAPED_TYPES.includes(item.type);
+  const targetPost = item.metadata.targetPost;
+  const thread = item.metadata.thread;
 
   const displayContent = item.editedContent ?? item.content;
   const isDone = item.status === "done";
@@ -125,24 +135,89 @@ export function ItemCard({
           {isSkipped && <Badge tone="neutral">Skipped: {item.skipReason}</Badge>}
         </div>
 
-        {editing ? (
-          <div className="space-y-2">
-            <Textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              rows={Math.min(12, Math.max(4, Math.ceil(draft.length / 60)))}
-              autoFocus
-            />
-            <div className="flex gap-2">
-              <Button size="sm" onClick={handleSaveEdit} disabled={busy}>Save</Button>
-              <Button size="sm" variant="secondary" onClick={() => { setDraft(displayContent); setEditing(false); }}>
-                Cancel
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <p className="whitespace-pre-wrap text-sm leading-relaxed">{displayContent}</p>
+        {isNativeStyled && targetPost && (
+          <LinkedInPostPreview
+            authorName={targetPost.authorName}
+            authorRole={targetPost.authorRole}
+            text={targetPost.text}
+            ageMinutes={targetPost.ageMinutes}
+            reactions={targetPost.reactions}
+          />
         )}
+        {isNativeStyled && !targetPost && thread && (
+          <LinkedInThreadPreview parentText={thread.parentText} replyingToText={thread.replyingToText} />
+        )}
+
+        <div className={cn(isNativeStyled && "rounded-xl bg-[#f4f2ee] p-3")}>
+          {isNativeStyled && !editing && (
+            <div className="mb-2 flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white"
+                style={{ backgroundColor: avatarColor(participantName) }}
+              >
+                {initials(participantName)}
+              </div>
+              <p className="text-xs text-[#00000099]">
+                {item.type === "reply" ? "Replying" : "Commenting"} as {participantName}
+              </p>
+            </div>
+          )}
+
+          {editing ? (
+            <div className="space-y-2">
+              <Textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={Math.min(12, Math.max(4, Math.ceil(draft.length / 60)))}
+                autoFocus
+              />
+              <div className="flex gap-2">
+                <Button size="sm" onClick={handleSaveEdit} disabled={busy}>Save</Button>
+                <Button size="sm" variant="secondary" onClick={() => { setDraft(displayContent); setEditing(false); }}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <p
+              className={cn(
+                "whitespace-pre-wrap text-sm leading-relaxed",
+                isNativeStyled && "rounded-2xl bg-white border border-border px-3 py-2",
+              )}
+            >
+              {displayContent}
+            </p>
+          )}
+
+          {!isResolved && !editing && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button size="sm" onClick={handleCopy} variant="secondary">Copy</Button>
+              {item.sourcePostUrl && (
+                <a href={item.sourcePostUrl} target="_blank" rel="noreferrer">
+                  <Button size="sm" variant="secondary" type="button">Open</Button>
+                </a>
+              )}
+              <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>Edit</Button>
+              <div className="flex-1" />
+              <Button size="sm" variant="ghost" onClick={() => setShowSkip((v) => !v)}>Skip</Button>
+              {canPublishDirectly ? (
+                <Button
+                  size="sm"
+                  onClick={handlePublish}
+                  disabled={busy}
+                  style={isNativeStyled ? { backgroundColor: "#0A66C2" } : undefined}
+                  className={isNativeStyled ? "rounded-full text-white" : undefined}
+                >
+                  {busy ? "Posting…" : `Post to ${item.platform === "x" ? "X" : "LinkedIn"}`}
+                </Button>
+              ) : (
+                <Button size="sm" onClick={handleMarkDone} disabled={busy}>
+                  {item.fulfillment === "api_publish" ? "Mark posted" : "Mark done"}
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
 
         {hasExplain && (
           <div className="mt-3">
@@ -160,29 +235,6 @@ export function ItemCard({
                 {item.explain.whyNow && <p><strong>Now:</strong> {item.explain.whyNow}</p>}
                 {item.explain.whatYouAdd && <p><strong>What this adds:</strong> {item.explain.whatYouAdd}</p>}
               </div>
-            )}
-          </div>
-        )}
-
-        {!isResolved && !editing && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button size="sm" onClick={handleCopy} variant="secondary">Copy</Button>
-            {item.sourcePostUrl && (
-              <a href={item.sourcePostUrl} target="_blank" rel="noreferrer">
-                <Button size="sm" variant="secondary" type="button">Open</Button>
-              </a>
-            )}
-            <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>Edit</Button>
-            <div className="flex-1" />
-            <Button size="sm" variant="ghost" onClick={() => setShowSkip((v) => !v)}>Skip</Button>
-            {canPublishDirectly ? (
-              <Button size="sm" onClick={handlePublish} disabled={busy}>
-                {busy ? "Posting…" : `Post to ${item.platform === "x" ? "X" : "LinkedIn"}`}
-              </Button>
-            ) : (
-              <Button size="sm" onClick={handleMarkDone} disabled={busy}>
-                {item.fulfillment === "api_publish" ? "Mark posted" : "Mark done"}
-              </Button>
             )}
           </div>
         )}
