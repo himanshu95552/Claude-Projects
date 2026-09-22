@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { eq, gte, sql } from "drizzle-orm";
+import { and, eq, gte, inArray, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { apiUsageLog, participants, queueItems, queues } from "@/lib/db/schema";
+import { apiUsageLog, participants, platformAccounts, queueItems, queues } from "@/lib/db/schema";
 import { getCurrentParticipant, hasRole } from "@/lib/auth/session";
 import { resolveSettings } from "@/lib/config/resolve";
 import { getConfigHistory } from "@/lib/config/resolve";
@@ -13,6 +13,21 @@ export default async function AdminPage() {
   if (!participant || !hasRole(participant, "admin")) redirect("/queue");
 
   const allParticipants = await db.select().from(participants);
+
+  const linkedInAccounts = allParticipants.length
+    ? await db
+        .select({ participantId: platformAccounts.participantId, status: platformAccounts.status, handle: platformAccounts.handle })
+        .from(platformAccounts)
+        .where(
+          and(
+            inArray(platformAccounts.participantId, allParticipants.map((p) => p.id)),
+            eq(platformAccounts.platform, "linkedin"),
+          ),
+        )
+    : [];
+  const linkedInByParticipant = new Map(
+    linkedInAccounts.map((a) => [a.participantId, { status: a.status, handle: a.handle }]),
+  );
 
   const reviewPending = await db
     .select({
@@ -44,6 +59,7 @@ export default async function AdminPage() {
       participants={allParticipants.map((p) => ({
         id: p.id, email: p.email, fullName: p.fullName, status: p.status,
         appRoles: p.appRoles, streakDays: p.streakDays,
+        linkedIn: linkedInByParticipant.get(p.id) ?? null,
       }))}
       reviewItems={reviewPending.map((r) => ({
         id: r.item.id,

@@ -9,6 +9,14 @@ import type { ResolvedSettings } from "@/lib/config/schema";
 
 type ParticipantRow = {
   id: string; email: string; fullName: string; status: string; appRoles: string[]; streakDays: number;
+  linkedIn: { status: string; handle: string | null } | null;
+};
+
+const LINKEDIN_STATUS_TONE: Record<string, "success" | "warning" | "danger"> = {
+  connected: "success",
+  expiring_soon: "warning",
+  expired: "danger",
+  revoked: "danger",
 };
 type ReviewItem = {
   id: string; participantName: string; type: string; content: string; reviewFlags: string[]; reviewSlaDueAt: string | null;
@@ -147,6 +155,14 @@ export function AdminClient({
                     {p.streakDays > 0 && <span className="text-xs text-muted">🔥 {p.streakDays}</span>}
                     <Badge tone={p.status === "active" ? "success" : "neutral"}>{p.status}</Badge>
                     {p.appRoles.includes("admin") && <Badge tone="accent">admin</Badge>}
+                    {p.linkedIn ? (
+                      <Badge tone={LINKEDIN_STATUS_TONE[p.linkedIn.status] ?? "neutral"}>
+                        LinkedIn: {p.linkedIn.status.replace("_", " ")}
+                        {p.linkedIn.handle ? ` (${p.linkedIn.handle})` : ""}
+                      </Badge>
+                    ) : (
+                      <Badge tone="neutral">LinkedIn: not connected</Badge>
+                    )}
                   </div>
                 </CardBody>
               </Card>
