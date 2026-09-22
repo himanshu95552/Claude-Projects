@@ -268,6 +268,7 @@ export async function generateQueueForParticipant(
           status: "pending",
           metadata: {
             isFirstHour: signal.isFirstHour,
+            isSampleData: true, // DemoResearchProvider is the only ResearchProvider implemented so far
             targetPost: {
               authorName: signal.targetName,
               text: signal.postText,
@@ -301,6 +302,7 @@ export async function generateQueueForParticipant(
           status: "pending",
           metadata: {
             threadHeat: output.threadHeat,
+            isSampleData: true, // DemoResearchProvider is the only ResearchProvider implemented so far
             thread: { parentText: signal.parentCommentText, replyingToText: signal.replyingToText },
           },
         },
@@ -321,7 +323,7 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: {},
+          metadata: { isSampleData: true }, // no target-roster management UI exists yet — every target comes from scripts/seed.ts
         },
         [],
       ),
@@ -357,7 +359,7 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: { stageEvidence: evidence },
+          metadata: { stageEvidence: evidence, isSampleData: true },
         },
         meta.governanceFlags,
       ),
@@ -421,7 +423,7 @@ export async function generateQueueForParticipant(
           targetId: target.id,
           sourcePostUrl: target.linkedinUrl,
           status: "pending",
-          metadata: {},
+          metadata: { isSampleData: true },
         },
         [],
       ),

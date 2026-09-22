@@ -53,6 +53,7 @@ export function ItemCard({
   const isNativeStyled = item.platform === "linkedin" && COMMENT_SHAPED_TYPES.includes(item.type);
   const targetPost = item.metadata.targetPost;
   const thread = item.metadata.thread;
+  const isSampleSource = item.metadata.isSampleData === true;
 
   const displayContent = item.editedContent ?? item.content;
   const isDone = item.status === "done";
@@ -192,10 +193,15 @@ export function ItemCard({
           {!isResolved && !editing && (
             <div className="mt-3 flex flex-wrap gap-2">
               <Button size="sm" onClick={handleCopy} variant="secondary">Copy</Button>
-              {item.sourcePostUrl && (
+              {item.sourcePostUrl && !isSampleSource && (
                 <a href={item.sourcePostUrl} target="_blank" rel="noreferrer">
                   <Button size="sm" variant="secondary" type="button">Open</Button>
                 </a>
+              )}
+              {item.sourcePostUrl && isSampleSource && (
+                <Button size="sm" variant="secondary" type="button" disabled title="Sample target data — not a real LinkedIn profile or post yet">
+                  Open (sample data)
+                </Button>
               )}
               <Button size="sm" variant="ghost" onClick={() => setEditing(true)}>Edit</Button>
               <div className="flex-1" />
