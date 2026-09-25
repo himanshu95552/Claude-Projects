@@ -19,7 +19,7 @@ Read `community/intent-taxonomy.md`, `community/reply-playbook.md`, `brand/voice
    - `ignore`: spam (hide it if it's link spam or harmful).
 3. **Draft** (routes `draft-reply` and, for hot leads, a DM follow-up): answer first, one specific detail, one next step moved to a private channel. Under 60 words on LinkedIn, 280 characters on X. Then lint it:
    `python3 scripts/gravity_lint.py --text "<reply>" --platform <platform> --claims <ids if any>`. Fix every ERROR.
-4. **Leads:** for `lead-hot` and `lead-warm`, append a row to `community/leads.csv` (date, platform, handle, name, title, organization, source_post, message_url, intent, fit, intent_score, lead_score, summary, next_step, owner, status=new). Only use details the person made public: their name, title and organization. Nothing else about them.
+4. **Leads:** for `lead-hot` and `lead-warm`, run `python3 scripts/sync_leads.py` after classifying (it copies them into `community/leads.csv` without duplicates; the file is git-ignored because the repo is public). Its columns are (date, platform, handle, name, title, organization, source_post, message_url, intent, fit, intent_score, lead_score, summary, next_step, owner, status=new). Only use details the person made public: their name, title and organization. Nothing else about them.
 5. Set `reply_status: pending` on every draft. It changes to `approved` only when the person says so, and to `sent` once they (or you, on an explicit instruction and where a tool exists) post it.
 
 ## Patients and PHI (always first)

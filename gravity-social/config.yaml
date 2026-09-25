@@ -50,6 +50,10 @@ platforms:
     metricool_network: youtube
     posts_per_week: 1
 
+# The private review web page (Approve/Reject from a phone). Republish it after every rebuild:
+# python3 scripts/build_dashboard.py --artifact, then the Artifact tool with this url.
+review_page: https://claude.ai/artifact/3GHPfJ9kALVRvnDwseyBrd
+
 metricool:
   brand_id: "6979710"                    # blogId; no networks connected yet (connect at app.metricool.com)
   auto_publish: false                     # false = Metricool pushes a phone notification; a person taps publish

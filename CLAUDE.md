@@ -54,5 +54,6 @@ Gravity. Start any social-media work with the `gravity-social` skill (the
 orchestrator), which routes to `gravity-research`, `gravity-content`,
 `gravity-publish`, `gravity-community` and `gravity-report`. Two rules hold in
 every session: never run `scripts/gate.py approve` without an explicit,
-named approval from the person in this conversation, and never try to get
-around the Metricool approval hook in `.claude/settings.json`.
+named approval from the person in this conversation (or a tap on the review
+page, recorded only through `scripts/sync_decisions.py`), and never try to
+get around the Metricool approval hook in `.claude/settings.json`.

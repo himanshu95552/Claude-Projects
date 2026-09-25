@@ -40,6 +40,20 @@ All paths below are relative to `gravity-social/` in this repository. Run script
 | "morning brief" / "report" / "how did last week do" | `gravity-report` |
 | "what needs me today" | Triage above, then the morning brief's five things |
 
+## The review page (phone approvals)
+
+`config.yaml → review_page` is a private web page built by `python3 scripts/build_dashboard.py --artifact` (the dashboard plus Approve/Reject on every pending post). A tap writes a doc to its `decisions` collection with the approver's name, their viewer id and the hash of the version they saw.
+
+**Sync approvals** (on request, and in every morning run):
+1. `ArtifactData list` the `decisions` collection of the review page with `out_dir`, and combine the docs into one JSON list.
+2. `python3 scripts/sync_decisions.py <that file>`: it records each `new` decision through the gate (same rules: named approver, Shamit for his posts, exact version) and prints a result per post.
+3. Write each result back with one `ArtifactData batch` of `update`s: `{status: <recorded|stale|refused|not_found>, result: <message>}`.
+4. Rebuild and republish the page (`build_dashboard.py --artifact`, then the Artifact tool with the review_page url, passing the carousel frames under `files` as `assets/<id>/frame-NN.png`).
+
+## The daily run (weekdays 7:25 a.m. US Central)
+
+Sync approvals → `python3 scripts/fill_media_urls.py --state approved --check` → if networks are connected, schedule approved posts (gravity-publish) → morning brief (gravity-report) → `python3 scripts/sync_leads.py` if inbox files exist → rebuild both dashboards and republish the review page → commit and push the public, non-private files → reply with the brief. Private files (leads, inbox, outcomes, metrics, briefs) are git-ignored on purpose: the repo is public.
+
 ## The weekly rhythm
 
 | When | What | Module |
@@ -55,7 +69,7 @@ If the person asks for this to run on a schedule, offer a Routine (the `create_t
 
 ## Rules that never bend
 
-1. **Never approve on your own.** Run `gate.py approve` only when the approver has said, in this conversation, that they approve that specific post or batch. Use their name exactly as it appears in `config.yaml`: Tushant (marketing manager) day to day, or Shamit Patel. Founder posts need Shamit's own approval.
+1. **Never approve on your own.** Run `gate.py approve` only when the approver has said, in this conversation, that they approve that specific post or batch, **or** has tapped Approve/Reject on the review page (recorded through `scripts/sync_decisions.py`, never by hand). Use their name exactly as it appears in `config.yaml`: Tushant (marketing manager) day to day, or Shamit Patel. Founder posts need Shamit's own approval.
 2. **Never publish or schedule unapproved content**, and never try to get around the hook (for example by changing the text after approval, cross-posting to several networks, or turning on autoPublish).
 3. **No cross-posting.** One angle becomes a native piece per platform. The same text is never sent to two networks.
 4. **Every number comes from the proof ledger**, with its qualifiers ("about," "modeled," the source). If a post needs a figure that isn't in the ledger, stop and ask; don't invent, round or combine figures.

@@ -22,13 +22,15 @@ Two steps, always in this order. The hook in `.claude/settings.json` (`gravity-s
 - Rejections: `python3 scripts/gate.py reject <id> --by "<name>" --reason "<their words>"`. Then offer a rewrite in pending, which will need a fresh approval.
 - If the person asks for edits to an approved post: `gate.py reopen <id>`, edit, lint, and ask for approval again. Editing an approved file without reopening makes the hook block it anyway.
 
+- **Taps on the review page** are approvals too: sync them with `scripts/sync_decisions.py` (see the gravity-social skill, "Sync approvals"). Never mark a page decision as recorded yourself.
+
 ## Step 2: Scheduling (Metricool)
 
 Preconditions: the network is connected in Metricool brand `config.yaml: metricool.brand_id`, and the post is in `approved/` with an intact hash (`gate.py verify`).
 
 1. `mcp__Metricool_Social_Media_Management__getBrandSettings` for the timezone and connected networks. If a network isn't connected, stop and tell the person (connect at app.metricool.com/brands/connections).
 2. Pick the time: `getBestTimeToPostByNetwork` for that network and the week (once there's history); otherwise the post's `scheduled_for`. If you move a post by more than a day, tell the person.
-3. **Media:** Instagram needs an image, carousel or video; LinkedIn documents need the frames. Metricool takes **public URLs** (Google Drive and Dropbox links work if linked in Metricool). The rendered frames are in `content/assets/<id>/`. If there's no public URL yet, ask the person to upload the folder and share the links; record them in the post's `media_urls:` field. Never schedule an Instagram post without media.
+3. **Media:** Instagram needs an image, carousel or video; LinkedIn documents need the frames. Metricool takes **public URLs**. The repo is public, so commit and push the frames, then run `python3 scripts/fill_media_urls.py --state approved --check`: it fills `media_urls` with GitHub raw URLs (`config.yaml media.base_url`) and confirms each is live. Video (reels, Shorts) must be recorded and uploaded by a person first. Never schedule an Instagram or YouTube post without media.
 4. Build `info` from the approved file. Copy the text exactly (the hook compares it character for character after whitespace normalization):
    - `text`: the `## Post` section, or thread part 1
    - `descendants`: X thread parts 2..n, as `[{"text": "..."}]`, in order

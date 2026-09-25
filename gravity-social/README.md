@@ -71,6 +71,18 @@ Requirements: Python 3.10+ with PyYAML; Node with Playwright and Chromium (for r
 - 15 drafts in `content/queue/pending/`: 4 LinkedIn company (poll, the five-tests document carousel, the Surest post, the agentic-AI post), 2 for Shamit, 5 X (including a 7-part thread), 3 Instagram (2 carousels, 1 reel script), 1 YouTube Short (same shoot as the reel). All pass lint with 0 errors and 0 warnings. **None are approved.**
 - Rendered carousels in `content/assets/`, the dashboard, and today's brief.
 
+## Review on your phone
+
+The private review page (`config.yaml → review_page`, https://claude.ai/artifact/3GHPfJ9kALVRvnDwseyBrd) shows all five tabs with Approve/Reject on every pending post. Pick who you are ("Approving as"), tap, then tap again to confirm. Taps are recorded in the queue by the weekday 7:25 a.m. CT run or when you say "sync approvals" (`scripts/sync_decisions.py`: same gate rules, and a post edited after you saw it is refused as stale). To let Shamit approve from his phone, share the page with him as **Contributor**.
+
+## Testing
+
+`python3 tests/e2e.py` (add `--render` to re-render carousels) copies the system to a temp folder and runs a full week through every stage: lint, approval roles, the Metricool gate for each platform, scheduling marks, metrics, Calendly import, inbox and leads, page decisions, the brief and both dashboards. 54 checks.
+
+## Private data
+
+The repo is public, so files holding other people's data are git-ignored and stay local: `community/inbox/*.yaml`, `community/leads.csv`, `reports/outcomes.csv`, `reports/metrics/*.json`, `reports/daily/`. Templates are committed instead. They don't survive a fresh clone; move them to a private repo if they need to be versioned.
+
 ## Setup still needed (one-time)
 
 | # | What | Where |
