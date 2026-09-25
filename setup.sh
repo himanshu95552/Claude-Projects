@@ -52,7 +52,7 @@ if [ $# -ge 1 ]; then
     ok "AN27 originals -> gravity-social/source-docs/ ($(ls "$GS/source-docs" | wc -l) files, git-ignored)"
   fi
   if [ -d "$SRC/skill-observations" ]; then
-    mkdir -p "$OBS" && cp -rn "$SRC/skill-observations/." "$OBS/"
+    mkdir -p "$OBS" && cp -rn "$SRC/skill-observations/." "$OBS/" 2>/dev/null || true
     ok "task-observer workspace -> $OBS (existing files kept)"
   fi
   if [ -d "$SRC/local-only" ]; then
