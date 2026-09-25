@@ -41,7 +41,7 @@ This file lets a new Claude (a new session, a new account, or Claude Code on you
 ## 2. What was asked (in order, so you don't have to re-explain)
 
 **Who is asking and what for**
-- **Who:** Tushant, Marketing Manager at Alpha Nodus (himanshu.95552@gmail.com).
+- **Who:** Tushant, Marketing Manager at Alpha Nodus.
 - **Company:** Alpha Nodus, alphanodus.com.
 - **Product:** Gravity, "the Agentic Operations System (AOS) for your CRM, RIS and RCM" in outpatient imaging.
 - **Founder:** Shamit Patel.
