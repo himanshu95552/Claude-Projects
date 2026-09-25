@@ -7,6 +7,7 @@ An inbox item becomes a lead when its intent is lead-hot or lead-warm. lead_scor
 (community/intent-taxonomy.md). Existing rows are matched on inbox_id, so re-running is safe.
 leads.csv is private (git-ignored): it holds people's names and must never be pushed to the public repo.
 """
+from __future__ import annotations
 import csv
 import sys
 from pathlib import Path

@@ -12,6 +12,7 @@ rows.json (written by the report skill from getAnalyticsDataByMetrics):
 Each row is matched to a queue post by metricool_post_id first, then by its text (the post's
 main text, whitespace-normalized, first 120 characters). Unmatched rows are listed, not guessed.
 """
+from __future__ import annotations
 import argparse
 import datetime as dt
 import json

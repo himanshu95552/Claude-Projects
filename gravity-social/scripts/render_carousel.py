@@ -8,6 +8,7 @@ Output: content/assets/<post-id>/frame-01.png ... carousel.pdf carousel.html
 Slide templates and fields: brand/visual.md and scripts/render_carousel.cjs.
 Markup inside slide text: **word** = accent colour, ==word== = highlight colour.
 """
+from __future__ import annotations
 
 import argparse
 import json

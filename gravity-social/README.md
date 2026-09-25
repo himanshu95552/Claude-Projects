@@ -67,7 +67,7 @@ python3 scripts/utm.py --cta exam-itemized --platform x --post 2026-W41-x-01
 python3 scripts/import_calendly.py ~/Downloads/calendly-export.csv   # demo bookings -> reports/outcomes.csv
 ```
 
-Requirements: Python 3.10+ with PyYAML; Node with Playwright and Chromium (for rendering only).
+Requirements: Python 3.9+ with PyYAML; Node with Playwright and Chromium (for rendering only).
 
 ## What's in the first run (week 40: 28 Sep to 4 Oct)
 
@@ -81,7 +81,7 @@ The private review page (`config.yaml → review_page`, https://claude.ai/artifa
 
 ## Testing
 
-`python3 tests/e2e.py` (add `--render` to re-render carousels) copies the system to a temp folder and runs a full week through every stage: lint, approval roles, the Metricool gate for each platform, scheduling marks, metrics, Calendly import, inbox and leads, page decisions, the brief and both dashboards. 54 checks.
+`python3 tests/e2e.py` (add `--render` to re-render carousels) copies the system to a temp folder and runs a full week through every stage: lint, approval roles, the Metricool gate for each platform, scheduling marks, metrics, Calendly import, inbox and leads, page decisions, the brief and both dashboards. 59 checks.
 
 ## Private data
 

@@ -50,9 +50,17 @@ All paths below are relative to `gravity-social/` in this repository. Run script
 3. Write each result back with one `ArtifactData batch` of `update`s: `{status: <recorded|stale|refused|not_found>, result: <message>}`.
 4. Rebuild and republish the page (`build_dashboard.py --artifact`, then the Artifact tool with the review_page url, passing the carousel frames under `files` as `assets/<id>/frame-NN.png`).
 
+## Running on a computer (Claude desktop app, no cloud tools)
+
+When the Artifact tools or GitHub push aren't available (check once per session: the `Artifact`/`ArtifactData` tools, and `git remote -v` plus whether a push is authorized), run the same system locally:
+- **Review:** `python3 scripts/build_dashboard.py`, then open `content/dashboard.html` for the person (`open content/dashboard.html` on a Mac). Approvals are given in chat ("approve <id>"), recorded with `gate.py approve`. Skip the review-page sync.
+- **Saving work:** commit locally; push only if a remote is configured and the person wants it. Private files stay git-ignored either way.
+- **Media for scheduling:** Metricool needs public URLs. Frames already pushed to GitHub keep working at `media.base_url`. For new carousels, either push them (if GitHub is set up) or ask the person to upload the frames to Google Drive linked in Metricool (or Metricool's media library) and paste the links into the post's `media_urls`; `fill_media_urls.py --check` confirms they're live.
+- **Daily run:** if the app offers scheduled tasks, offer one for weekdays 7:25 a.m. US Central with the daily-run steps below; otherwise the person says "morning brief" and you run it.
+
 ## The daily run (weekdays 7:25 a.m. US Central)
 
-Sync approvals → `python3 scripts/fill_media_urls.py --state approved --check` → if networks are connected, schedule approved posts (gravity-publish) → morning brief (gravity-report) → `python3 scripts/sync_leads.py` if inbox files exist → rebuild both dashboards and republish the review page → commit and push the public, non-private files → reply with the brief. Private files (leads, inbox, outcomes, metrics, briefs) are git-ignored on purpose: the repo is public.
+Sync approvals → `python3 scripts/fill_media_urls.py --state approved --check` → if networks are connected, schedule approved posts (gravity-publish) → morning brief (gravity-report) → `python3 scripts/sync_leads.py` if inbox files exist → rebuild both dashboards and republish the review page → commit the public, non-private files (and push, when a remote is set up) → reply with the brief. On a computer without the review page, skip the sync and republish steps (see above). Private files (leads, inbox, outcomes, metrics, briefs) are git-ignored on purpose: the repo is public.
 
 ## The weekly rhythm
 

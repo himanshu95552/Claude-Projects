@@ -19,7 +19,7 @@ Method and file formats: `gravity-social/reports/attribution.md`. The brief is i
 3. **Build the brief:** `python3 scripts/morning_brief.py` → `reports/daily/<today>.md`. Replace each `[Claude: ...]` with one or two sentences of judgement:
    - Best post: *why* it worked (hook pattern, format, persona, leak) and a concrete part-2 idea.
    - Engaged but went nowhere: which pattern to drop or change (e.g. "a good line with no CTA," "a poll with no follow-up").
-4. `python3 scripts/build_dashboard.py` and `--artifact`, then republish the review page (`config.yaml review_page`) so the phone view is current.
+4. `python3 scripts/build_dashboard.py` and `--artifact`, then republish the review page (`config.yaml review_page`) so the phone view is current. On a computer without the Artifact tool, open `content/dashboard.html` instead.
 5. Reply to the person with the brief itself (it's one page). If `config.yaml reporting.email_draft_to` is set, create a Gmail **draft** with the brief (never send).
 
 ## Weekly (Thursday, before research)

@@ -187,6 +187,13 @@ def main():
     check("web page has no document wrapper", not html.lstrip().lower().startswith("<!doctype"))
     check("dashboard shows leads and the inbox", "Example Imaging" in (root / "content/dashboard.html").read_text())
 
+    print("\n9. Helper scripts run as commands")
+    rc, out = run(root, "scripts/utm.py", "--cta", "demo", "--platform", "x", "--post", "2026-W40-x-01")
+    check("utm.py builds a tagged link", rc == 0 and "utm_content=2026-W40-x-01" in out, out[-300:])
+    for script in ("render_carousel", "record_metrics", "import_calendly", "fill_media_urls"):
+        rc, out = run(root, f"scripts/{script}.py", "--help")
+        check(f"{script}.py starts", rc == 0 and "usage" in out, out[-300:])
+
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         print("FAILED: " + "; ".join(FAIL))

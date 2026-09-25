@@ -8,6 +8,7 @@ pushed before Metricool can fetch them; --check requests each URL and reports an
 aren't live yet. media_urls sits in the frontmatter, so filling it never changes the
 approval hash. LinkedIn documents use every frame; Instagram carousels up to 10.
 """
+from __future__ import annotations
 import argparse
 import sys
 import urllib.request

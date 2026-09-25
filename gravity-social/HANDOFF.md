@@ -4,6 +4,8 @@ This file lets a new Claude (a new session, a new account, or Claude Code on you
 
 ## 1. Start here (10 minutes)
 
+**On a Mac with the Claude desktop app** (no GitHub): follow `START-HERE.md` in the top folder. That's the whole procedure, including the prompt to paste. The options below are for Claude Code on the web or a machine that uses GitHub.
+
 **What you need:**
 - `gravity-social-code.zip`, which contains the repo and a `private/` folder.
 - A Claude that can run Claude Code:
@@ -21,7 +23,7 @@ This file lets a new Claude (a new session, a new account, or Claude Code on you
 2. `cd Claude-Projects`
 3. `bash setup.sh private`
 4. Open Claude Code in that folder and paste the prompt from section 12.
-5. To push to GitHub, run `git remote add origin https://github.com/himanshu95552/Claude-Projects` and check out the branch.
+5. The folder already carries the git history, on branch `claude/laughing-bardeen-5uf8wh` with GitHub as `origin`. Pushing works once GitHub sign-in is set up on that machine; without it, work is committed locally.
 
 **What `setup.sh` does:**
 - installs PyYAML;
@@ -36,7 +38,7 @@ This file lets a new Claude (a new session, a new account, or Claude Code on you
   | Morning briefs and local data files | their usual places |
 
   Everything restored is git-ignored.
-- runs the linter, the gate check and the 54 end-to-end tests, and prints the approval queue.
+- runs the linter, the gate check and the 59 end-to-end tests, and prints the approval queue.
 
 ## 2. What was asked (in order, so you don't have to re-explain)
 
@@ -85,7 +87,7 @@ The conversation itself is in `source-docs/history/conversation-history.md` (rea
 | Reference | `research/reference-architecture.md` | The newsletter's text and all 7 images, mapped to this system |
 | Scripts | `scripts/` | Lint, gate, Metricool hook, UTM, carousel render (fonts embedded), dashboard, brief, Calendly import, media URLs, leads, metrics, page-decision sync |
 | Hard gate | `.claude/settings.json` (repo root) | A PreToolUse hook blocks any Metricool create or update call that doesn't exactly match an approved, unedited post |
-| Tests | `tests/e2e.py` | 54 end-to-end checks in a temporary copy (55 with `--render`) |
+| Tests | `tests/e2e.py` | 59 end-to-end checks in a temporary copy (60 with `--render`). Passes on Python 3.9 (macOS) and 3.11 |
 
 The knowledge layer covers:
 - **Voice and messaging:** voice, approved lines and messaging.
@@ -107,7 +109,7 @@ The knowledge layer covers:
 
 ## 4. State at handoff (25 Sep 2026)
 
-- **Branch:** everything is committed and pushed to `claude/laughing-bardeen-5uf8wh`. Lint shows 0 errors and 0 warnings. The end-to-end tests pass 54 of 54.
+- **Branch:** everything is committed and pushed to `claude/laughing-bardeen-5uf8wh`. Lint shows 0 errors and 0 warnings. The end-to-end tests pass 59 of 59.
 - **Week 40 (28 Sep to 4 Oct):** 15 drafts are in `content/queue/pending/`. **None are approved.**
   - LinkedIn company:
     - li-co-01: poll
@@ -240,7 +242,7 @@ These live in a Claude account or a third-party account, not in files. In a **ne
 
 ## 9. Environment notes
 
-- **Scripts:** Python 3.10+ and PyYAML are enough for every script. Rendering carousels also needs Node, Playwright and Chromium, which are preinstalled on Claude Code on the web (`/opt/pw-browsers`).
+- **Scripts:** Python 3.9+ (the version macOS ships) and PyYAML are enough for every script. Rendering carousels also needs Node, Playwright and Chromium, which are preinstalled on Claude Code on the web (`/opt/pw-browsers`).
 - **Blocked sites:** the network proxy on Claude Code on the web blocked re-structure.ai and the Webflow CDN. TinyFish reached them, and the article is saved in `research/reference-architecture.md`, so it doesn't need re-reading.
 - **Media:** carousel images are served from GitHub raw URLs (`config.yaml → media.base_url`). That works because the repo is public.
 
@@ -254,7 +256,7 @@ python3 scripts/render_carousel.py --state pending
 python3 scripts/build_dashboard.py           # content/dashboard.html
 python3 scripts/build_dashboard.py --artifact
 python3 scripts/morning_brief.py
-python3 tests/e2e.py                          # 54 checks
+python3 tests/e2e.py                          # 59 checks
 ```
 
 ## 11. What's in the zip

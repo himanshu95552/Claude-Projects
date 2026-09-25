@@ -17,8 +17,8 @@ warn() { printf '  \033[33mwarn\033[0m  %s\n' "$*"; }
 fail() { printf '  \033[31mFAIL\033[0m  %s\n' "$*"; exit 1; }
 
 echo "1. Tools"
-command -v python3 >/dev/null || fail "python3 not found (3.10+ needed)"
-python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3,10) else 1)' || fail "python3 is older than 3.10"
+command -v python3 >/dev/null || fail "python3 not found (3.9+ needed)"
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3,9) else 1)' || fail "python3 is older than 3.9"
 ok "$(python3 --version)"
 if ! python3 -c 'import yaml' 2>/dev/null; then
   python3 -m pip install -q -r "$GS/requirements.txt" 2>/dev/null \
@@ -58,7 +58,9 @@ if [ $# -ge 1 ]; then
   if [ -d "$SRC/local-only" ]; then
     [ -d "$SRC/local-only/daily" ] && mkdir -p "$GS/reports/daily" && cp -n "$SRC/local-only/daily/"* "$GS/reports/daily/" 2>/dev/null || true
     for f in community/leads.csv reports/outcomes.csv content/approver-ids.json; do
-      [ -f "$SRC/local-only/$f" ] && [ ! -f "$GS/$f" ] && mkdir -p "$(dirname "$GS/$f")" && cp "$SRC/local-only/$f" "$GS/$f"
+      if [ -f "$SRC/local-only/$f" ] && [ ! -f "$GS/$f" ]; then
+        mkdir -p "$(dirname "$GS/$f")"; cp "$SRC/local-only/$f" "$GS/$f"
+      fi
     done
     [ -d "$SRC/local-only/inbox" ] && cp -n "$SRC/local-only/inbox/"*.yaml "$GS/community/inbox/" 2>/dev/null || true
     [ -d "$SRC/local-only/metrics" ] && cp -n "$SRC/local-only/metrics/"*.json "$GS/reports/metrics/" 2>/dev/null || true

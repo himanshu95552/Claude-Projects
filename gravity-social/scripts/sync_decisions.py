@@ -17,6 +17,7 @@ For each "new" decision this runs gate.approve / reject as that approver, but on
 It prints JSON results: {"<post id>": {"status": recorded|stale|refused|not_found|skipped, "message": ...}}.
 Claude writes each result back to the page's decision doc so the approver sees it.
 """
+from __future__ import annotations
 import hashlib
 import json
 import sys

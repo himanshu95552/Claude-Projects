@@ -14,6 +14,7 @@ carries the post id (Calendly records utm_* passed on its link). Otherwise they 
 contact page, which only forwards UTMs to its Calendly embed once the page runs
 reports/calendly-embed-snippet.html.
 """
+from __future__ import annotations
 
 import argparse
 import sys
