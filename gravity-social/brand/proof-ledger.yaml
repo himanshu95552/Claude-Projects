@@ -31,6 +31,13 @@ gravity:
     attribute: true
     cite_as: ["Tower Radiology"]          # the post must contain one of these
     status: locked
+  - id: P23
+    claim: "Tower Radiology: $1.62M gross profit from the added volume."
+    figures: ["$1.62m", "$1.62million"]
+    source: "Tower Radiology, RSNA 2021 Quality Improvement Award report (Winning Story v1.1 section 8, verified 23 Sep 2026)"
+    attribute: true
+    cite_as: ["Tower Radiology"]
+    status: locked
   - id: P03
     claim: "Tower Radiology: nudged patients waited 71% less."
     figures: ["71%"]
@@ -40,8 +47,8 @@ gravity:
     must_say: "nudged patients"
     status: locked
   - id: P04
-    claim: "Tower Radiology: authorization backlog down 62%."
-    figures: ["62%"]
+    claim: "Tower Radiology: authorization backlog down 62% (3,749 to 1,443)."
+    figures: ["62%", "3,749", "1,443"]
     source: "Tower Radiology, RSNA 2021"
     attribute: true
     cite_as: ["Tower Radiology"]          # the post must contain one of these
@@ -239,6 +246,56 @@ benchmarks:   # third-party figures; always name the source in the post
     cite_as: ["CAQH"]          # the post must contain one of these
     status: benchmark
 
+  - id: B11
+    claim: "71% of consumers weigh access heavily when choosing a provider."
+    figures: ["71%"]
+    source: "AHA 2023, via BD Emerson 2026"
+    attribute: true
+    cite_as: ["AHA", "BD Emerson"]
+    status: benchmark
+  - id: B12
+    claim: "90% of denials get human review before resubmission; 43% of RCM teams are understaffed; only 14% use AI."
+    figures: ["90%", "43%", "14%"]
+    source: "Experian Health, State of Claims 2025 (Sept 2025)"
+    attribute: true
+    cite_as: ["Experian"]
+    status: benchmark
+  - id: B13
+    claim: "95% of physicians say prior authorization delays care; 79% say patients abandon care; 74% say denials rose over five years."
+    figures: ["95%", "79%", "74%"]
+    source: "AMA prior authorization survey, fielded June 2025, published May 2026"
+    attribute: true
+    cite_as: ["AMA"]
+    status: benchmark
+  - id: B14
+    claim: "Radiography technologist vacancies 15.6% (CT 19.4%, an all-time high; MRI 17.4%)."
+    figures: ["15.6%", "19.4%", "17.4%"]
+    source: "ASRT Radiologic Sciences Workplace and Staffing Survey 2025"
+    attribute: true
+    cite_as: ["ASRT"]
+    status: benchmark
+  - id: B15
+    claim: "71% of groups have fewer than one in four patients scheduling digitally."
+    figures: ["71%"]
+    source: "MGMA Stat, patient access priorities for 2026"
+    attribute: true
+    cite_as: ["MGMA"]
+    status: benchmark
+  - id: B16
+    claim: "62% of health-system technology leaders want one comprehensive AI partner; 13% have one; 80% struggle to quantify AI ROI; 4% have scaled AI with measurable outcomes."
+    figures: ["62%", "13%", "80%", "4%"]
+    source: "Qventus 2026 CIO research report"
+    attribute: true
+    cite_as: ["Qventus"]
+    status: benchmark
+  - id: B17
+    claim: "60% of healthcare CFOs are targeting at least two points of margin improvement within two years."
+    figures: ["60%"]
+    source: "Deloitte 2026 Healthcare CFO Survey"
+    attribute: true
+    cite_as: ["Deloitte"]
+    status: benchmark
+
 # Claims that must NEVER appear, however they are worded. The linter blocks the
 # patterns in brand/guardrails.yaml; this list is the human-readable reason.
 forbidden:
@@ -252,3 +309,6 @@ forbidden:
   - "Any figure from a named customer other than Tower Radiology (e.g. ProScan needs its OK first)."
   - "Any real center's P&L, headcount or annual dollars. The unit is one exam, modeled."
   - "Pricing detail beyond '$3.45 an exam, all in' in the unit-economics context."
+  - "Call-center benchmarks from Patient Prism (7% abandonment, 4.4-minute hold): a vendor compilation, internal use only."
+  - "'Five to seven minutes to under one' (order intake) and '35 to 40 percent' (pre-check-in): no source, dropped."
+  - "Buyer quotes from recorded calls (Winning Story section 1): internal research, never quoted publicly without the speaker's permission."

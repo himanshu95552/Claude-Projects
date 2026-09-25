@@ -1,6 +1,6 @@
 # Gravity brand voice for social
 
-Source: AN27 Positioning and Messaging v1.7 §4 and §5, AN27 Messaging Package v1.0 §7, and the live-pitch lines carried in Deck Outline v2.1. If this file and those documents disagree, the documents win: fix this file.
+Source: AN27 Positioning and Messaging v1.7 §4 and §5, AN27 Messaging Package v1.0 §7, the live-pitch lines carried in Deck Outline v2.1, and AN27 Winning Story and Pitch Narrative v1.1 §4, §7 and §9. If this file and those documents disagree, the documents win: fix this file.
 
 ## Who is speaking
 
@@ -26,6 +26,9 @@ The voice sounds like a founder who is angry about patients waiting six weeks fo
 - Numbers as numerals in social copy ($39, 71%), except in spoken scripts, where they are written as they are said.
 - American spelling. Oxford comma off in lists of three verbs, as in the approved lines.
 - Questions the buyer can't answer are a strong opener: "How many referrals went elsewhere last month?"
+- **No em dashes** in public copy (house rule from the AOS page). Use a comma, a colon, parentheses or a new sentence.
+- Say **exit ramp**, not escalation or fallback. Say **exception rate** or **completion rate**, not time saved or clicks saved.
+- Never describe Gravity as a "software layer". It is a system; agents do the work inside it.
 
 ## House words and their search equivalents
 
@@ -62,6 +65,13 @@ The voice sounds like a founder who is angry about patients waiting six weeks fo
 | Document chaos, meet order. | Fax intake posts |
 | Phones silent, schedule full. | Scheduling posts |
 | That's the order finished. That's how the next order arrives. | Loop posts |
+| You don't have a capacity problem. You have a leakage problem. | After the 85% / 65% comparison |
+| Nothing was handed off. That's what one system means. | Authorization and one-system posts |
+| Your worklist becomes an exception list. | Exit-ramp posts |
+| A referrer going quiet is noticed in days, not quarters. | Referral posts |
+| Authorized before arrival. | Revenue-cycle posts |
+| None of us came from healthcare software. All of us have done the jobs. | Team and founder posts |
+| Nobody should wait for care because of paperwork. | Founder, mission, medical directors |
 | How many referrals did you lose last month? | Opener, poll |
 | Watch one order go from referral to report to payment without anyone having to carry it. | Demo video intro |
 
@@ -70,7 +80,9 @@ The voice sounds like a founder who is angry about patients waiting six weeks fo
 1. **The empty seat at takeoff.** A slot is perishable inventory: if nobody is on the table at 3:15, that slot is gone, like an empty seat when the plane takes off. Airlines fill about 85% of seats; imaging centers fill about 65% of slots.
 2. **The automation highway with exit ramps.** Routine work drives straight through. At an exit ramp a person steps in, with the whole file attached. "We don't throw work over the fence and say 'catch.'" "Your worklist becomes an exception list."
 
-No other metaphors. Specifically no restaurant or fast-food analogy, no robots, no "digital workforce."
+No other metaphors. Specifically no restaurant or fast-food analogy, no robots, no "digital workforce." The Winning Story (§4.5) set these aside too, and the linter flags them: leaky bucket, funnel or pipes ("leak" stays a word, never a picture), hemorrhage or bleeding revenue, relay race or dropped baton, assembly line or factory, autopilot, and air-traffic control.
+
+"RIS records the work. AOS does the work." is the one contrast that does a metaphor's job: a RIS is a ledger, and an AOS is the person who used to fill it in.
 
 ## Founder voice (Shamit Patel's personal LinkedIn)
 
@@ -82,6 +94,8 @@ The same rules, told in the first person, with more story:
 - "Just-in-time exists in every industry except healthcare."
 - He names what isn't solved yet. That candor is the brand.
 - He never names personas, never attacks competitors, and never states unverified numbers, even in a personal post.
+- Spoken lines of his that are safe in posts: "I love you too much to make you a guinea pig" (why we don't run beta sites), "You get all your data. Anytime." (why a small vendor is safe), "We only hire lazy engineers and make them automate their own job" (only about our own engineers, never anyone else's staff).
+- "Your humans are ping-pong between technologies" only paired with "I hated that job", so the systems are the problem and never the people.
 
 ## Tone by audience
 
@@ -94,5 +108,6 @@ The same rules, told in the first person, with more story:
 | Revenue cycle lead | Authorized before arrival | prior authorization, eligibility, remittance posting |
 | Scheduling lead | "You'll never log into your RIS again." | patient scheduling, reminders, no-show, voice agent |
 | IT / security | One system instead of six | HL7, FHIR, AWS, BAA, pen test |
+| Medical director (in imaging "CMO" usually means Chief Medical Officer) | The CEO's lead, plus "Nobody should wait for care because of paperwork." | access, wait times, safety screening |
 
 Full audience table: `brand/messaging.md` §Audiences.

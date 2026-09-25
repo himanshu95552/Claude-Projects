@@ -7,7 +7,7 @@ brand:
   category: "Agentic Operations System (AOS)"
   website: https://www.alphanodus.com
   timezone: America/Chicago          # RSNA is in Chicago; switch to America/New_York if the team prefers
-  source_of_truth: AN27 (Positioning v1.7, Messaging Package v1.0, Deck Outline v2.1, Unit Economics v1.1, SEO Map v0.1)
+  source_of_truth: AN27 (Positioning v1.7, Messaging Package v1.0, Deck Outline v2.1, Winning Story v1.1, Unit Economics v1.1, SEO Map v0.1) + AOS Definitional Page v1.1
 
 # The human gate. Nothing is scheduled or published unless an approver below
 # approved it through scripts/gate.py. The Metricool hook enforces this.

@@ -58,3 +58,12 @@ The research brief names the week's **angle**, and the same idea runs natively o
 - "We don't read the scan. We make sure it gets back."
 - The order is finished when the report is back, because that's when the referrer decides where the next order goes.
 - Values in practice: Hunger (we do the job before we automate it), Innovation (we build what the work needs), Customer Success (every employee owns the customer's outcome).
+- The nine RFP questions as a series, one a day (`brand/aos-definition.md`); question 9 is the referring office's experience.
+- Level 0 to Level 3: "Most 'AI-powered' imaging software sits at Level 1." Where does each of your workflows sit?
+- "It is not an agentic operating system": an operating system runs other software; an Agentic Operations System runs an operation.
+- The comparison table: CRM, RIS, RCM, AOS. "When volume doubles: hire, hire, hire. Cost per transaction falls."
+- "A referrer going quiet is noticed in days, not quarters": 40 orders a month becomes 12, flagged on day nine (demo story; mark as illustrative).
+- "Nothing was handed off. That's what one system means.": the approval that lands before the patient does.
+- The capacity parity line: demand above the line, slots to fill below it. "This is what 65 percent looks like."
+- For CFOs: 60% of healthcare CFOs target two points of margin in two years (Deloitte 2026, B17); the paper line is the cost they control.
+- For CIOs: 62% want one AI partner, 13% have one (Qventus 2026, B16); one system instead of six.

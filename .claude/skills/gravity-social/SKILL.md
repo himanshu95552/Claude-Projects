@@ -80,7 +80,7 @@ If the person asks for this to run on a schedule, offer a Routine (the `create_t
 
 ## When the AN27 documents change
 
-The brand files are distilled from AN27 Positioning v1.7, Messaging Package v1.0, Deck Outline v2.1, Unit Economics Closer v1.1 and the SEO Map v0.1. If the person shares a newer version, update `brand/` first (the proof ledger and guardrails especially), run `python3 scripts/gravity_lint.py --state pending` and `--state approved` to find posts the change affects, and tell the person which ones.
+The brand files are distilled from AN27 Positioning v1.7, Messaging Package v1.0, Deck Outline v2.1, Winning Story and Pitch Narrative v1.1, Unit Economics Closer v1.1, the SEO Map v0.1, and the AOS Definitional Page v1.1 (kept verbatim in `brand/aos-definition.md`). Not yet shared: AN27 History and Research, and the Open Items Register. If the person shares a newer version, update `brand/` first (the proof ledger and guardrails especially), run `python3 scripts/gravity_lint.py --state pending` and `--state approved` to find posts the change affects, and tell the person which ones.
 
 ## Known gaps to surface when relevant
 

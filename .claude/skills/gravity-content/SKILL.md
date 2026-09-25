@@ -10,6 +10,7 @@ Every post lands in `gravity-social/content/queue/pending/` as one Markdown file
 ## Inputs, read every time
 
 - The latest `research/briefs/<week>.yaml` and `.md`: the angles, hooks, signals and questions.
+- `brand/aos-definition.md` for every aos-category post: the definition, the five tests, the comparison table, the maturity model, what an AOS is not, and the nine RFP questions, quoted verbatim from AOS Definitional Page v1.1.
 - `brand/voice.md` (the voice, the approved lines, the two spoken images), `brand/messaging.md` (pillars, capability status, CTAs, audiences), `brand/proof-ledger.yaml` (the only numbers allowed), `brand/guardrails.yaml` (what the linter blocks), `brand/visual.md`, `brand/search-vocabulary.md`.
 - `platforms/<platform>.md` for every platform you write for, and `platforms/limits.yaml`.
 - `content/pillars.md` for phase weighting and the weekly mix.

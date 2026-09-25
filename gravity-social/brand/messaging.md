@@ -2,6 +2,12 @@
 
 Condensed from AN27 Messaging Package v1.0 and Positioning and Messaging v1.7. Anything on social must trace back to a line here.
 
+## The three-minute story (Winning Story v1.1 section 2, condensed)
+
+An imaging center does three jobs: get the order, complete the exam, get paid. Every order can be lost three times: before it arrives, before it's scanned, after it's done. Each leak lives in a different system with a different team, so nobody sees one order from the referral to the payment and people carry it by hand. Airlines fill about 85% of seats; imaging centers about 65% of slots while patients wait weeks: not a capacity problem, a leakage problem. Agents can now do the work that needed judgment. The order is finished when the report and images are back with the referrer, which is how the next order arrives. Gravity is the Agentic Operations System (AOS) for your CRM, RIS and RCM. Your RIS records the work; Gravity does the work. Pick the leak that costs you most; we'll measure it with you, then close it.
+
+Every post should be a slice of this story. Category details (the five tests, the comparison table, the maturity model, the nine questions) come from `brand/aos-definition.md`, verbatim.
+
 ## Master message
 
 > **Gravity is the Agentic Operations System (AOS) for your CRM, RIS and RCM. It gets the order, completes the exam and gets it paid, so no referral, no order and no revenue leaks away.**

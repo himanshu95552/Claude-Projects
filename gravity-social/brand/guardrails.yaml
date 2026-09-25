@@ -61,7 +61,7 @@ rules:
     why: 'Decision 25: "get the order." The referral is the act; the order is the object.'
     fix: 'get the order'
   - id: agentic-os
-    pattern: '\bagentic OS\b|\bagentic operating system\b'
+    pattern: '\bagentic OS\b|(?<!not an )\bagentic operating system\b'
     severity: error
     why: 'Spell out "Agentic Operations System (AOS)". "Operating system" is a collision term.'
   - id: restaurant
@@ -186,6 +186,22 @@ rules:
     pattern: '\b(revolutionary|revolutioniz\w*|game[- ]chang\w*|cutting[- ]edge|state[- ]of[- ]the[- ]art|next[- ]gen\w*|disrupt\w*|seamless(ly)?|synerg\w*|unlock\w*|supercharg\w*|leverag\w*|best[- ]in[- ]class|world[- ]class)\b'
     severity: warn
     why: 'Hype words. The voice is calm and specific.'
+  - id: set-aside-metaphors
+    pattern: '\bleak(y|ing) (bucket|funnel|pipes?)\b|\bbuckets?\b|\bhemorrhag\w*|\bbleed(ing|s)? (revenue|money|cash)\b|\brelay race\b|\bdropped (the )?baton\b|\bassembly line\b|\bfactory\b|\bautopilot\b|\bair[- ]traffic control\b'
+    severity: warn
+    why: 'Metaphor set aside in the Winning Story (4.5). The pitch carries two images only: the empty seat at takeoff and the highway with exit ramps.'
+  - id: em-dash
+    pattern: '—'
+    severity: warn
+    why: 'No em dashes in public copy (house rule). Use a comma, colon, parentheses or a new sentence.'
+  - id: time-saved
+    pattern: '(?<!not )(?<!")\b(time|clicks|hours) saved\b'
+    severity: warn
+    why: 'An AOS is measured in completion and exception rates, not time saved (AOS test 1). Fine only when describing what workflow software claims.'
+  - id: software-layer
+    pattern: '\bsoftware layer\b|\bAI layer\b'
+    severity: warn
+    why: 'Never a "layer": that hands the argument back to the incumbents. Gravity is a system.'
   - id: ai-magic
     pattern: '\b(magic|magical|glowing brain|robots?)\b'
     severity: warn

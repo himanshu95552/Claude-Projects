@@ -113,4 +113,4 @@ templates/                   post.md · brief.yaml
 ../.claude/skills/gravity-*  the Brain + research, content, publish, community, report
 ```
 
-Source of truth: AN27 Positioning and Messaging v1.7, Messaging Package v1.0, Customer Pitch Deck Outline v2.1, Unit Economics Closer v1.1, SEO and Keyword Map v0.1. When they change, update `brand/` first.
+Source of truth: AN27 Positioning and Messaging v1.7, Messaging Package v1.0, Customer Pitch Deck Outline v2.1, Winning Story and Pitch Narrative v1.1, Unit Economics Closer v1.1, SEO and Keyword Map v0.1, and the AOS Definitional Page v1.1 (`brand/aos-definition.md`). When they change, update `brand/` first.
