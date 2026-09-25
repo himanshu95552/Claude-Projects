@@ -63,6 +63,10 @@ links:
                                                        # When set, demo CTAs link straight to it and Calendly records the UTMs.
   exam_itemized: https://www.alphanodus.com/contact   # the free "your exam, itemized" review; give it its own page when possible
   trust_center: https://security.alphanodus.com
+# Public URLs for rendered media. The repo is public, so GitHub serves the frames directly
+# (Metricool fetches them from here). Change the branch segment after merging to main.
+media:
+  base_url: https://raw.githubusercontent.com/himanshu95552/Claude-Projects/claude/laughing-bardeen-5uf8wh/gravity-social/content/assets
 utm:
   campaign_default: an27
   medium: social

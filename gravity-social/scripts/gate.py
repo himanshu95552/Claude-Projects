@@ -163,8 +163,8 @@ def find_approved_match(platform: str | None, text: str):
     """Return the approved/scheduled post whose main text equals `text` and whose hash is intact."""
     want = normalize(text)
     for p in all_posts(["approved", "scheduled"]):
-        if platform and p.platform != platform and not (platform == "linkedin" and p.platform.startswith("linkedin")):
-            continue
+        if platform and p.platform != platform:
+            continue  # exact platform: a founder post can never go out on the company page
         if normalize(p.main_text()) == want:
             intact = p.meta.get("content_hash") == p.content_hash()
             return p, intact

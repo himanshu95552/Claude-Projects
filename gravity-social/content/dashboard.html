@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap">
 <style>
 :root{--bg:#F6F4FA;--surface:#FFFFFF;--text:#0C0B1F;--muted:#5D5B6E;--rule:#E3DEEE;--accent:#002EED;--hi:#C0189A;--ok:#0A7A3E;--warn:#9A6300;--err:#B3261E;--chip:#EEE9F7;--ink:#0C0B1F}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}}
-:root[data-theme="dark"]{--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.5 Inter,system-ui,sans-serif}
 .top{background:var(--ink);color:#fff;padding:14px 16px}.top .in{max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline}
 .top h1{font:700 20px 'Space Grotesk',Inter,sans-serif;margin:0}.top .s{color:#CBCDD3;font-size:13px}
-nav{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--rule)}nav .in{max-width:1320px;margin:0 auto;display:flex;overflow-x:auto;padding:0 8px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--rule)}nav .in{max-width:1320px;margin:0 auto;display:flex;overflow-x:auto;padding:0 8px}
 nav button{border:0;background:none;color:var(--muted);font:600 14px Inter,sans-serif;padding:12px 14px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
 nav button.on{color:var(--text);border-bottom-color:var(--accent)}
 main{max-width:1320px;margin:0 auto;padding:18px 16px 80px}.tab{display:none}.tab.on{display:block}
@@ -45,8 +45,18 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
 .fr{display:grid;grid-template-columns:minmax(120px,190px) 1fr 110px;gap:10px;align-items:center;margin:8px 0;font-size:13px}.fb{background:var(--chip);border-radius:6px;height:16px;overflow:hidden}.fb div{height:100%;background:var(--accent)}.fv{text-align:right}
 .brief h2{font:700 20px 'Space Grotesk',sans-serif}.brief code{background:var(--chip);padding:1px 5px;border-radius:4px}
 .sched td{min-width:90px;font-size:12px}
+.whobar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.whobar select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--text)}
+.decide{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);display:grid;gap:6px}
+.decide textarea{font:inherit;width:100%;border:1px solid var(--rule);border-radius:8px;padding:8px;background:var(--surface);color:var(--text);resize:vertical}
+.drow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--text);cursor:pointer}
+.btn.approve{background:var(--ok);border-color:var(--ok);color:#fff}.btn.reject{color:var(--err);border-color:var(--err)}
+.btn.armed{outline:3px solid var(--hi);outline-offset:2px}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,nav button:focus-visible,.filters button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.dstate.ok{color:var(--ok)}.dstate.warn{color:var(--warn)}.dstate.err{color:var(--err)}
 </style></head><body>
-<div class="top"><div class="in"><h1>Gravity Social OS</h1><span class="s">Alpha Nodus · RSNA 2026, Chicago · phase: category-seeding starts 2026-09-28 · built 2026-09-25 16:32</span>
+<div class="top"><div class="in"><h1>Gravity Social OS</h1><span class="s">Alpha Nodus · RSNA 2026, Chicago · phase: category-seeding starts 2026-09-28 · built 2026-09-25 16:43</span>
 <span class="s">Nothing goes public without a named approval.</span></div></div>
 <nav><div class="in"><button data-t="research">Research</button><button data-t="content">Content · 15 waiting</button>
 <button data-t="posting">Posting &amp; community</button><button data-t="growth">Growth</button><button data-t="brief">Morning brief</button></div></nav>
@@ -105,20 +115,18 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-01 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-x-01 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-01 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-x-01 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-co-01" data-platform="linkedin-company">
           <div class="row"><span class="badge">LinkedIn · Alpha Nodus</span><span class="muted small">2026-09-28T08:30:00-05:00</span></div>
           <h4>2026-W40-li-co-01 · poll</h4>
           <div class="muted small">pillar three-leaks · leak all · CTA none · claims none</div>
           <div class="chips"><span class="chip pass">On brand</span><span class="chip pass">No over-promise</span><span class="chip pass">Original</span><span class="chip pass">Platform fit</span></div>
           <div class="angle">Every order can be lost three times, and the question nobody can answer</div>
-          <div class="pv"><div class="who">Alpha Nodus</div><div>How many referrals went to another center last month?<br><br>Most imaging centers can&#x27;t answer that. Not because anyone isn&#x27;t paying attention. Because the answer is split across three systems that never talk to each<details><summary>…see more</summary> other.<br><br>Every order can be lost three times:<br><br>→ Before it arrives. The referrer sends it elsewhere, or the fax is never worked.<br>→ Before it&#x27;s scanned. It sits unscheduled, and the slot goes empty.<br>→ Before it&#x27;s paid. A missing authorization, found as a denial weeks later.<br><br>The CRM sees referrals. The RIS sees schedules. The RCM sees claims. Nobody sees the whole order.<br><br>So here&#x27;s an easier question. We&#x27;ll share what you told us on Friday.<br><br><span class="link">#ImagingCenters</span> <span class="link">#HealthcareOperations</span> <span class="link">#Radiology</span></details></div><div class="poll"><b>How many systems does one order touch before your center gets paid?</b><div class="opt">3 to 4</div><div class="opt">5 to 6</div><div class="opt">7 or more</div><div class="opt">Never counted</div></div></div>
+          <div class="pv"><div class="who">Alpha Nodus</div><div>How many referrals went to another center last month?<br><br>Most imaging centers can&#x27;t answer that. Not because the team isn&#x27;t paying attention, but because the answer is split across three systems that never talk t<details><summary>…see more</summary>o each other.<br><br>Every order can be lost three times:<br><br>→ Before it arrives. The referrer sends it elsewhere, or the fax is never worked.<br>→ Before it&#x27;s scanned. It sits unscheduled, and the slot goes empty.<br>→ Before it&#x27;s paid. A missing authorization, found as a denial weeks later.<br><br>The CRM sees referrals. The RIS sees schedules. The RCM sees claims. Nobody sees the whole order.<br><br>So here&#x27;s an easier question. Vote below, and we&#x27;ll share what you told us next week.<br><br><span class="link">#ImagingCenters</span> <span class="link">#HealthcareOperations</span> <span class="link">#Radiology</span></details></div><div class="poll"><b>How many systems does one order touch before your center gets paid?</b><div class="opt">3 to 4</div><div class="opt">5 to 6</div><div class="opt">7 or more</div><div class="opt">Never counted</div></div></div>
           
-          <div class="notes"><b>Reviewer notes</b><br>- Promises a results post on Friday (Oct 2). The Friday X post (2026-W40-x-05) carries the same question; add a LinkedIn results line to Friday&#x27;s company post if the poll gets 20+ votes, otherwise skip the promise and delete the &quot;We&#x27;ll share…&quot; sentence before approving.<br>- Poll runs three days (ends Thursday morning).</div>
+          <div class="notes"><b>Reviewer notes</b><br>- Promises a results post next week: week 41&#x27;s plan must include a short LinkedIn post with the poll results (drafted once the poll closes Thursday). If the poll gets fewer than 20 votes, share the result as &quot;early signal&quot; or fold it into another post.<br>- Poll runs three days (ends Thursday morning).</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-01 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-01 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-01 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-01 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-sp-01" data-platform="linkedin-founder">
           <div class="row"><span class="badge">LinkedIn · Shamit</span><span class="muted small">2026-09-29T07:30:00-05:00</span></div>
           <h4>2026-W40-li-sp-01 · text</h4>
@@ -129,8 +137,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- <b>Shamit to approve and post himself</b> (personal profile; not scheduled through Metricool).<br>- Every fact is from the locked cold open (deck slide 1) and slide 3 bio. The one line added for texture, &quot;An idle machine is somebody&#x27;s emergency,&quot; is new wording: Shamit, keep it or cut it.<br>- No Gravity mention on purpose. Story posts earn the next post.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-sp-01 --by "Shamit Patel"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-sp-01 --by "Shamit Patel" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-sp-01 --by "Shamit Patel"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-sp-01 --by "Shamit Patel" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-co-02" data-platform="linkedin-company">
           <div class="row"><span class="badge">LinkedIn · Alpha Nodus</span><span class="muted small">2026-09-29T08:30:00-05:00</span></div>
           <h4>2026-W40-li-co-02 · document-carousel</h4>
@@ -141,8 +148,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Test 2 uses AN27&#x27;s widened span (&quot;from the referral to the payment&quot;). The live AOS page v1.0 still says &quot;order to payment&quot; and uses &quot;seam&quot;; v1.1 isn&#x27;t published yet. The link goes to the live v1.0 article until /aos exists.<br>- Test 5 invites &quot;what&#x27;s yours?&quot; Our exception rate by workflow isn&#x27;t published yet (Messaging Package open item 6). If asked, answer: &quot;We&#x27;re publishing it by workflow before RSNA.&quot; Only if that&#x27;s still the plan.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-02 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-02 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-02 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-02 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-ig-01" data-platform="instagram">
           <div class="row"><span class="badge">Instagram</span><span class="muted small">2026-09-29T12:00:00-05:00</span></div>
           <h4>2026-W40-ig-01 · carousel</h4>
@@ -153,8 +159,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Update the Instagram bio link to this post&#x27;s UTM link on the day it&#x27;s published.<br>- Frame 4 states what Gravity doesn&#x27;t do, per the &quot;we don&#x27;t read the scan&quot; rule.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-01 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-01 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-01 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-01 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-x-02" data-platform="x">
           <div class="row"><span class="badge">X</span><span class="muted small">2026-09-29T12:30:00-05:00</span></div>
           <h4>2026-W40-x-02 · thread</h4>
@@ -165,8 +170,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Mirrors the LinkedIn carousel (same day, different form). If asked for our own exception rate: not published yet; see the note on 2026-W40-li-co-02.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-02 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-x-02 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-02 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-x-02 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-x-03" data-platform="x">
           <div class="row"><span class="badge">X</span><span class="muted small">2026-09-30T08:00:00-05:00</span></div>
           <h4>2026-W40-x-03 · single</h4>
@@ -177,8 +181,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-03 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-x-03 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-03 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-x-03 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-ig-02" data-platform="instagram">
           <div class="row"><span class="badge">Instagram</span><span class="muted small">2026-09-30T12:00:00-05:00</span></div>
           <h4>2026-W40-ig-02 · reel</h4>
@@ -196,8 +199,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
 | 0:21-0:24 | End card, dark, typographic. | Phones silent, schedule full. | Gravity · Link in bio |</pre></details>
           <div class="notes"><b>Reviewer notes</b><br>- Needs recorded video before it can be scheduled. Status: script only.<br>- &quot;3:15&quot; is illustrative (deck slide 4&#x27;s example slot), not a statistic.<br>- Set `instagramData.type: REEL`. Declare `isAiGenerated: false` (real footage and typography).</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-02 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-02 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-02 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-02 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-co-03" data-platform="linkedin-company">
           <div class="row"><span class="badge">LinkedIn · Alpha Nodus</span><span class="muted small">2026-10-01T08:00:00-05:00</span></div>
           <h4>2026-W40-li-co-03 · text</h4>
@@ -208,8 +210,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Timed for the effective date (Thu Oct 1). Re-check the UHC notice that morning in case of changes.<br>- Describes our capability as it ships (eligibility, auth determination, portal submission, clinicals request; the center&#x27;s specialist answers medical-necessity questions), per deck slide 16.<br>- Names a payer (UnitedHealthcare/Surest) factually. That&#x27;s not a competitor; the tone is neutral, with no criticism of the payer.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-03 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-03 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-03 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-03 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-x-04" data-platform="x">
           <div class="row"><span class="badge">X</span><span class="muted small">2026-10-01T12:30:00-05:00</span></div>
           <h4>2026-W40-x-04 · single</h4>
@@ -220,15 +221,14 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Same news as the LinkedIn post that morning (2026-W40-li-co-03), written for X. Links to the payer&#x27;s own notice, so there&#x27;s no CTA.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-04 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-x-04 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-04 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-x-04 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-yt-01" data-platform="youtube-shorts">
           <div class="row"><span class="badge">YouTube Shorts</span><span class="muted small">2026-10-01T17:00:00-05:00</span></div>
           <h4>2026-W40-yt-01 · short</h4>
           <div class="muted small">pillar order-to-exam · leak order · CTA demo · claims P10</div>
           <div class="chips"><span class="chip pass">On brand</span><span class="chip pass">No over-promise</span><span class="chip pass">Original</span><span class="chip pass">Platform fit</span></div>
           <div class="angle">The empty seat at takeoff, for YouTube search</div>
-          <div class="pv"><b>Why imaging centers leave MRI slots empty | Gravity</b><br>It&#x27;s 3:15 on a Tuesday. The MRI is ready, the tech is ready, and the table is empty. Airlines fill about 85% of their seats. Imaging centers fill about 65% of their slots, and patients still wait weeks. That isn&#x27;t a capacity problem. It&#x27;s a leakage problem.<br><br>Gravity, from Alpha Nodus, is the Agentic Operations System (AOS) for imaging. It gets the order, completes the exam and gets it paid, as one system.<br><br>See it run: <span class="link">https://www.alphanodus.com/contact?utm_source=youtube&amp;utm_medium=social&amp;utm_campaign=an27&amp;utm_content=2026-W40-yt-01</span><br><br><span class="link">#ImagingCenter</span> <span class="link">#PatientAccess</span> <span class="link">#Radiology</span></div>
+          <div class="pv"><b>Why MRI slots sit empty at imaging centers | Gravity</b><br>It&#x27;s 3:15 on a Tuesday. The MRI is ready, the tech is ready, and the table is empty. Airlines fill about 85% of their seats. Imaging centers fill about 65% of their slots, and patients still wait weeks. That isn&#x27;t a capacity problem. It&#x27;s a leakage problem.<br><br>Gravity, from Alpha Nodus, is the Agentic Operations System (AOS) for imaging. It gets the order, completes the exam and gets it paid, as one system.<br><br>See it run: <span class="link">https://www.alphanodus.com/contact?utm_source=youtube&amp;utm_medium=social&amp;utm_campaign=an27&amp;utm_content=2026-W40-yt-01</span><br><br><span class="link">#ImagingCenter</span> <span class="link">#PatientAccess</span> <span class="link">#Radiology</span></div>
           <details><summary>Video script</summary><pre>| Time | Shot | VO | On-screen text |
 |---|---|---|---|
 | 0:00-0:02 | Wall clock at 3:15; empty MRI table | (room tone) | 3:15 p.m. Tuesday. |
@@ -239,8 +239,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
 | 0:21-0:24 | End card | Phones silent, schedule full. | Gravity · alphanodus.com |</pre></details>
           <div class="notes"><b>Reviewer notes</b><br>- Title carries the search phrase (decision 27: search words in metadata), so `radiology_ok: true` covers the hashtag and tag use.<br>- Needs the recorded video and a YouTube channel connected in Metricool before it can be scheduled.<br>- Posted the day after the Instagram reel, at 5 p.m., so the two don&#x27;t compete.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-yt-01 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-yt-01 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-yt-01 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-yt-01 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-sp-02" data-platform="linkedin-founder">
           <div class="row"><span class="badge">LinkedIn · Shamit</span><span class="muted small">2026-10-02T07:30:00-05:00</span></div>
           <h4>2026-W40-li-sp-02 · text</h4>
@@ -251,20 +250,18 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- <b>Shamit to approve and post himself.</b><br>- Candor lines come from the AOS page&#x27;s &quot;Origin of the term&quot; section.<br>- Same morning as the company post on agentic AI (2026-W40-li-co-04); they reinforce each other without repeating.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-sp-02 --by "Shamit Patel"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-sp-02 --by "Shamit Patel" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-sp-02 --by "Shamit Patel"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-sp-02 --by "Shamit Patel" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-li-co-04" data-platform="linkedin-company">
           <div class="row"><span class="badge">LinkedIn · Alpha Nodus</span><span class="muted small">2026-10-02T08:30:00-05:00</span></div>
           <h4>2026-W40-li-co-04 · text</h4>
           <div class="muted small">pillar aos-category · leak all · CTA aos-page · claims none</div>
           <div class="chips"><span class="chip pass">On brand</span><span class="chip pass">No over-promise</span><span class="chip pass">Original</span><span class="chip pass">Platform fit</span></div>
           <div class="angle">Agentic AI in radiology is being defined as reading. The other half of the building has no definition yet.</div>
-          <div class="pv"><div class="who">Alpha Nodus</div><div>Your referral data doesn&#x27;t know about your denials. Your schedule doesn&#x27;t know which referrer&#x27;s orders keep getting rejected.<br><br>This year the journals started defining agentic AI in radiology. Read the reviews a<details><summary>…see more</summary>nd nearly all of it is about the image: agents that chain the steps of reading and reporting a study.<br><br>That work matters. It&#x27;s also half the building.<br><br>The other half is where the order lives. The fax that has to become an order. The patient who has to be called back. The payer portal with no interface. The report that has to get back to the referring office. That half loses orders every day, and nobody has defined what agents should do there.<br><br>So we wrote it down. An Agentic Operations System (AOS) is not diagnostic AI. It doesn&#x27;t read the scan. It does the operational work around the scan, and it&#x27;s judged on five tests: the work gets completed, across the whole order, in systems it doesn&#x27;t own, scaling with volume rather than headcount, with people handling the exceptions.<br><br>The definition is in the first comment. Tell us what&#x27;s missing.<br><br><span class="link">#AgenticAI</span> <span class="link">#ImagingCenters</span> <span class="link">#Radiology</span></details></div><div class="comment"><b>First comment</b><br>What an Agentic Operations System (AOS) is, what it isn&#x27;t, and the five tests: <span class="link">https://www.alphanodus.com/post/what-is-an-agentic-operations-system-aos?utm_source=linkedin&amp;utm_medium=social&amp;utm_campaign=an27&amp;utm_content=2026-W40-li-co-04</span></div></div>
+          <div class="pv"><div class="who">Alpha Nodus</div><div>Your referral data doesn&#x27;t know about your denials. Your schedule doesn&#x27;t know which referrer&#x27;s orders keep getting rejected.<br><br>This year the journals have been busy defining agentic AI in radiology. Read the re<details><summary>…see more</summary>views and nearly all of it is about the image: agents that chain the steps of reading and reporting a study.<br><br>That work matters. It&#x27;s also half the building.<br><br>The other half is where the order lives. The fax that has to become an order. The patient who has to be called back. The payer portal with no interface. The report that has to get back to the referring office. That half loses orders every day, and it has had far less of the attention.<br><br>So we wrote it down. An Agentic Operations System (AOS) is not diagnostic AI. It doesn&#x27;t read the scan. It does the operational work around the scan, and it&#x27;s judged on five tests: the work gets completed, across the whole order, in systems it doesn&#x27;t own, scaling with volume rather than headcount, with people handling the exceptions.<br><br>The definition is in the first comment. Tell us what&#x27;s missing.<br><br><span class="link">#AgenticAI</span> <span class="link">#ImagingCenters</span> <span class="link">#Radiology</span></details></div><div class="comment"><b>First comment</b><br>What an Agentic Operations System (AOS) is, what it isn&#x27;t, and the five tests: <span class="link">https://www.alphanodus.com/post/what-is-an-agentic-operations-system-aos?utm_source=linkedin&amp;utm_medium=social&amp;utm_campaign=an27&amp;utm_content=2026-W40-li-co-04</span></div></div>
           
           <div class="notes"><b>Reviewer notes</b><br>- `radiology_ok: true`: &quot;agentic AI in radiology&quot; is the literature&#x27;s own phrase, and the post is commentary on it. Imaging stays the house word elsewhere.<br>- Posted the same morning as Shamit&#x27;s category post (2026-W40-li-sp-02). Company page can reshare his post on Monday with one line.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-04 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-04 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-li-co-04 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-li-co-04 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-ig-03" data-platform="instagram">
           <div class="row"><span class="badge">Instagram</span><span class="muted small">2026-10-02T12:00:00-05:00</span></div>
           <h4>2026-W40-ig-03 · carousel</h4>
@@ -275,8 +272,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           <div class="notes"><b>Reviewer notes</b><br>- Light theme on purpose, so the grid alternates with Tuesday&#x27;s dark carousel.<br>- Bio link switches to this post&#x27;s UTM link on Friday.</div>
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-03 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-03 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-ig-03 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-ig-03 --by "Tushant" --reason "..."</code>
         </article><article class="card" id="post-2026-W40-x-05" data-platform="x">
           <div class="row"><span class="badge">X</span><span class="muted small">2026-10-02T12:30:00-05:00</span></div>
           <h4>2026-W40-x-05 · single</h4>
@@ -287,8 +283,7 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
           
           
           
-          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-05 --by "Tushant"</code>
-          <code class="cmd">python3 scripts/gate.py reject 2026-W40-x-05 --by "Tushant" --reason "..."</code>
+          <code class="cmd">python3 scripts/gate.py approve 2026-W40-x-05 --by "Tushant"</code><code class="cmd">python3 scripts/gate.py reject 2026-W40-x-05 --by "Tushant" --reason "..."</code>
         </article></div></section></div>
 <div class="tab" id="posting">
     <section class="panel"><h3>Schedule: approved and scheduled posts</h3><p class="muted small">Scheduling goes through Metricool behind the approval hook. Metricool brand 6979710; auto-publish False.</p>

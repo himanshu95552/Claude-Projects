@@ -21,7 +21,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-NETWORK_TO_PLATFORM = {"twitter": "x", "linkedin": "linkedin", "instagram": "instagram", "youtube": "youtube-shorts"}
+# Metricool's "linkedin" network is the company page. Shamit's personal posts are never scheduled here.
+NETWORK_TO_PLATFORM = {"twitter": "x", "linkedin": "linkedin-company", "instagram": "instagram", "youtube": "youtube-shorts"}
 
 
 def block(msg: str) -> None:
@@ -77,6 +78,11 @@ def main():
     fc_ok = normalize(post.section("First comment"))
     if fc_sent and fc_sent != fc_ok:
         block(f"First comment differs from approved post {post.id}.")
+
+    if platform == "youtube-shorts":
+        yt_title = normalize(str((info.get("youtubeData") or {}).get("title", "")))
+        if yt_title != normalize(post.section("Title")):
+            block(f"YouTube title differs from approved post {post.id}.")
 
     cfg = config()
     want_auto = bool(cfg.get("metricool", {}).get("auto_publish", False))

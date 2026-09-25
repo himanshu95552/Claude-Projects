@@ -92,7 +92,9 @@ class Post:
         return self.yaml_block("Poll")
 
     def main_text(self) -> str:
-        """The text a network would receive as the post body."""
+        """The text a network would receive as the post body (a YouTube Short's is its description)."""
+        if self.platform == "youtube-shorts":
+            return self.section("Description")
         parts = self.thread_parts()
         return parts[0] if parts else self.section("Post")
 

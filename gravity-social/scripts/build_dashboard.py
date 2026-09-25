@@ -169,7 +169,17 @@ def tab_research(res: dict, fname: str) -> str:
     <section class="panel"><h3>Angles sent to Content</h3><ul>{angles}</ul></section>'''
 
 
-def tab_content(posts, results, approver) -> str:
+def decision_block(p, approvers) -> str:
+    founder = p.platform == "linkedin-founder"
+    return (f'<div class="decide" data-post="{e(p.id)}" data-hash="{e(p.content_hash())}" data-founder="{1 if founder else 0}">'
+            f'<div class="dstate small" aria-live="polite">Loading decisions…</div>'
+            f'<label class="small muted" for="why-{e(p.id)}">Reason (needed to reject)</label>'
+            f'<textarea id="why-{e(p.id)}" class="why" rows="2"></textarea>'
+            f'<div class="drow"><button type="button" class="btn approve">Approve</button>'
+            f'<button type="button" class="btn reject">Reject</button></div></div>')
+
+
+def tab_content(posts, results, approver, artifact=False, approvers=()) -> str:
     days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
     by_day = defaultdict(list)
     for p in posts:
@@ -202,13 +212,19 @@ def tab_content(posts, results, approver) -> str:
           {f'<details><summary>Video script</summary><pre>{e(script)}</pre></details>' if script else ""}
           {f'<div class="notes"><b>Reviewer notes</b><br>{para(notes)}</div>' if notes else ""}
           {f'<ul class="issues">{issues}</ul>' if issues else ""}
-          <code class="cmd">python3 scripts/gate.py approve {e(p.id)} --by "{e(by)}"</code>
-          <code class="cmd">python3 scripts/gate.py reject {e(p.id)} --by "{e(by)}" --reason "..."</code>
+          {decision_block(p, approvers) if artifact else f'<code class="cmd">python3 scripts/gate.py approve {e(p.id)} --by "{e(by)}"</code><code class="cmd">python3 scripts/gate.py reject {e(p.id)} --by "{e(by)}" --reason "..."</code>'}
         </article>'''
     plats = sorted({p.platform for p in posts})
     filt = '<button class="on" data-f="all">All</button>' + "".join(f'<button data-f="{e(x)}">{e(PLATFORM_LABEL.get(x, x))}</button>' for x in plats)
     n_fail = sum(1 for p in posts if results[p.id].errors)
-    return f'''
+    who = ""
+    if artifact:
+        opts = "".join(f'<option value="{e(a)}">{e(a)}</option>' for a in approvers)
+        who = (f'<section class="panel whobar"><label for="who"><b>Approving as</b></label> <select id="who">{opts}</select>'
+               f'<span class="small muted">Tap Approve or Reject on a post, then tap again to confirm. Decisions are recorded in the queue '
+               f'by the weekday 7:25 a.m. CT run, or when you tell Claude "sync approvals". Only Shamit Patel can approve his own posts.</span>'
+               f'<span id="dbstatus" class="small"></span></section>')
+    return f'''{who}
     <div class="pills"><span class="pill">{len(posts)} waiting for approval</span><span class="pill">{n_fail} need fixes before they can be approved</span>
       <span class="pill">Voice: calm, specific, on the staff's side. No over-promise.</span><span class="pill">Claude writes, the linter checks, a person approves</span></div>
     <section class="panel"><h3>Next posts, by day</h3><div class="week">{grid}</div></section>
@@ -240,7 +256,7 @@ def tab_posting(cfg, d) -> str:
     count_html = "".join(f'<span class="pill">{e(k)} {v}</span>' for k, v in counts.most_common())
     inbox = "".join(
         f'<div class="msg"><div class="row"><b>{e(it.get("author"))}</b><span class="chip {"fail" if it.get("route") == "person" else "pass"}">{e(it.get("intent"))}</span></div>'
-        f'<div class="muted small">{e(it.get("author_title"))} · {e(it.get("_platform"))} {e(it.get("kind"))}</div><div>{e(it.get("text"))}</div>'
+        f'<div class="muted small">{e(", ".join(x for x in [str(it.get("author_title") or ""), str(it.get("organization") or "")] if x))} · {e(it.get("_platform"))} {e(it.get("kind"))}</div><div>{e(it.get("text"))}</div>'
         + (f'<div class="reply"><span class="muted small">Draft reply ({e(it.get("reply_status", "pending"))})</span><br>{e(it.get("draft_reply"))}</div>' if it.get("draft_reply") else "")
         + (f'<div class="small callout">Needs a person: never auto-replied</div>' if it.get("route") == "person" else "")
         + "</div>" for it in items)
@@ -293,12 +309,12 @@ def tab_brief(today) -> str:
 
 CSS = """
 :root{--bg:#F6F4FA;--surface:#FFFFFF;--text:#0C0B1F;--muted:#5D5B6E;--rule:#E3DEEE;--accent:#002EED;--hi:#C0189A;--ok:#0A7A3E;--warn:#9A6300;--err:#B3261E;--chip:#EEE9F7;--ink:#0C0B1F}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}}
-:root[data-theme="dark"]{--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0C0B1F;--surface:#15143A;--text:#F4F3FA;--muted:#B5B3C8;--rule:#2E2D5C;--accent:#8EA0FF;--hi:#FE4BD1;--ok:#5BD08F;--warn:#F2B84B;--err:#FF8A80;--chip:#202052;--ink:#05041A}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.5 Inter,system-ui,sans-serif}
 .top{background:var(--ink);color:#fff;padding:14px 16px}.top .in{max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline}
 .top h1{font:700 20px 'Space Grotesk',Inter,sans-serif;margin:0}.top .s{color:#CBCDD3;font-size:13px}
-nav{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--rule)}nav .in{max-width:1320px;margin:0 auto;display:flex;overflow-x:auto;padding:0 8px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--rule)}nav .in{max-width:1320px;margin:0 auto;display:flex;overflow-x:auto;padding:0 8px}
 nav button{border:0;background:none;color:var(--muted);font:600 14px Inter,sans-serif;padding:12px 14px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
 nav button.on{color:var(--text);border-bottom-color:var(--accent)}
 main{max-width:1320px;margin:0 auto;padding:18px 16px 80px}.tab{display:none}.tab.on{display:block}
@@ -335,6 +351,85 @@ pre{white-space:pre-wrap;font-size:12px}details summary{cursor:pointer;color:var
 .fr{display:grid;grid-template-columns:minmax(120px,190px) 1fr 110px;gap:10px;align-items:center;margin:8px 0;font-size:13px}.fb{background:var(--chip);border-radius:6px;height:16px;overflow:hidden}.fb div{height:100%;background:var(--accent)}.fv{text-align:right}
 .brief h2{font:700 20px 'Space Grotesk',sans-serif}.brief code{background:var(--chip);padding:1px 5px;border-radius:4px}
 .sched td{min-width:90px;font-size:12px}
+.whobar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.whobar select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--text)}
+.decide{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);display:grid;gap:6px}
+.decide textarea{font:inherit;width:100%;border:1px solid var(--rule);border-radius:8px;padding:8px;background:var(--surface);color:var(--text);resize:vertical}
+.drow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--text);cursor:pointer}
+.btn.approve{background:var(--ok);border-color:var(--ok);color:#fff}.btn.reject{color:var(--err);border-color:var(--err)}
+.btn.armed{outline:3px solid var(--hi);outline-offset:2px}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,nav button:focus-visible,.filters button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.dstate.ok{color:var(--ok)}.dstate.warn{color:var(--warn)}.dstate.err{color:var(--err)}
+"""
+
+DECIDE_JS = r"""
+(function(){
+  const $ = (q, el=document) => [...el.querySelectorAll(q)];
+  const blocks = $('.decide');
+  const who = document.getElementById('who');
+  const status = document.getElementById('dbstatus');
+  try { const w = localStorage.getItem('gs-who'); if (w && who) who.value = w; } catch (e) {}
+  if (who) who.addEventListener('change', () => { try { localStorage.setItem('gs-who', who.value); } catch (e) {} paint(); });
+  let db = null, me = null, canWrite = null, decisions = {};
+  function setAll(msg, cls) { blocks.forEach(b => { const s = b.querySelector('.dstate'); s.textContent = msg; s.className = 'dstate small ' + (cls||''); }); }
+  function paint() {
+    blocks.forEach(b => {
+      const id = b.dataset.post, d = decisions[id], s = b.querySelector('.dstate');
+      const founderBlocked = b.dataset.founder === '1' && who && who.value !== 'Shamit Patel';
+      let msg = '', cls = '', locked = !db || canWrite === false || !me || founderBlocked;
+      if (d) {
+        const verb = d.decision === 'approve' ? 'Approved' : 'Rejected';
+        if (d.status === 'recorded') { msg = verb + ' by ' + d.approver + ' · recorded in the queue'; cls = 'ok'; locked = true; }
+        else if (d.status === 'new') { msg = verb + ' by ' + d.approver + ' · waiting for the next sync'; cls = 'warn'; }
+        else if (d.content_hash !== b.dataset.hash) { msg = 'This post changed after the last decision. Review it again.'; cls = 'warn'; }
+        else { msg = (d.result || d.status) + ''; cls = 'err'; }
+      } else if (founderBlocked) { msg = 'Only Shamit Patel can approve his own posts.'; }
+      else if (!msg) { msg = 'Waiting for your decision.'; }
+      s.textContent = msg; s.className = 'dstate small ' + cls;
+      b.querySelectorAll('.btn').forEach(x => { x.disabled = locked; });
+    });
+  }
+  async function decide(b, decision, btn) {
+    if (!btn.classList.contains('armed')) {
+      $('.btn.armed').forEach(x => { x.classList.remove('armed'); x.textContent = x.classList.contains('approve') ? 'Approve' : 'Reject'; });
+      btn.classList.add('armed'); btn.textContent = 'Tap again to ' + decision; return;
+    }
+    btn.classList.remove('armed'); btn.textContent = decision === 'approve' ? 'Approve' : 'Reject';
+    const reason = b.querySelector('.why').value.trim();
+    const s = b.querySelector('.dstate');
+    if (decision === 'reject' && !reason) { s.textContent = 'Add a reason so the rewrite can fix it.'; s.className = 'dstate small err'; return; }
+    try {
+      await db.doc('decisions/' + b.dataset.post).set({
+        post_id: b.dataset.post, decision, approver: who ? who.value : '', by: me,
+        content_hash: b.dataset.hash, reason, decided_at: new Date().toISOString(), status: 'new', result: ''
+      });
+    } catch (err) {
+      if (err && err.code === 'invalid_argument') { canWrite = false; s.textContent = 'You can view this page but not record decisions. Ask the owner for Contributor access.'; }
+      else { s.textContent = 'Could not save. Check your connection and try again.'; }
+      s.className = 'dstate small err'; paint();
+    }
+  }
+  blocks.forEach(b => {
+    b.querySelector('.approve').addEventListener('click', e => decide(b, 'approve', e.currentTarget));
+    b.querySelector('.reject').addEventListener('click', e => decide(b, 'reject', e.currentTarget));
+  });
+  setAll('Loading decisions…');
+  const use = window.claude && window.claude.use ? window.claude.use.bind(window.claude) : null;
+  if (!use) { setAll('Decisions can only be recorded when this page is opened in Claude. Tell Claude "approve <id>" instead.'); paint(); return; }
+  Promise.all([use('db'), use('user')]).then(async ([d, u]) => {
+    db = d;
+    if (!db) { setAll('This view can't record decisions. Open the page signed in, or tell Claude "approve <id>".'); paint(); return; }
+    if (u) { me = await u.id(); canWrite = await u.can('data.write'); }
+    if (!me) { if (status) status.textContent = 'Sign in to record decisions.'; }
+    else if (canWrite === false) { if (status) status.textContent = 'You have view access only. Ask the owner for Contributor access to approve here.'; }
+    db.collection('decisions').onSnapshot(snap => {
+      const next = {}; snap.docs.forEach(x => { if (x.exists) next[x.id] = x.data(); });
+      decisions = next; paint();
+    }, () => { setAll('Lost the connection to decisions. Reload the page.'); });
+    paint();
+  });
+})();
 """
 
 JS = """
@@ -351,8 +446,14 @@ fb.forEach(b=>b.onclick=()=>{fb.forEach(x=>x.classList.remove('on'));b.classList
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--artifact", action="store_true", help="build the published web page (no doc wrapper, with Approve/Reject)")
+    ap.add_argument("--date", help="build as of this date (YYYY-MM-DD); default today")
+    args = ap.parse_args()
+    artifact = args.artifact
     cfg = config()
-    today = dt.date.today()
+    today = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
     d = morning_brief.collect(today)
     approver = (cfg.get("approval", {}).get("approvers") or [{"name": "Approver"}])[0]["name"]
     ledger = gravity_lint.Ledger()
@@ -377,12 +478,16 @@ def main():
 <button data-t="posting">Posting &amp; community</button><button data-t="growth">Growth</button><button data-t="brief">Morning brief</button></div></nav>
 <main>
 <div class="tab" id="research">{tab_research(d.get("research") or {}, d.get("research_file", ""))}</div>
-<div class="tab" id="content">{tab_content(posts, results, approver)}</div>
+<div class="tab" id="content">{tab_content(posts, results, approver, artifact, [a["name"] for a in cfg.get("approval", {}).get("approvers", [])])}</div>
 <div class="tab" id="posting">{tab_posting(cfg, d)}</div>
 <div class="tab" id="growth">{tab_growth(d)}</div>
 <div class="tab" id="brief">{tab_brief(today)}</div>
-</main><script>{JS}</script></body></html>"""
-    out = ROOT / "content" / "dashboard.html"
+</main><script>{JS}</script>{f"<script>{DECIDE_JS}</script>" if artifact else ""}</body></html>"""
+    if artifact:  # the Artifact publisher supplies doctype/html/head/body itself
+        doc = re.sub(r"^<!doctype html><html[^>]*><head>", "", doc)
+        doc = doc.replace("</head><body>", "", 1).replace("</body></html>", "")
+        doc = re.sub(r'<meta charset="utf-8"><meta name="viewport"[^>]*>', "", doc)
+    out = ROOT / "content" / ("dashboard-artifact.html" if artifact else "dashboard.html")
     out.write_text(doc, encoding="utf-8")
     print(f"Wrote {out.relative_to(ROOT)}: {len(posts)} pending, research={'yes' if d.get('research') else 'no'}")
 
