@@ -38,6 +38,10 @@ Rebuilt from *The AI Social Media Team That Runs on One Person* (ReStructure Bri
 
 Tested: lint refusal, unknown approver, exact-match pass, unapproved text, cross-posting, autoPublish, malformed payload, and edit-after-approval.
 
+## New machine, session or Claude account
+
+Run `bash setup.sh <private bundle>` from the repo root, then follow [`HANDOFF.md`](HANDOFF.md). It holds the full history, the current state, the account-level pieces to reconnect, and a prompt to paste.
+
 ## Using it (talk to Claude in this repo)
 
 | Say | What happens |
@@ -93,7 +97,7 @@ The repo is public, so files holding other people's data are git-ignored and sta
 | 4 | RSNA booth number | `config.yaml` → `campaigns[0].booth` |
 | 5 | Pages for the CTAs: `/aos` (the v1.1 definition) and a "your exam, itemized" request page; both point to live pages until then | `config.yaml` → `links` |
 | 6 | Tie Calendly bookings to posts: set `links.calendly_demo` to the Calendly event URL, **or** swap the contact-page embed for `reports/calendly-embed-snippet.html` | `reports/attribution.md` |
-| 7 | Optional: a weekday Routine for the morning brief and inbox triage | ask Claude to set it up |
+| 7 | The weekday Routine for the morning brief (set up; move it when you change session or account) | `HANDOFF.md` section 5 |
 
 ## Folder map
 

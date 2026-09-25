@@ -10,7 +10,7 @@ Output: `gravity-social/research/briefs/<YYYY>-W<ww>.yaml` (schema in `templates
 ## Before you search
 
 1. Read `config.yaml` (campaign phase), `content/pillars.md` (phase weighting), `brand/messaging.md` (the three leaks), `brand/search-vocabulary.md`.
-2. Read last week's brief and the latest `reports/daily/*.md` so you know what worked. Don't repeat an angle that went nowhere.
+2. Read last week's brief, `research/hook-scoreboard.md` (which hook patterns, formats and platforms earned clicks and demo requests) and the latest `reports/daily/*.md` so you know what worked. Don't repeat an angle that went nowhere.
 3. Pick the ISO week you're researching for, usually next week.
 
 ## The eight agents (run them as steps)

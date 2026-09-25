@@ -9,3 +9,5 @@ reports/daily/
 reports/metrics/*.json
 content/approver-ids.json
 content/dashboard-artifact.html
+# The AN27 originals are internal documents: restored locally by setup.sh, never committed.
+source-docs/
