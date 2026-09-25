@@ -230,6 +230,16 @@ def check_platform(res: Result, post: Post, limits: dict, cfg: dict):
     elif fmt not in ("short",) and plat != "x":
         res.add("ERROR", "empty", "No ## Post section.")
 
+    if plat == "youtube-shorts":
+        title = post.section("Title")
+        if not title:
+            res.add("ERROR", "title", "YouTube needs a ## Title (search phrase first, house line second).")
+        elif len(title) > lim.get("title_max_chars", 100):
+            res.add("ERROR", "title", f"Title is {len(title)} chars (max {lim['title_max_chars']}).")
+        if len(post.section("Description")) > lim.get("description_max_chars", 5000):
+            res.add("ERROR", "length", "Description too long.")
+        bodies = [post.section("Description")] if post.section("Description") else []
+
     body_all = "\n".join(bodies)
     tags = HASHTAG_RE.findall(post.public_text() if plat == "instagram" else body_all)
     tag_max = lim.get("hashtags_max_rsna", lim.get("hashtags_max")) if rsna else lim.get("hashtags_max")

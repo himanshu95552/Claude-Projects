@@ -10,11 +10,12 @@ Two steps, always in this order. The hook in `.claude/settings.json` (`gravity-s
 ## Step 1: Approval (a person decides; you record)
 
 - Show what's waiting: `python3 scripts/gate.py status`, the dashboard's Content tab, or `python3 scripts/gate.py show <id>` pasted in chat.
-- **Approve only on an explicit instruction naming the posts**, for example "approve 2026-W41-li-co-01 and the X thread" or "approve all the X posts." Record it with the approver's name exactly as in `config.yaml`:
+- **Approve only on an explicit instruction naming the posts**, for example "approve 2026-W41-li-co-01 and the X thread" or "approve all the X posts." Record it with the approver's name exactly as in `config.yaml` (Tushant, the marketing manager, approves day to day; Shamit Patel can approve anything, and only he approves his own posts):
   ```bash
-  python3 scripts/gate.py approve <id> --by "Shamit Patel" [--note "..."]
-  python3 scripts/gate.py approve-all --by "Shamit Patel" --platform x
+  python3 scripts/gate.py approve <id> --by "Tushant" [--note "..."]
+  python3 scripts/gate.py approve-all --by "Tushant" --platform x
   ```
+  Use the name of the person who is actually speaking. If you can't tell who is approving, ask.
   `approve` re-lints the post and refuses on any error. It records who and when, and seals the public text with a hash.
 - "Looks good," "nice," or silence is not an approval. If it's ambiguous, ask: "Approve <ids>?"
 - Founder posts (`linkedin-founder`) need Shamit's own approval.

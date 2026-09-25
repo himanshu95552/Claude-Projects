@@ -1,0 +1,24 @@
+<!--
+  Replace the Calendly embed on alphanodus.com/contact (Webflow: Embed element) with this,
+  so UTMs on the page URL are forwarded to the booking. Calendly's standard embed does not
+  forward them on its own. Source: https://calendly.com/help/how-to-source-track-your-calendly-embed-with-utm-parameters
+  Replace CALENDLY_EVENT_URL with the event link, e.g. https://calendly.com/<account>/<event>.
+-->
+<div id="calendly-embed" style="min-width:320px;height:700px;"></div>
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
+<script>
+  (function () {
+    var p = new URLSearchParams(window.location.search);
+    Calendly.initInlineWidget({
+      url: "CALENDLY_EVENT_URL",
+      parentElement: document.getElementById("calendly-embed"),
+      utm: {
+        utmSource: p.get("utm_source") || undefined,
+        utmMedium: p.get("utm_medium") || undefined,
+        utmCampaign: p.get("utm_campaign") || undefined,
+        utmContent: p.get("utm_content") || undefined,
+        utmTerm: p.get("utm_term") || undefined
+      }
+    });
+  })();
+</script>

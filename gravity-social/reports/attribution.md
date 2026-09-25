@@ -10,8 +10,8 @@
 | Engagements (reactions, comments, reposts, saves) | Metricool analytics | same |
 | Followers gained | Metricool account evolution (daily), attributed to the day's posts | date |
 | Link clicks | Metricool clicks where available; website analytics by `utm_content` | `utm_content = post id` |
-| Demo requests | Website form / CRM export, filtered on `utm_source=linkedin|x|instagram|youtube` | `utm_content` |
-| "Exam itemized" requests | same | `utm_content` |
+| Demo requests | **Calendly** (the "Schedule a Demo" booking on alphanodus.com/contact). Export CSV → `scripts/import_calendly.py` | `utm_content` on the booking |
+| "Exam itemized" requests | Calendly, when the event-type name matches `config.yaml calendly.exam_itemized_event_keywords`; otherwise typed in | `utm_content` |
 | Opportunities, customers, pipeline $ | CRM | `utm_content`, or first-touch post noted by sales |
 | Leads from comments and DMs | `community/leads.csv` | `source_post` |
 
@@ -30,10 +30,19 @@ Founder posts: personal profiles are not in Metricool. Record Shamit's post stat
   `date,post_id,outcome,organization,value_usd,notes` where `outcome` is `demo_request | exam_itemized_request | opportunity | customer | founder_stats`.
 - `community/leads.csv`: leads from comments and DMs.
 
+## Getting the post id into Calendly
+
+Calendly stores `utm_source`, `utm_medium`, `utm_campaign`, `utm_content` and `utm_term` on a booking only when they are passed to it ([Calendly help](https://calendly.com/help/how-to-source-track-your-calendly-embed-with-utm-parameters)). Two routes; either works:
+
+1. **Link posts straight to the Calendly event (works today).** Put the event URL in `config.yaml → links.calendly_demo`. `scripts/utm.py` then points every demo CTA at it with the UTMs attached.
+2. **Keep linking to the contact page, and forward the page's UTMs to the embed.** The standard Calendly embed does not do this by itself. Replace the embed on alphanodus.com/contact with `reports/calendly-embed-snippet.html` (Webflow → Embed element).
+
+Weekly: in Calendly, go to Meetings → Filter → Tracking IDs → All IDs → Export CSV, then `python3 scripts/import_calendly.py <file.csv>`. Only the company email domain is kept; names and emails never enter the repo. Re-importing the same export doesn't double count.
+
 ## Rules
 
 - Every public link is built with `scripts/utm.py`. A link without `utm_content` can't be attributed; the linter warns.
 - A post "made pipeline" only if an outcome row names it. Don't infer it.
 - Report counts, not rates, when the numbers are small (under ~30 clicks). Say "3 of 41 clicks," not "7.3%."
 - The daily brief never publishes numbers externally. Internal only.
-- Until the CRM export exists, the funnel stops at clicks and comment/DM leads, and the brief says so.
+- Until one of the two Calendly routes is live, demo requests can't be tied to posts; the funnel stops at clicks and comment/DM leads, and the brief says so.

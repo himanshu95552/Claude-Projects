@@ -15,7 +15,7 @@ Method and file formats: `gravity-social/reports/attribution.md`. The brief is i
    - `getAnalyticsDataByMetrics` for the last 7 days.
    - Match Metricool posts to queue posts by `metricool_post_id`, else by text (a post's `main_text()`), and write `reports/metrics/<today>.json` in the format in `attribution.md`.
    - For published posts missing `published_url`, run `python3 scripts/gate.py mark-published <id> --url <url>`.
-2. **Outcomes:** check `reports/outcomes.csv` for new rows. If the person shares a CRM or form export, append rows (date, post_id from `utm_content`, outcome, organization, value_usd). Never guess an attribution.
+2. **Outcomes:** demo requests come from Calendly. When the person shares a Calendly CSV export (Meetings → Filter → Tracking IDs → All IDs → Export), run `python3 scripts/import_calendly.py <file>` (add `--dry-run` first if unsure). It appends one row per booking whose `utm_content` is a post id, keeps only the company email domain, and skips re-imports. Opportunities and customers are added by hand when sales confirms them. Never guess an attribution.
 3. **Build the brief:** `python3 scripts/morning_brief.py` → `reports/daily/<today>.md`. Replace each `[Claude: ...]` with one or two sentences of judgement:
    - Best post: *why* it worked (hook pattern, format, persona, leak) and a concrete part-2 idea.
    - Engaged but went nowhere: which pattern to drop or change (e.g. "a good line with no CTA," "a poll with no follow-up").
@@ -37,3 +37,4 @@ B2B imaging audiences are small. Report counts ("3 demo requests, 2 from the car
 - Publish or share the brief outside the team.
 - Present modeled, estimated or inferred numbers as measured.
 - Attribute an outcome to a post without a `utm_content` or a note from sales that says so.
+- Write an invitee's name or email into the repo.

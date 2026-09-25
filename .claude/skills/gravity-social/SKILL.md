@@ -55,7 +55,7 @@ If the person asks for this to run on a schedule, offer a Routine (the `create_t
 
 ## Rules that never bend
 
-1. **Never approve on your own.** Run `gate.py approve` only when the approver has said, in this conversation, that they approve that specific post or batch. Use their name exactly as it appears in `config.yaml`. Founder posts need Shamit's own approval.
+1. **Never approve on your own.** Run `gate.py approve` only when the approver has said, in this conversation, that they approve that specific post or batch. Use their name exactly as it appears in `config.yaml`: Tushant (marketing manager) day to day, or Shamit Patel. Founder posts need Shamit's own approval.
 2. **Never publish or schedule unapproved content**, and never try to get around the hook (for example by changing the text after approval, cross-posting to several networks, or turning on autoPublish).
 3. **No cross-posting.** One angle becomes a native piece per platform. The same text is never sent to two networks.
 4. **Every number comes from the proof ledger**, with its qualifiers ("about," "modeled," the source). If a post needs a figure that isn't in the ledger, stop and ask; don't invent, round or combine figures.
@@ -75,4 +75,5 @@ The brand files are distilled from AN27 Positioning v1.7, Messaging Package v1.0
 - Media for Instagram and LinkedIn documents must be at a public URL (for example Google Drive linked in Metricool) before scheduling.
 - The website CTA pages (`links.exam_itemized`, `/aos`) point to the contact page and the live AOS article until dedicated pages exist.
 - The RSNA booth number is TBD in `config.yaml`.
-- Demo requests can't be attributed until the website form or CRM export includes `utm_content` (see `reports/attribution.md`).
+- Demo requests land in Calendly. They're attributed once `links.calendly_demo` is set or the contact-page embed forwards UTMs (`reports/calendly-embed-snippet.html`); import exports with `scripts/import_calendly.py` (see `reports/attribution.md`).
+- YouTube Shorts is enabled, but no channel is linked from the website or connected in Metricool yet.

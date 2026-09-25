@@ -12,11 +12,11 @@ brand:
 # The human gate. Nothing is scheduled or published unless an approver below
 # approved it through scripts/gate.py. The Metricool hook enforces this.
 approval:
-  approvers:
+  approvers:                              # the first name is the day-to-day approver shown in the dashboard
+    - name: Tushant
+      role: Marketing Manager (day-to-day approver for company-page, X, Instagram and YouTube posts)
     - name: Shamit Patel
-      role: Founder and CEO (final say on voice, claims and founder posts)
-    # - name: <marketing lead>
-    #   role: Day-to-day approver for company-page posts
+      role: Founder and CEO (final say on voice and claims; sole approver of his own posts)
   founder_posts_require: Shamit Patel     # posts on Shamit's personal profile need Shamit's own approval
   metricool_second_gate: true             # also send approved posts to Metricool "for review"
   metricool_reviewers: ""                 # comma-separated emails for Metricool's review flow; fill in
@@ -45,8 +45,8 @@ platforms:
     metricool_network: instagram
     posts_per_week: 3                     # 2 carousels + 1 reel
   youtube-shorts:
-    enabled: false                        # turn on once a channel exists; reel scripts are reused
-    handle: ""
+    enabled: true                         # reel scripts are reused with search-phrase titles
+    handle: ""                            # no channel is linked from alphanodus.com yet; add it here and connect it in Metricool
     metricool_network: youtube
     posts_per_week: 1
 
@@ -58,7 +58,9 @@ metricool:
 links:
   home: https://www.alphanodus.com/
   aos_definition: https://www.alphanodus.com/post/what-is-an-agentic-operations-system-aos   # switch to /aos when published
-  demo: https://www.alphanodus.com/contact
+  demo: https://www.alphanodus.com/contact            # the contact page embeds Calendly ("Schedule a Demo")
+  calendly_demo: ""                                    # the Calendly event URL, e.g. https://calendly.com/<account>/<event>.
+                                                       # When set, demo CTAs link straight to it and Calendly records the UTMs.
   exam_itemized: https://www.alphanodus.com/contact   # the free "your exam, itemized" review; give it its own page when possible
   trust_center: https://security.alphanodus.com
 utm:
@@ -78,6 +80,13 @@ campaigns:
       - {name: rsna-countdown, from: 2026-11-16, to: 2026-11-28}
       - {name: rsna-live, from: 2026-11-29, to: 2026-12-03}
       - {name: rsna-follow-up, from: 2026-12-04, to: 2026-12-18}
+
+# Demo requests land in Calendly (embedded on the contact page). Import them with
+# scripts/import_calendly.py <export.csv>; each booking whose utm_content is a post id
+# becomes a row in reports/outcomes.csv.
+calendly:
+  exam_itemized_event_keywords: ["itemized", "leakage review", "exam review"]   # event-type names that count as "exam itemized" requests
+  free_email_domains: [gmail.com, yahoo.com, outlook.com, hotmail.com, icloud.com, aol.com, proton.me, protonmail.com]
 
 reporting:
   daily_report_time: "07:30"

@@ -8,6 +8,11 @@ utm_source   = the network (linkedin, x, instagram, youtube)
 utm_medium   = social (config.yaml utm.medium)
 utm_campaign = config utm.campaign_default, or the active campaign id
 utm_content  = the post id   (this is what makes post -> click -> demo attribution possible)
+
+Demo CTAs go straight to config links.calendly_demo when it is set, so the booking itself
+carries the post id (Calendly records utm_* passed on its link). Otherwise they go to the
+contact page, which only forwards UTMs to its Calendly embed once the page runs
+reports/calendly-embed-snippet.html.
 """
 
 import argparse
@@ -48,6 +53,8 @@ def main():
     a = ap.parse_args()
     cfg = config()
     url = a.url or cfg["links"][CTA_LINK[a.cta or "home"]]
+    if not a.url and a.cta in ("demo", "rsna-booth") and cfg["links"].get("calendly_demo"):
+        url = cfg["links"]["calendly_demo"]  # straight to the booking page; Calendly stores the UTMs on the booking
     print(build(url, a.platform, a.post, a.campaign, cfg))
 
 
