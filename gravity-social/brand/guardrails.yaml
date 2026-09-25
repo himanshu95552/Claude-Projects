@@ -1,0 +1,222 @@
+# Gravity guardrails: enforced by scripts/gravity_lint.py
+# severity: error = the post cannot be approved; warn = the reviewer must see it.
+# Patterns are Python regexes, matched case-insensitively against the public
+# text of a post (post body, thread parts, first comment, slides, captions,
+# on-screen text, alt text). `why` is shown in lint output; `fix` suggests
+# the replacement.
+
+rules:
+  # ---------- Retired and banned language (Positioning §4-§5, Messaging §7) ----------
+  - id: platform
+    pattern: '\bplatforms?\b'
+    severity: error
+    why: '"System," never "platform." A competitor owns "operations platform."'
+    fix: 'system'
+  - id: ai-powered
+    pattern: '\bAI[- ](powered|first|driven)\b'
+    severity: error
+    why: '"Agentic," not "AI-powered."'
+    fix: "agentic / Gravity's agents"
+  - id: personas
+    pattern: '\b(Sasha|Susan|Sandra)\b'
+    severity: error
+    why: 'Personas are internal. Only the voice agent says "Sandra", inside the product.'
+    fix: "Gravity / Gravity's agents / the voice agent"
+  - id: seam
+    pattern: '\bseams?\b'
+    severity: error
+    why: '"Seam" is retired; the enemy is leakage.'
+    fix: 'leak / between the referral and the payment'
+  - id: front-back-office
+    pattern: '\b(front|back)[- ]office\b'
+    severity: error
+    why: 'Front-office/back-office framing is retired.'
+  - id: rpa
+    pattern: '\b(RPA|robotic process automation) (bots?|scripts?|automation)\b|\b(launch|deploy|our|Gravity''s|gravity) (RPA|bots?)\b|\bbots\b'
+    severity: error
+    why: 'An AOS is not RPA. Say "Gravity works the payer portal."'
+  - id: rpa-mention
+    pattern: '\bRPA\b|robotic process automation'
+    severity: warn
+    why: 'Mention RPA only to say an AOS is not RPA.'
+  - id: workforce
+    pattern: '\b(AI|digital|synthetic|virtual) (workforce|workers?|employees?)\b|\bstaffing company\b|\bunlimited desks\b|\bbody in the chair\b'
+    severity: error
+    why: 'Workforce framing is retired: a workforce cannot replace a system.'
+  - id: sidekick
+    pattern: '\bsidekicks?\b'
+    severity: error
+    why: 'Assisted-software language. Gravity does the work; people handle exceptions.'
+  - id: old-leads
+    pattern: 'discover gravity|automate[,]? accelerate[,]? (and )?amplify|total cost of operations|digital front office|empower (your )?teams?'
+    severity: error
+    why: 'Retired 2025 lead lines.'
+  - id: gravity-platform
+    pattern: 'gravity (docs|estimate|auth|booking|analytics|platform)\b'
+    severity: error
+    why: 'Old product names map to the retired site. Describe the work with the three verbs.'
+  - id: get-the-referral
+    pattern: '\bget the referral\b'
+    severity: error
+    why: 'Decision 25: "get the order." The referral is the act; the order is the object.'
+    fix: 'get the order'
+  - id: agentic-os
+    pattern: '\bagentic OS\b|\bagentic operating system\b'
+    severity: error
+    why: 'Spell out "Agentic Operations System (AOS)". "Operating system" is a collision term.'
+  - id: restaurant
+    pattern: '\b(restaurant|fast[- ]food|drive[- ]thru|kitchen|waiter)\b'
+    severity: error
+    why: 'The restaurant analogy is internal training only.'
+  - id: cartoon-patients
+    pattern: 'mickey mouse|donald duck'
+    severity: error
+    why: 'Use a realistic fictional patient: Maria Lopez, 52, knee MRI, referred by Dr. Patel''s office.'
+  - id: no-competitors
+    pattern: 'no competitors'
+    severity: error
+    why: 'Prohibited claim.'
+
+  # ---------- Overpromising ----------
+  - id: guarantee
+    pattern: '\bguarantee[ds]?\b|\b100 ?%|\bzero (denials|leaks|no-shows|errors|leakage)\b|\bnever miss(es)?\b|\beliminates? (all|every)\b'
+    severity: error
+    why: '"No leaks" is a headline standard. In body copy say "stops" or "closes", with how much. Never "guarantee", never "zero".'
+  - id: zero-generic
+    pattern: '\bzero\b'
+    severity: warn
+    why: 'Check that "zero" is not a promise about outcomes.'
+
+  # ---------- Security and compliance wording (decision 14) ----------
+  - id: soc2
+    pattern: 'SOC ?2|SOC ?II'
+    severity: error
+    why: 'No SOC 2 audit exists. Never "SOC 2 certified" or "SOC 2 in progress".'
+  - id: hipaa-cert
+    pattern: 'HIPAA[- ](certified|certification|compliant|compliance certified)'
+    severity: error
+    why: 'Say "a HIPAA Business Associate Agreement with every customer".'
+  - id: other-certs
+    pattern: '\bHITRUST\b|\bISO ?27001\b|\bISO certified\b'
+    severity: error
+    why: 'Not claimed.'
+  - id: more-secure
+    pattern: '\bmore secure\b|\bmost secure\b|\bunhackable\b|\bbank[- ]grade\b|\bmilitary[- ]grade\b'
+    severity: error
+    why: 'Say "fewer things to secure", never "more secure".'
+  - id: encryption-in-transit
+    pattern: 'encrypt(ed|ion)? in transit'
+    severity: error
+    why: 'Not claimed until the S3 HTTPS check is fixed (Deck "Before RSNA" item 3).'
+
+  # ---------- What Gravity does not do ----------
+  - id: reads-scans
+    pattern: "(gravity|our agents?|gravity's agents)\\s+(reads?|interprets?|diagnoses?|dictates?|writes?|produces?|stores?)\\s+(the\\s+)?(scans?|images?|studies|reports?)"
+    severity: error
+    why: 'Gravity delivers the report and images; it never reads, writes, produces or stores them. Add "We don''t read the scan. We make sure it gets back."'
+  - id: diagnostic-ai
+    pattern: '\b(detects?|diagnos(e|es|is)|finds? (cancer|tumou?rs|fractures))\b'
+    severity: warn
+    why: 'Gravity is not diagnostic AI. Make sure the sentence is not about image interpretation.'
+  - id: dicom-pacs
+    pattern: '\bDICOM\b|\bPACS replacement\b'
+    severity: error
+    why: 'Gravity is not a PACS.'
+
+  # ---------- Staff, channel and competitors ----------
+  - id: blame-staff
+    pattern: 'human error|staff (errors?|mistakes?)|lazy|incompetent|(your )?staff (is|are) (the )?(problem|slow)|leaky staff'
+    severity: error
+    why: 'Leakage is never the staff''s fault. The staff are the people holding it together.'
+  - id: layoffs
+    pattern: '\blay ?offs?\b|\bfire (your|staff|people)\b|\bcut (headcount|staff|jobs)\b|\breplace (your )?(staff|people|team|schedulers|employees)\b'
+    severity: error
+    why: 'Never promise layoffs. Savings land as attrition, redeployment and better pay for the people who stay.'
+  - id: less-staff
+    pattern: 'need less staff|fewer staff'
+    severity: warn
+    why: 'The competitive line is for replies when someone asks, not for posts.'
+  - id: replace-ris
+    pattern: 'replace (your |the )?(RIS|RCM|EMR|PACS)'
+    severity: error
+    why: 'Channel-safe rule: say "Your staff will never log into your RIS again" or "runs on top of them until you''re ready". Blunt "replace" only in direct conversations with no RIS partner involved.'
+  - id: competitors
+    pattern: '\b(DeepHealth|RadNet|Operations Suite|AbbaDox|Infinx|Notable|Luma Health|Assort|Vocca|IntelePeer|Phreesia|Clearwave|Intelerad|PocketHealth|Waystar|Zotec|ImagineSoftware)\b'
+    severity: error
+    why: 'No named competitors in posts. Comparison belongs in replies when asked, or in the /compare pages.'
+  - id: partners
+    pattern: '\b(RamSoft|eRAD|Infinitt)\b'
+    severity: warn
+    why: 'Channel partners. Never contrast; only partnership language, and only after the RamSoft brief (decision 1).'
+
+  # ---------- Confidential or unverified ----------
+  - id: confidential-names
+    pattern: 'hollywood diagnostics|\bHDC\b|carefirst|proscan|valley mri|bright light|excel diagnostics|wake radiology|headlight|noble mri|midtown|trinity health'
+    severity: error
+    why: 'Internal source, churned customer, or a customer whose figures need permission.'
+  - id: customer-count
+    pattern: '\b\d+\+? (customers|centers|imaging centers|sites|clients)\b'
+    severity: error
+    why: 'No customer count anywhere. Logos carry it. Never the unsourced "22 centers".'
+  - id: klas
+    pattern: '\bKLAS\b'
+    severity: warn
+    why: 'KLAS findings only as published, word for word. Add the exact wording to the proof ledger first.'
+  - id: founder-turnaround
+    pattern: '400,?000|\$400k|350,?000|\$350k'
+    severity: error
+    why: 'The founder''s turnaround figure stays out until a before-and-after artifact exists.'
+  - id: spanish-inbound
+    pattern: '\bspanish\b|\binbound (calls?|voice)\b'
+    severity: warn
+    why: 'Spanish and inbound voice are not verified; don''t claim them.'
+  - id: pricing
+    pattern: 'per seat|\$2\.67|quantum tier|\$10,000 implementation'
+    severity: error
+    why: 'Pricing detail is internal. Only "$3.45 an exam, all in" in unit-economics posts.'
+
+  # ---------- PHI (community replies especially) ----------
+  - id: phi
+    pattern: '\b(DOB|date of birth|MRN|member id|policy number|SSN)\b|\b\d{3}-\d{2}-\d{4}\b|\b\d{2}/\d{2}/\d{4}\b'
+    severity: error
+    why: 'Never repeat or request protected health information in public. Move to a private, secure channel.'
+
+  # ---------- Tone ----------
+  - id: hype
+    pattern: '\b(revolutionary|revolutioniz\w*|game[- ]chang\w*|cutting[- ]edge|state[- ]of[- ]the[- ]art|next[- ]gen\w*|disrupt\w*|seamless(ly)?|synerg\w*|unlock\w*|supercharg\w*|leverag\w*|best[- ]in[- ]class|world[- ]class)\b'
+    severity: warn
+    why: 'Hype words. The voice is calm and specific.'
+  - id: ai-magic
+    pattern: '\b(magic|magical|glowing brain|robots?)\b'
+    severity: warn
+    why: 'No robots, glowing brains or magic. Agents do specific work.'
+
+# Rules that need logic rather than a single pattern (implemented in the linter):
+structural:
+  - id: aos-first-use
+    why: '"Agentic Operations System (AOS)" must be spelled out before the first bare "AOS" in every post.'
+    severity: error
+  - id: report-disclaimer
+    why: 'A post that says Gravity delivers reports or images must carry "We don''t read the scan" (or say Gravity does not read or store them).'
+    severity: warn
+  - id: numbers-in-ledger
+    why: 'Every $, %, multiplier and large number must be listed in brand/proof-ledger.yaml.'
+    severity: error
+  - id: modeled-label
+    why: 'Unit-economics figures (P11 to P16) must be labelled as modeled in the same post.'
+    severity: error
+  - id: requires
+    why: 'Some figures must travel together (the $31 expected case needs the $21 conservative case).'
+    severity: error
+  - id: benchmark-attribution
+    why: 'Third-party benchmarks and Tower Radiology results must name their source in the post.'
+    severity: warn
+  - id: beta-label
+    why: 'Charges from the report, the claim simulator and remittance posting are beta; the post must say "beta".'
+    severity: error
+  - id: exclamations
+    why: 'At most one exclamation mark per post.'
+    severity: warn
+  - id: radiology-in-body
+    why: '"Imaging" in copy; "radiology" in hashtags, and on X or RSNA posts by choice.'
+    severity: warn

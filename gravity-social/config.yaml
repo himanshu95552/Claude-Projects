@@ -1,0 +1,93 @@
+# Gravity Social: system configuration
+# Every module reads this file first. Change behaviour here, not in the skills.
+
+brand:
+  company: Alpha Nodus
+  product: Gravity
+  category: "Agentic Operations System (AOS)"
+  website: https://www.alphanodus.com
+  timezone: America/Chicago          # RSNA is in Chicago; switch to America/New_York if the team prefers
+  source_of_truth: AN27 (Positioning v1.7, Messaging Package v1.0, Deck Outline v2.1, Unit Economics v1.1, SEO Map v0.1)
+
+# The human gate. Nothing is scheduled or published unless an approver below
+# approved it through scripts/gate.py. The Metricool hook enforces this.
+approval:
+  approvers:
+    - name: Shamit Patel
+      role: Founder and CEO (final say on voice, claims and founder posts)
+    # - name: <marketing lead>
+    #   role: Day-to-day approver for company-page posts
+  founder_posts_require: Shamit Patel     # posts on Shamit's personal profile need Shamit's own approval
+  metricool_second_gate: true             # also send approved posts to Metricool "for review"
+  metricool_reviewers: ""                 # comma-separated emails for Metricool's review flow; fill in
+  metricool_approval_system: any          # any | all | optional
+
+# Accounts. enabled: false = the content module will not draft for it.
+platforms:
+  linkedin-company:
+    enabled: true
+    handle: https://www.linkedin.com/company/alphanodus
+    metricool_network: linkedin
+    posts_per_week: 4
+  linkedin-founder:
+    enabled: true
+    handle: "Shamit Patel (personal profile)"
+    metricool_network: null              # personal profiles are posted by Shamit; the system drafts only
+    posts_per_week: 3
+  x:
+    enabled: true
+    handle: https://x.com/alphanodus
+    metricool_network: twitter
+    posts_per_week: 7                     # includes 1 thread
+  instagram:
+    enabled: true
+    handle: https://www.instagram.com/alphanodus/
+    metricool_network: instagram
+    posts_per_week: 3                     # 2 carousels + 1 reel
+  youtube-shorts:
+    enabled: false                        # turn on once a channel exists; reel scripts are reused
+    handle: ""
+    metricool_network: youtube
+    posts_per_week: 1
+
+metricool:
+  brand_id: "6979710"                    # blogId; no networks connected yet (connect at app.metricool.com)
+  auto_publish: false                     # false = Metricool pushes a phone notification; a person taps publish
+
+# Where links go. Every link gets UTM parameters (scripts/utm.py).
+links:
+  home: https://www.alphanodus.com/
+  aos_definition: https://www.alphanodus.com/post/what-is-an-agentic-operations-system-aos   # switch to /aos when published
+  demo: https://www.alphanodus.com/contact
+  exam_itemized: https://www.alphanodus.com/contact   # the free "your exam, itemized" review; give it its own page when possible
+  trust_center: https://security.alphanodus.com
+utm:
+  campaign_default: an27
+  medium: social
+
+# Campaign calendar. The content module weights pillars by the active phase.
+campaigns:
+  - id: rsna-2026
+    name: "RSNA 2026, Chicago"
+    event_dates: 2026-11-29..2026-12-03
+    exhibit_hall: 2026-11-29..2026-12-02
+    booth: "TBD"                          # fill in the booth number
+    phases:
+      - {name: category-seeding, from: 2026-09-28, to: 2026-10-25}
+      - {name: proof-and-economics, from: 2026-10-26, to: 2026-11-15}
+      - {name: rsna-countdown, from: 2026-11-16, to: 2026-11-28}
+      - {name: rsna-live, from: 2026-11-29, to: 2026-12-03}
+      - {name: rsna-follow-up, from: 2026-12-04, to: 2026-12-18}
+
+reporting:
+  daily_report_time: "07:30"
+  email_draft_to: ""                      # optional: Gmail draft of the daily one-pager; left empty = file only
+  outcome_events:                         # the funnel the system tracks, top to bottom
+    - impression
+    - engagement
+    - follower
+    - link_click
+    - demo_request
+    - exam_itemized_request
+    - opportunity
+    - customer

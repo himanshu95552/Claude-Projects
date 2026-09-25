@@ -11,6 +11,7 @@ ephemeral cloud container, anything meant to persist is committed here.
 | **claude-mem** | `thedotmack/claude-mem` | Claude Code plugin + worker | Partial — plugin enabled; memory worker needs a provider |
 | **headroom** | `headroomlabs-ai/headroom` | Standalone compression proxy (PyPI) | No — proxy runs where the client runs (local only) |
 | **task-observer** | `rebelytics/one-skill-to-rule-them-all` | Claude Code skill | Yes — installed here at `.claude/skills/task-observer/` |
+| **Gravity Social OS** | built here | Claude Code skills + scripts | Yes — `gravity-social/` and `.claude/skills/gravity-*`; see `gravity-social/README.md` |
 
 ## task-observer
 

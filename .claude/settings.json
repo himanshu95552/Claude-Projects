@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__Metricool_Social_Media_Management__createScheduledPost|mcp__Metricool_Social_Media_Management__createScheduledPostForReview|mcp__Metricool_Social_Media_Management__updateScheduledPost",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/gravity-social/scripts/metricool_gate_hook.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

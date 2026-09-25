@@ -1,0 +1,55 @@
+# Hard platform limits and house limits, read by scripts/gravity_lint.py.
+# Platform limits are the networks' own; house limits are Gravity's choices
+# (tighter, for readability). Re-check the network limits each quarter.
+
+linkedin-company: &linkedin
+  post_max_chars: 3000
+  hook_max_chars: 210          # LinkedIn truncates at "...see more" around 210 chars on desktop, ~140 on mobile
+  hook_mobile_chars: 140
+  first_comment_max_chars: 1250
+  hashtags_max: 3
+  emojis_max: 2
+  links_in_body: warn          # links in the post body reduce reach; put them in the first comment
+  poll_question_max: 140
+  poll_option_max: 30
+  poll_options: [2, 4]
+  carousel_frames: [6, 10]
+  document_title_max: 58
+  formats: [text, image, document-carousel, poll, video]
+
+linkedin-founder:
+  <<: *linkedin
+  hashtags_max: 3
+  emojis_max: 1
+
+x:
+  post_max_chars: 280          # weighted: every URL counts as 23
+  url_weight: 23
+  thread_parts: [4, 8]
+  hashtags_max: 1
+  hashtags_max_rsna: 2
+  emojis_max: 1
+  links_in_body: allow
+  formats: [single, thread, image, video, poll]
+  poll_option_max: 25
+  poll_options: [2, 4]
+
+instagram:
+  post_max_chars: 2200
+  hook_max_chars: 125          # caption truncates around 125 chars
+  hashtags_max: 5
+  emojis_max: 3
+  links_in_body: error         # captions don't link; say "link in bio"
+  carousel_frames: [5, 10]
+  alt_text_required: true
+  media_required: true
+  reel_seconds: [15, 60]
+  formats: [carousel, reel, image, story]
+
+youtube-shorts:
+  title_max_chars: 100
+  description_max_chars: 5000
+  reel_seconds: [15, 60]
+  hashtags_max: 3
+  media_required: true
+  formats: [short]

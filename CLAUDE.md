@@ -46,3 +46,13 @@ Never resolve any of them from the current working directory. If you run
 this project on a different machine, pin the workspace to one stable
 absolute path there and keep it consistent across sessions — never derive
 one per session, tool, or checkout.
+
+## Gravity Social OS
+
+`gravity-social/` is the AI social media team for Alpha Nodus's product
+Gravity. Start any social-media work with the `gravity-social` skill (the
+orchestrator), which routes to `gravity-research`, `gravity-content`,
+`gravity-publish`, `gravity-community` and `gravity-report`. Two rules hold in
+every session: never run `scripts/gate.py approve` without an explicit,
+named approval from the person in this conversation, and never try to get
+around the Metricool approval hook in `.claude/settings.json`.

@@ -1,0 +1,215 @@
+week: 2026-W40
+dates: 2026-09-28..2026-10-04
+phase: category-seeding
+summary: "UnitedHealthcare's Surest plans start requiring prior authorization for outpatient CT, MRI, PET and nuclear cardiology on October 1, a live example of the revenue leak that starts at scheduling. 'Agentic AI in radiology' is being defined almost entirely by image interpretation, which leaves the operations side (the order, the phone, the portal) open for the Agentic Operations System (AOS) definition. On LinkedIn, imaging prior-auth content from operators draws single-digit engagement; the posts that did better were specific scenes and first-person frustration, not vendor claims."
+trend_to_ride:
+  topic: "Surest (UnitedHealthcare) prior authorization for outpatient advanced imaging, effective Oct 1, 2026"
+  why: "It lands in our week, it names the exact modalities our buyers schedule, and it proves the point that auth rules change underneath the schedule. The denial is decided at scheduling and discovered weeks later."
+  leak: revenue
+trends:
+  - topic: "Surest prior auth for outpatient CT, MRI/MRA, nuclear cardiology and PET"
+    signal: "Effective Oct 1, 2026 for Surest fully insured and level-funded plans; the rendering provider must confirm a coverage decision before performing the exam (UHC provider news, 22 Jun 2026)."
+    evidence: "https://www.uhcprovider.com/en/resource-library/news/2026/pa-surest-radiology-services.html"
+    fits: revenue
+    note: "Ride it on Oct 1. Frame: payer rules move under the schedule; checking at scheduling is the only place the denial is cheap to fix. Don't give payer advice; describe the operational reality."
+  - topic: "CMS CY2027 physician fee schedule (proposed): conversion factor about -1.68%; diagnostic radiology RVUs about +2%; imaging centers roughly flat"
+    signal: "Proposed 14 Jul 2026; comments closed 14 Sep; final rule expected late Oct / early Nov (Radiology Business, 15 Jul 2026; ACR summary)."
+    evidence: "https://radiologybusiness.com/topics/healthcare-management/healthcare-policy/medicare-releases-2027-physician-fee-schedule-devastating-cuts-radiologist-payments"
+    fits: revenue
+    note: "Hold until the final rule (likely W44-W45, the proof-and-economics phase). Pair with 'your exam, itemized': per-exam revenue is squeezed, and the paper line is the cost you control. Don't quote the percentages until they're added to the ledger."
+  - topic: "CMS request for information on duplicate imaging: results 'frequently siloed' in the acquiring EHR"
+    signal: "Part of the CY2027 proposed rule (CMS fact sheet, via Radiology Business)."
+    evidence: "https://radiologybusiness.com/topics/healthcare-management/healthcare-policy/medicare-releases-2027-physician-fee-schedule-devastating-cuts-radiologist-payments"
+    fits: referral
+    note: "A regulator saying the report doesn't get back. Good for the referral-loop pillar later: 'Every report returned.' Add the disclaimer: we deliver it, we don't read it."
+  - topic: "Agentic AI in radiology is being defined as interpretation"
+    signal: "2026 reviews in Radiology, Radiology: AI and Frontiers in Medicine describe agentic AI chaining image-reading and reporting steps."
+    evidence: "https://pubs.rsna.org/doi/10.1148/radiol.252730"
+    fits: category
+    note: "Whitespace for the AOS: the other half of the building (order, phone, fax, portal) has no agentic definition yet. Say 'an AOS is not diagnostic AI' and let the five tests carry it."
+  - topic: "CMS-0057-F payer turnaround rules (72 hours urgent / 7 days standard) in effect since Jan 2026"
+    signal: "Background for prior-auth posts (Linear Health 2026 guide)."
+    evidence: "https://linear.health/blog/prior-authorization-mri-imaging"
+    fits: skip
+    note: "Useful context, but a 7-day payer clock doesn't help a center that never knew the auth was needed. Not this week."
+  - topic: "Saudi imaging market forecasts, general market-size posts"
+    signal: "Common on LinkedIn; zero engagement."
+    evidence: ""
+    fits: skip
+    note: "Market-size content doesn't move our audience."
+competitor_posts:
+  - who: "Cory Maffeo (practice operations)"
+    platform: linkedin
+    url: "https://www.linkedin.com/posts/corymaffeo_medicalpractice-priorauthorization-healthcareoperations-activity-7503156456490299392-vohZ"
+    format: text
+    hook: "Prior authorization is a workflow designed by people who will never have to run it."
+    performance: "1 reaction, 1 comment (the sample's baseline is very low)"
+    why_it_worked: "A contrarian first line in the operator's voice, then the sequence step by step (PDF rules, the portal, the fax asking for a document already sent). The body is strong; reach was small."
+  - who: "Pyramids Global (RCM services)"
+    platform: linkedin
+    url: "https://www.linkedin.com/posts/pyramids-global_the-scan-was-ordered-the-auth-wasnt-there-activity-7507806365172789248-gvbO"
+    format: text
+    hook: "The scan was ordered. The auth wasn't there."
+    performance: "1 reaction"
+    why_it_worked: "The sharpest idea in the sample: in imaging a missing auth is a write-off, not a delay, because most payers won't approve retroactively. The post undersold it by closing on a services pitch."
+  - who: "Aleena Mujtaba (hiring post)"
+    platform: linkedin
+    url: "https://www.linkedin.com/posts/aleena-mujtaba-711296378_prior-authorization-surgical-scheduling-activity-7499498228816506881-qGSm"
+    format: text
+    hook: "We are hiring a Prior Authorization & Surgical Scheduling Specialist"
+    performance: "18 reactions, 6 comments (highest in the prior-auth sample)"
+    why_it_worked: "Hiring posts draw the people who do the job. Signal: the prior-auth workforce is an active, engaged audience, and practices still hire people to do nothing else (AMA: 40% of practices, B05)."
+  - who: "Jason Prestinario (health data)"
+    platform: linkedin
+    url: "https://www.linkedin.com/posts/jason-prestinario-7ab36373_for-1-in-5-women-who-appeared-to-have-an-activity-7501283274996989953-wpbI"
+    format: text
+    hook: "For 1 in 5 women who appeared to have an open breast cancer screening gap, we found qualifying mammogram evidence somewhere else."
+    performance: "26 reactions, 3 comments, 3 shares"
+    why_it_worked: "A surprising number, then the reframe: 'It wasn't a complicated AI problem. The evidence simply existed outside' the system that was looking. The same argument as ours: each leak lives in a different system."
+  - who: "Lunit Cancer Screening"
+    platform: linkedin
+    url: "https://www.linkedin.com/posts/lunit_breastcancer-breastcancerscreening-radiology-activity-7500896612425134080-1-bf"
+    format: text
+    hook: "Not every finding deserves a second look. These do."
+    performance: "18 reactions, 6 shares"
+    why_it_worked: "A curiosity-gap list in seven words. Selective, confident, and it promises a short list."
+audience_questions:
+  - theme: "Which payer needs auth for which code this month?"
+    count: 3
+    examples: ["Every payer can have different requirements for the same procedure (prior-auth specialist, LinkedIn)", "Surest adds CT/MRI/PET auth on Oct 1 while UHC dropped some nuclear and OB ultrasound auths in January"]
+    source: "LinkedIn prior-auth posts (Crustdata sample); UHC provider news"
+    persona: rcm
+  - theme: "Why does the patient call asking when their scan is scheduled?"
+    count: 2
+    examples: ["Coordinators chase missing documentation while patients call asking when their scan is scheduled", "Front desk calls the payer, waits on hold, calls back in 48 hours"]
+    source: "Imaging prior-auth articles (Pretty Good AI, OmniMD)"
+    persona: scheduling
+  - theme: "Is agentic AI going to read our studies?"
+    count: 3
+    examples: ["Agentic AI in radiology workflow: from image interpretation to report quality control", "Reconfiguring work: AI, agentic AI and the future of the radiology profession"]
+    source: "Radiology, Radiology: AI, Frontiers, PMC (2026)"
+    persona: owner
+hooks:
+  - id: h1
+    source: "Cory Maffeo, LinkedIn"
+    platform: linkedin
+    source_hook: "Prior authorization is a workflow designed by people who will never have to run it."
+    pattern: "Contrarian"
+    why: "It takes the operator's side against the system, not against the staff."
+    curiosity: 2
+    specific: 1
+    relatable: 2
+    gravity_version: "In imaging, prior authorization isn't a billing problem. It's a scheduling decision that nobody checks until the denial."
+  - id: h2
+    source: "Pyramids Global, LinkedIn"
+    platform: linkedin
+    source_hook: "The scan was ordered. The auth wasn't there."
+    pattern: "Scene / Warning"
+    why: "Two short sentences, and you can see the problem."
+    curiosity: 3
+    specific: 2
+    relatable: 2
+    gravity_version: "The MRI is done. The approval never was. Six weeks later the denial arrives, and nothing can fix it now."
+  - id: h3
+    source: "Jason Prestinario, LinkedIn"
+    platform: linkedin
+    source_hook: "For 1 in 5 women who appeared to have an open breast cancer screening gap, we found qualifying mammogram evidence somewhere else."
+    pattern: "Number / hidden elsewhere"
+    why: "The answer existed; it lived in a system nobody was looking at."
+    curiosity: 3
+    specific: 2
+    relatable: 1
+    gravity_version: "Your referral data doesn't know about your denials. Your schedule doesn't know which referrer's orders keep getting rejected."
+  - id: h4
+    source: "Lunit, LinkedIn"
+    platform: linkedin
+    source_hook: "Not every finding deserves a second look. These do."
+    pattern: "Curiosity gap / selective list"
+    why: "It promises a short, confident list."
+    curiosity: 3
+    specific: 1
+    relatable: 1
+    gravity_version: "Most orders don't need a person. Some always will. Here's the short list."
+  - id: h5
+    source: "AN27 deck, slide 8 (our own line)"
+    platform: linkedin
+    source_hook: "Airlines fill about 85% of their seats. Imaging centers fill about 65% of their slots."
+    pattern: "Comparison"
+    why: "A familiar industry beside ours makes the gap obvious."
+    curiosity: 2
+    specific: 2
+    relatable: 2
+    gravity_version: "Airlines fill about 85% of their seats. Imaging centers fill about 65% of their slots. And patients still wait weeks."
+  - id: h6
+    source: "AN27 deck, slide 6 (our own line)"
+    platform: linkedin
+    source_hook: "How many referrals went to another center last month?"
+    pattern: "Question they can't answer"
+    why: "Most centers can't answer it, and knowing that is the point."
+    curiosity: 3
+    specific: 2
+    relatable: 2
+    gravity_version: "How many orders arrived last month and never became exams? Most imaging centers can't say."
+keywords: ["prior authorization radiology", "radiology prior auth", "agentic AI in radiology", "referral leakage", "imaging center"]
+angles:
+  - id: a1
+    angle: "What an Agentic Operations System (AOS) is: RIS records the work, AOS does the work, and the five tests"
+    pillar: aos-category
+    leak: all
+    audience: [owner, coo, it]
+    hook_ref: none
+    claims: []
+    platforms: {linkedin-company: document-carousel, x: thread, instagram: carousel}
+  - id: a2
+    angle: "Every order can be lost three times, and the question nobody can answer"
+    pillar: three-leaks
+    leak: all
+    audience: [owner, coo, cfo]
+    hook_ref: h6
+    claims: []
+    platforms: {linkedin-company: poll, instagram: carousel, x: single}
+  - id: a3
+    angle: "Surest adds prior auth for outpatient CT/MRI/PET on Oct 1: the denial is decided at scheduling"
+    pillar: industry-signal
+    leak: revenue
+    audience: [rcm, cfo, scheduling]
+    hook_ref: h2
+    claims: []
+    platforms: {linkedin-company: text, x: single}
+  - id: a4
+    angle: "Agentic AI in radiology is being defined as reading. The other half of the building has no definition yet."
+    pillar: aos-category
+    leak: all
+    audience: [owner, it]
+    hook_ref: h3
+    claims: []
+    platforms: {linkedin-company: text, linkedin-founder: text}
+  - id: a5
+    angle: "The founder's six-week wait, and why just-in-time care starts with operations"
+    pillar: founder-and-team
+    leak: order
+    audience: [all]
+    hook_ref: none
+    claims: [P20, P18]
+    platforms: {linkedin-founder: text}
+  - id: a6
+    angle: "The empty seat at takeoff: a 3:15 Tuesday slot is gone at 3:16"
+    pillar: order-to-exam
+    leak: order
+    audience: [coo, scheduling, owner]
+    hook_ref: h5
+    claims: [P10]
+    platforms: {x: single, instagram: reel}
+sources:
+  - https://www.uhcprovider.com/en/resource-library/news/2026/pa-surest-radiology-services.html
+  - https://www.auntminnie.com/industry-news/article/15634013/unitedhealthcare-to-drop-prior-authorizations-for-radiology-procedures
+  - https://radiologybusiness.com/topics/healthcare-management/healthcare-policy/medicare-releases-2027-physician-fee-schedule-devastating-cuts-radiologist-payments
+  - https://www.auntminnie.com/practice-management/administration/economics/article/15830122/acr-issues-initial-summary-of-2027-mpfs-proposed-rule
+  - https://pubs.rsna.org/doi/10.1148/radiol.252730
+  - https://pubs.rsna.org/doi/10.1148/ryai.250651
+  - https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2026.1927284/full
+  - https://pmc.ncbi.nlm.nih.gov/articles/PMC13045514/
+  - https://linear.health/blog/prior-authorization-mri-imaging
+  - https://prettygoodai.com/resources/imaging-center-radiology-prior-auth-ai/
+  - https://www.efax.com/blog/radiology-referral-leakage-ai-intake-solution
+  - https://www.rsna.org/annual-meeting

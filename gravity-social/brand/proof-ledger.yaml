@@ -1,0 +1,254 @@
+# Gravity proof ledger
+# The ONLY numbers and proof claims that may appear in public social content.
+# scripts/gravity_lint.py reads this file: any $ amount, percentage, multiplier
+# or large number in a post that is not listed under some entry's `figures`
+# fails lint. To add a proof point, add an entry here with its source and have
+# Shamit approve it (AN27 Open Items Register is the reference).
+#
+# Fields:
+#   id          cite this in a post's `claims:` frontmatter
+#   claim       the approved wording (paraphrase carefully; keep the qualifiers)
+#   figures     literal tokens the linter will accept (normalized: no spaces, lower case)
+#   source      where it comes from; say it in the post when `attribute` is true
+#   attribute   true = the post must name the source (e.g. "RSNA 2021", "AMA")
+#   must_say    wording that must travel with the claim
+#   requires    other figures that must appear in the same post
+#   status      locked | beta | modeled | benchmark
+
+gravity:
+  - id: P01
+    claim: "Tower Radiology: 7% more exams a week in MRI, CT and mammography."
+    figures: ["7%", "+7%"]
+    source: "Tower Radiology, RSNA 2021 (report presented by Tower Radiology, Tampa General and USF; 2022 abstract Kedar, Sailagundla, Ivancsits)"
+    attribute: true
+    cite_as: ["Tower Radiology"]          # the post must contain one of these
+    must_say: "Tower Radiology's own physicians presented the results at RSNA."
+    status: locked
+  - id: P02
+    claim: "Tower Radiology: $2.3M in added revenue."
+    figures: ["$2.3m", "$2.3million", "2.3million"]
+    source: "Tower Radiology, RSNA 2021"
+    attribute: true
+    cite_as: ["Tower Radiology"]          # the post must contain one of these
+    status: locked
+  - id: P03
+    claim: "Tower Radiology: nudged patients waited 71% less."
+    figures: ["71%"]
+    source: "Tower Radiology, RSNA 2021"
+    attribute: true
+    cite_as: ["Tower Radiology"]          # the post must contain one of these
+    must_say: "nudged patients"
+    status: locked
+  - id: P04
+    claim: "Tower Radiology: authorization backlog down 62%."
+    figures: ["62%"]
+    source: "Tower Radiology, RSNA 2021"
+    attribute: true
+    cite_as: ["Tower Radiology"]          # the post must contain one of these
+    status: locked
+  - id: P05
+    claim: "Tower Radiology: MRI slot utilization rose from 65% to 70%."
+    figures: ["65%", "70%"]
+    source: "Tower Radiology, RSNA 2021"
+    attribute: true
+    cite_as: ["Tower Radiology"]          # the post must contain one of these
+    status: locked
+  - id: P06
+    claim: "The Tower Radiology report won the RSNA 2021 Quality Improvement Award."
+    figures: []
+    source: "RSNA award email, 2 Dec 2021"
+    attribute: true
+    cite_as: ["RSNA"]          # the post must contain one of these
+    status: locked
+  - id: P07
+    claim: "Peer-reviewed: 'Improving Operational Efficiency in Radiology Using Artificial Intelligence,' Journal of Healthcare Management Standards (IGI Global), 2024."
+    figures: []
+    source: "IGI Global publication notice, 30 Aug 2024"
+    attribute: true
+    cite_as: ["IGI Global", "Journal of Healthcare Management Standards"]          # the post must contain one of these
+    status: locked
+  - id: P08
+    claim: "One person handles about 350 orders a day with Gravity."
+    figures: ["350"]
+    source: "Customer measurement, Sep 2026 (do not name the customer)"
+    attribute: false
+    must_say: "about"
+    status: locked
+  - id: P09
+    claim: "99% document classification accuracy."
+    figures: ["99%"]
+    source: "Locked by Shamit, 23 Sep 2026; have the measurement method ready"
+    attribute: false
+    status: locked
+  - id: P10
+    claim: "Airlines fill about 85% of their seats. Imaging centers fill about 65% of their slots. And patients still wait weeks."
+    figures: ["85%", "65%"]
+    source: "US BTS 2019 load factor; measured MRI slot utilization at a multi-site outpatient group, 2020 (Tower Radiology, RSNA 2021)"
+    attribute: false
+    must_say: "about"
+    status: locked
+  - id: P11
+    claim: "One blended outpatient exam collects about $154. $44 to do the scan, $21 to read it, $39 for the building, and $39 to get the order, get the patient in and get paid. $11 is left: a 7% margin."
+    figures: ["$154", "$44", "$21", "$39", "$11", "7%", "$16", "$13", "$10.55"]
+    source: "AN27 Unit Economics Closer v1.1: modeled representative independent center"
+    attribute: false
+    must_say: "modeled (e.g. 'one blended outpatient exam, modeled on the cost structure of independent imaging'); never a real center"
+    status: modeled
+  - id: P12
+    claim: "With Gravity the same exam nets $31: a 7% margin becomes 20%. Conservative case: $21 an exam, 14%."
+    figures: ["$31", "20%", "$21", "14%", "$156", "$7", "$8", "$42", "$36"]
+    source: "AN27 Unit Economics Closer v1.1"
+    attribute: false
+    must_say: "modeled"
+    requires: ["$21"]          # the conservative case always travels with the expected case
+    status: modeled
+  - id: P13
+    claim: "Between the referral and the payment: $39 an exam today, about $26 with Gravity, including what you pay us ($3.45 an exam)."
+    figures: ["$39", "$26", "$3.45"]
+    source: "AN27 Unit Economics Closer v1.1"
+    attribute: false
+    must_say: "modeled"
+    status: modeled
+  - id: P14
+    claim: "Every empty slot you fill is worth about $127, because the scanner is already paid for."
+    figures: ["$127"]
+    source: "AN27 Unit Economics Closer v1.1"
+    attribute: false
+    must_say: "modeled"
+    status: modeled
+  - id: P15
+    claim: "About 80% of an imaging center's cost is fixed. Lose 8% of volume and $11 an exam becomes about $2."
+    figures: ["80%", "8%", "$2", "$11"]
+    source: "AN27 Unit Economics Closer v1.1"
+    attribute: false
+    must_say: "modeled"
+    status: modeled
+  - id: P16
+    claim: "$29 of the $39 is people who never touch a patient. You pay twice as much to move the paper as to read the scan."
+    figures: ["$29", "$39", "$19", "2x"]
+    source: "AN27 Unit Economics Closer v1.1 ($19.22 radiologist read)"
+    attribute: false
+    must_say: "modeled"
+    status: modeled
+  - id: P17
+    claim: "The largest imaging groups on Gravity run more than 10,000 exams a month on it."
+    figures: ["10,000", "10000", "ten thousand"]
+    source: "Messaging Package objection answers (locked)"
+    attribute: false
+    status: locked
+  - id: P18
+    claim: "Alpha Nodus was founded in 2015, with offices in Austin, TX, Sunrise, FL and Bangalore, India."
+    figures: []
+    source: "Deck slide 2 (locked)"
+    attribute: false
+    status: locked
+  - id: P19
+    claim: "Security, in these words only: hosted on AWS in US regions only; a HIPAA Business Associate Agreement with every customer; independently penetration-tested, most recently September 2026; customer data encrypted at rest with AES-256 and per-tenant keys; MFA on all production access (SSO and admin-enforced MFA on Enterprise); continuous control monitoring with a public Trust Center."
+    figures: ["aes-256", "256"]
+    source: "Positioning decision 14"
+    attribute: false
+    status: locked
+  - id: P20
+    claim: "Founder story: Shamit waited six weeks for a scan while most imaging centers had a third of their capacity unused; the team volunteered in a center for a year before building Gravity."
+    figures: []
+    source: "Deck slide 1 cold open (locked)"
+    attribute: false
+    status: locked
+  - id: P21
+    claim: "Kiosk check-in reaches 90% or more of patients."
+    figures: ["90%"]
+    source: "Shamit, 23 Sep 2026 (Unit Economics lever evidence). Internal; use only with Shamit's OK per post."
+    attribute: false
+    status: locked
+  - id: P22
+    claim: "Shamit Patel: twenty years in wireless semiconductors, exits to Intel and Qualcomm."
+    figures: ["twenty years", "20 years"]
+    source: "Deck slide 3 (locked)"
+    attribute: false
+    status: locked
+
+benchmarks:   # third-party figures; always name the source in the post
+  - id: B01
+    claim: "Initial claim denial rates rose to about 11.8% in 2024 (Medicare Advantage about 15.7%, commercial about 13.9%)."
+    figures: ["11.8%", "15.7%", "13.9%", "12%"]
+    source: "AHA / Becker's Payer, via Aptarro 2026 roundup"
+    attribute: true
+    cite_as: ["AHA", "Becker"]          # the post must contain one of these
+    status: benchmark
+  - id: B02
+    claim: "Administrative cost per denied claim: $57.23 in 2023, up from $43.84 in 2022."
+    figures: ["$57.23", "$57", "$43.84"]
+    source: "Premier Inc."
+    attribute: true
+    cite_as: ["Premier"]          # the post must contain one of these
+    status: benchmark
+  - id: B03
+    claim: "35 to 60% of denied or returned claims are never resubmitted."
+    figures: ["35", "60%", "35%", "35-60%"]
+    source: "AHIMA Journal"
+    attribute: true
+    cite_as: ["AHIMA"]          # the post must contain one of these
+    status: benchmark
+  - id: B04
+    claim: "Top denial causes: missing or inaccurate data 50%, authorizations 35%, registration data 32%; 41% of providers see denial rates of 10% or more."
+    figures: ["50%", "35%", "32%", "41%", "10%"]
+    source: "Experian Health, State of Claims 2025"
+    attribute: true
+    cite_as: ["Experian"]          # the post must contain one of these
+    status: benchmark
+  - id: B05
+    claim: "Physicians and staff spend about 13 hours a week on prior authorization; 40% of practices employ staff who do nothing else."
+    figures: ["13 hours", "13", "40%"]
+    source: "AMA prior authorization survey, May 2026"
+    attribute: true
+    cite_as: ["AMA"]          # the post must contain one of these
+    status: benchmark
+  - id: B06
+    claim: "About half of referrals complete; fax-based workflows about 54% scheduled; 21-day average referral-to-appointment lag."
+    figures: ["54%", "21-day", "21 days", "half"]
+    source: "BD Emerson 2026, citing PMC"
+    attribute: true
+    cite_as: ["BD Emerson", "PMC"]          # the post must contain one of these
+    status: benchmark
+  - id: B07
+    claim: "No-shows are the top patient-access priority for 27% of practice leaders."
+    figures: ["27%"]
+    source: "MGMA Stat 2026"
+    attribute: true
+    cite_as: ["MGMA"]          # the post must contain one of these
+    status: benchmark
+  - id: B08
+    claim: "No-shows cost a 200,000-exam academic department about $1 million a year (about $5 an exam)."
+    figures: ["200,000", "$1million", "$1m", "$5"]
+    source: "Mieloszyk et al., Academic Radiology 2018"
+    attribute: true
+    cite_as: ["Academic Radiology", "Mieloszyk"]          # the post must contain one of these
+    status: benchmark
+  - id: B09
+    claim: "Technologist vacancies: CT 19.4%, MRI 17.4%."
+    figures: ["19.4%", "17.4%"]
+    source: "ASRT 2025"
+    attribute: true
+    cite_as: ["ASRT"]          # the post must contain one of these
+    status: benchmark
+  - id: B10
+    claim: "US healthcare avoided $258 billion in administrative cost in 2024; $21 billion of opportunity remains."
+    figures: ["$258billion", "$258b", "$21billion", "$21b"]
+    source: "2025 CAQH Index, 19 Feb 2026"
+    attribute: true
+    cite_as: ["CAQH"]          # the post must contain one of these
+    status: benchmark
+
+# Claims that must NEVER appear, however they are worded. The linter blocks the
+# patterns in brand/guardrails.yaml; this list is the human-readable reason.
+forbidden:
+  - "Any customer count ('40 customers', '22 centers'). Logos carry it; no number."
+  - "The founder's '$400K loss to $350K profit' turnaround. Stays out until a before-and-after artifact exists."
+  - "Any referral-lift result: none is measured."
+  - "Any denial-rate, A/R, or collection-rate result at a customer: none is measured."
+  - "Exception rate by workflow: not yet published."
+  - "Any KLAS finding, until the report's exact published wording is added here."
+  - "'2x exam volume per staff member', 'ROI within months', '$500-$2,000 per missed auth' (older blog lines; not AN27-approved)."
+  - "Any figure from a named customer other than Tower Radiology (e.g. ProScan needs its OK first)."
+  - "Any real center's P&L, headcount or annual dollars. The unit is one exam, modeled."
+  - "Pricing detail beyond '$3.45 an exam, all in' in the unit-economics context."

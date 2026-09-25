@@ -1,0 +1,33 @@
+{
+  "_source": "alphanodus.com live stylesheet, 25 Sep 2026. Replace when the new palette lands (positioning decision 7).",
+  "width": 1080,
+  "height": 1350,
+  "fonts": {
+    "display": "'Space Grotesk', 'Inter', 'Helvetica Neue', Arial, sans-serif",
+    "body": "'Inter', 'Helvetica Neue', Arial, sans-serif",
+    "google": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  },
+  "dark": {
+    "bg": "#0C0B1F",
+    "surface": "#0F0E29",
+    "card": "#202052",
+    "text": "#FFFFFF",
+    "muted": "#CBCDD3",
+    "accent": "#4D6BFF",
+    "accentSolid": "#002EED",
+    "highlight": "#FE4BD1",
+    "rule": "#2E2D5C"
+  },
+  "light": {
+    "bg": "#F0E3FF",
+    "surface": "#FFFFFF",
+    "card": "#FFFFFF",
+    "text": "#0C0B1F",
+    "muted": "#494759",
+    "accent": "#002EED",
+    "accentSolid": "#002EED",
+    "highlight": "#C0189A",
+    "rule": "#D9CCEE"
+  },
+  "footer": "Gravity · Agentic Operations System (AOS)"
+}

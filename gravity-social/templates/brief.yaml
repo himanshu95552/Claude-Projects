@@ -1,0 +1,56 @@
+# research/briefs/<YYYY>-W<ww>.yaml: the machine half of the weekly research brief.
+# The dashboard's Research tab and the content module read this file.
+week: 2026-W41
+dates: 2026-10-05..2026-10-11
+phase: category-seeding
+summary: "Three sentences: the strongest signal, what outperformed and why, what the audience keeps asking."
+trend_to_ride:
+  topic: ""
+  why: ""
+  leak: order                # referral | order | revenue | category
+trends:                      # Trend Scout
+  - topic: ""
+    signal: ""               # what happened, with a date
+    evidence: ""             # URL
+    fits: revenue            # referral | order | revenue | category | skip
+    note: ""                 # how it connects to a leak, or why we skip it
+competitor_posts:            # Competitor Watch: posts in our space that outperformed their own average
+  - who: ""
+    platform: linkedin
+    url: ""
+    format: text
+    hook: ""                 # the first line / first 3 seconds, verbatim
+    performance: ""          # e.g. "3.1x their median reactions (212 vs 68)"
+    why_it_worked: ""
+audience_questions:          # Question Miner
+  - theme: ""
+    count: 0                 # how many times we saw it this week
+    examples: [""]
+    source: ""               # where (reddit thread, LinkedIn comments, forum)
+    persona: coo
+hooks:                       # Hook Analyst: the hook lab
+  - id: h1
+    source: ""               # who / where
+    platform: linkedin
+    source_hook: ""          # verbatim
+    pattern: "Proof / result"   # Proof/result | Warning | Contrarian | Question | Number | Scene | Definition | Story | Comparison
+    why: ""
+    curiosity: 0             # 0-3
+    specific: 0              # 0-2
+    relatable: 0             # 0-2 (to an imaging operator)
+    gravity_version: ""      # our hook, same pattern, our words, ledger-safe
+keywords: []                 # Keyword Finder: search phrases seen this week
+angles:                      # Idea Bank -> Content Planner
+  - id: a1
+    angle: ""
+    pillar: three-leaks
+    leak: all
+    audience: [owner, coo]
+    hook_ref: h1
+    claims: []
+    platforms:
+      linkedin-company: document-carousel
+      x: thread
+      instagram: carousel
+      linkedin-founder: text
+sources: []                  # every URL used
