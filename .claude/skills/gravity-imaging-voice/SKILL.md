@@ -129,12 +129,14 @@ Gravity by AlphaNodus: AI-first platform for outpatient diagnostic imaging and r
 ortho, cardiology). "Script to Scan". Products: Gravity Docs (faxed and handwritten order
 processing into the RIS), Gravity Auth (prior authorization), Gravity Estimate (patient
 estimates), Gravity Booking (scheduling), Gravity Analytics. Complements the RIS/EMR (HL7, FHIR,
-RPA), HIPAA. Figures: 83M documents processed, 99.8% classification accuracy, 90-second average
+RPA), HIPAA. Figures: 32M+ documents processed (confirmed by the user 2026-09-27; the Gravity Docs
+page still shows an outdated "83M", never use it), 99.8% classification accuracy, 90-second average
 processing, up to 90% of document tasks automated, integration in days; 20M+ visits, 4M prior
 authorizations, 15M calls handled. Founded 2015; vision "Just In Time Care". Published customer
 quote (prior authorization manager): "In the amount of time it takes to load our worklist in the
-RIS, our agent were able to process three prior authorizations." Quote it only as published,
-attributed to "a prior authorization manager" / "one of our customers".
+RIS, our agent were able to process three prior authorizations." The site version has grammar errors, so
+paraphrase it ("a prior authorization manager told us her agent processed three prior authorizations
+in the time it took to load the RIS worklist") unless the customer approves a corrected quote.
 
 ## Reference corpus (calibration)
 
