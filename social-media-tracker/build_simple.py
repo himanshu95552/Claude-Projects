@@ -50,7 +50,7 @@ COLS = [
     ("comments", "Comments", 9, "in", "#,##0", None),
     ("shares", "Shares / Reposts", 9, "in", "#,##0", None),
     ("saves", "Saves", 7, "in", "#,##0", None),
-    ("clicks", "Link Clicks", 7, "in", "#,##0", "Clicks on the post (LinkedIn counts these in its engagement rate)."),
+    ("clicks", "Clicks", 7, "in", "#,##0", "All clicks on the post. LinkedIn: 'Clicks'. X: detail expands + profile visits + link clicks. Both platforms count these in their own engagement rate."),
     ("newfol", "New Followers (3 days after post)", 11, "in", "#,##0", "Followers gained on the post day + the next 2 days. LinkedIn doesn't credit follows to organic posts, so this is the closest fair signal."),
     ("target", "Target List Engaged?", 10, "in", None, "Did anyone from our target list (imaging / radiology center decision-makers) like, comment or share?"),
     ("eng", "Total Engagement", 10, "calc", "#,##0", "Likes + Comments + Shares + Saves + Link Clicks (same as LinkedIn's own definition)"),
@@ -121,7 +121,7 @@ ws.cell(4, 8).fill = fill("DEEAF6")
 ws["S4"], ws["S5"], ws["S6"] = "Yellow = type here", "Grey = automatic", "Blue text = data (LinkedIn: page analytics export, Aug 28–Sep 26)"
 ws["S4"].fill, ws["S5"].fill = INPUT, CALC
 ws["S6"].font = font(color="0000FF")
-ws["S7"] = "Instagram & X: public profiles, 9/28/2026"
+ws["S7"] = "X: X analytics export (Sep 1–28). Instagram: public profile, 9/28/2026"
 ws["S7"].font = font(color="0000FF")
 for a in ("S4", "S5"):
     ws[a].font, ws[a].border = font(True), BOX
@@ -242,26 +242,26 @@ POSTS = [
      None, None, 2, 0, None, None, None, None,
      "Weakest Instagram post: text-heavy single image, same theme as Sep 18.",
      "Tell process stories as a carousel or short Reel. Avoid two Revenue Cycle posts in a row.", "Improve & Retry"),
-    (D(2026, 9, 11), "X", "Video: Gravity AI explainer + demo link", "Product / Demo", "Question",
+    (D(2026, 9, 11), "X", "Video: 3-min Gravity AI explainer + demo link", "Product / Demo", "Question",
      "https://x.com/AlphaNodus/status/2098433794022006872",
-     27, None, 0, 0, 0, None, None, None,
-     "27 views and no engagement. The account only has 46 followers.",
-     "Post a short clip instead of the full video. Reply in radiology / imaging threads to get seen.", "Improve & Retry"),
+     27, None, 0, 0, 0, 0, 5, 0,
+     "Only 6 video views all month and nobody watched to the end (average watch 2–14 sec). No likes, replies or link clicks — the 5 engagements were 4 'show more' taps + 1 profile visit.",
+     "Post a 20–30 sec clip with captions instead of the 3-min video, with the demo link in the text.", "Improve & Retry"),
     (D(2026, 9, 14), "X", "Image: 'Scanners idle a third of the day' + comment GravityAI ask", "Operations Tips", "Stat / Number",
      "https://x.com/AlphaNodus/status/2099545479755583973",
-     16, None, 0, 0, 0, None, None, None,
-     "Fewest views of the month and no engagement.",
-     "Tag 1–2 relevant industry accounts or people. Turn the stat into a short thread.", "Improve & Retry"),
-    (D(2026, 9, 18), "X", "Image: an order with one field missing — when is it flagged?", "Revenue Cycle", "Story",
+     16, None, 0, 0, 0, 0, 1, 0,
+     "16 impressions and only 1 'show more' tap. Nobody replied to the 'comment GravityAI' ask.",
+     "Drop the comment-keyword ask. Tag 1–2 relevant industry accounts so more people see it.", "Improve & Retry"),
+    (D(2026, 9, 18), "X", "3-tweet thread: an order with one field missing — when is it flagged?", "Revenue Cycle", "Story",
      "https://x.com/AlphaNodus/status/2101017252221128863",
-     26, None, 0, 1, 0, None, None, None,
-     "Only got a reply, no likes or reposts.",
-     "Ending with a question worked here — keep doing it. Add a clear visual.", "Repeat"),
-    (D(2026, 9, 23), "X", "Image: 4 manual handoffs before an order is billable (pinned)", "Revenue Cycle", "Story",
+     26, None, 0, 0, 0, 0, 1, 0,
+     "Only 1 'show more' tap. The '1 reply' X shows is our own next tweet in the thread, not a customer. The question sat in tweet 3, which only 3 people saw.",
+     "Put the question in the first tweet. Keep threads to 1–2 tweets.", "Improve & Retry"),
+    (D(2026, 9, 23), "X", "2-tweet thread: 4 manual handoffs before an order is billable (pinned)", "Revenue Cycle", "Story",
      "https://x.com/AlphaNodus/status/2102915695722045558",
-     13, None, 0, 1, 0, None, None, None,
-     "Rated Good only because 1 reply came from very few views — 13, the lowest of the month, even though it was pinned.",
-     "Keep the question ending. Get it seen: tag 1–2 industry accounts and pin whichever post is doing best.", "Improve & Retry"),
+     13, None, 0, 0, 0, 0, 2, 0,
+     "Rated Good only because 2 of 13 viewers tapped 'show more' — too few views to mean much. The '1 reply' is our own thread tweet. No likes or replies from others.",
+     "Keep the short list format, but get it seen: ask the team to repost and tag 1–2 industry accounts.", "Improve & Retry"),
 ]
 keys = ["date", "platform", "what", "pillar", "hook", "link", "impr", "reach", "likes", "comments", "shares", "saves",
         "clicks", "newfol", "weak", "improve", "action"]
