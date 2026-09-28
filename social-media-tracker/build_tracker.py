@@ -74,11 +74,11 @@ LISTS = {
         "Case Study / Customer Result", "Product Demo / Feature", "Industry Insight / Data",
         "Thought Leadership / POV", "Customer Testimonial", "Reimbursement & Regulatory",
         "Operations Tips (Scheduling, No-shows, Throughput)", "Team / Culture / Behind the Scenes",
-        "Event / Webinar / Conference", "Offer / Direct Demo CTA",
+        "Event / Webinar / Conference", "Offer / Direct Demo CTA", "Revenue Cycle & Denials",
     ],
     "Pillar Slug": [
         "case-study", "product", "insight", "thought-leadership", "testimonial", "regulatory",
-        "ops-tips", "culture", "event", "demo-offer",
+        "ops-tips", "culture", "event", "demo-offer", "rcm",
     ],
     "Post Format": [
         "Text Only", "Single Image", "Carousel / Document (PDF)", "Short Video / Reel", "Long Video",
@@ -136,7 +136,7 @@ title(ws_set, "Settings & Dropdown Lists",
       "Yellow cells are editable. Add items to the bottom of a list and every dropdown picks them up.")
 ws_set["A4"], ws_set["B4"] = "Setting", "Value"
 settings = [
-    ("Default landing page (used when a post's Landing Page is blank)", "https://www.alphanodus.com/"),
+    ("Default landing page (used when a post's Landing Page is blank)", "https://www.alphanodus.com/contact"),
     ("Engagement weight: Like / Reaction", 1),
     ("Engagement weight: Comment", 3),
     ("Engagement weight: Share / Repost", 4),
@@ -234,6 +234,7 @@ GROUPS = [
         ("eng", "Total Engagements", "calc", 11, FMT_INT, "Likes + Comments + Shares + Saves + Link Clicks"),
         ("er", "Engagement Rate (by Reach)", "calc", 12, FMT_PCT, "Primary metric: Total Engagements ÷ Reach (Calc.)"),
         ("er_impr", "Engagement Rate (by Impr.)", "calc", 12, FMT_PCT, None),
+        ("er_f", "Engagement Rate (by Followers)", "calc", 12, FMT_PCT, "Total Engagements ÷ Followers at Posting. Works from public data alone, so it's the fallback when impressions/reach haven't been entered yet."),
         ("ctr", "Click-Through Rate", "calc", 10, FMT_PCT, "Link Clicks ÷ Impressions"),
         ("amp", "Share Rate", "calc", 10, FMT_PCT, "Shares ÷ Reach — how often people pass it on."),
         ("wscore", "Weighted Eng. per 1K Reach", "calc", 12, "0.0", "Weighted engagements (weights on Settings) per 1,000 people reached."),
@@ -260,6 +261,8 @@ GROUPS = [
         ("next", "Next Action", "in", 22, None, None),
     ]),
     ("HELPERS (Dashboard)", "A6A6A6", [
+        ("eng_r", "Engagements (posts with reach)", "calc", 10, FMT_INT, None),
+        ("fol_e", "Followers (posts with engagement data)", "calc", 10, FMT_INT, None),
         ("rk_er", "Rank Key: ER", "calc", 10, "0.000", None),
         ("rk_demo", "Rank Key: Demos", "calc", 10, "0.000", None),
     ]),
@@ -314,6 +317,9 @@ def pt_formula(key, r):
                 f'SUM({x["likes"]}:{x["clicks"]})))'),
         "er": f'=IF(OR({x["eng"]}="",N({x["reach_calc"]})=0),"",{x["eng"]}/{x["reach_calc"]})',
         "er_impr": f'=IF(OR({x["eng"]}="",N({x["impr"]})=0),"",{x["eng"]}/{x["impr"]})',
+        "er_f": f'=IF(OR({x["eng"]}="",N({x["followers"]})=0),"",{x["eng"]}/{x["followers"]})',
+        "eng_r": f'=IF(OR({x["eng"]}="",N({x["reach_calc"]})=0),"",{x["eng"]})',
+        "fol_e": f'=IF(OR({x["eng"]}="",N({x["followers"]})=0),"",{x["followers"]})',
         "ctr": f'=IF(OR({x["clicks"]}="",N({x["impr"]})=0),"",{x["clicks"]}/{x["impr"]})',
         "amp": f'=IF(OR({x["shares"]}="",N({x["reach_calc"]})=0),"",{x["shares"]}/{x["reach_calc"]})',
         "wscore": (f'=IF(OR({x["eng"]}="",N({x["reach_calc"]})=0),"",'
@@ -331,15 +337,15 @@ def pt_formula(key, r):
         "sess_book": f'=IF(OR({pid}="",N({x["sessions"]})=0),"",{x["booked"]}/{x["sessions"]})',
         "cpd": f'=IF(OR(N({x["spend"]})=0,N({x["booked"]})=0),"",{x["spend"]}/{x["booked"]})',
         "rk_er": (f'=IF(AND(ISNUMBER({x["date"]}),{x["date"]}>=Dashboard!$C$4,{x["date"]}<=Dashboard!$F$4,'
-                  f'ISNUMBER({x["er"]})),{x["er"]}+ROW()/10^9,"")'),
+                  f'ISNUMBER({x["er_f"]})),{x["er_f"]}+ROW()/10^9,"")'),
         "rk_demo": (f'=IF(AND(ISNUMBER({x["date"]}),{x["date"]}>=Dashboard!$C$4,{x["date"]}<=Dashboard!$F$4,{pid}<>""),'
-                    f'N({x["booked"]})+N({x["er"]})/100+ROW()/10^9,"")'),
+                    f'N({x["booked"]})+N({x["er_f"]})/100+ROW()/10^9,"")'),
     }
     return F[key]
 
 
 title(ws_pt, "Post Tracker — one row per post, per platform",
-      "Yellow = you fill in · Grey = calculated, don't type over · Row 5 is an EXAMPLE — overwrite or delete it (and its Demo Pipeline row).")
+      "Yellow = you fill in · Grey = calculated, don't type over · Blue = September 2026 posts pulled from public profiles on 9/28 (see Start Here → Data notes).")
 col = 1
 for gname, gcolor, cols in GROUPS:
     start = col
@@ -374,7 +380,7 @@ for gname, gcolor, cols in GROUPS:
 ws_pt.row_dimensions[4].height = 45
 ws_pt.freeze_panes = "C5"
 ws_pt.auto_filter.ref = f"A4:{get_column_letter(PT_LASTCOL)}{PT_LAST}"
-for key in ("rk_er", "rk_demo"):
+for key in ("eng_r", "fol_e", "rk_er", "rk_demo"):
     ws_pt.column_dimensions[C[key]].hidden = True
 
 pt_dropdowns = {
@@ -398,29 +404,78 @@ ws_pt.conditional_formatting.add(full("vs_avg"), CellIsRule(operator="between", 
 ws_pt.conditional_formatting.add(full("er"), ColorScaleRule(start_type="min", start_color="F8696B", mid_type="percentile", mid_value=50, mid_color="FFEB84", end_type="max", end_color="63BE7B"))
 ws_pt.conditional_formatting.add(full("booked"), CellIsRule(operator="greaterThan", formula=["0"], fill=fill("C6EFCE"), font=Font(name=FONT, color="006100", bold=True)))
 
-# Example row (row 5)
-example = {
-    "date": dt.date(2026, 9, 22), "time": dt.time(9, 0), "platform": "LinkedIn", "account": "Company Page",
-    "format": "Carousel / Document (PDF)", "pillar": "Case Study / Customer Result",
-    "case_study": "EXAMPLE - MRI no-show reduction",
-    "topic": "EXAMPLE - How a 3-site imaging center in Texas cut MRI no-shows in 90 days",
-    "hook": "Stat / Number", "persona": "Owner / CEO", "cta": "Book a Demo", "paid": "Organic",
-    "post_url": "https://www.linkedin.com/feed/update/urn:li:activity:EXAMPLE", "followers": 1250,
-    "placement": "First Comment", "pulled": dt.date(2026, 9, 29), "impr": 2400, "reach": 1650,
-    "likes": 48, "comments": 9, "shares": 5, "clicks": 37, "profile_visits": 22, "new_followers": 6,
-    "icp": 7, "dms": 1, "sessions": 29, "engaged": 21, "demo_page": 8, "form_starts": 3,
-    "learning": "EXAMPLE ROW - overwrite. Result stat on slide 1 + 'book a demo' in first comment drove clicks.",
-    "next": "Scale It (repeat + boost)",
-}
-for k, v in example.items():
-    c = ws_pt[f"{C[k]}{PT_FIRST}"]
-    c.value = v
-    c.font = f(italic=True, color="0000FF")
+# Real posts, 1-28 Sep 2026, pulled from the public LinkedIn / Instagram / X pages on 28 Sep 2026.
+# Only publicly visible numbers are filled; impressions/reach for LinkedIn & Instagram need native analytics.
+PULLED = dt.date(2026, 9, 28)
+LI_FOL, IG_FOL, X_FOL = 2640, 61, 46
+T11 = "Is your imaging center still running on fax, phones and payer portals? (3-min Gravity AI explainer video)"
+T14 = "Scanners idle a third of the day, next slot 3 weeks out - the queue nobody owns"
+T18 = "An order arrives with one field missing - when does it get flagged?"
+T23 = "An imaging order arrives by fax: 4 manual handoffs before it's billable"
+T28 = "Poll: How many referrals went to another center last month?"
+PIL_DEMO, PIL_OPS, PIL_RCM, PIL_INS = ("Product Demo / Feature", "Operations Tips (Scheduling, No-shows, Throughput)",
+                                      "Revenue Cycle & Denials", "Industry Insight / Data")
+NOTE_LI = "Public-page pull 9/28. Impressions, reach, reposts & clicks aren't public - add from LinkedIn page analytics."
+NOTE_IG = "Public-page pull 9/28. Views, reach, shares & saves aren't public - add from Instagram Insights."
+NOTE_X = "Public-profile pull 9/28 (views shown as impressions; likes/reposts not shown = 0). Confirm in X post analytics."
+NOTE_FMT = " Media format not visible on the public page - set it."
+POSTS = [
+    dict(date=dt.date(2026, 9, 11), time=dt.time(11, 27), platform="LinkedIn", format="Long Video", pillar=PIL_DEMO, topic=T11,
+         hook="Question", persona="Owner / CEO", cta="Book a Demo", placement="In Post Body", followers=LI_FOL,
+         post_url="https://www.linkedin.com/posts/alphanodus_is-your-imaging-center-stuck-in-the-past-activity-7504198831056764928-9QXW",
+         learning=NOTE_LI + " Reaction/comment counts weren't shown publicly for this video - fill in from analytics."),
+    dict(date=dt.date(2026, 9, 14), time=dt.time(12, 58), platform="LinkedIn", pillar=PIL_OPS, topic=T14,
+         hook="Stat / Number", persona="Owner / CEO", cta="Comment / Engage", placement="No Link", followers=LI_FOL,
+         post_url="https://www.linkedin.com/posts/alphanodus_radiology-medicalimaging-imagingcenters-activity-7505309133571686400-slZz",
+         likes=16, comments=0, learning=NOTE_LI + NOTE_FMT),
+    dict(date=dt.date(2026, 9, 18), time=dt.time(12, 42), platform="LinkedIn", pillar=PIL_RCM, topic=T18,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Comment / Engage", placement="No Link", followers=LI_FOL,
+         post_url="https://www.linkedin.com/posts/alphanodus_radiologymanagement-revenuecyclemanagement-activity-7506754588167806979-g7vi",
+         likes=5, comments=1, learning=NOTE_LI + NOTE_FMT),
+    dict(date=dt.date(2026, 9, 23), time=dt.time(19, 6), platform="LinkedIn", pillar=PIL_RCM, topic=T23,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Book a Demo", placement="First Comment", followers=LI_FOL,
+         post_url="https://www.linkedin.com/posts/alphanodus_revenuecyclemanagement-radiology-imagingcenters-activity-7508663072018939904-A0PG",
+         likes=4, comments=1, learning=NOTE_LI + NOTE_FMT),
+    dict(date=dt.date(2026, 9, 28), time=dt.time(14, 16), platform="LinkedIn", format="Poll", pillar=PIL_INS, topic=T28,
+         hook="Question", persona="Owner / CEO", cta="Comment / Engage", placement="No Link", followers=LI_FOL,
+         post_url="https://www.linkedin.com/posts/alphanodus_imagingcenters-healthcareoperations-radiology-activity-7510401945279295488-5wJH",
+         likes=1, comments=1, learning=NOTE_LI + " Only ~3 hours old when pulled - re-pull on Oct 5 before judging it."),
+    dict(date=dt.date(2026, 9, 11), time=dt.time(11, 47), platform="Instagram", format="Short Video / Reel", pillar=PIL_DEMO, topic=T11,
+         hook="Question", persona="Owner / CEO", cta="Book a Demo", placement="Link in Bio", followers=IG_FOL,
+         post_url="https://www.instagram.com/alphanodus/reel/DdJxFt3t07x/", likes=7, comments=0, learning=NOTE_IG),
+    dict(date=dt.date(2026, 9, 14), time=dt.time(13, 1), platform="Instagram", format="Single Image", pillar=PIL_OPS, topic=T14,
+         hook="Stat / Number", persona="Owner / CEO", cta="Comment / Engage", placement="No Link", followers=IG_FOL,
+         post_url="https://www.instagram.com/alphanodus/p/DdRoAPjkqqy/", likes=8, comments=0, learning=NOTE_IG),
+    dict(date=dt.date(2026, 9, 18), time=dt.time(14, 18), platform="Instagram", format="Carousel / Document (PDF)", pillar=PIL_RCM, topic=T18,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Comment / Engage", placement="No Link", followers=IG_FOL,
+         post_url="https://www.instagram.com/alphanodus/p/DdcD_2JkjH0/", likes=7, comments=0, learning=NOTE_IG),
+    dict(date=dt.date(2026, 9, 23), time=dt.time(19, 10), platform="Instagram", format="Single Image", pillar=PIL_RCM, topic=T23,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Book a Demo", placement="Link in Bio", followers=IG_FOL,
+         post_url="https://www.instagram.com/alphanodus/p/DdpdTFWN9JR/", likes=2, comments=0, learning=NOTE_IG),
+    dict(date=dt.date(2026, 9, 11), time=dt.time(11, 29), platform="X", format="Long Video", pillar=PIL_DEMO, topic=T11,
+         hook="Question", persona="Owner / CEO", cta="Book a Demo", placement="In Post Body", followers=X_FOL,
+         post_url="https://x.com/AlphaNodus/status/2098433794022006872", impr=27, likes=0, comments=0, shares=0, learning=NOTE_X),
+    dict(date=dt.date(2026, 9, 14), time=dt.time(13, 7), platform="X", format="Single Image", pillar=PIL_OPS, topic=T14,
+         hook="Stat / Number", persona="Owner / CEO", cta="Comment / Engage", placement="No Link", followers=X_FOL,
+         post_url="https://x.com/AlphaNodus/status/2099545479755583973", impr=16, likes=0, comments=0, shares=0, learning=NOTE_X),
+    dict(date=dt.date(2026, 9, 18), time=dt.time(14, 35), platform="X", format="Single Image", pillar=PIL_RCM, topic=T18,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Comment / Engage", placement="No Link", followers=X_FOL,
+         post_url="https://x.com/AlphaNodus/status/2101017252221128863", impr=26, likes=0, comments=1, shares=0, learning=NOTE_X),
+    dict(date=dt.date(2026, 9, 23), time=dt.time(20, 19), platform="X", format="Single Image", pillar=PIL_RCM, topic=T23,
+         hook="Story / Anecdote", persona="Revenue Cycle / Billing Lead", cta="Book a Demo", placement="First Comment", followers=X_FOL,
+         post_url="https://x.com/AlphaNodus/status/2102915695722045558", impr=13, likes=0, comments=1, shares=0, learning=NOTE_X),
+]
+for i, post in enumerate(POSTS):
+    row = dict(account="Company Page", paid="Organic", pulled=PULLED, **post)
+    for k, v in row.items():
+        c = ws_pt[f"{C[k]}{PT_FIRST + i}"]
+        c.value = v
+        c.font = f(color="0000FF")
 
 
 # ------------------------------------------------------------ Demo Pipeline
 title(ws_dp, "Demo Pipeline — one row per demo booked (all sources, not only social)",
-      "Copy the utm_* values from the demo form's hidden fields / CRM. No UTM? Put the Post ID in 'Manual Post ID' if the lead told you which post. Row 5 is an EXAMPLE.")
+      "Copy the utm_* values from the demo form's hidden fields / CRM. No UTM? Put the Post ID in 'Manual Post ID' if the lead told you which post.")
 DP_COLS = [
     # (header, kind, width, fmt, dropdown/list, comment)
     ("Booking #", "calc", 9, '"D-"000', None, None),
@@ -484,17 +539,6 @@ ws_dp.row_dimensions[4].height = 45
 ws_dp.freeze_panes = "C5"
 ws_dp.auto_filter.ref = f"A4:{get_column_letter(len(DP_COLS))}{DP_LAST}"
 ws_dp.conditional_formatting.add(f"S{DP_FIRST}:S{DP_LAST}", CellIsRule(operator="equal", formula=['"ID NOT FOUND"'], fill=fill("FFC7CE"), font=Font(name=FONT, color="9C0006", bold=True)))
-dp_example = {
-    "B": dt.date(2026, 9, 24), "C": "EXAMPLE - Jane Doe", "D": "Owner / CEO", "E": "EXAMPLE Imaging Partners",
-    "F": "Dallas", "G": "TX", "H": 3, "I": "MRI, CT, X-ray", "J": "LinkedIn", "K": "linkedin", "L": "social",
-    "M": "cs01-mri-noshows", "N": "lic-260922-0900", "O": "LinkedIn - company post", "V": dt.date(2026, 9, 30),
-    "W": "Scheduled", "X": "TBD", "Y": "Demo Booked", "Z": 18000,
-    "AB": "EXAMPLE ROW - delete. Deal value is illustrative only.",
-}
-for k, v in dp_example.items():
-    c = ws_dp[f"{k}{DP_FIRST}"]
-    c.value = v
-    c.font = f(italic=True, color="0000FF")
 
 
 # ------------------------------------------------------------ Case Studies
@@ -545,7 +589,7 @@ for i, (hdr, kind, width, nf, lst) in enumerate(CS_COLS, start=1):
                 "L": f'=IF($B{r}="","",COUNTIFS({rng("case_study")},$B{r}))',
                 "M": f'=IF($B{r}="","",{cnt("reach_calc")})',
                 "N": f'=IF($B{r}="","",{cnt("eng")})',
-                "O": f'=IF(OR($B{r}="",N(M{r})=0),"",N{r}/M{r})',
+                "O": f'=IF(OR($B{r}="",N(M{r})=0),"",{cnt("eng_r")}/M{r})',
                 "P": f'=IF($B{r}="","",{cnt("clicks")})',
                 "Q": f'=IF($B{r}="","",{cnt("sessions")})',
                 "R": f'=IF($B{r}="","",{cnt("booked")})',
@@ -556,12 +600,6 @@ for i, (hdr, kind, width, nf, lst) in enumerate(CS_COLS, start=1):
         add_list_validation(ws_cs, f"{L}{CS_FIRST}:{L}{CS_LAST}", f"={LIST_REF[lst]}")
 ws_cs.row_dimensions[4].height = 45
 ws_cs.freeze_panes = "C5"
-cs_example = ["CS01", "EXAMPLE - MRI no-show reduction", "cs01-mri-noshows", "Multi-site Imaging Network", "TX",
-              "MRI", "EXAMPLE - high MRI no-show rate leaving slots empty", "EXAMPLE - automated reminders + waitlist backfill",
-              "[replace with the real result, e.g. no-shows cut from X% to Y%]", "Hard Metric", ""]
-for i, v in enumerate(cs_example, start=1):
-    c = ws_cs.cell(CS_FIRST, i, v)
-    c.font = f(italic=True, color="0000FF")
 ws_cs.conditional_formatting.add(f"O{CS_FIRST}:O{CS_LAST}", DataBarRule(start_type="num", start_value=0, end_type="max", color="63BE7B"))
 ws_cs.conditional_formatting.add(f"R{CS_FIRST}:R{CS_LAST}", DataBarRule(start_type="num", start_value=0, end_type="max", color="F4B183"))
 
@@ -569,6 +607,7 @@ ws_cs.conditional_formatting.add(f"R{CS_FIRST}:R{CS_LAST}", DataBarRule(start_ty
 # ------------------------------------------------------------ Follower Growth
 title(ws_fg, "Follower Growth — weekly snapshot",
       "Enter the start Monday in A5 (other weeks fill themselves), then each Monday type the follower counts.")
+FG_START = {"LinkedIn - Company": LI_FOL, "Instagram": IG_FOL, "X": X_FOL}   # public counts on 28 Sep 2026
 FG_ACC = ["LinkedIn - Company", "LinkedIn - Founder", "Instagram", "X", "Facebook", "YouTube"]
 ws_fg.cell(4, 1, "Week Of")
 for i, a in enumerate(FG_ACC):
@@ -595,6 +634,8 @@ for r in range(5, 5 + 104):
     for i in range(len(FG_ACC)):
         inp = ws_fg.cell(r, 2 + i)
         inp.fill, inp.number_format, inp.font, inp.border = INPUT_FILL, FMT_INT, f(), BORDER
+        if r == 5 and FG_ACC[i] in FG_START:
+            inp.value, inp.font = FG_START[FG_ACC[i]], f(color="0000FF")
         L = get_column_letter(2 + i)
         net = ws_fg.cell(r, 2 + len(FG_ACC) + i)
         net.value = "" if r == 5 else f'=IF(OR({L}{r}="",{L}{r - 1}=""),"",{L}{r}-{L}{r - 1})'
@@ -612,7 +653,7 @@ ws_fg.freeze_panes = "B5"
 title(ws_db, "Alpha Nodus — Social → Website → Demo Dashboard",
       "Everything below recalculates for the reporting period. Change the two yellow dates to switch periods.")
 ws_db["B4"], ws_db["E4"] = "Period from:", "to:"
-ws_db["C4"], ws_db["F4"] = dt.date(2026, 1, 1), dt.date(2026, 12, 31)
+ws_db["C4"], ws_db["F4"] = dt.date(2026, 9, 1), dt.date(2026, 9, 30)
 for a in ("C4", "F4"):
     ws_db[a].fill, ws_db[a].number_format, ws_db[a].font, ws_db[a].border = INPUT_FILL, FMT_DATE, f(True, "0000FF"), BORDER
 for a in ("B4", "E4"):
@@ -644,7 +685,8 @@ tiles = [
     ("Impressions", f"={tot('impr')}", FMT_INT),
     ("Reach (Calc.)", f"={tot('reach_calc')}", FMT_INT),
     ("Engagements", f"={tot('eng')}", FMT_INT),
-    ("Engagement Rate", f'=IFERROR({tot("eng")}/{tot("reach_calc")},"")', FMT_PCT),
+    ("Eng. Rate (by Reach)", f'=IFERROR({tot("eng_r")}/{tot("reach_calc")},"")', FMT_PCT),
+    ("Eng. Rate (by Followers)", f'=IFERROR({tot("eng")}/{tot("fol_e")},"")', FMT_PCT),
     ("Link Clicks", f"={tot('clicks')}", FMT_INT),
     ("Website Sessions", f"={tot('sessions')}", FMT_INT),
     ("Demo Page Visits", f"={tot('demo_page')}", FMT_INT),
@@ -654,6 +696,10 @@ tiles = [
     ("Qualified Demos (from posts)", f"={tot('qualified')}", FMT_INT),
     ("Pipeline from Posts ($)", f"={tot('pipeline')}", FMT_USD),
     ("Ad Spend ($)", f"={tot('spend')}", FMT_USD),
+    ("Avg Likes / Reactions per Post", f'=IFERROR({tot("likes")}/COUNTIFS({DATE_CRIT}),"")', "0.0"),
+    ("Avg Comments per Post", f'=IFERROR({tot("comments")}/COUNTIFS({DATE_CRIT}),"")', "0.0"),
+    ("Follower Total (latest week)", "=IFERROR(LOOKUP(2,1/('Follower Growth'!$N$5:$N$108<>\"\"),'Follower Growth'!$N$5:$N$108),\"\")", FMT_INT),
+    ("Posts Missing Impressions", f'=COUNTIFS({DATE_CRIT},{rng("impr")},"")', FMT_INT),
 ]
 for i, (lab, form, nf) in enumerate(tiles):
     row = r + (i // 7) * 3
@@ -668,7 +714,7 @@ for i, (lab, form, nf) in enumerate(tiles):
     vc.fill = fill("DEEAF6")
     ws_db.merge_cells(start_row=row + 1, start_column=colx, end_row=row + 1, end_column=colx + 1)
     ws_db.row_dimensions[row].height = 28
-r += 6
+r += 9
 
 # Funnel
 r = section(r + 1, "Funnel: post → website → demo  (period)")
@@ -697,11 +743,11 @@ ws_db.conditional_formatting.add(f"C{first_funnel}:C{first_funnel + len(funnel) 
 r += len(funnel) + 3
 
 # Top 5 tables
-TOP_HDR = ["Rank", "Post ID", "Date", "Platform", "Account", "Content Pillar", "Case Study", "Format", "Eng. Rate", "Reach", "Link Clicks", "Demos Booked"]
-TOP_KEYS = [None, "post_id", "date", "platform", "account", "pillar", "case_study", "format", "er", "reach_calc", "clicks", "booked"]
-TOP_FMT = [None, None, FMT_DATE, None, None, None, None, None, FMT_PCT, FMT_INT, FMT_INT, FMT_INT]
-HELPER_COL = 16   # column P holds the LARGE() key, hidden
-for label, rkey in (("Top 5 posts by Engagement Rate (period)", "rk_er"), ("Top 5 posts by Demos Booked (period)", "rk_demo")):
+TOP_HDR = ["Rank", "Post ID", "Date", "Platform", "Topic", "Content Pillar", "Format", "Likes", "Comments", "Eng. Rate (Followers)", "Eng. Rate (Reach)", "Demos Booked"]
+TOP_KEYS = [None, "post_id", "date", "platform", "topic", "pillar", "format", "likes", "comments", "er_f", "er", "booked"]
+TOP_FMT = [None, None, FMT_DATE, None, None, None, None, FMT_INT, FMT_INT, FMT_PCT, FMT_PCT, FMT_INT]
+HELPER_COL = 20   # column T holds the LARGE() key, hidden
+for label, rkey in (("Top 5 posts by Engagement Rate — by followers (period)", "rk_er"), ("Top 5 posts by Demos Booked (period)", "rk_demo")):
     r = section(r, label, GREEN)
     for j, h in enumerate(TOP_HDR):
         c = ws_db.cell(r, 2 + j, h)
@@ -725,7 +771,7 @@ for label, rkey in (("Top 5 posts by Engagement Rate (period)", "rk_er"), ("Top 
 ws_db.column_dimensions[get_column_letter(HELPER_COL)].hidden = True
 
 # Breakdown tables
-DIM_HDR = ["Posts", "Impressions", "Reach", "Engagements", "Eng. Rate", "Link Clicks", "CTR", "Sessions",
+DIM_HDR = ["Posts", "Impressions", "Reach", "Engagements", "Eng. Rate (Reach)", "Eng. Rate (Followers)", "Link Clicks", "CTR", "Sessions",
            "Demo Page Visits", "Demos Booked", "Qualified Demos", "Session → Booked %", "Pipeline ($)"]
 
 
@@ -748,16 +794,18 @@ def dim_table(r, label, dim_key, labels, note=None):
         g = lambda body: f'=IF($B{rr}="","",{body})'
         forms = [
             g(f"COUNTIFS({crit})"), g(s("impr")), g(s("reach_calc")), g(s("eng")),
-            g(f'IFERROR(F{rr}/E{rr},"")'), g(s("clicks")), g(f'IFERROR(H{rr}/D{rr},"")'), g(s("sessions")),
-            g(s("demo_page")), g(s("booked")), g(s("qualified")), g(f'IFERROR(L{rr}/J{rr},"")'), g(s("pipeline")),
+            g(f'IFERROR({s("eng_r")}/E{rr},"")'), g(f'IFERROR(F{rr}/{s("fol_e")},"")'),
+            g(s("clicks")), g(f'IFERROR(I{rr}/D{rr},"")'), g(s("sessions")),
+            g(s("demo_page")), g(s("booked")), g(s("qualified")), g(f'IFERROR(M{rr}/K{rr},"")'), g(s("pipeline")),
         ]
-        fmts = [FMT_INT, FMT_INT, FMT_INT, FMT_INT, FMT_PCT, FMT_INT, FMT_PCT, FMT_INT, FMT_INT, FMT_INT, FMT_INT, FMT_PCT, FMT_USD]
+        fmts = [FMT_INT, FMT_INT, FMT_INT, FMT_INT, FMT_PCT, FMT_PCT, FMT_INT, FMT_PCT, FMT_INT, FMT_INT, FMT_INT, FMT_INT, FMT_PCT, FMT_USD]
         for j, (form, nf) in enumerate(zip(forms, fmts)):
             c = ws_db.cell(rr, 3 + j, form)
             c.number_format, c.border, c.font = nf, BORDER, f()
     last = first + len(labels) - 1
-    ws_db.conditional_formatting.add(f"G{first}:G{last}", DataBarRule(start_type="num", start_value=0, end_type="max", color="63BE7B"))
-    ws_db.conditional_formatting.add(f"L{first}:L{last}", DataBarRule(start_type="num", start_value=0, end_type="max", color="F4B183"))
+    for colL in ("G", "H"):
+        ws_db.conditional_formatting.add(f"{colL}{first}:{colL}{last}", DataBarRule(start_type="num", start_value=0, end_type="max", color="63BE7B"))
+    ws_db.conditional_formatting.add(f"M{first}:M{last}", DataBarRule(start_type="num", start_value=0, end_type="max", color="F4B183"))
     return last + 2
 
 
@@ -785,7 +833,7 @@ r = section(r, "Monthly trend (12 months starting from the 'Period from' month)"
 ws_db.cell(r, 2, "Month").font = f(True, "FFFFFF")
 ws_db.cell(r, 2).fill = fill(NAVY)
 TREND = [("Posts", None, FMT_INT), ("Reach", "reach_calc", FMT_INT), ("Engagements", "eng", FMT_INT),
-         ("Eng. Rate", "__er", FMT_PCT), ("Link Clicks", "clicks", FMT_INT), ("Sessions", "sessions", FMT_INT),
+         ("Eng. Rate (Reach)", "__er", FMT_PCT), ("Eng. Rate (Followers)", "__erf", FMT_PCT), ("Link Clicks", "clicks", FMT_INT), ("Sessions", "sessions", FMT_INT),
          ("Demo Page Visits", "demo_page", FMT_INT), ("Demos Booked (posts)", "booked", FMT_INT),
          ("Demos Booked (all sources)", "__dpall", FMT_INT), ("New Followers", "new_followers", FMT_INT)]
 for j, (h, _, _) in enumerate(TREND):
@@ -800,7 +848,9 @@ for i in range(12):
         if k is None:
             form = f'=COUNTIFS({rng("month")},$B{rr})'
         elif k == "__er":
-            form = f'=IFERROR(E{rr}/D{rr},"")'
+            form = f'=IFERROR(SUMIFS({rng("eng_r")},{rng("month")},$B{rr})/D{rr},"")'
+        elif k == "__erf":
+            form = f'=IFERROR(E{rr}/SUMIFS({rng("fol_e")},{rng("month")},$B{rr}),"")'
         elif k == "__dpall":
             form = (f'=COUNTIFS({dp}$B${DP_FIRST}:$B${DP_LAST},">="&DATE(YEAR({FROM}),MONTH({FROM})+{i},1),'
                     f'{dp}$B${DP_FIRST}:$B${DP_LAST},"<"&DATE(YEAR({FROM}),MONTH({FROM})+{i + 1},1))')
@@ -808,7 +858,7 @@ for i in range(12):
             form = f'=SUMIFS({rng(k)},{rng("month")},$B{rr})'
         c = ws_db.cell(rr, 3 + j, form)
         c.number_format, c.border, c.font = nf, BORDER, f()
-ws_db.conditional_formatting.add(f"J{r + 1}:J{r + 12}", DataBarRule(start_type="num", start_value=0, end_type="max", color="F4B183"))
+ws_db.conditional_formatting.add(f"K{r + 1}:K{r + 12}", DataBarRule(start_type="num", start_value=0, end_type="max", color="F4B183"))
 r += 15
 
 # Demo pipeline by source & attribution
@@ -864,7 +914,7 @@ rows = [
     ("h", "Colour legend"),
     ("legend_in", "Yellow cell = you type here (or pick from the dropdown)."),
     ("legend_calc", "Grey cell = formula. Don't type over it — it recalculates by itself."),
-    ("legend_ex", "Blue italic text = EXAMPLE values in row 5 of Post Tracker, Demo Pipeline and Case Studies. Overwrite or delete them before real use."),
+    ("legend_ex", "Blue text = September 2026 data pulled from Alpha Nodus's public LinkedIn, Instagram and X pages on 28 Sep 2026. Overwrite with native-analytics numbers when you have them."),
     ("", "Hover over any column header with a red corner triangle for a note on what to enter."),
     ("h", "Sheet map"),
     ("Post Tracker", "One row per post per platform. Details → auto tracking link → platform metrics → auto reach & engagement → website/demo funnel."),
@@ -883,6 +933,12 @@ rows = [
     ("Weekly (Mondays)", "GA4 → fill Sessions, Engaged Sessions, Demo Page Visits for each post (see Tracking Setup). Update Follower Growth."),
     ("Every demo booked", "Add a row to Demo Pipeline with the utm_* values from the form / CRM and the 'How did you hear about us?' answer. Update status, qualified and stage as it progresses."),
     ("Monthly review", "Dashboard: which pillar / case study / format has the highest engagement rate AND demos? Write 'What We Learned' + 'Next Action' on the best and worst posts. Scale winners, retire losers."),
+    ("h", "Data notes — September 2026 (pulled 28 Sep 2026)"),
+    ("Accounts", "LinkedIn company page (2,640 followers), Instagram @alphanodus (61), X @AlphaNodus (46). No founder / employee accounts were included — add them as Account = Founder / Employee."),
+    ("What was found", "13 posts: 5 LinkedIn (Sep 11, 14, 18, 23, 28), 4 Instagram and 4 X (Sep 11, 14, 18, 23 — the same four stories cross-posted). X and Instagram had no posts Sep 1–10; LinkedIn's public page only lists its 5 newest posts, so check LinkedIn for anything posted Sep 1–10."),
+    ("What's public", "LinkedIn & Instagram: likes/reactions and comments only. X: replies and views (used as impressions). Everything else (impressions, reach, saves, shares, clicks, profile visits) is only in each platform's own analytics — fill those yellow cells from there."),
+    ("Engagement rate", "Because LinkedIn / Instagram impressions aren't public, compare posts on 'Engagement Rate (by Followers)' until impressions are entered; then switch to 'Engagement Rate (by Reach)'."),
+    ("Website & demos", "The September posts didn't use UTM links, so website sessions and demos can't be traced to them. Start using each row's Tracking URL from the next post onward, and log every demo on Demo Pipeline."),
     ("h", "Rules that keep the data clean"),
     ("", "• Every post gets its own tracking link — never reuse a link across posts or platforms (the Post ID is the link's fingerprint)."),
     ("", "• Post ID = platform code + account code + date + time (e.g. LIC-260922-0900). A red Post ID means a duplicate — change the time by a minute."),
@@ -897,9 +953,9 @@ for kind, text in rows:
         c = ws_start.cell(r, 2, text)
         c.font = f(True, NAVY, 12)
     elif kind.startswith("legend"):
-        sw = ws_start.cell(r, 2, {"legend_in": "Input", "legend_calc": "Calculated", "legend_ex": "Example"}[kind])
+        sw = ws_start.cell(r, 2, {"legend_in": "Input", "legend_calc": "Calculated", "legend_ex": "Public data"}[kind])
         sw.fill = {"legend_in": INPUT_FILL, "legend_calc": CALC_FILL, "legend_ex": INPUT_FILL}[kind]
-        sw.font = f(True, "0000FF", italic=True) if kind == "legend_ex" else f(True)
+        sw.font = f(True, "0000FF") if kind == "legend_ex" else f(True)
         sw.border = BORDER
         ws_start.cell(r, 3, text).font = f()
     else:
@@ -962,7 +1018,7 @@ r = table(r, "2. Where each number comes from", ["Tracker column(s)", "Source", 
      "Reports → Acquisition → Traffic acquisition → add a secondary dimension 'Session manual ad content' → search the Post ID (lower-case). Or Explore → Free form: rows = Session manual ad content, values = Sessions, Engaged sessions.",
      "Expect sessions < link clicks (bots, link previews, people bouncing before the page loads). Click → Session % shows the gap."),
     ("Demo Page Visits", "Google Analytics 4",
-     "Explore → Free form: rows = Session manual ad content; values = Sessions; filter Page path contains your demo page path (e.g. /demo or /book-a-demo). Better: set up the 'demo_page_view' key event (checklist) and read the key-event count.",
+     "Explore → Free form: rows = Session manual ad content; values = Sessions; filter Page path contains your demo page path (alphanodus.com uses /contact). Better: set up the 'demo_page_view' key event (checklist) and read the key-event count.",
      None),
     ("Demos Booked / Attended / Qualified / Pipeline", "Demo form + CRM → Demo Pipeline sheet",
      "Each booking's hidden UTM fields (or the CRM's original source fields) are pasted into Demo Pipeline. The Post Tracker counts them automatically.",
@@ -1025,8 +1081,9 @@ defs = [
     ("Reach (Calc.)", "Reported reach; if blank, Impressions / Views", "Unique people who saw the post. X doesn't report reach, so impressions stand in (flagged in Reach Basis)."),
     ("Reach % of Followers", "Reach (Calc.) ÷ Followers at Posting", "How much of your audience the algorithm showed it to; above 100% = it travelled beyond followers."),
     ("Total Engagements", "Likes + Comments + Shares + Saves + Link Clicks", "All active interactions. Views, profile visits and follows are tracked separately."),
-    ("Engagement Rate (by Reach)", "Total Engagements ÷ Reach (Calc.)", "THE main quality metric — compares posts of different sizes fairly."),
+    ("Engagement Rate (by Reach)", "Total Engagements ÷ Reach (Calc.)", "THE main quality metric — compares posts of different sizes fairly. Dashboard totals only count posts that have reach/impressions, so posts still missing them don't drag the rate down."),
     ("Engagement Rate (by Impr.)", "Total Engagements ÷ Impressions", "Matches how LinkedIn's own dashboard reports engagement rate."),
+    ("Engagement Rate (by Followers)", "Total Engagements ÷ Followers at Posting", "Works from public numbers alone, so it's the fallback while impressions/reach are missing. Dashboard totals: all engagements ÷ sum of follower counts across posts."),
     ("Click-Through Rate", "Link Clicks ÷ Impressions", "How well the post drives traffic to alphanodus.com."),
     ("Share Rate", "Shares ÷ Reach (Calc.)", "Word-of-mouth potential — shared posts reach peers at other imaging centers."),
     ("Weighted Eng. per 1K Reach", "(Likes×w1 + Comments×w2 + Shares×w3 + Saves×w4 + Clicks×w5) ÷ Reach × 1000", "Values deeper actions more than likes. Weights are on Settings."),
