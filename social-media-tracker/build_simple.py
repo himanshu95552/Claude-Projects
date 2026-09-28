@@ -100,6 +100,11 @@ for i, p in enumerate(PLATFORMS):
         cc.alignment = Alignment(horizontal="left" if j == 1 else "center")
 ws["A8"] = "Followers Today: update every Monday."
 ws["A8"].font = font(italic=True, color=GREY, size=9)
+ws["A9"] = "Website visits from social media (Google Analytics, Sep 1–28):"
+ws["A9"].font = font(True, NAVY)
+ws["A10"] = ("12 visits (0.16% of all site visits)  ·  1.6 sec average time on site  ·  0 demos traced to social. "
+             "Update monthly: Reports → Acquisition → Traffic acquisition → Organic Social.")
+ws["A10"].font = font(color="0000FF")
 FOL_TABLE = "$A$5:$B$7"
 
 # Rule box (H4:M9)
