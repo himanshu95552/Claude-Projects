@@ -50,10 +50,11 @@ COLS = [
     ("comments", "Comments", 9, "in", "#,##0", None),
     ("shares", "Shares / Reposts", 9, "in", "#,##0", None),
     ("saves", "Saves", 7, "in", "#,##0", None),
-    ("newfol", "New Followers from Post", 10, "in", "#,##0", "Follows gained from this post (platform analytics)."),
+    ("clicks", "Link Clicks", 7, "in", "#,##0", "Clicks on the post (LinkedIn counts these in its engagement rate)."),
+    ("newfol", "New Followers (3 days after post)", 11, "in", "#,##0", "Followers gained on the post day + the next 2 days. LinkedIn doesn't credit follows to organic posts, so this is the closest fair signal."),
     ("target", "Target List Engaged?", 10, "in", None, "Did anyone from our target list (imaging / radiology center decision-makers) like, comment or share?"),
-    ("eng", "Total Engagement", 10, "calc", "#,##0", "Likes + Comments + Shares + Saves"),
-    ("er", "Engagement Rate", 10, "calc", "0.0%", "Total Engagement ÷ Reach (or Impressions; if neither is entered yet, ÷ followers in the box above)."),
+    ("eng", "Total Engagement", 10, "calc", "#,##0", "Likes + Comments + Shares + Saves + Link Clicks (same as LinkedIn's own definition)"),
+    ("er", "Engagement Rate", 10, "calc", "0.0%", "Total Engagement ÷ Reach (or Impressions). Only if no post on that platform has impressions yet: ÷ followers in the box above."),
     ("rating", "Rating", 14, "calc", None, "Compared with our own average on the same platform — see the rule box above."),
     ("weak", "What Was Weak", 40, "in", None, None),
     ("improve", "What to Improve", 40, "in", None, None),
@@ -108,6 +109,7 @@ rules = [
     ("Average = between 0.8× and 1.2× our average", False),
     ("Below Standard = under 0.8× our average", False),
     ("No Data Yet = numbers not entered, or fewer than 2 posts on that platform", False),
+    ("Engagement Rate = (likes + comments + shares + saves + clicks) ÷ reach, or ÷ impressions if reach is blank", False),
     ("Why our own average: each platform behaves differently, and it improves as we post more.", False),
 ]
 for i, (t, b) in enumerate(rules):
@@ -116,9 +118,11 @@ for i, (t, b) in enumerate(rules):
 ws.cell(4, 8).fill = fill("DEEAF6")
 
 # Legend
-ws["S4"], ws["S5"], ws["S6"] = "Yellow = type here", "Grey = automatic", "Blue text = pulled from public profiles on 9/28/2026"
+ws["S4"], ws["S5"], ws["S6"] = "Yellow = type here", "Grey = automatic", "Blue text = data (LinkedIn: page analytics export, Aug 28–Sep 26)"
 ws["S4"].fill, ws["S5"].fill = INPUT, CALC
 ws["S6"].font = font(color="0000FF")
+ws["S7"] = "Instagram & X: public profiles, 9/28/2026"
+ws["S7"].font = font(color="0000FF")
 for a in ("S4", "S5"):
     ws[a].font, ws[a].border = font(True), BOX
 
@@ -138,11 +142,13 @@ ws.row_dimensions[HDR].height = 42
 def formula(key, r):
     x = {k: f"{v}{r}" for k, v in L.items()}
     blank = f'OR({x["date"]}="",{x["platform"]}="")'
+    has_views = (f'COUNTIFS({rng("platform")},{x["platform"]},{rng("impr")},">0")'
+                 f'+COUNTIFS({rng("platform")},{x["platform"]},{rng("reach")},">0")')
     denom = (f'IF(N({x["reach"]})>0,{x["reach"]},IF(N({x["impr"]})>0,{x["impr"]},'
-             f'INDEX($B$5:$B$7,MATCH({x["platform"]},$A$5:$A$7,0))))')
+             f'IF({has_views}>0,"",INDEX($B$5:$B$7,MATCH({x["platform"]},$A$5:$A$7,0)))))')
     return {
-        "eng": f'=IF({blank},"",IF(COUNT({x["likes"]}:{x["saves"]})=0,"",SUM({x["likes"]}:{x["saves"]})))',
-        "er": f'=IF(OR({blank},{x["eng"]}=""),"",IFERROR({x["eng"]}/{denom},""))',
+        "eng": f'=IF({blank},"",IF(COUNT({x["likes"]}:{x["clicks"]})=0,"",SUM({x["likes"]}:{x["clicks"]})))',
+        "er": f'=IF(OR({blank},{x["eng"]}=""),"",IFERROR({x["eng"]}/({denom}),""))',
         "rating": (f'=IF({blank},"",IF(OR({x["er"]}="",COUNTIFS({rng("platform")},{x["platform"]},{rng("er")},">=0")<2),"No Data Yet",'
                    f'IFERROR(IF({x["er"]}/AVERAGEIFS({rng("er")},{rng("platform")},{x["platform"]})>=1.2,"Good",'
                    f'IF({x["er"]}/AVERAGEIFS({rng("er")},{rng("platform")},{x["platform"]})>=0.8,"Average","Below Standard")),"Average")))'),
@@ -192,73 +198,73 @@ for word, bg in (("Repeat", "C6EFCE"), ("Improve & Retry", "FFEB9C"), ("Stop", "
 D = dt.date
 POSTS = [
     (D(2026, 9, 11), "LinkedIn", "3-min Gravity AI explainer video: 'Still running on fax, phones and payer portals?'", "Product / Demo", "Question",
-     "https://www.linkedin.com/posts/alphanodus_is-your-imaging-center-stuck-in-the-past-activity-7504198831056764928-9QXW",
-     None, None, None, None, None, None,
-     "Likes/comments weren't visible publicly. 3 minutes is long for a feed video.",
-     "Add the numbers from LinkedIn analytics. Cut a 30–45 sec version with captions and the problem in the first 3 seconds.", "Wait for Data"),
+     "https://www.linkedin.com/feed/update/urn:li:activity:7504198831056764928",
+     413, None, 14, 0, 1, None, 24, 0,
+     "Most seen (413) and most clicked (24) post of the month, but 0 comments, and only 198 of 413 people started the video.",
+     "Keep video. Make a 30–45 sec cut with captions and the problem in the first 3 seconds, and end with one question to get comments.", "Improve & Retry"),
     (D(2026, 9, 14), "LinkedIn", "Text post: 'Scanners idle a third of the day, next slot 3 weeks out'", "Operations Tips", "Stat / Number",
-     "https://www.linkedin.com/posts/alphanodus_radiology-medicalimaging-imagingcenters-activity-7505309133571686400-slZz",
-     None, None, 16, 0, None, None,
-     "Best LinkedIn post, but 0 comments: nobody used the 'comment GravityAI' ask. Very long text.",
-     "Keep the stat-led opening. Swap the comment-keyword ask for one simple question, and put the demo link in the first comment.", "Repeat"),
+     "https://www.linkedin.com/feed/update/urn:li:activity:7505309133571686400",
+     322, None, 16, 0, 1, None, 17, 3,
+     "Most likes of the month (16) but 0 comments: nobody used the 'comment GravityAI' ask. Very long text.",
+     "Repeat the stat-led opening. Replace the comment-keyword ask with one simple question, and put the demo link in the first comment.", "Repeat"),
     (D(2026, 9, 18), "LinkedIn", "Post: an order arrives with one field missing — when does it get flagged?", "Revenue Cycle", "Story",
-     "https://www.linkedin.com/posts/alphanodus_radiologymanagement-revenuecyclemanagement-activity-7506754588167806979-g7vi",
-     None, None, 5, 1, None, None,
-     "A third of the reactions of the Sep 14 post. Narrow billing topic, no visual showing the problem.",
-     "Add a simple before/after picture of the order flow. Put a $ or % cost of a missed field in the first line.", "Improve & Retry"),
+     "https://www.linkedin.com/feed/update/urn:li:activity:7506754588167806979",
+     217, None, 5, 1, 1, None, 18, 1,
+     "Best engagement rate and best click rate (8.3%), but the fewest impressions (217) — the billing topic reached fewer people.",
+     "Repeat the short story + question format. Write the first line for center owners (lost revenue), not only billing teams, to reach more people.", "Repeat"),
     (D(2026, 9, 23), "LinkedIn", "Post: an imaging order passes 4 manual handoffs before it's billable", "Revenue Cycle", "Story",
-     "https://www.linkedin.com/posts/alphanodus_revenuecyclemanagement-radiology-imagingcenters-activity-7508663072018939904-A0PG",
-     None, None, 4, 1, None, None,
-     "Second billing post in 5 days with a similar message. Demo link hidden in the comments.",
+     "https://www.linkedin.com/feed/update/urn:li:activity:7508663072018939904",
+     234, None, 4, 1, 0, None, 16, 6,
+     "Lowest engagement rate of the month and no reposts. Second billing post in 5 days; demo link hidden in the comments.",
      "Space out Revenue Cycle posts (one every 2 weeks). Open with a specific denial number, not a process description.", "Improve & Retry"),
     (D(2026, 9, 28), "LinkedIn", "Poll: how many referrals went to another center last month?", "Industry Insight", "Question",
      "https://www.linkedin.com/posts/alphanodus_imagingcenters-healthcareoperations-radiology-activity-7510401945279295488-5wJH",
-     None, None, 1, 1, None, None,
-     "Only about 3 hours old when checked — ignore the rating until it's re-checked.",
-     "Re-check on Oct 5. Post the poll results next week as promised in the post.", "Wait for Data"),
+     None, None, 1, 1, None, None, None, None,
+     "Posted after the LinkedIn export ended (Sep 26), so there are no impressions yet.",
+     "Re-export LinkedIn analytics after Oct 5. Post the poll results next week as promised in the post.", "Wait for Data"),
     (D(2026, 9, 11), "Instagram", "Reel: 3-min Gravity AI explainer video", "Product / Demo", "Question",
      "https://www.instagram.com/alphanodus/reel/DdJxFt3t07x/",
-     None, None, 7, 0, None, None,
+     None, None, 7, 0, None, None, None, None,
      "No comments. 3 minutes is far too long for a Reel.",
      "Cut a 20–30 sec Reel with on-screen text. End with 'link in bio to book a demo'.", "Improve & Retry"),
     (D(2026, 9, 14), "Instagram", "Image: 'Scanners idle a third of the day, next slot 3 weeks out'", "Operations Tips", "Stat / Number",
      "https://www.instagram.com/alphanodus/p/DdRoAPjkqqy/",
-     None, None, 8, 0, None, None,
+     None, None, 8, 0, None, None, None, None,
      "Best Instagram post, but the caption is very long and the 'comment GravityAI' ask got 0 comments.",
      "Keep the stat-led visual. Shorten the caption to 3–4 lines with one question at the end.", "Repeat"),
     (D(2026, 9, 18), "Instagram", "Carousel: an order arrives with one field missing", "Revenue Cycle", "Story",
      "https://www.instagram.com/alphanodus/p/DdcD_2JkjH0/",
-     None, None, 7, 0, None, None,
+     None, None, 7, 0, None, None, None, None,
      "Ended with a question but got 0 comments — the question was only in the caption.",
      "Put the question on the last slide too, with 2–3 answer options people can reply with.", "Improve & Retry"),
     (D(2026, 9, 23), "Instagram", "Image: 4 manual handoffs before an order is billable", "Revenue Cycle", "Story",
      "https://www.instagram.com/alphanodus/p/DdpdTFWN9JR/",
-     None, None, 2, 0, None, None,
+     None, None, 2, 0, None, None, None, None,
      "Weakest Instagram post: text-heavy single image, same theme as Sep 18.",
      "Tell process stories as a carousel or short Reel. Avoid two Revenue Cycle posts in a row.", "Improve & Retry"),
     (D(2026, 9, 11), "X", "Video: Gravity AI explainer + demo link", "Product / Demo", "Question",
      "https://x.com/AlphaNodus/status/2098433794022006872",
-     27, None, 0, 0, 0, None,
+     27, None, 0, 0, 0, None, None, None,
      "27 views and no engagement. The account only has 46 followers.",
      "Post a short clip instead of the full video. Reply in radiology / imaging threads to get seen.", "Improve & Retry"),
     (D(2026, 9, 14), "X", "Image: 'Scanners idle a third of the day' + comment GravityAI ask", "Operations Tips", "Stat / Number",
      "https://x.com/AlphaNodus/status/2099545479755583973",
-     16, None, 0, 0, 0, None,
+     16, None, 0, 0, 0, None, None, None,
      "Fewest views of the month and no engagement.",
      "Tag 1–2 relevant industry accounts or people. Turn the stat into a short thread.", "Improve & Retry"),
     (D(2026, 9, 18), "X", "Image: an order with one field missing — when is it flagged?", "Revenue Cycle", "Story",
      "https://x.com/AlphaNodus/status/2101017252221128863",
-     26, None, 0, 1, 0, None,
+     26, None, 0, 1, 0, None, None, None,
      "Only got a reply, no likes or reposts.",
      "Ending with a question worked here — keep doing it. Add a clear visual.", "Repeat"),
     (D(2026, 9, 23), "X", "Image: 4 manual handoffs before an order is billable (pinned)", "Revenue Cycle", "Story",
      "https://x.com/AlphaNodus/status/2102915695722045558",
-     13, None, 0, 1, 0, None,
+     13, None, 0, 1, 0, None, None, None,
      "Rated Good only because 1 reply came from very few views — 13, the lowest of the month, even though it was pinned.",
      "Keep the question ending. Get it seen: tag 1–2 industry accounts and pin whichever post is doing best.", "Improve & Retry"),
 ]
 keys = ["date", "platform", "what", "pillar", "hook", "link", "impr", "reach", "likes", "comments", "shares", "saves",
-        "weak", "improve", "action"]
+        "clicks", "newfol", "weak", "improve", "action"]
 for i, row in enumerate(POSTS):
     r = FIRST + i
     for k, v in zip(keys, row):
