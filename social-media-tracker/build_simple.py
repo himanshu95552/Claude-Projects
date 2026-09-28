@@ -57,12 +57,12 @@ COLS = [
     ("er", "Engagement Rate", 10, "calc", "0.0%", "Total Engagement ÷ Impressions/Views (or Reach if views are missing). Only if no post on that platform has either yet: ÷ followers in the box above."),
     ("rating", "Rating", 14, "calc", None, "Compared with our own average on the same platform — see the rule box above."),
     ("weak", "What Was Weak", 40, "in", None, None),
-    ("improve", "What to Improve", 40, "in", None, None),
+    ("improve", "Suggestion — and the data behind it", 52, "in", None, "What to do next time, with the number from our own September data that supports it."),
     ("action", "Next Action", 14, "in", None, None),
     ("url", "Tracking URL (use this link in the post)", 44, "calc", None, "Built automatically. Paste it in the post, first comment or bio so website visits can be traced to this post."),
 ]
 L = {k: chr(ord("A") + i) for i, (k, *_rest) in enumerate(COLS)}
-HDR, FIRST, LAST = 11, 12, 211
+HDR, FIRST, LAST = 15, 16, 215
 
 wb = Workbook()
 ws = wb.active
@@ -72,39 +72,56 @@ ws.sheet_view.showGridLines = False
 ws["A1"] = "Alpha Nodus — Social Post Tracker"
 ws["A1"].font = font(True, NAVY, 16)
 ws["A2"] = ("One row per post. Fill the yellow cells; grey cells calculate themselves. "
-            "Check numbers 7 days after posting, then read the Rating and pick the Next Action.")
+            "Check numbers 7 days after posting, then read the Rating and pick the Next Action. "
+            "Blue = real numbers from each platform's analytics (September 2026).")
 ws["A2"].font = font(italic=True, color=GREY)
 
-# Summary box (A4:F8)
-box_hdr = ["Platform", "Followers Today", "Posts", "Avg Engagement Rate", "Good Posts", "Below Standard Posts"]
+# Summary box (A4:J8): September at a glance, all calculated from the rows below
+box_hdr = ["Platform", "Followers Today", "Posts", "Impressions / Views", "Total Engagement", "Avg Engagement Rate",
+           "Clicks", "New Followers", "Good Posts", "Below Standard Posts"]
 for j, h in enumerate(box_hdr):
     c = ws.cell(4, 1 + j, h)
     c.font, c.fill, c.border = font(True, "FFFFFF"), fill(NAVY), BOX
     c.alignment = Alignment(wrap_text=True, horizontal="center", vertical="center")
-ws.row_dimensions[4].height = 28
+ws.row_dimensions[4].height = 30
 rng = lambda k: f"${L[k]}${FIRST}:${L[k]}${LAST}"
 for i, p in enumerate(PLATFORMS):
     r = 5 + i
-    ws.cell(r, 1, p).font = font(True)
+    ws.cell(r, 1, p)
     fc = ws.cell(r, 2, FOLLOWERS[p])
     fc.fill, fc.font, fc.number_format = INPUT, font(color="0000FF"), "#,##0"
     ws.cell(r, 3, f'=COUNTIF({rng("platform")},A{r})')
-    ws.cell(r, 4, f'=IFERROR(AVERAGEIF({rng("platform")},A{r},{rng("er")}),"")').number_format = "0.0%"
-    ws.cell(r, 5, f'=COUNTIFS({rng("platform")},A{r},{rng("rating")},"Good")')
-    ws.cell(r, 6, f'=COUNTIFS({rng("platform")},A{r},{rng("rating")},"Below Standard")')
-    for j in range(1, 7):
+    ws.cell(r, 4, f'=SUMIF({rng("platform")},A{r},{rng("impr")})')
+    ws.cell(r, 5, f'=SUMIF({rng("platform")},A{r},{rng("eng")})')
+    ws.cell(r, 6, f'=IFERROR(AVERAGEIF({rng("platform")},A{r},{rng("er")}),"")')
+    ws.cell(r, 7, f'=SUMIF({rng("platform")},A{r},{rng("clicks")})')
+    ws.cell(r, 8, f'=SUMIF({rng("platform")},A{r},{rng("newfol")})')
+    ws.cell(r, 9, f'=COUNTIFS({rng("platform")},A{r},{rng("rating")},"Good")')
+    ws.cell(r, 10, f'=COUNTIFS({rng("platform")},A{r},{rng("rating")},"Below Standard")')
+ws.cell(8, 1, "All platforms")
+for j in (2, 3, 4, 5, 7, 8, 9, 10):
+    col = chr(ord("A") + j - 1)
+    ws.cell(8, j, f"=SUM({col}5:{col}7)")
+ws.cell(8, 6, f'=IFERROR(AVERAGE({rng("er")}),"")')
+for r in range(5, 9):
+    for j in range(1, 11):
         cc = ws.cell(r, j)
         cc.border = BOX
-        if j > 2:
-            cc.fill, cc.font = CALC, font()
+        cc.font = font(bold=(j == 1 or r == 8), color="0000FF" if (j == 2 and r < 8) else "000000")
+        if j > 2 or r == 8:
+            cc.fill = CALC if r < 8 else fill("DEEAF6")
+        cc.number_format = "0.0%" if j == 6 else "#,##0"
         cc.alignment = Alignment(horizontal="left" if j == 1 else "center")
-ws["A8"] = "Followers Today: update every Monday."
-ws["A8"].font = font(italic=True, color=GREY, size=9)
-ws["A9"] = "Website visits from social media (Google Analytics, Sep 1–28):"
-ws["A9"].font = font(True, NAVY)
-ws["A10"] = ("12 visits (0.16% of all site visits)  ·  1.6 sec average time on site  ·  0 demos traced to social. "
-             "Update monthly: Reports → Acquisition → Traffic acquisition → Organic Social.")
-ws["A10"].font = font(color="0000FF")
+ws["A9"] = "Followers Today: update every Monday. No founder or team LinkedIn posts in September."
+ws["A9"].font = font(italic=True, color=GREY, size=9)
+ws["A11"] = "Website & demos — September 2026"
+ws["A11"].font = font(True, NAVY, 11)
+ws["A12"] = ("Website visits from social media: 12 of 7,424 site visits (0.16%)  ·  1.6 sec average time on site  "
+             "(Google Analytics → Acquisition → Traffic acquisition → Organic Social)")
+ws["A13"] = ("Demos booked: 1 in September — where it came from wasn't recorded, so it can't be credited to any post. "
+             "From October, log the source of every demo.")
+for a in ("A12", "A13"):
+    ws[a].font = font(color="0000FF")
 FOL_TABLE = "$A$5:$B$7"
 
 # Rule box (H4:M9)
@@ -118,18 +135,9 @@ rules = [
     ("Why our own average: each platform behaves differently, and it improves as we post more.", False),
 ]
 for i, (t, b) in enumerate(rules):
-    c = ws.cell(4 + i, 8, t)
+    c = ws.cell(4 + i, 12, t)
     c.font = font(b, NAVY if b else "000000", 11 if b else 10)
-ws.cell(4, 8).fill = fill("DEEAF6")
-
-# Legend
-ws["S4"], ws["S5"], ws["S6"] = "Yellow = type here", "Grey = automatic", "Blue text = data (LinkedIn: page analytics export, Aug 28–Sep 26)"
-ws["S4"].fill, ws["S5"].fill = INPUT, CALC
-ws["S6"].font = font(color="0000FF")
-ws["S7"] = "X: X analytics export (Sep 1–28). Instagram: Instagram Insights (9/29/2026)"
-ws["S7"].font = font(color="0000FF")
-for a in ("S4", "S5"):
-    ws[a].font, ws[a].border = font(True), BOX
+ws.cell(4, 12).fill = fill("DEEAF6")
 
 # Header row
 for j, (key, head, width, kind, nf, note) in enumerate(COLS, start=1):
@@ -250,7 +258,7 @@ POSTS = [
     (D(2026, 9, 23), "Instagram", "Image: 4 manual handoffs before an order is billable", "Revenue Cycle", "Story",
      "https://www.instagram.com/alphanodus/p/DdpdTFWN9JR/",
      88, 37, 2, 0, 0, 0, 2, 0,
-     "Fewest views (88) and only 2 likes. Text-heavy single image; second billing post in 5 days.",
+     "Fewest views of any Instagram feed post (88) and only 2 likes. Text-heavy single image; second billing post in 5 days.",
      "Tell process stories as a carousel or short Reel. Avoid two Revenue Cycle posts in a row.", "Improve & Retry"),
     (D(2026, 9, 23), "Instagram", "Story series (4 frames): fax poll → handoffs poll → 'Gravity watches' → Book a demo + link", "Revenue Cycle", "Question",
      "https://www.instagram.com/alphanodus/",
@@ -278,6 +286,28 @@ POSTS = [
      "Rated Good only because 2 of 13 viewers tapped 'show more' — too few views to mean much. The '1 reply' is our own thread tweet. No likes or replies from others.",
      "Keep the short list format, but get it seen: ask the team to repost and tag 1–2 industry accounts.", "Improve & Retry"),
 ]
+SUGGEST = [
+    # LinkedIn
+    "Cut a 30–45 sec version with captions. Data: most seen (413) and most clicked (24) LinkedIn post, but only 198 of 413 people started the video — and on X the same video was watched for 2–14 sec on average; nobody finished it.",
+    "Open with a number again. Data: 16 likes — the most on LinkedIn — and 10.6% engagement vs our 10.1% LinkedIn average. Drop 'comment GravityAI': it got 0 comments here, on Instagram and on X.",
+    "Keep the short story + question format; write line 1 for center owners. Data: best LinkedIn engagement (11.5%) and click rate (8.3%), but the fewest impressions (217) — the billing-team angle reached fewer people.",
+    "Space billing topics 2 weeks apart. Data: posted 5 days after Sep 18's billing post, it hit 9.0% — lowest on LinkedIn — and the same story got the fewest views of any Instagram feed post (88) and of any X post (13).",
+    "Re-check on Oct 5 and post the results. Data: 5 LinkedIn posts drew only 3 comments all month — a one-click poll is the test of whether people will answer at all.",
+    # Instagram
+    "Keep making Reels, 20–30 sec. Data: 86% of its 224 views came from non-followers — the only Instagram content reaching new people (stories were 96% existing followers).",
+    "Keep the stat visual, cut the caption to 3–4 lines. Data: most likes of any Instagram feed post (8) but 0 comments, saves or shares; the 'comment GravityAI' ask got 0 on all 3 platforms.",
+    "Put the question on the last slide with 2–3 answer options. Data: 5 profile visits — the most of any Instagram feed post — but 0 comments, because the question was only in the caption.",
+    "Replace the type-in question box with a 'Book a demo' link sticker. Data: 0 typed answers and 11 of 54 viewers exited; stories with links got the month's only 3 story link clicks.",
+    "Use a carousel or Reel for process stories, not one text-heavy image. Data: 88 views vs 183 for the Sep 18 carousel and 224 for the Reel.",
+    "Repeat the Book-a-demo frame, cut to 2 frames, skip polls. Data: best Instagram engagement (11.3%); the demo frame got 2 of the month's 3 story link clicks; viewers fell 38 → 29 over 4 frames; 0 poll votes.",
+    # X
+    "Post a 20–30 sec clip, not the full video. Data: X's best post (27 impressions), but only 6 video views all month, 2–14 sec average watch, 0 finished.",
+    "Tag 1–2 industry accounts so it's seen beyond our 46 followers. Data: 16 impressions, 1 tap, 0 likes.",
+    "Put the question in tweet 1. Data: tweet 1 got 26 impressions; tweet 3 — the one with the question — got 3.",
+    "Grow to 50 followers (4 to go) to unlock X analytics; ask the team to repost. Data: 13 impressions, lowest of the month — its 'Good' rating is just 2 taps.",
+]
+assert len(SUGGEST) == len(POSTS)
+POSTS = [row[:15] + (SUGGEST[i],) + row[16:] for i, row in enumerate(POSTS)]
 keys = ["date", "platform", "what", "pillar", "hook", "link", "impr", "reach", "likes", "comments", "shares", "saves",
         "clicks", "newfol", "weak", "improve", "action"]
 for i, row in enumerate(POSTS):
@@ -289,7 +319,7 @@ for i, row in enumerate(POSTS):
         c.value = v
         c.font = font(color="0000FF") if k not in ("weak", "improve", "action") else font()
     ws[f"{L['target']}{r}"] = "Not Checked"
-    ws.row_dimensions[r].height = 54
+    ws.row_dimensions[r].height = 68
 
 ws.freeze_panes = f"C{FIRST}"
 ws.auto_filter.ref = f"A{HDR}:{L['url']}{LAST}"
