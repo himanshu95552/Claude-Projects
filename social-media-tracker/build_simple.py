@@ -167,7 +167,8 @@ LOG_FIRST, LOG_LAST = 5, 1004
 LOG_COLS = [  # (key, header, width, kind)
     ("date", "Date", 11, "in"), ("platform", "Platform", 10, "in"),
     ("post", "Post ID (from Post Tracker)", 16, "in"), ("name", "Person's Name", 22, "in"),
-    ("title", "Title / Role", 24, "in"), ("company", "Company", 26, "in"), ("profile", "Profile Link", 26, "in"),
+    ("title", "Title / Headline", 34, "in"), ("company", "Company", 22, "in"), ("location", "Location", 16, "in"),
+    ("profile", "Profile Link / Handle", 22, "in"),
     ("like", "Liked", 7, "in"), ("comment", "Commented", 9, "in"), ("share", "Shared / Reposted", 9, "in"),
     ("save", "Saved", 7, "in"), ("follow", "Followed Us", 8, "in"),
     ("engaged", "Engaged?", 8, "calc"), ("team", "Our Team?", 9, "calc"), ("target", "On Target List?", 10, "calc"),
@@ -179,6 +180,15 @@ TGT_FIRST, TGT_LAST, TEAM_FIRST, TEAM_LAST = 5, 504, 5, 204
 TGT_COMPANIES = f"'Target & Team Lists'!$A${TGT_FIRST}:$A${TGT_LAST}"
 TGT_CONTACTS = f"'Target & Team Lists'!$E${TGT_FIRST}:$E${TGT_LAST}"
 TEAM_NAMES = f"'Target & Team Lists'!$J${TEAM_FIRST}:$J${TEAM_LAST}"
+TEAM_HANDLES = f"'Target & Team Lists'!$L${TEAM_FIRST}:$L${TEAM_LAST}"
+KW_IN = f"'Target & Team Lists'!$N${TEAM_FIRST}:$N$60"
+KW_OUT = f"'Target & Team Lists'!$O${TEAM_FIRST}:$O$60"
+
+ws["A14"] = (f'="People we\'ve identified (Who Engaged sheet): "&COUNTIF({LOG["name"]},"?*")&"  ·  from our target list: "'
+             f'&COUNTIF({LOG["target"]},"Yes")&"  ·  our own team: "&COUNTIF({LOG["team"]},"Yes")'
+             f'&"  ·  followers checked: LinkedIn "&COUNTIFS({LOG["platform"]},"LinkedIn",{LOG["follow"]},1)'
+             f'&", Instagram "&COUNTIFS({LOG["platform"]},"Instagram",{LOG["follow"]},1)')
+ws["A14"].font = font(True, "548235")
 
 
 def formula(key, r):
@@ -346,6 +356,105 @@ SUGGEST = [
 ]
 assert len(SUGGEST) == len(POSTS)
 POSTS = [row[:15] + (SUGGEST[i],) + row[16:] for i, row in enumerate(POSTS)]
+TEAM = [  # current Alpha Nodus employees on LinkedIn (Crustdata people search, 29 Sep 2026)
+    ("Shamit P.", "CEO", "https://www.linkedin.com/in/ACoAAABcQCYBRLdtVbFostBVLNcsYE8ALgIWW4E"),
+    ("Tushant Suneja", "Marketing Manager", "https://www.linkedin.com/in/ACoAACcwmuMBEJEASL8it5ecXMRBXDUdwok2gYY"),
+    ("Minesh B. Patel", "Founding Board Member", "https://www.linkedin.com/in/ACoAAAJOgncBcfAOVIL8gJj4XY6qNV6LCxnfibE"),
+    ("Neel Patel", "Software Engineer", "https://www.linkedin.com/in/ACoAAD1IEqUBbHdhrBV4YmnNAyMpBz_-fr3NfC4"),
+    ("Yash Chitransh", "Manager - CXS & Insights", "https://www.linkedin.com/in/ACoAACiAm1YBy0z0iXUlDwJBhzT_UrS5WKswJ4Y"),
+    ("Dheeraj Gahlot", "SDE-2", "https://www.linkedin.com/in/ACoAADfsJuEBpnYWXsGS3FOcWeuGRhL_kiFR6EA"),
+    ("Radheshyam Dhabas", "Software Developer", "https://www.linkedin.com/in/ACoAACzVuJEBR1c2JSXggO1U3uEBkIt5dTb_3ZE"),
+    ("Harsh Suri", "Director", "https://www.linkedin.com/in/ACoAAADLcnkBlZvPx74V9OY0D49Vmgw0mq2uHwE"),
+    ("Sumeet Suri", "Founding Board Member", "https://www.linkedin.com/in/ACoAAAAGeSkB7ZECVTmtyRAMJFKjQ1eUd0eBfq8"),
+    ("Lisandra Fundora", "Software Engineer", "https://www.linkedin.com/in/ACoAAEaT4nABF2iZYI5j4zHfUFlRHB5qg8PeDzw"),
+    ("Sonank Prajapati", "Team Lead", "https://www.linkedin.com/in/ACoAAELnpKoB9J3pB7gST8LsWL_MEQJ6yCHtiFk"),
+    ("Jinnah Jimenez", "Administrative Assistant", "https://www.linkedin.com/in/ACoAACezGnIB5ijADJ6B2IHhm3_9nYlMRQxkKfw"),
+    ("Srishti Sudhi Pandey", "Human Resources Assistant", "https://www.linkedin.com/in/ACoAACsSkN0BbfGRaCRi8BJvUiE7zX_BDss8HA8"),
+    ("Arpit Jain", "Software Engineer", "https://www.linkedin.com/in/ACoAAANqfWwB4kFYCc5axgX1gnTK-AcNmQl-rvA"),
+    ("Krishnagouda Patil", "Senior Data Analyst", "https://www.linkedin.com/in/ACoAAB8MgQIBdV96VfSUb6KMCWq6ef8xgEkscFk"),
+    ("Sasha From Gravity", "Document Specialist (AI agent profile)", "https://www.linkedin.com/in/ACoAAEjdEt8B-CaQdzm716jVzXg_42CqtKHLrR8"),
+    ("Neel Desai", "Intern", "https://www.linkedin.com/in/ACoAADLlnDQBGtxsxFKhvGchYXH30PoXE7KhILQ"),
+    ("Nelson Morillo", "Software Engineer", "https://www.linkedin.com/in/ACoAAC2guDsBcJaEwWDv5BfZQPQCoIDNRSI2QDY"),
+    ("Rahul Mahat", "Team Lead", "https://www.linkedin.com/in/ACoAADwlAyYBwuBZ2EN5O4fSCwU-g1JfiaT-ZBM"),
+    ("Ankit Trivedi", "Embedded Software Engineer", "https://www.linkedin.com/in/ACoAAA_6X04BpcAsMjE_Bq0REMZ3JifOonbqiXM"),
+    ("Yashaswini L", "Customer Success Manager", "https://www.linkedin.com/in/ACoAADdYjQ8Bzzt5LtHDM3KxN0CYKgcv3NqxGbI"),
+    ("Kimberly A. Rosado", "Authorization Center Manager", "https://www.linkedin.com/in/ACoAABVHjtIBzOHj95uk6J_5xVlQ4TUW7dYAcA0"),
+    ("Valjibhai Sangani", "Hardware Engineer", "https://www.linkedin.com/in/ACoAADIFDl0BpyrginUcbPWo52FfYObQT8-nHuw"),
+    ("Susan From Gravity", "Prior Authorization Sidekick (AI agent profile)", "https://www.linkedin.com/in/ACoAAEehC9wB6msdzwK-7KCItZCLFzobipjyjhw"),
+    ("Raghav Mittal", "Software Engineer", "https://www.linkedin.com/in/ACoAADYYBTcBdZi46_N-x-yW9nZoltP7C688crg"),
+    ("Connor McNeil", "Software Engineer", "https://www.linkedin.com/in/ACoAADjNWMUBqK_k0V17Reojd8tDbF0-bZ-fdm0"),
+    ("Jay Patel", "Account Executive", "https://www.linkedin.com/in/ACoAAC5L5qMBoBZ4KaHVKEkcuQN0wS-L4v8bumw"),
+    ("Ayush Jain", "Software Developer", "https://www.linkedin.com/in/ACoAADg2jUgBFAX3_gSr8uPRqVcdkJXpYxZV_DU"),
+    ("Arun Kumar", "Software Engineer", "https://www.linkedin.com/in/ACoAABBTX4EBJ11Ai2moDo6SgdJunTcw5gXfEWo"),
+    ("Harshil Kapuriya", "Intern", "https://www.linkedin.com/in/ACoAAE5wf2UBQFOyibzFOMoXsvvJMUeebeatUqQ"),
+    ("Sabrina Gutierrez", "Flow Center Manager", "https://www.linkedin.com/in/ACoAADBxv0sB_kTlWOeipUb5ce3DvU41L6jCfNM"),
+    ("Pranav Naringrekar", "Software Engineer", "https://www.linkedin.com/in/ACoAABtKehUBZYp0k59f1iE1tBPQmWsUbJI-o90"),
+    ("Joseph Macias", "Account Executive", "https://www.linkedin.com/in/ACoAACjo8woB_O04L16FBqtvsUgI4I54IVQoD-E"),
+    ("Prasanna S", "Project Manager", "https://www.linkedin.com/in/ACoAADfOqz8Bg257GtPdD_m6teWo1JVeRVVZVY8"),
+    ("Sandra From Gravity", "Schedule Coordinator (AI agent profile)", "https://www.linkedin.com/in/ACoAAEd40ZoB9GGTUR07lyamd3uWxGyiVVNVCaM"),
+    ("Tarun Singh", "Product Designer", "https://www.linkedin.com/in/ACoAADwhekkByrxKdClMUyLE9jxt9aVZwntOHGQ"),
+    ("Datattreyo Laha", "HR & Admin", "https://www.linkedin.com/in/ACoAABsE5EEBoQN9ZIm1jD4rZgQzB1tYTZCYMBw"),
+    ("Little John Saroniya", "Data Analyst", "https://www.linkedin.com/in/ACoAACeTBQwBy3h0JxqWD-nx3MwF0fgyOp1Ynck"),
+    ("Jay Patel", "Software Validation Engineer", "https://www.linkedin.com/in/ACoAAFgt4K8BPktdnTgc1aj6sHAcKxJFpT7EX2A"),
+    ("Japs Trivedi", "Software Validation Engineer", "https://www.linkedin.com/in/ACoAACGzxHwB5cqPEg7wrQ6cu2_tuu3EKTjesGM"),
+    ("Iris Hale", "Account Executive", "https://www.linkedin.com/in/ACoAAF3VRigBacKNvpBCuT6jusb0LeRzeVDZ9QM"),
+    ("alphanodus", "Company Instagram account", "alphanodus"),
+    ("Tushant Suneja", "Marketing Manager (Instagram)", "tushant15"),
+    ("AlphaNodus", "Company X account", "@AlphaNodus"),
+]
+KW_INCLUDE = ["radiology", "radiologist", "radiologic", "imaging", "diagnostic", "MRI", "mammo", "ultrasound",
+              "sonograph", "x-ray", "CT tech", "PACS", "nuclear medicine", "interventional"]
+KW_EXCLUDE = ["RamSoft", "AbbaDox", "RADIN", "MedInformatix", "Advanced Data Systems", "INFINITT", "Royal Health",
+              "Pixels on Target", "AuntMinnie", "CrossScribe", "student", "aspiring"]
+LI_FOLLOWERS = [  # pasted by the user: LinkedIn page > Followers > All followers, September 2026 (list was cut off)
+    ("Sumit Kumar Chaudhary", "Customer Success | Customer Operations | Account Management | Customer Retention | Revenue Growth | SaaS", ""),
+    ("somesh p", "Senior revenue Analyst", ""),
+    ("Abhinav K.", "Retired | Writing about empathy, everyday dignity and social responsibility", ""),
+    ("SaiKumarReddy k", "Aspiring web developer in MERN Stack | c++, SQL.", ""),
+    ("Bhavani Shankar Vaka", "Senior Technical Support Engineer (L3 SME) | SaaS | APIs & WebSockets | Cloud (GCP/Azure)", ""),
+    ("Manik Makkar", "Enterprise Sales Manager @ Instahyre | Lead Generation, Sales Pipeline Development | Account Management", "Instahyre"),
+    ("Reshmi Shree Settu", "Account Manager & Business Development | JuegoTech Services", "JuegoTech Services"),
+    ("Arjun Khadse", "Data Analyst | BI & Reporting | SQL, Python, Excel, Power BI", ""),
+    ("Md Adil Khan", "Database Expert | Implementation & Consultation | Advanced SQL | ETL | Client Onboarding | Gen AI", ""),
+    ("Sachin Kumar", "Full-Stack Developer | Immediate Joiner | MERN Stack | AI Integration | 6 Years Experience", ""),
+    ("Urvashi A.", "Full Stack Engineer | PERN | AWS | Serving Notice Period | ex-Wipro", ""),
+    ("Rakshitha H", "Software Engineer I | Python & Agentic AI Engineering", ""),
+    ("Ravi Rohela", "MERN | C/C++ | Node.js DEVELOPER @Ginger Webs", "Ginger Webs"),
+    ("Janet Joshua", "Senior Software Engineer @ HCLSoftware", "HCLSoftware"),
+    ("Saurav Kumar", "Full-Stack Developer (MEAN) | Immediate Joiner | AI Integration | 6.5 Years Experience", ""),
+    ("Md Shagil Nizami", "SDE II | Frontend-Heavy Full-Stack Developer | AI & Scalable Tech Enthusiast", ""),
+    ("Pooja Yashwante", "Full-stack developer | PostgresSQL | Node.js | React.js", ""),
+    ("Ananya Mahato", "Software Developer @ FinBox | Serving Notice Period | IIT Kharagpur '24", "FinBox"),
+    ("Nikhil Singh", "Senior Backend Engineer | Node.js | NestJS | TypeScript | Python | Go | AWS | Kafka", ""),
+    ("Nav Priti", "Senior MERN Stack Developer | Immediate Joiner | AI Integration | 7.5 Years Experience", ""),
+    ("Amey Muke", "Software Engineering | AI Research", ""),
+    ("Astik Mishra", "SDE @ Monk Mantra | Full-Stack Development, Cloud Infrastructure", "Monk Mantra"),
+    ("Amarjeet Singh", "Front end developer | Full Stack Web Development | ReactJS | Redux | JavaScript", ""),
+    ("Repana Vishnu Vardhan", "Forward Deployed AI Engineer | Client-Facing AI Solutions | Agentic AI & LLMs | RAG | Python", ""),
+    ("Priyanshu Khandelwal", "(headline cut off in the pasted list)", ""),
+]
+IG_FOLLOWERS = [  # screenshots of Instagram > Followers sorted by 'Date followed: Latest' (no dates shown), 29 Sep 2026
+    # (display name, handle, what we can tell — goes to Notes, company)
+    ("Yash Shah", "iamyash214", "", ""),
+    ("Best American Diagnostic (name cut off)", "bestamericandiagno…", "Business account, name suggests a diagnostic imaging center — confirm it's a US center",
+     "Best American Diagnostic"),
+    ("AuntMinnieEurope.com", "auntminnieeurope", "Radiology news site (Europe) — industry media, not a client", "AuntMinnieEurope"),
+    ("Prina Patel", "prina81", "", ""),
+    ("Hassaan Javaid", "hassaan.javaid_", "", ""),
+    ("Mahesh Vinod Rajpopat", "mahesh_as_alwayz", "", ""),
+    ("Babu T G", "babskali", "", ""),
+    ("Ricardo ospina", "ricardo_ososp", "", ""),
+    ("Deepa Patel", "deepa2961", "", ""),
+    ("Radiolodiva", "radiolodiva", "Name suggests a radiology professional — open the profile; if they work at a US imaging center, type 'radiology' in Title", ""),
+    ("M S R", "rajputmsr8", "", ""),
+    ("CrossScribe", "crossscribeai", "AI product account ('3x Faste…') — likely a vendor, not a client", "CrossScribe"),
+    ("Kusum Patel", "kusum9115", "", ""),
+    ("Tushant Suneja", "tushant15", "", ""),
+    ("Shyam Reddy", "shyamreddyy8", "", ""),
+    ("Sudhanshu Singh", "sudhanshu_parmar1…", "", ""),
+    ("jeetan rangeela", "jeetan_rangeela", "", ""),
+    ("(name cut off)", "pandey_saurabh1008", "", ""),
+]
 POST_IDS = ["li-260911", "li-260914", "li-260918", "li-260923", "li-260928",
             "ig-260911-reel", "ig-260914", "ig-260918", "ig-260918-story", "ig-260923", "ig-260923-story",
             "x-260911", "x-260914", "x-260918", "x-260923"]
@@ -387,8 +496,8 @@ wl.sheet_view.showGridLines = False
 wl["A1"] = "Who Engaged — one row per person per post"
 wl["A1"].font = font(True, NAVY, 16)
 wl["A2"] = ("Copy names from each post's likes / comments / reposts list and from new-follower lists. Put 1 under each thing "
-            "they did. 'Our Team?' and 'On Target List?' fill in automatically from the Target & Team Lists sheet. "
-            "Leave Post ID blank for a follow you can't tie to a post.")
+            "they did. 'Our Team?' and 'On Target List?' fill in automatically (team list, target list and target keywords on "
+            "the Target & Team Lists sheet). Leave Post ID blank for a follow you can't tie to a post.")
 wl["A2"].font = font(italic=True, color=GREY)
 for j, (k, h, w, kind) in enumerate(LOG_COLS, start=1):
     header(wl, 4, j, h, kind == "calc", w)
@@ -402,16 +511,23 @@ for r in range(LOG_FIRST, LOG_LAST + 1):
         if k == "date":
             c.number_format = "mm/dd/yyyy"
     wl[x["engaged"]] = f'=IF({x["name"]}="","",IF(SUM({x["like"]}:{x["save"]})>0,1,0))'
+    txt = f'({x["title"]}&" "&{x["company"]})'
     wl[x["team"]] = (f'=IF({x["name"]}="","",IF(OR(COUNTIF({TEAM_NAMES},{x["name"]})>0,'
-                     f'ISNUMBER(SEARCH("alpha nodus",{x["company"]}))),"Yes","No"))')
+                     f'AND({x["profile"]}<>"",COUNTIF({TEAM_HANDLES},{x["profile"]})>0),'
+                     f'ISNUMBER(SEARCH("alpha nodus",{txt})),ISNUMBER(SEARCH("alphanodus",{txt}))),"Yes","No"))')
     wl[x["target"]] = (f'=IF({x["name"]}="","",IF({x["team"]}="Yes","No",IF(OR(AND({x["company"]}<>"",'
-                       f'COUNTIF({TGT_COMPANIES},{x["company"]})>0),COUNTIF({TGT_CONTACTS},{x["name"]})>0),"Yes","No")))')
-ex = {"date": dt.date(2026, 9, 14), "platform": "LinkedIn", "post": "EXAMPLE", "name": "EXAMPLE – Jane Doe",
-      "title": "Owner", "company": "EXAMPLE Imaging Center", "like": 1, "comment": 1, "follow": 1,
-      "notes": "Example row — delete. Post ID 'EXAMPLE' matches no post, so it isn't counted."}
-for k, v in ex.items():
-    c = wl[f"{LL[k]}{LOG_FIRST}"]
-    c.value, c.font = v, font(italic=True, color="0000FF")
+                       f'COUNTIF({TGT_COMPANIES},{x["company"]})>0),COUNTIF({TGT_CONTACTS},{x["name"]})>0),"Yes",'
+                       f'IF(AND(SUMPRODUCT(({KW_IN}<>"")*ISNUMBER(SEARCH({KW_IN},{txt})))>0,'
+                       f'SUMPRODUCT(({KW_OUT}<>"")*ISNUMBER(SEARCH({KW_OUT},{txt})))=0),"Yes","No"))))')
+for i, row in enumerate(LI_FOLLOWERS):
+    r = LOG_FIRST + i
+    name, headline, company = row
+    vals = {"platform": "LinkedIn", "name": name, "title": headline, "company": company, "follow": 1,
+            "notes": "Followed the LinkedIn page in September 2026 (LinkedIn doesn't say which post, or the exact day)."}
+    for k, v in vals.items():
+        if v:
+            c = wl[f"{LL[k]}{r}"]
+            c.value, c.font = v, font(color="0000FF")
 v = DataValidation(type="list", formula1=f"='Post Tracker'!${L['postid']}${FIRST}:${L['postid']}${LAST}", allow_blank=True)
 v.showErrorMessage = False
 wl.add_data_validation(v)
@@ -429,6 +545,15 @@ v4.add(f"{LL['like']}{LOG_FIRST}:{LL['follow']}{LOG_LAST}")
 for k, bg, fg in (("target", "C6EFCE", "006100"), ("team", "EDEDED", GREY)):
     wl.conditional_formatting.add(f"{LL[k]}{LOG_FIRST}:{LL[k]}{LOG_LAST}", CellIsRule(
         operator="equal", formula=['"Yes"'], fill=fill(bg), font=Font(name=FONT, bold=True, color=fg)))
+for i, (name, handle, title, company) in enumerate(IG_FOLLOWERS):
+    r = LOG_FIRST + len(LI_FOLLOWERS) + i
+    vals = {"platform": "Instagram", "name": name, "company": company, "profile": handle, "follow": 1,
+            "notes": (f"{title}. " if title else "") + f"Recent Instagram follower #{i + 1} (newest first); "
+                     "Instagram doesn't show the follow date or which post."}
+    for k, v in vals.items():
+        if v:
+            c = wl[f"{LL[k]}{r}"]
+            c.value, c.font = v, font(color="0000FF")
 wl.freeze_panes = f"E{LOG_FIRST}"
 wl.auto_filter.ref = f"A4:{LL['notes']}{LOG_LAST}"
 
@@ -437,8 +562,10 @@ tl = wb.create_sheet("Target & Team Lists")
 tl.sheet_view.showGridLines = False
 tl["A1"] = "Target & Team Lists"
 tl["A1"].font = font(True, NAVY, 16)
-tl["A2"] = ("Target list: type each company exactly as it appears on LinkedIn. A person counts as 'target' if their company "
-            "or their name is here. Team list: anyone here — or anyone whose company contains 'Alpha Nodus' — is our team.")
+tl["A2"] = ("Target clients = people or companies in independent radiology & imaging centers across the USA. Named accounts go in "
+            "the target list; everyone else is caught by the keywords on the right. Team list = current Alpha Nodus employees "
+            "(from LinkedIn, Sep 2026) — their engagement is never counted. Add Instagram / X handles in column L so they "
+            "match there too.")
 tl["A2"].font = font(italic=True, color=GREY)
 tl["A3"], tl["J3"] = "TARGET LIST (imaging & radiology centers)", "OUR TEAM (their engagement is not counted)"
 tl["A3"].font = tl["J3"].font = font(True, NAVY, 11)
@@ -456,13 +583,30 @@ for r in range(TEAM_FIRST, TEAM_LAST + 1):
     for j in range(10, 13):
         c = tl.cell(r, j)
         c.fill, c.border, c.font = INPUT, BOX, font()
-for j, v in enumerate(["EXAMPLE Imaging Center", "example.com", "Austin", "TX", "EXAMPLE – Jane Doe", "Owner", "",
-                       "Example row — delete when you paste your list."], start=1):
-    c = tl.cell(TGT_FIRST, j, v)
-    c.font = font(italic=True, color="0000FF")
-for j, v in enumerate(["Tushant Suneja", "Posts company-page content", ""], start=10):
-    c = tl.cell(TEAM_FIRST, j, v)
-    c.font = font(color="0000FF")
+for i, (name, role, url) in enumerate(TEAM):
+    for j, v in enumerate((name, role, url), start=10):
+        c = tl.cell(TEAM_FIRST + i, j, v)
+        c.font = font(color="0000FF")
+tl["N3"] = "WHO COUNTS AS A TARGET"
+tl["N3"].font = font(True, NAVY, 11)
+header(tl, 4, 14, "Target keywords (title or company contains…)", width=30)
+header(tl, 4, 15, "…but NOT (vendors, competitors, students)", width=30)
+for i, kw in enumerate(KW_INCLUDE):
+    c = tl.cell(TEAM_FIRST + i, 14, kw)
+    c.fill, c.border, c.font = INPUT, BOX, font()
+for i, kw in enumerate(KW_EXCLUDE):
+    c = tl.cell(TEAM_FIRST + i, 15, kw)
+    c.fill, c.border, c.font = INPUT, BOX, font()
+for r in range(TEAM_FIRST + max(len(KW_INCLUDE), len(KW_EXCLUDE)), 61):
+    for j in (14, 15):
+        c = tl.cell(r, j)
+        c.fill, c.border = INPUT, BOX
+tl["N62"] = ("A person is a target if their title/headline or company contains a target keyword and none of the "
+             "'NOT' words — or if their company or name is on the target list. Check the Location column: only "
+             "US imaging centers count.")
+tl["N62"].font = font(italic=True, color=GREY, size=9)
+tl["N62"].alignment = WRAP
+tl.merge_cells("N62:O66")
 tl.freeze_panes = "A5"
 
 for sheet, color in ((ws, NAVY), (wl, "548235"), (tl, "7F7F7F")):
