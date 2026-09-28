@@ -50,11 +50,11 @@ COLS = [
     ("comments", "Comments", 9, "in", "#,##0", None),
     ("shares", "Shares / Reposts", 9, "in", "#,##0", None),
     ("saves", "Saves", 7, "in", "#,##0", None),
-    ("clicks", "Clicks", 7, "in", "#,##0", "All clicks on the post. LinkedIn: 'Clicks'. X: detail expands + profile visits + link clicks. Both platforms count these in their own engagement rate."),
-    ("newfol", "New Followers (3 days after post)", 11, "in", "#,##0", "Followers gained on the post day + the next 2 days. LinkedIn doesn't credit follows to organic posts, so this is the closest fair signal."),
+    ("clicks", "Clicks", 7, "in", "#,##0", "All clicks on the post. LinkedIn: 'Clicks'. X: detail expands + profile visits + link clicks. Instagram: profile visits + link taps."),
+    ("newfol", "New Followers", 10, "in", "#,##0", "Instagram & X: follows credited to the post. LinkedIn doesn't credit follows to posts, so use followers gained on the post day + the next 2 days."),
     ("target", "Target List Engaged?", 10, "in", None, "Did anyone from our target list (imaging / radiology center decision-makers) like, comment or share?"),
     ("eng", "Total Engagement", 10, "calc", "#,##0", "Likes + Comments + Shares + Saves + Link Clicks (same as LinkedIn's own definition)"),
-    ("er", "Engagement Rate", 10, "calc", "0.0%", "Total Engagement ÷ Reach (or Impressions). Only if no post on that platform has impressions yet: ÷ followers in the box above."),
+    ("er", "Engagement Rate", 10, "calc", "0.0%", "Total Engagement ÷ Impressions/Views (or Reach if views are missing). Only if no post on that platform has either yet: ÷ followers in the box above."),
     ("rating", "Rating", 14, "calc", None, "Compared with our own average on the same platform — see the rule box above."),
     ("weak", "What Was Weak", 40, "in", None, None),
     ("improve", "What to Improve", 40, "in", None, None),
@@ -109,7 +109,7 @@ rules = [
     ("Average = between 0.8× and 1.2× our average", False),
     ("Below Standard = under 0.8× our average", False),
     ("No Data Yet = numbers not entered, or fewer than 2 posts on that platform", False),
-    ("Engagement Rate = (likes + comments + shares + saves + clicks) ÷ reach, or ÷ impressions if reach is blank", False),
+    ("Engagement Rate = (likes + comments + shares + saves + clicks) ÷ impressions / views — the way LinkedIn and X calculate it", False),
     ("Why our own average: each platform behaves differently, and it improves as we post more.", False),
 ]
 for i, (t, b) in enumerate(rules):
@@ -121,7 +121,7 @@ ws.cell(4, 8).fill = fill("DEEAF6")
 ws["S4"], ws["S5"], ws["S6"] = "Yellow = type here", "Grey = automatic", "Blue text = data (LinkedIn: page analytics export, Aug 28–Sep 26)"
 ws["S4"].fill, ws["S5"].fill = INPUT, CALC
 ws["S6"].font = font(color="0000FF")
-ws["S7"] = "X: X analytics export (Sep 1–28). Instagram: public profile, 9/28/2026"
+ws["S7"] = "X: X analytics export (Sep 1–28). Instagram: Instagram Insights (9/29/2026)"
 ws["S7"].font = font(color="0000FF")
 for a in ("S4", "S5"):
     ws[a].font, ws[a].border = font(True), BOX
@@ -144,7 +144,7 @@ def formula(key, r):
     blank = f'OR({x["date"]}="",{x["platform"]}="")'
     has_views = (f'COUNTIFS({rng("platform")},{x["platform"]},{rng("impr")},">0")'
                  f'+COUNTIFS({rng("platform")},{x["platform"]},{rng("reach")},">0")')
-    denom = (f'IF(N({x["reach"]})>0,{x["reach"]},IF(N({x["impr"]})>0,{x["impr"]},'
+    denom = (f'IF(N({x["impr"]})>0,{x["impr"]},IF(N({x["reach"]})>0,{x["reach"]},'
              f'IF({has_views}>0,"",INDEX($B$5:$B$7,MATCH({x["platform"]},$A$5:$A$7,0)))))')
     return {
         "eng": f'=IF({blank},"",IF(COUNT({x["likes"]}:{x["clicks"]})=0,"",SUM({x["likes"]}:{x["clicks"]})))',
@@ -224,24 +224,34 @@ POSTS = [
      "Re-export LinkedIn analytics after Oct 5. Post the poll results next week as promised in the post.", "Wait for Data"),
     (D(2026, 9, 11), "Instagram", "Reel: 3-min Gravity AI explainer video", "Product / Demo", "Question",
      "https://www.instagram.com/alphanodus/reel/DdJxFt3t07x/",
-     None, None, 7, 0, None, None, None, None,
-     "No comments. 3 minutes is far too long for a Reel.",
-     "Cut a 20–30 sec Reel with on-screen text. End with 'link in bio to book a demo'.", "Improve & Retry"),
+     224, 158, 7, 0, 0, 1, 0, 0,
+     "Low engagement rate (8 interactions on 224 views), no comments, no profile visits. But it's the only Instagram post reaching new people: 86% of views were non-followers.",
+     "Keep making Reels — they reach new people. Cut to 20–30 sec with on-screen text and end with 'link in bio to book a demo'.", "Improve & Retry"),
     (D(2026, 9, 14), "Instagram", "Image: 'Scanners idle a third of the day, next slot 3 weeks out'", "Operations Tips", "Stat / Number",
      "https://www.instagram.com/alphanodus/p/DdRoAPjkqqy/",
-     None, None, 8, 0, None, None, None, None,
-     "Best Instagram post, but the caption is very long and the 'comment GravityAI' ask got 0 comments.",
+     157, 53, 8, 0, 0, 0, 1, 0,
+     "Most likes of any post (8) but 0 comments, saves or shares. 3 in 4 views came from existing followers. The 'comment GravityAI' ask got nothing.",
      "Keep the stat-led visual. Shorten the caption to 3–4 lines with one question at the end.", "Repeat"),
     (D(2026, 9, 18), "Instagram", "Carousel: an order arrives with one field missing", "Revenue Cycle", "Story",
      "https://www.instagram.com/alphanodus/p/DdcD_2JkjH0/",
-     None, None, 7, 0, None, None, None, None,
-     "Ended with a question but got 0 comments — the question was only in the caption.",
+     183, 57, 7, 0, 0, 0, 5, 0,
+     "Most profile visits of any post (5) but 0 comments, even though it ended with a question — the question was only in the caption.",
      "Put the question on the last slide too, with 2–3 answer options people can reply with.", "Improve & Retry"),
+    (D(2026, 9, 18), "Instagram", "Story: 'Wanna see Gravity in action?' question box + website link (shares the carousel)", "Revenue Cycle", "Question",
+     "https://www.instagram.com/alphanodus/",
+     54, 40, 2, 0, 0, None, 2, 0,
+     "Nobody typed an answer in the question box, and 11 of 54 views exited here. 2 likes, 1 link click, 1 profile visit.",
+     "Use a one-tap poll instead of a type-in question box. Keep the website link sticker.", "Improve & Retry"),
     (D(2026, 9, 23), "Instagram", "Image: 4 manual handoffs before an order is billable", "Revenue Cycle", "Story",
      "https://www.instagram.com/alphanodus/p/DdpdTFWN9JR/",
-     None, None, 2, 0, None, None, None, None,
-     "Weakest Instagram post: text-heavy single image, same theme as Sep 18.",
+     88, 37, 2, 0, 0, 0, 2, 0,
+     "Fewest views (88) and only 2 likes. Text-heavy single image; second billing post in 5 days.",
      "Tell process stories as a carousel or short Reel. Avoid two Revenue Cycle posts in a row.", "Improve & Retry"),
+    (D(2026, 9, 23), "Instagram", "Story series (4 frames): fax poll → handoffs poll → 'Gravity watches' → Book a demo + link", "Revenue Cycle", "Question",
+     "https://www.instagram.com/alphanodus/",
+     62, 38, 0, 0, 0, None, 7, 0,
+     "Best Instagram result for the website: the 'Book a demo' frame got 2 link clicks and the series got 5 profile visits. But 0 votes on both polls, viewers fell from 38 to 29 across the frames, and 96% were existing followers.",
+     "Keep the Book-a-demo frame with the link sticker. Cut to 2 frames (hook + demo link) and use one poll at most.", "Repeat"),
     (D(2026, 9, 11), "X", "Video: 3-min Gravity AI explainer + demo link", "Product / Demo", "Question",
      "https://x.com/AlphaNodus/status/2098433794022006872",
      27, None, 0, 0, 0, 0, 5, 0,
