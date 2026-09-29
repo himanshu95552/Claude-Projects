@@ -19,22 +19,24 @@ Everything here was worked out on real deliverables (Reels, banners, LinkedIn an
 
 ## 1. Brand tokens (exact values, sampled from the brand files)
 
-| Token | Dark (primary) | Light |
-|---|---|---|
-| Background | `#1B1430` | `#F6F5FA` |
-| Text | `#FFFFFF` | `#090C22` |
-| Accent (dot, emphasis word) | `#C9B3FF` (text on dark: `#CEBCFF`) | `#6C41E4` |
-| Hairline / path | `#6A6678` (`#68617D` in banners) | `#D8D5E2` |
-| Mono label text | `#BAAED2` | `#5B3CC4` |
-| Card / sheet fill | `#241B3E` (second sheet `#201837`) | `#FFFFFF` (second sheet `#EEEBF6`) |
-| Illustration stroke | `#6A6678` (cards `#4A4260`) | `#B9B3CC` (cards `#DCD8E8`) |
-| Soft accent fill | `#2A2046` / `#2F2550` | `#E7E2F6` / `#EFEAFD` |
-| Muted text | `#8C86A0` | `#7C7892` |
+| Token | Value |
+|---|---|
+| Page background | `#F5F7FA` |
+| Text | `#0F172A` |
+| Blue (dot, emphasis phrase, mono labels, checks) | `#1D4ED8` |
+| Red eyebrow (the one eyebrow line only) | `#B21500` |
+| Arc gradient | `#FF6B34` > `#F900C8` > `#0E59FF`, blended in OKLCH (`linear-gradient(in oklch 90deg, #FF6B34, #F900C8, #0E59FF)`) |
+| Card / sheet fill | `#FFFFFF` |
+| Hairline / path | `#E2E8F0` (derived from the reference post; confirm) |
+| Illustration stroke | `#CBD5E1` (derived; confirm) |
+| Soft blue fill | `#EAF0FE` (derived; confirm) |
+| Muted text | `#64748B` (derived; confirm) |
 
 Rules:
-- Dark is the default for Reels and X; light works for LinkedIn and banners. Deliver both when unsure.
-- The accent has ONE meaning: the order, an action being done, or the one emphasised phrase. Never decorate with it.
-- No gradients, no glows, no shadows, no extra colours. No semantic red or green; a "denied" or "missing" state uses the accent as an outline or dashes, not red.
+- Single light theme. There is no dark variant.
+- Blue has ONE meaning: the order, an action being done, or the one emphasised phrase. Never decorate with it.
+- Exactly ONE Arc gradient moment per graphic (for example the "scheduled, authorized" bar in the reference). Never on text, backgrounds or more than one element.
+- No other gradients, no glows, no shadows, no extra colours. No semantic green; a "denied" or "missing" state uses blue as an outline or dashes. Red is only for the eyebrow.
 
 ## 2. Type
 
@@ -54,12 +56,12 @@ The brand's signature: AlphaNodus logo on the left, a thin hairline running righ
 
 | Canvas | Logo file | Logo position | Hairline | Dot |
 |---|---|---|---|---|
-| Reel 1080x1920 | `templates/reel/logo_dark.png` (370x82) | left 90, top 290 | x 510 to 984, y 332, 1px | centre (984, 332), r 13 |
+| Reel 1080x1920 | the light logo crop (370x82) | left 90, top 290 | x 510 to 984, y 332, 1px | centre (984, 332), r 13 |
 | Post 1080x1350 | `templates/post-4x5/logo_*.png` | left 82, top 90, height 71 | x 476 to 978, y 126 | centre (991, 126), r 13 |
 | Square 1080x1080 | reuse 4:5 logo | left 88, top 88 | y 118 | centre (991, 118) |
 | Banner 2000x500 | `templates/banner/logo_*.png` | centred on the path, or bottom right | path at y 415 | the end dot becomes the payment check |
 
-Logo crops were taken from the brand files on their own background colour, so they sit seamlessly only on the matching background (dark logo on `#1B1430`, light logo on `#F6F5FA`). Never recolour, stretch, outline or put the logo on another colour.
+Logo crops were taken from the brand files on their own background colour, so they sit seamlessly only on the matching background (the logo is placed on `#F5F7FA`; re-crop it from the new reference post). Never recolour, stretch, outline or put the logo on another colour.
 
 Eyebrow pattern (used everywhere): `● ——  LABEL · LABEL` (10 px accent dot, 34 px hairline, mono uppercase). Centred layouts mirror it: `● —— LABEL —— ●`.
 
@@ -149,12 +151,12 @@ Do:
 - Start from the brand templates in `assets/brand-templates/`; match their header motif and margins.
 - Give every beat a concrete illustration from section 4.
 - Keep one accent meaning, one emphasised phrase, one moving thing per scene.
-- Deliver dark and light, plus a cover frame for video.
+- Deliver the light theme, plus a cover frame for video.
 - Tell the user platform limits that change how they post (LinkedIn polls, profile-photo overlap, IG link in bio).
 
 Don't (each of these was tried or flagged and rejected):
 - Abstract-only visuals (dots and lines with no objects) for explainers.
-- Purple-to-blue gradients, glows, glassmorphism, drop shadows, stock icons, 3D renders, photos of people.
+- Any gradient other than the single Arc moment, glows, glassmorphism, drop shadows, stock icons, 3D renders, photos of people.
 - Rounded cards everywhere, emoji as markers, everything centred on posts, big empty areas.
 - Text inside platform UI zones (Reel buttons and caption area).
 - Headlines wider than their column: they collided with illustrations twice; check the contact sheet.
@@ -167,17 +169,17 @@ Don't (each of these was tried or flagged and rejected):
 3. Plan the beats: for each, the words (≤10), the object from section 4, and the one motion.
 4. Copy the closest template from `templates/` and edit it. Keep tokens and fonts; SVG `fill`/`stroke` attributes use `var(--token)` and a small script converts them to styles (keep that snippet).
 5. Take ONE look before the final render: `python3 scripts/contact-sheet.py page.html sheet.png 0,2,4.5,7,...` for video, or `node scripts/render-still.js` for stills. Fix overlaps, wraps and safe-zone hits in one pass.
-6. Render: `node scripts/render-still.js page.html out.png '#dark'` or `node scripts/render-video.js page.html out.mp4 30.5 '#dark'` (run with `NODE_PATH=$(npm root -g)`; Chromium lives at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`, override with `CHROME=`).
-7. Check: no em dashes, AOS spelled out, safe zones clear, file size, both themes.
+6. Render: `node scripts/render-still.js page.html out.png '#light'` or `node scripts/render-video.js page.html out.mp4 30.5 '#light'` (run with `NODE_PATH=$(npm root -g)`; Chromium lives at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`, override with `CHROME=`).
+7. Check: no em dashes, AOS spelled out, safe zones clear, file size, only the approved colours, one Arc moment.
 8. Deliver files plus posting notes: cover frame, add IG music in-app, Trial Reel first, caption, first-comment trick for LinkedIn polls, Tower permission reminder.
 
 ## 10. Templates in this folder
 
 | File | What it is |
 |---|---|
-| `templates/reel/reel-30s-three-leaks.html` | the approved 30.5 s Reel with illustrations (dark) |
-| `templates/banner/reel-banner-8s-loop.html` | 1080x1920 centred banner, still (`render(-1)`) or 8 s loop; `#dark` / `#light` |
-| `templates/banner/wide-2000x500.html` | centred 2000x500 banner with fax, path, logo node, MRI, payment; `#dark` / `#light` |
-| `templates/post-4x5/poll-systems.html` | LinkedIn poll visual, systems on a winding path; `#dark` / `#light` |
-| `templates/post-4x5/ris-vs-aos.html` | X/LinkedIn comparison post, order record card twice; `#dark` / `#light` |
-| `assets/brand-templates/` | the original brand files: reel, 4:5, square, banner light and dark |
+| `templates/reel/reel-30s-three-leaks.html` | the approved 30.5 s Reel with illustrations (recolour to the light palette) |
+| `templates/banner/reel-banner-8s-loop.html` | 1080x1920 centred banner, still (`render(-1)`) or 8 s loop; `#light` |
+| `templates/banner/wide-2000x500.html` | centred 2000x500 banner with fax, path, logo node, MRI, payment; `#light` |
+| `templates/post-4x5/poll-systems.html` | LinkedIn poll visual, systems on a winding path; `#light` |
+| `templates/post-4x5/ris-vs-aos.html` | X/LinkedIn comparison post, order record card twice; `#light` |
+| `assets/brand-templates/` | the original brand files: reel, 4:5, square, banner (legacy dark-purple set, superseded by the palette in section 1) |
