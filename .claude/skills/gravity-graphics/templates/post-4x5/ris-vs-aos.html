@@ -1,0 +1,107 @@
+<title>RIS vs AOS Post</title>
+<style>
+@font-face{font-family:"Urbanist";font-weight:600;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-600-normal.woff2)}
+@font-face{font-family:"Urbanist";font-weight:500;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-500-normal.woff2)}
+@font-face{font-family:"Geist Mono";font-weight:500;src:url(node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2)}
+:root{
+  --bg:#1B1430; --ink:#FFFFFF; --acc:#C9B3FF; --acc-text:#CEBCFF; --label:#BAAED2; --rule:#68617D; --muted:#8C86A0;
+  --sheet:#241B3E; --sheet2:#201837; --stroke:#4A4260; --soft:#2F2550;
+}
+.light{
+  --bg:#F6F5FA; --ink:#090C22; --acc:#6C41E4; --acc-text:#6C41E4; --label:#5B3CC4; --rule:#D8D5E2; --muted:#7C7892;
+  --sheet:#FFFFFF; --sheet2:#EEEBF6; --stroke:#DCD8E8; --soft:#EFEAFD;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+#c{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Urbanist",system-ui,sans-serif}
+#logo{position:absolute;left:82px;top:90px;height:71px}
+.hdr-line{position:absolute;left:476px;top:126px;width:502px;height:1px;background:var(--rule)}
+.hdr-dot{position:absolute;left:978px;top:113px;width:26px;height:26px;border-radius:50%;background:var(--acc)}
+.top{position:absolute;left:96px;top:228px;width:888px}
+.eyebrow{display:flex;align-items:center;gap:16px;font:500 21px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.14em;color:var(--label);text-transform:uppercase;margin-bottom:30px;white-space:nowrap}
+.eyebrow i{width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.eyebrow b{width:34px;height:1px;background:var(--rule)}
+h1{margin:0;font-weight:600;font-size:88px;line-height:1.02;letter-spacing:-.028em}
+h1 .a{color:var(--acc-text)}
+
+.cols{position:absolute;left:96px;top:532px;width:888px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.col-h{display:flex;justify-content:space-between;align-items:baseline;font:500 18px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 4px 16px}
+.col-h b{font-weight:500;color:var(--ink)}
+.aos .col-h b{color:var(--acc-text)}
+.card{background:var(--sheet);border:1.5px solid var(--stroke);border-radius:14px;padding:24px 24px 22px;height:566px;display:flex;flex-direction:column;gap:14px}
+.aos .card{border-color:var(--acc)}
+.oh{display:flex;justify-content:space-between;align-items:center;font:500 15px/1 "Geist Mono",monospace;letter-spacing:.14em;color:var(--label)}
+.exam{font-weight:600;font-size:38px;letter-spacing:-.015em;line-height:1.05}
+.meta{font-weight:500;font-size:20px;color:var(--muted);margin-top:-6px}
+.hr{height:1px;background:var(--stroke)}
+.row{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center;min-height:88px}
+.ic{width:56px;height:56px;border-radius:12px;border:1.5px solid var(--stroke);display:grid;place-items:center}
+.aos .ic{border-color:var(--acc);background:var(--soft)}
+.ic svg{width:28px;height:28px}
+.rt{font-weight:600;font-size:27px;line-height:1.15}
+.rs{font:500 16px/1.35 "Geist Mono",monospace;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.aos .rs{color:var(--acc-text)}
+.status{margin-top:auto;display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;border:1.5px dashed var(--rule);font:500 17px/1.2 "Geist Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.aos .status{border:1.5px solid var(--acc);background:var(--soft);color:var(--acc-text)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--rule);flex:none}
+.aos .dot{background:var(--acc)}
+
+.foot{position:absolute;left:96px;right:96px;top:1196px;border-top:1px solid var(--rule);padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+.foot p{margin:0;font-weight:500;font-size:32px;line-height:1.2;letter-spacing:-.01em;max-width:640px}
+.foot p span{color:var(--acc-text)}
+.foot .tag{font:500 18px/1.5 "Geist Mono",monospace;letter-spacing:.16em;color:var(--label);text-transform:uppercase;text-align:right;white-space:nowrap}
+</style>
+
+<div id="c">
+  <img id="logo" src="logo_dark.png" alt="AlphaNodus"><div class="hdr-line"></div><div class="hdr-dot"></div>
+  <div class="top">
+    <div class="eyebrow"><i></i><b></b>Gravity · Agentic Operations System (AOS)</div>
+    <h1>RIS records the work.<br><span class="a">AOS does the work.</span></h1>
+  </div>
+
+  <div class="cols">
+    <!-- the record -->
+    <div class="ris">
+      <div class="col-h"><b>Your RIS</b><span>System of orders</span></div>
+      <div class="card">
+        <div class="oh"><span>ORDER · MRI</span><span>RECEIVED 08:12</span></div>
+        <div class="exam">MRI lumbar spine</div>
+        <div class="meta">From a referring office</div>
+        <div class="hr"></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+          <div><div class="rt">Fax</div><div class="rs">In the tray · unworked</div></div></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3c-1.5 0-2.6 1.4-2.3 2.9 1.2 6.4 6 11.2 12.4 12.4 1.5.3 2.9-.8 2.9-2.3v-2.2l-3.6-1.4-2 2c-2.3-1-4.1-2.8-5.1-5.1l2-2L8.9 3z"/></svg></div>
+          <div><div class="rt">Patient call</div><div class="rs">Not started</div></div></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.8"><rect x="3" y="4" width="18" height="15" rx="2"/><path d="M3 8.5h18"/></svg></div>
+          <div><div class="rt">Payer portal</div><div class="rs">Auth pending</div></div></div>
+        <div class="status"><span class="dot"></span>Unscheduled · in a queue</div>
+      </div>
+    </div>
+
+    <!-- the work -->
+    <div class="aos">
+      <div class="col-h"><b>AOS</b><span>System of work</span></div>
+      <div class="card">
+        <div class="oh"><span>ORDER · MRI</span><span>RECEIVED 08:12</span></div>
+        <div class="exam">MRI lumbar spine</div>
+        <div class="meta">From a referring office</div>
+        <div class="hr"></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+          <div><div class="rt">Fax read</div><div class="rs">✓ Order created</div></div></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3c-1.5 0-2.6 1.4-2.3 2.9 1.2 6.4 6 11.2 12.4 12.4 1.5.3 2.9-.8 2.9-2.3v-2.2l-3.6-1.4-2 2c-2.3-1-4.1-2.8-5.1-5.1l2-2L8.9 3z"/></svg></div>
+          <div><div class="rt">Patient called</div><div class="rs">✓ Booked Tue 10:00</div></div></div>
+        <div class="row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><rect x="3" y="4" width="18" height="15" rx="2"/><path d="M3 8.5h18"/><path d="M8.5 13.5l2.2 2.2 4.8-4.8"/></svg></div>
+          <div><div class="rt">Payer portal worked</div><div class="rs">✓ Auth approved</div></div></div>
+        <div class="status"><span class="dot"></span>Scheduled · authorized</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>One stores what should happen.<br><span>The other makes it happen.</span></p>
+    <div class="tag">The call<br>The fax<br>The payer portal</div>
+  </div>
+</div>
+<script>
+if(location.hash==='#light'){document.documentElement.classList.add('light');document.getElementById('logo').src='logo_light.png'}
+</script>

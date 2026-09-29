@@ -1,0 +1,90 @@
+<title>Systems Poll Visual</title>
+<style>
+@font-face{font-family:"Urbanist";font-weight:600;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-600-normal.woff2)}
+@font-face{font-family:"Urbanist";font-weight:500;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-500-normal.woff2)}
+@font-face{font-family:"Geist Mono";font-weight:500;src:url(node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2)}
+:root{
+  --bg:#1B1430; --ink:#FFFFFF; --acc:#C9B3FF; --acc-text:#CEBCFF; --label:#BAAED2; --rule:#68617D;
+  --sheet:#241B3E; --sheet2:#201837; --stroke:#6A6678; --soft:#2A2046;
+}
+.light{
+  --bg:#F6F5FA; --ink:#090C22; --acc:#6C41E4; --acc-text:#6C41E4; --label:#5B3CC4; --rule:#D8D5E2;
+  --sheet:#FFFFFF; --sheet2:#EEEBF6; --stroke:#B9B3CC; --soft:#E7E2F6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+#c{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Urbanist",system-ui,sans-serif}
+#logo{position:absolute;left:82px;top:90px;height:71px}
+#art{position:absolute;inset:0}
+.top{position:absolute;left:96px;top:236px;width:888px}
+.eyebrow{display:flex;align-items:center;gap:16px;font:500 22px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.16em;color:var(--label);text-transform:uppercase;margin-bottom:34px}
+.eyebrow i{width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.eyebrow b{width:34px;height:1px;background:var(--rule)}
+h1{margin:0;font-weight:600;font-size:78px;line-height:1.04;letter-spacing:-.025em;text-wrap:balance}
+h1 span{color:var(--acc-text)}
+.foot{position:absolute;left:96px;right:96px;top:1184px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:30px}
+.foot p{margin:0;font-weight:500;font-size:34px;letter-spacing:-.01em}
+.foot p span{color:var(--acc-text)}
+.foot .vote{font:500 20px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.18em;color:var(--label);text-transform:uppercase;text-align:right;line-height:1.5}
+</style>
+
+<div id="c">
+<svg id="art" viewBox="0 0 1080 1350" width="1080" height="1350" fill="none">
+  <!-- header: template line + dot -->
+  <line x1="476" y1="126" x2="978" y2="126" stroke="var(--rule)" stroke-width="1"/>
+  <circle cx="991" cy="126" r="13" fill="var(--acc)"/>
+
+  <!-- serpentine path: one order, many systems -->
+  <path id="route" d="M150 690 H 900 A 85 85 0 0 1 900 860 H 180 A 85 85 0 0 0 180 1030 H 940" stroke="var(--rule)" stroke-width="2"/>
+  <g id="chips"></g>
+
+  <!-- the order: a faxed sheet at the start -->
+  <g transform="translate(118 690) rotate(-8)">
+    <rect x="-34" y="-44" width="68" height="88" rx="4" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5" transform="rotate(-8) translate(-6 3)"/>
+    <rect x="-34" y="-44" width="68" height="88" rx="4" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <g stroke="var(--stroke)" stroke-width="3" stroke-linecap="round"><line x1="-22" y1="-26" x2="18" y2="-26"/><line x1="-22" y1="-12" x2="22" y2="-12"/><line x1="-22" y1="2" x2="8" y2="2"/><line x1="-22" y1="16" x2="16" y2="16"/></g>
+    <rect x="-22" y="26" width="9" height="9" rx="2" stroke="var(--acc)" stroke-width="1.8"/>
+  </g>
+  <circle cx="170" cy="690" r="9" fill="var(--acc)"/>
+  <text x="96" y="636" font-family="Geist Mono, monospace" font-size="17" letter-spacing="3" fill="var(--label)">REFERRAL</text>
+
+  <!-- payment at the end -->
+  <circle cx="954" cy="1030" r="20" fill="var(--bg)" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 5"/>
+  <text x="984" y="1090" text-anchor="end" font-family="Geist Mono, monospace" font-size="17" letter-spacing="3" fill="var(--label)">PAID?</text>
+</svg>
+
+<img id="logo" src="logo_dark.png" alt="AlphaNodus">
+<div class="top">
+  <div class="eyebrow"><i></i><b></b>Poll · Imaging operations</div>
+  <h1>How many systems does one order touch before your center <span>gets paid?</span></h1>
+</div>
+<div class="foot">
+  <p>Nobody sees <span>the whole order.</span></p>
+  <div class="vote">Vote in the poll<br>Results next week</div>
+</div>
+</div>
+
+<script>
+if(location.hash==='#light'){document.documentElement.classList.add('light');document.getElementById('logo').src='logo_light.png'}
+// systems an order passes through (AN27: the three systems plus the IT stack underneath)
+const chips=[
+  ['Fax server',318,690],['Phone system',572,690],['CRM',800,690],
+  ['RIS',832,860],['Texting vendor',598,860],['Interface engine',296,860],
+  ['Payer portal',330,1030],['RCM',540,1030],['Yours?',735,1030,true],
+];
+const NS='http://www.w3.org/2000/svg', g=document.getElementById('chips');
+const mk=(tag,attrs)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);g.appendChild(e);return e;};
+window.built=document.fonts.load('500 19px "Geist Mono"').then(()=>chips.forEach(([label,cx,cy,open])=>{
+  const t=mk('text',{x:cx,y:cy+7,'text-anchor':'middle','font-family':'Geist Mono, monospace','font-size':19,'letter-spacing':2.5});
+  t.textContent=label.toUpperCase();
+  const w=t.getComputedTextLength()+56, h=58;
+  const r=mk('rect',{x:cx-w/2,y:cy-h/2,width:w,height:h,rx:h/2,'stroke-width':1.5});
+  g.insertBefore(r,t);
+  const big=['CRM','RIS','RCM'].includes(label);
+  r.style.fill=open?'var(--bg)':'var(--sheet)';
+  r.style.stroke=open||big?'var(--acc)':'var(--stroke)';
+  if(open) r.setAttribute('stroke-dasharray','7 7');
+  t.style.fill=open||big?'var(--acc-text)':'var(--label)';
+}));
+document.querySelectorAll('svg *').forEach(el=>{for(const a of ['fill','stroke']){const v=el.getAttribute(a);if(v&&v.startsWith('var(')) el.style[a]=v;}});
+</script>

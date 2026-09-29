@@ -1,0 +1,322 @@
+<title>Gravity Leaks Reel</title>
+<style>
+@font-face{font-family:"Urbanist";font-weight:600;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-600-normal.woff2)}
+@font-face{font-family:"Urbanist";font-weight:500;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-500-normal.woff2)}
+@font-face{font-family:"Geist Mono";font-weight:500;src:url(node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2)}
+:root{
+  --bg:#1B1430; --ink:#FFFFFF; --lav:#C9B3FF; --lav-text:#CEBCFF;
+  --rule:#6A6678; --label:#BAAED2; --sheet:#241B3E; --sheet2:#201837; --stroke:#6A6678; --soft:#2A2046;
+  --display:"Urbanist",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--display)}
+.abs{position:absolute}
+#logo{left:90px;top:290px;width:370px;height:82px}
+#pbg{left:510px;top:332px;width:474px;height:1px;background:var(--rule)}
+#pfill{left:510px;top:332px;height:1px;background:var(--lav)}
+#pdot{top:319px;width:26px;height:26px;border-radius:50%;background:var(--lav)}
+#art{position:absolute;inset:0}
+
+.scene{position:absolute;left:96px;top:470px;width:850px}
+.eyebrow{display:flex;align-items:center;gap:18px;font:500 24px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--label);margin-bottom:40px;white-space:nowrap}
+.eyebrow i{width:10px;height:10px;border-radius:50%;background:var(--lav);flex:none}
+.eyebrow b{width:34px;height:1px;background:var(--rule);flex:none}
+.h{font-weight:600;font-size:100px;line-height:1.03;letter-spacing:-.025em;margin:0;text-wrap:balance}
+.h.m{font-size:88px}
+.lav{color:var(--lav-text)}
+.w{display:inline-block;white-space:pre}
+.strike{position:relative;display:inline-block}
+.strike .bar{position:absolute;left:-4px;top:54%;height:9px;background:var(--lav);border-radius:2px}
+.verbs .h{font-size:104px}
+.sub{font-weight:500;font-size:42px;line-height:1.25;color:var(--ink);opacity:.92;letter-spacing:-.01em;margin:0 0 52px;max-width:680px}
+.stat{display:flex;align-items:baseline;gap:28px;padding:26px 0;border-top:1px solid var(--rule)}
+.stat:last-child{border-bottom:1px solid var(--rule)}
+.num{font-weight:600;font-size:156px;line-height:.9;letter-spacing:-.04em;color:var(--lav-text);min-width:420px;font-variant-numeric:tabular-nums}
+.lbl{font-weight:500;font-size:42px;line-height:1.1;color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:16px;margin-top:56px;padding:22px 30px;border:1.5px solid var(--lav);border-radius:999px;font:500 28px/1 var(--mono);letter-spacing:.18em;color:var(--lav-text);text-transform:uppercase}
+</style>
+
+<div id="stage">
+  <img id="logo" class="abs" src="logo_dark.png" alt="AlphaNodus">
+  <div id="pbg" class="abs"></div><div id="pfill" class="abs"></div><div id="pdot" class="abs"></div>
+
+<svg id="art" viewBox="0 0 1080 1920" width="1080" height="1920" fill="none">
+ <g id="world">
+  <!-- path -->
+  <line id="pline" x1="96" y1="1400" x2="920" y2="1400" stroke="var(--rule)" stroke-width="2"/>
+  <line id="pfillsvg" x1="280" y1="1400" x2="280" y2="1400" stroke="var(--lav)" stroke-width="2.5"/>
+  <text id="lref" x="96" y="1452" font-family="Geist Mono, monospace" font-size="20" letter-spacing="4" fill="var(--label)">REFERRAL</text>
+  <text id="lpay" x="934" y="1452" text-anchor="end" font-family="Geist Mono, monospace" font-size="20" letter-spacing="4" fill="var(--label)">PAYMENT</text>
+
+  <!-- fax stack -->
+  <g id="fax" transform="translate(205 1232) rotate(-7) scale(.86)">
+    <g id="faxp2"><rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/></g>
+    <g id="faxp1"><rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/></g>
+    <rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5" transform="rotate(-6) translate(-16 6)"/>
+    <rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="-90" y="-118" font-family="Geist Mono, monospace" font-size="13" letter-spacing="2" fill="var(--label)">FAX · PG 1/1</text>
+    <line x1="-90" y1="-104" x2="76" y2="-104" stroke="var(--stroke)" stroke-width="1"/>
+    <text x="-90" y="-74" font-family="Urbanist, sans-serif" font-weight="600" font-size="26" fill="var(--ink)">Imaging order</text>
+    <g stroke="var(--stroke)" stroke-width="5" stroke-linecap="round" opacity=".8">
+      <line x1="-90" y1="-44" x2="40" y2="-44"/><line x1="-90" y1="-24" x2="70" y2="-24"/>
+      <line x1="-90" y1="-4" x2="10" y2="-4"/><line x1="-90" y1="26" x2="60" y2="26"/><line x1="-90" y1="46" x2="24" y2="46"/>
+    </g>
+    <rect x="-90" y="66" width="16" height="16" rx="3" stroke="var(--lav)" stroke-width="2"/>
+    <path d="M-10 86 c10 -18 18 -18 20 -4 s12 10 22 -8 s14 -6 22 2" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>
+  </g>
+  <path id="drop" d="M300 1330 C 312 1362, 276 1382, 280 1400" stroke="var(--lav)" stroke-width="1.8" stroke-dasharray="4 7"/>
+
+  <!-- MRI -->
+  <g id="scan" transform="translate(712 1250) scale(.86)">
+    <circle r="190" stroke="var(--rule)" stroke-width="1" opacity=".55"/>
+    <circle r="236" stroke="var(--rule)" stroke-width="1" opacity=".3"/>
+    <rect x="-130" y="-138" width="260" height="276" rx="120" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <circle r="96" fill="var(--soft)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <circle r="62" fill="var(--bg)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <g id="sweep"><path d="M-80 -54 A 97 97 0 0 1 58 -76" stroke="var(--lav)" stroke-width="4" stroke-linecap="round"/><circle cx="58" cy="-76" r="6" fill="var(--lav)"/></g>
+    <rect x="-250" y="10" width="300" height="18" rx="9" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <g id="patient"><rect x="-75" y="-14" width="130" height="24" rx="12" fill="var(--lav)" opacity=".85"/><circle cx="70" cy="-3" r="13" fill="var(--lav)"/></g>
+    <path d="M-200 28 L-200 175 M-120 28 L-120 175" stroke="var(--stroke)" stroke-width="1.5"/>
+    <rect x="-96" y="160" width="192" height="15" rx="4" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="-112" y="-110" font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="var(--label)">MRI · 1.5T</text>
+  </g>
+
+  <!-- payment -->
+  <g id="pay">
+    <circle id="payc" cx="920" cy="1400" r="20" fill="var(--bg)" stroke="var(--rule)" stroke-width="2"/>
+    <path id="payk" d="M911 1400 l6 6 l12 -13" stroke="var(--bg)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- leak markers -->
+  <g id="marks">
+    <circle id="m1" cx="360" cy="1400" r="13" fill="var(--bg)" stroke="var(--rule)" stroke-width="2"/>
+    <circle id="m2" cx="470" cy="1400" r="13" fill="var(--bg)" stroke="var(--rule)" stroke-width="2"/>
+    <circle id="m3" cx="840" cy="1400" r="13" fill="var(--bg)" stroke="var(--rule)" stroke-width="2"/>
+    <text id="n1" x="360" y="1372" text-anchor="middle" font-family="Geist Mono, monospace" font-size="18" letter-spacing="2" fill="var(--label)">01</text>
+    <text id="n2" x="470" y="1372" text-anchor="middle" font-family="Geist Mono, monospace" font-size="18" letter-spacing="2" fill="var(--label)">02</text>
+    <text id="n3" x="840" y="1372" text-anchor="middle" font-family="Geist Mono, monospace" font-size="18" letter-spacing="2" fill="var(--label)">03</text>
+  </g>
+
+  <!-- order dots -->
+  <circle id="d1" cx="280" cy="1400" r="12" fill="var(--lav)"/>
+  <circle id="d2" cx="280" cy="1400" r="12" fill="var(--lav)"/>
+  <circle id="d3" cx="280" cy="1400" r="12" fill="var(--lav)"/>
+  <circle id="d4" cx="280" cy="1400" r="12" fill="var(--lav)"/>
+
+  <!-- leak 02: schedule card -->
+  <g id="sched" transform="translate(300 1020)">
+    <rect width="480" height="250" rx="10" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="28" y="44" font-family="Geist Mono, monospace" font-size="16" letter-spacing="3" fill="var(--label)">SCHEDULE · MRI 1</text>
+    <line x1="28" y1="60" x2="452" y2="60" stroke="var(--stroke)"/>
+    <g font-family="Geist Mono, monospace" font-size="16" fill="var(--label)">
+      <text x="28" y="96">09:00</text><text x="28" y="140">09:30</text><text x="28" y="184">10:00</text><text x="28" y="228">10:30</text>
+    </g>
+    <rect x="110" y="80" width="340" height="24" rx="6" fill="var(--soft)" stroke="var(--stroke)"/>
+    <rect x="110" y="124" width="340" height="24" rx="6" fill="var(--soft)" stroke="var(--stroke)"/>
+    <rect id="openslot" x="110" y="166" width="340" height="28" rx="6" fill="none" stroke="var(--lav)" stroke-width="2" stroke-dasharray="7 7"/>
+    <text x="280" y="186" text-anchor="middle" font-family="Geist Mono, monospace" font-size="15" letter-spacing="3" fill="var(--lav)">OPEN SLOT</text>
+    <rect x="110" y="212" width="340" height="24" rx="6" fill="var(--soft)" stroke="var(--stroke)"/>
+  </g>
+
+  <!-- leak 03: claim card -->
+  <g id="claim" transform="translate(300 1010)">
+    <rect width="480" height="290" rx="10" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="28" y="44" font-family="Geist Mono, monospace" font-size="16" letter-spacing="3" fill="var(--label)">CLAIM · MRI LUMBAR</text>
+    <line x1="28" y1="60" x2="452" y2="60" stroke="var(--stroke)"/>
+    <g font-family="Urbanist, sans-serif" font-weight="500" font-size="24" fill="var(--ink)">
+      <text x="28" y="104">Eligibility</text><text x="28" y="150">Exam completed</text><text x="28" y="196">Authorization</text>
+    </g>
+    <g stroke="var(--lav)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M420 96 l6 6 l12 -13"/><path d="M420 142 l6 6 l12 -13"/>
+    </g>
+    <text x="452" y="196" text-anchor="end" font-family="Geist Mono, monospace" font-size="16" letter-spacing="2" fill="var(--lav)">MISSING</text>
+    <g id="stamp" transform="translate(330 236) rotate(-9)">
+      <rect x="-104" y="-30" width="208" height="56" rx="6" stroke="var(--lav)" stroke-width="3"/>
+      <text x="0" y="10" text-anchor="middle" font-family="Geist Mono, monospace" font-size="28" font-weight="500" letter-spacing="6" fill="var(--lav)">DENIED</text>
+    </g>
+  </g>
+
+  <!-- by hand: tool chips over each leak -->
+  <g id="tools" font-family="Geist Mono, monospace" font-size="17" letter-spacing="3" fill="var(--label)">
+    <g id="tool1" transform="translate(270 1050)">
+      <rect width="190" height="72" rx="36" fill="var(--sheet)" stroke="var(--lav)" stroke-width="1.5"/>
+      <rect x="26" y="22" width="22" height="28" rx="3" stroke="var(--lav)" stroke-width="2"/><line x1="31" y1="31" x2="43" y2="31" stroke="var(--lav)" stroke-width="2"/><line x1="31" y1="38" x2="41" y2="38" stroke="var(--lav)" stroke-width="2"/>
+      <text x="64" y="43">FAX</text>
+    </g>
+    <g id="tool2" transform="translate(440 1150)">
+      <rect width="210" height="72" rx="36" fill="var(--sheet)" stroke="var(--lav)" stroke-width="1.5"/>
+      <path d="M30 24 c-4 0 -6 4 -5 8 c3 10 11 18 21 21 c4 1 8 -1 8 -5 l0 -5 l-8 -3 l-4 4 c-5 -2 -9 -6 -11 -11 l4 -4 l-3 -8 z" stroke="var(--lav)" stroke-width="2" stroke-linejoin="round"/>
+      <text x="66" y="43">PHONE</text>
+    </g>
+    <g id="tool3" transform="translate(700 1050)">
+      <rect width="220" height="72" rx="36" fill="var(--sheet)" stroke="var(--lav)" stroke-width="1.5"/>
+      <rect x="24" y="22" width="32" height="26" rx="3" stroke="var(--lav)" stroke-width="2"/><line x1="24" y1="30" x2="56" y2="30" stroke="var(--lav)" stroke-width="2"/>
+      <text x="70" y="43">PORTAL</text>
+    </g>
+  </g>
+ </g>
+
+  <!-- proof: award medal -->
+  <g id="medal" transform="translate(880 640)">
+    <path d="M-34 30 L-52 118 L-22 100 L-6 128 L6 44 Z M34 30 L52 118 L22 100 L6 128 L-6 44 Z" fill="var(--sheet)" stroke="var(--lav)" stroke-width="2" stroke-linejoin="round"/>
+    <circle r="62" fill="var(--sheet)" stroke="var(--lav)" stroke-width="2.5"/>
+    <circle r="48" stroke="var(--lav)" stroke-width="1.2" stroke-dasharray="3 5"/>
+    <text y="-6" text-anchor="middle" font-family="Geist Mono, monospace" font-size="16" letter-spacing="3" fill="var(--label)">RSNA</text>
+    <text y="22" text-anchor="middle" font-family="Urbanist, sans-serif" font-weight="600" font-size="30" fill="var(--lav)">2021</text>
+  </g>
+</svg>
+
+  <section class="scene" data-s="-1" data-e="2.5">
+    <div class="eyebrow a" data-t="-1"><i></i><b></b>For imaging center owners</div>
+    <h1 class="h words" data-t="-1">Imaging centers don't lose money <span class="strike">in the scanner.<span class="bar" data-t="1.25"></span></span></h1>
+  </section>
+  <section class="scene" data-s="2.5" data-e="5.2">
+    <h1 class="h words" data-t="2.55">They lose it between the <span class="lav">referral</span> and the <span class="lav">payment.</span></h1>
+  </section>
+  <section class="scene" data-s="5.2" data-e="7.6">
+    <h1 class="h words" data-t="5.25">Every order can be lost <span class="lav">three times.</span></h1>
+  </section>
+  <section class="scene" data-s="7.6" data-e="10.2">
+    <div class="eyebrow a" data-t="7.62"><i></i><b></b>Leak 01 · Before it arrives</div>
+    <h1 class="h words" data-t="7.7">The fax never gets <span class="lav">worked.</span></h1>
+  </section>
+  <section class="scene" data-s="10.2" data-e="12.8">
+    <div class="eyebrow a" data-t="10.22"><i></i><b></b>Leak 02 · Before it's scanned</div>
+    <h1 class="h m words" data-t="10.3">The order sits unscheduled. The slot goes <span class="lav">empty.</span></h1>
+  </section>
+  <section class="scene" data-s="12.8" data-e="15.4">
+    <div class="eyebrow a" data-t="12.82"><i></i><b></b>Leak 03 · Before it's paid</div>
+    <h1 class="h m words" data-t="12.9">A missing authorization becomes a denial <span class="lav">weeks later.</span></h1>
+  </section>
+  <section class="scene" data-s="15.4" data-e="17.8">
+    <h1 class="h words" data-t="15.45">Your front desk holds all three shut <span class="lav">by hand.</span></h1>
+  </section>
+  <section class="scene" data-s="17.8" data-e="19.3">
+    <div class="eyebrow a" data-t="17.82"><i></i><b></b>Gravity · Agentic Operations System (AOS)</div>
+    <h1 class="h words" data-t="17.9">Gravity's agents do that work.</h1>
+  </section>
+  <section class="scene verbs" data-s="19.3" data-e="21.9">
+    <div class="eyebrow a" data-t="-1"><i></i><b></b>Gravity · Agentic Operations System (AOS)</div>
+    <h1 class="h a" data-t="19.35">Get the order.</h1>
+    <h1 class="h a" data-t="19.85">Complete the exam.</h1>
+    <h1 class="h a lav" data-t="20.35">Get paid.</h1>
+  </section>
+  <section class="scene" data-s="21.9" data-e="27.3">
+    <div class="eyebrow a" data-t="21.92"><i></i><b></b>Proof · Tower Radiology</div>
+    <p class="sub words" data-t="22.0">Their own physicians took these results to RSNA 2021, and won the Quality Improvement Award.</p>
+    <div class="stat a" data-t="23.3"><span class="num" data-count="7" data-pre="+" data-suf="%" data-dec="0" data-t="23.3">+7%</span><span class="lbl">more exams<br>a week</span></div>
+    <div class="stat a" data-t="23.9"><span class="num" data-count="2.3" data-pre="$" data-suf="M" data-dec="1" data-t="23.9">$2.3M</span><span class="lbl">added<br>revenue</span></div>
+    <div class="stat a" data-t="24.5"><span class="num" data-count="71" data-pre="" data-suf="%" data-dec="0" data-t="24.5">71%</span><span class="lbl">shorter<br>waits</span></div>
+  </section>
+  <section class="scene" data-s="27.3" data-e="99">
+    <h1 class="h words" data-t="27.35">Watch one order go from referral to <span class="lav">payment.</span></h1>
+    <div class="chip a" data-t="28.4">Link in bio  →</div>
+  </section>
+</div>
+
+<script>
+document.querySelectorAll('svg *').forEach(el=>{for(const a of ['fill','stroke']){const v=el.getAttribute(a);if(v&&v.startsWith('var(')) el.style[a]=v;}});
+const T=30.5, X0=280, X1=920, MK=[360,470,840];
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), eo=x=>1-Math.pow(1-clamp(x),3), eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const $=s=>document.getElementById(s);
+const win=(t,a,b,f=.3)=>eo((t-a)/f)*(1-eo((t-(b-f))/f)); // fade in at a, out by b
+
+document.querySelectorAll('.words').forEach(el=>{
+  const base=parseFloat(el.dataset.t); let i=0;
+  const walk=node=>{[...node.childNodes].forEach(ch=>{
+    if(ch.nodeType===3){const frag=document.createDocumentFragment();
+      ch.textContent.split(/(\s+)/).forEach(tok=>{if(!tok)return;if(/^\s+$/.test(tok)){frag.appendChild(document.createTextNode(' '));return;}
+        const s=document.createElement('span');s.className='w a';s.textContent=tok;s.dataset.t=(base+i++*0.065).toFixed(3);frag.appendChild(s);});
+      ch.replaceWith(frag);}
+    else if(ch.classList&&!ch.classList.contains('bar')) walk(ch);});};
+  walk(el); el.classList.remove('a');
+});
+const op=(id,v)=>{$(id).style.opacity=v};
+const BASE={};
+const pop=(id,k,cx,cy)=>{const e=$(id); if(!BASE[id]){const m=(e.getAttribute('transform')||'translate(0 0)').match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);BASE[id]=[+m[1],+m[2]];}
+  const [bx,by]=BASE[id], s=0.94+0.06*k; e.style.opacity=k; e.style.transformOrigin='0 0';
+  e.style.transform=`translate(${bx}px,${by+(1-k)*24}px) translate(${cx}px,${cy}px) scale(${s}) translate(${-cx}px,${-cy}px)`;};
+
+function dotRun(id,t,s,to,dur,fallAt){ // travel then optionally fall off
+  const d=$(id); const go=eio((t-s)/dur); const x=X0+(to-X0)*go;
+  let y=0, a=eo((t-s+0.15)/0.15);
+  if(fallAt!=null){const f=clamp((t-fallAt)/0.8); y=380*f*f; a*=1-f;}
+  d.setAttribute('cx',x); d.setAttribute('cy',1400+y); d.style.opacity=a; return x;
+}
+
+function render(t){
+  const p=clamp(t/T), px=510+474*p; $('pfill').style.width=(px-510)+'px'; $('pdot').style.left=(px-13)+'px';
+  document.querySelectorAll('.scene').forEach(sc=>{const s=+sc.dataset.s,e=+sc.dataset.e,on=t>=s&&t<e;sc.style.visibility=on?'visible':'hidden';
+    const out=clamp((t-(e-0.22))/0.22);sc.style.opacity=1-out;sc.style.transform=`translateY(${-28*eo(out)}px)`;});
+  document.querySelectorAll('.a').forEach(el=>{const k=eo((t-parseFloat(el.dataset.t))/0.38);el.style.opacity=k;el.style.transform=`translateY(${(1-k)*38}px)`;});
+  document.querySelectorAll('.bar').forEach(b=>{const k=eio((t-parseFloat(b.dataset.t))/0.4);b.style.width=`calc(${k*100}% + ${k*8}px)`;});
+  document.querySelectorAll('[data-count]').forEach(n=>{const k=eo((t-parseFloat(n.dataset.t))/0.9),v=+n.dataset.count*k;n.textContent=n.dataset.pre+v.toFixed(+n.dataset.dec)+n.dataset.suf;});
+
+  const cta=t>=27.3, proof=t>=21.9&&t<27.3;
+  // world visibility: hidden during proof
+  op('world', proof ? 1-eo((t-21.9)/0.25) : (cta? eo((t-27.3)/0.35) : 1));
+  if(t>=22.2&&t<27.3) op('world',0);
+  pop('medal', win(t,22.0,27.3,.35), 0,0);
+
+  // hook: scanner alone, rest arrives with "between the referral and the payment"
+  const rest = cta?1:eo((t-2.6)/0.45);
+  ['fax','lref','lpay','pay','drop'].forEach(id=>op(id,rest));
+  const draw=cta?1:eio((t-2.6)/0.8); $('pline').setAttribute('x2',96+(920-96)*draw);
+  $('sweep').style.transform=`rotate(${t*70}deg)`;
+
+  // markers
+  [1,2,3].forEach(k=>{const a=cta?1:eo((t-(5.6+k*0.25))/0.3); op('m'+k,a); op('n'+k,a);});
+
+  // dim the world while a card is up
+  const cardUp = Math.max(win(t,10.35,12.75,.3), win(t,12.95,15.35,.3));
+  ['fax','scan','drop'].forEach(id=>{$(id).style.opacity = (id==='scan'?1:rest)*(1-0.72*cardUp)});
+  op('pay', rest*(1-0.5*cardUp));
+
+  // leak 01: faxes pile up, order falls off at 01
+  const pile1=eo((t-7.9)/0.35), pile2=eo((t-8.35)/0.35), keep=t<17.8||cta?0:0;
+  const pileOn = !cta && t>=7.6 && t<17.8;
+  $('faxp1').style.transform = pileOn?`translate(${-10+(1-pile1)*-160}px, ${-26}px) rotate(${-10+pile1*6}deg)`:'translate(0,0)';
+  $('faxp2').style.transform = pileOn?`translate(${-22+(1-pile2)*-160}px, ${-50}px) rotate(${-14+pile2*8}deg)`:'translate(0,0)';
+  op('faxp1', pileOn?pile1:0); op('faxp2', pileOn?pile2:0);
+  const inLeak = s=>t>=s&&t<s+2.6;
+  ['d1','d2','d3','d4'].forEach(id=>op(id,0));
+  if(inLeak(7.6)) dotRun('d1',t,8.2,MK[0],0.7,8.95);
+  if(inLeak(10.2)) dotRun('d2',t,10.5,MK[1],0.8,11.35);
+  if(inLeak(12.8)) dotRun('d3',t,13.1,MK[2],1.1,14.25);
+
+  // leak 02: schedule card, empty table
+  pop('sched', win(t,10.35,12.75,.3), 240,125);
+  $('openslot').style.opacity = 0.55+0.45*Math.abs(Math.sin(t*4));
+  // leak 03: claim card + stamp
+  pop('claim', win(t,12.95,15.35,.3), 240,135);
+  const st=eo((t-13.7)/0.25); $('stamp').style.opacity=st; $('stamp').style.transformOrigin='0 0'; $('stamp').style.transform=`translate(250px,248px) rotate(-7deg) scale(${1.6-0.6*st})`;
+
+  // by hand: tool chips
+  [1,2,3].forEach(k=>pop('tool'+k, win(t,15.55+k*0.18,17.8,.3), 100,36));
+
+  // patient: absent until Gravity, slides into the bore
+  const pin = cta ? eio((t-27.5)/0.8) : eio((t-19.3)/0.8);
+  const patientOn = (t>=19.1&&t<21.9)||cta;
+  $('patient').style.opacity = patientOn? eo((cta?t-27.3:t-19.1)/0.3):0;
+  $('patient').style.transform=`translateX(${-170+130*pin}px)`;
+
+  // gravity run: the order goes all the way; markers close; payment fills
+  let gx=-1, arrive=0;
+  if(t>=19.45&&t<21.9){gx=dotRun('d4',t,19.45,X1,1.9,null); arrive=eo((t-21.35)/0.25);}
+  if(cta&&t>=27.6){gx=dotRun('d4',t,27.6,X1,1.9,null); arrive=eo((t-29.5)/0.25);}
+  $('pfillsvg').setAttribute('x2', gx>0?gx:X0);
+  MK.forEach((x,k)=>{const m=$('m'+(k+1)); const leakAt=[8.95,11.35,14.25][k];
+    if(gx>=x){m.style.fill='var(--lav)';m.style.stroke='var(--lav)';}
+    else if(!cta && t>=leakAt && t<19.3){m.style.fill='var(--bg)';m.style.stroke='var(--lav)';}
+    else {m.style.fill='var(--bg)';m.style.stroke='var(--rule)';}});
+  // payment state: hollow; denied (dashed) during leak 03 and "by hand"; filled with check on arrival
+  const denied = !cta && t>=13.7 && t<19.3;
+  $('payc').style.strokeDasharray = denied?'5 5':'none';
+  $('payc').style.stroke = arrive>0||denied?'var(--lav)':'var(--rule)';
+  $('payc').style.fill = arrive>0?'var(--lav)':'var(--bg)';
+  $('payk').style.opacity = arrive;
+  const pz=1+0.18*Math.sin(Math.PI*arrive); $('pay').style.transformBox='view-box'; $('pay').style.transformOrigin='920px 1400px'; $('pay').style.transform=`scale(${pz})`;
+}
+window.render=render; render(0);
+</script>

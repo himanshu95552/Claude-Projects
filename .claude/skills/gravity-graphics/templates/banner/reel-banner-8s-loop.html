@@ -1,0 +1,97 @@
+<title>Gravity Reel Banner</title>
+<style>
+@font-face{font-family:"Urbanist";font-weight:600;src:url(node_modules/@fontsource/urbanist/files/urbanist-latin-600-normal.woff2)}
+@font-face{font-family:"Geist Mono";font-weight:500;src:url(node_modules/@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2)}
+:root{
+  --bg:#F6F5FA; --ink:#090C22; --acc:#6C41E4; --label:#5B3CC4; --rule:#D8D5E2;
+  --sheet:#FFFFFF; --sheet2:#EEEBF6; --stroke:#B9B3CC; --soft:#E7E2F6;
+}
+.dark{
+  --bg:#1B1430; --ink:#FFFFFF; --acc:#C9B3FF; --label:#BAAED2; --rule:#68617D;
+  --sheet:#241B3E; --sheet2:#201837; --stroke:#6A6678; --soft:#2A2046;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+#b{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:"Urbanist",system-ui,sans-serif;color:var(--ink)}
+#art{position:absolute;inset:0}
+#logo{position:absolute;left:50%;top:262px;transform:translateX(-50%)}
+#logo img{display:block;height:62px}
+.center{position:absolute;left:0;right:0;top:420px;display:flex;flex-direction:column;align-items:center;gap:44px}
+.eyebrow{display:flex;align-items:center;gap:16px;font:500 24px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.22em;color:var(--label);text-transform:uppercase;white-space:nowrap}
+.eyebrow i{width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.eyebrow b{width:34px;height:1px;background:var(--rule)}
+h1{margin:0;text-align:center;font-weight:600;font-size:100px;line-height:1.04;letter-spacing:-.025em}
+h1 span{color:var(--acc)}
+</style>
+
+<div id="b">
+<svg id="art" viewBox="0 0 1080 1920" width="1080" height="1920" fill="none">
+  <!-- path: referral to payment -->
+  <line x1="96" y1="1400" x2="920" y2="1400" stroke="var(--rule)" stroke-width="2"/>
+  <line id="fill" x1="300" y1="1400" x2="920" y2="1400" stroke="var(--acc)" stroke-width="2" opacity=".6"/>
+
+  <!-- fax stack -->
+  <g transform="translate(236 1190) rotate(-7) scale(1.05)">
+    <rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5" transform="rotate(-6) translate(-16 6)"/>
+    <rect x="-112" y="-150" width="210" height="272" rx="6" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="-90" y="-118" font-family="Geist Mono, monospace" font-size="13" letter-spacing="2" fill="var(--label)">FAX · PG 1/1</text>
+    <line x1="-90" y1="-104" x2="76" y2="-104" stroke="var(--stroke)" stroke-width="1"/>
+    <text x="-90" y="-74" font-family="Urbanist, sans-serif" font-weight="600" font-size="26" fill="var(--ink)">Imaging order</text>
+    <g stroke="var(--stroke)" stroke-width="5" stroke-linecap="round" opacity=".8">
+      <line x1="-90" y1="-44" x2="40" y2="-44"/><line x1="-90" y1="-24" x2="70" y2="-24"/>
+      <line x1="-90" y1="-4" x2="10" y2="-4"/><line x1="-90" y1="26" x2="60" y2="26"/>
+      <line x1="-90" y1="46" x2="24" y2="46"/>
+    </g>
+    <rect x="-90" y="66" width="16" height="16" rx="3" stroke="var(--acc)" stroke-width="2"/>
+    <path d="M-86 74 l4 4 l8 -9" stroke="var(--acc)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-10 86 c10 -18 18 -18 20 -4 s12 10 22 -8 s14 -6 22 2" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>
+  </g>
+  <path d="M338 1318 C 350 1356, 296 1380, 300 1400" stroke="var(--acc)" stroke-width="1.8" stroke-dasharray="4 7"/>
+
+  <!-- MRI gantry resting on the path -->
+  <g transform="translate(712 1235) scale(1.02)">
+    <circle r="190" stroke="var(--rule)" stroke-width="1" opacity=".55"/>
+    <circle r="236" stroke="var(--rule)" stroke-width="1" opacity=".3"/>
+    <rect x="-130" y="-138" width="260" height="276" rx="120" fill="var(--sheet)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <circle r="96" fill="var(--soft)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <circle r="62" fill="var(--bg)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <g id="sweep"><path d="M-80 -54 A 97 97 0 0 1 58 -76" stroke="var(--acc)" stroke-width="4" stroke-linecap="round"/><circle cx="58" cy="-76" r="6" fill="var(--acc)"/></g>
+    <rect x="-250" y="10" width="300" height="18" rx="9" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <path d="M-200 28 L-200 153 M-120 28 L-120 153" stroke="var(--stroke)" stroke-width="1.5"/>
+    <rect x="-96" y="138" width="192" height="15" rx="4" fill="var(--sheet2)" stroke="var(--stroke)" stroke-width="1.5"/>
+    <text x="-112" y="-110" font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="var(--label)">MRI · 1.5T</text>
+  </g>
+
+  <!-- order dot, payment check -->
+  <circle id="odot" cx="300" cy="1400" r="11" fill="var(--acc)"/>
+  <g id="pay"><circle cx="920" cy="1400" r="20" fill="var(--acc)"/>
+  <path d="M911 1400 l6 6 l12 -13" stroke="var(--bg)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="96" y="1450" font-family="Geist Mono, monospace" font-size="20" letter-spacing="4" fill="var(--label)">REFERRAL</text>
+  <text x="934" y="1450" text-anchor="end" font-family="Geist Mono, monospace" font-size="20" letter-spacing="4" fill="var(--label)">PAYMENT</text>
+</svg>
+
+<div id="logo"><img id="logoimg" src="logo_light.png" alt="AlphaNodus"></div>
+<div class="center">
+  <div class="eyebrow"><i></i><b></b>Alpha Nodus · Gravity<b></b><i></i></div>
+  <h1>Get the order.<br>Complete the exam.<br><span>Get paid.</span></h1>
+</div>
+</div>
+<script>
+document.querySelectorAll('svg *').forEach(el=>{for(const a of ['fill','stroke']){const v=el.getAttribute(a);if(v&&v.startsWith('var(')) el.style[a]=v;}});
+if(location.hash==='#dark'){document.documentElement.classList.add('dark');document.getElementById('logoimg').src='logo_dark.png'}
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}, eo=x=>1-Math.pow(1-clamp(x),3);
+const X0=300, X1=920;
+// t<0 = still image: dot resting at payment, everything complete
+window.render=function(t){
+  const d=document.getElementById('odot'), f=document.getElementById('fill'), pay=document.getElementById('pay'), sw=document.getElementById('sweep');
+  if(t<0){ d.setAttribute('cx',X1); d.style.opacity=0; f.setAttribute('x2',X1); pay.style.opacity=1; pay.style.transform=''; sw.style.transform='rotate(0deg)'; return; }
+  const go=eio((t-0.6)/3.4), x=X0+(X1-X0)*go;
+  d.setAttribute('cx',x); d.style.opacity = eo((t-0.2)/0.4)*(1-clamp((t-4.0)/0.2));
+  f.setAttribute('x2',x);
+  const k=eo((t-4.0)/0.35); pay.style.opacity=0.25+0.75*k;
+  pay.style.transformOrigin='920px 1400px'; pay.style.transform=`scale(${0.7+0.3*k+0.12*Math.sin(Math.PI*clamp((t-4.0)/0.35))})`;
+  sw.style.transform=`rotate(${t*72}deg)`;
+  const out=clamp((t-7.6)/0.4); f.style.opacity=.6*(1-out); pay.style.opacity*=1-out*0.75;
+};
+render(-1);
+</script>
