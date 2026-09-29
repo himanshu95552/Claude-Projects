@@ -1,0 +1,22 @@
+platform	goal	exact search string / filter	why it works
+LinkedIn (posts search, Latest)	People announcing attendance	"RSNA 2026" OR "#RSNA26" OR "#RSNA2026"	Most attendees post 2–8 weeks out; sort by Latest and re-run weekly
+LinkedIn (posts)	Exhibitor reps with booth numbers	"RSNA 2026" AND (booth OR "visit us" OR "come see us")	Author is usually a marketer/sales rep = direct contact; post gives booth
+LinkedIn (posts)	Presenters / faculty	"RSNA 2026" AND (presenting OR "abstract accepted" OR moderating OR "RadioGraphics panel")	Speakers are confirmed attendees with fixed schedules
+LinkedIn (posts)	People open to meetings	"RSNA 2026" AND ("let's meet" OR "book a meeting" OR "grab a coffee" OR "meet up" OR "reach out")	Highest intent to accept a meetup
+LinkedIn (posts)	AI Showcase companies	"RSNA 2026" AND "AI Showcase"	~150 AI vendors; startups respond well to partnership pings
+LinkedIn (people / Sales Navigator)	Brand decision makers	Current company = [exhibitor list tab]; Title = (Marketing OR "Trade Show" OR Events OR "Business Development" OR Sales) AND (Director OR VP OR Head OR Chief)	Every exhibitor staffs its booth with these roles
+LinkedIn (people / Sales Navigator)	Radiology buyers	Title = (Radiology AND (Director OR Chair OR Administrator OR Manager)) OR "Chief Medical Information Officer"; Industry = Hospitals & Health Care; Geography = US	79% of RSNA attendees influence purchasing (RSNA)
+LinkedIn (company pages)	Brand event activity	Visit each exhibitor page > Posts > search "RSNA"	Company pages announce booth + event staff; tagged employees are attendees
+LinkedIn (Events)	Side events / dinners	Events search: "RSNA 2026" (Chicago, Nov 29–Dec 3)	Attendee lists of vendor dinners/receptions are visible to registrants
+X / Twitter	Attendees and #RadTwitter	#RSNA26 OR #RSNA2026 OR "RSNA 2026" -from:RSNA (filter: Latest, People)	Radiologist creators live-post; @RSNA official hashtag is #RSNA26
+X / Twitter	Influencers	#RadTwitter OR #MedEd OR #RadRes OR #IRad OR #BreastRad with "RSNA"	Surfaces the radiology creator community
+Instagram	Creators + brands	Hashtags: #rsna26 #rsna2026 #rsna #radiology #radiologist #radiologyresident #radtech #mammography #medicalimaging	Brands post booth reels; creators post day-in-the-life content
+Instagram / TikTok	Radiology creators	Search: radiologist, radiology resident, rad tech, sonographer, "radiology" + "RSNA"	Micro-influencers (5k–100k) are the most responsive to meetup DMs
+Facebook	Groups and brand pages	Page: facebook.com/RSNAfans (comments on #RSNA26 posts); groups: radiology technologists, radiology residents	Commenters on RSNA posts are self-identified attendees
+YouTube / Podcasts	Media influencers	"RSNA 2025 recap", "RSNA 2026 preview", radiology podcast	Recap/preview makers attend and film on the floor
+Google	Company RSNA pages with meeting forms	"RSNA 2026" ("book a meeting" OR "schedule a meeting" OR "schedule a demo")	Gives booth + meeting form + marketing contact per brand
+Google	Press releases	"RSNA 2026" (announces OR "will showcase" OR "booth") site:prnewswire.com OR site:businesswire.com OR site:globenewswire.com	Press releases name the exec spokesperson and the media contact email
+Official	Exhibitor list	rsna2026.mapyourshow.com > Exhibitors by Alpha (716 exhibitors) / Exhibitor List PDF	Authoritative list of brands + booth numbers
+Official	Speakers	cattendee.abstractsonline.com/meeting/21552 > Speakers (5,153 speakers)	Every speaker is a confirmed attendee; filter by topic relevant to you
+Official	Plenary / leadership	rsna.org/about/board-of-directors ; rsna.org/annual-meeting	Authorized officials and keynote speakers
+Enrichment (emails)	Business emails for named people	Apollo.io / Hunter.io / Crustdata people_contact_enrich / RocketReach / Lusha with the LinkedIn URL	Verified business emails are not published publicly; enrich only the shortlisted rows
