@@ -20,8 +20,10 @@ html,body{width:1080px;height:1920px;background:var(--page);overflow:hidden}
 #eyebrow{left:90px;top:392px;height:30px;display:flex;align-items:center;gap:14px;font-size:20px;letter-spacing:.2em;color:var(--red);white-space:nowrap}
 #eyebrow i{display:block;background:var(--red)}
 .beat{position:absolute;left:90px;top:470px;width:880px;font-size:98px;font-weight:600;letter-spacing:-.026em;line-height:1.04;display:none}
+.beat.hook{line-height:.95}
 .beat .w{display:inline-block;will-change:transform,opacity}
 .beat .em{color:var(--blue)}
+.beat .big{font-size:300px;letter-spacing:-.05em;line-height:.9}
 #stage{left:90px;top:900px;width:860px;height:460px}
 #stage svg{position:absolute;left:0;top:0;width:860px;height:460px;overflow:visible}
 #foot{left:90px;top:1462px;width:860px;height:1px;background:var(--hair)}
@@ -41,7 +43,7 @@ svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercas
     <line id="prog" x1="500" y1="332" x2="500" y2="332" stroke="#1D4ED8" stroke-width="2"/>
     <circle id="hdot" cx="500" cy="332" r="13" fill="#1D4ED8"/>
   </svg>
-  <div id="eyebrow" class="abs mono"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span>Gravity · Agentic Operations System (AOS)</span></div>
+  <div id="eyebrow" class="abs mono"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span>Gravity: Automate your imaging workflows</span></div>
   <div id="beats"></div>
   <div id="stage" class="abs"></div>
   <div id="chip" class="abs mono">Link in bio →</div>
@@ -51,7 +53,8 @@ svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercas
 </div>
 
 <script>
-const T = 32.0;
+const T = 38.6;
+const COVER = /cover/.test(location.search);   // page.html?cover : still with the Arc ring on the gantry
 const C = {ink:'#0F172A',blue:'#1D4ED8',card:'#FFFFFF',hair:'#E2E8F0',stroke:'#CBD5E1',soft:'#EAF0FE',muted:'#64748B',bar:'#EEF2F7'};
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const eo=x=>1-Math.pow(1-clamp(x),3);
@@ -60,33 +63,51 @@ const lerp=(a,b,x)=>a+(b-a)*x;
 const $=id=>document.getElementById(id);
 const NS='http://www.w3.org/2000/svg';
 
+/* ---------- OKLCH blend for the Arc gradient in SVG (CSS handles it natively elsewhere) ---------- */
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4);
+const gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);
+  const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+  const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;
+  return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);
+  const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+  return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+function arcAt(t){const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`}
+
 /* ---------- timeline ---------- */
 const scenes=[
- {id:'s1',s:0,e:3.6,tag:'Tuesday · MRI 1',n:'01'},
+ {id:'s1',s:0,e:3.6,tag:'Tuesday · MRI 1',n:'01',off:60},
  {id:'s2',s:3.6,e:10.0,tag:'MRI 1 · Tuesday',n:'02'},
  {id:'s3',s:10.0,e:16.4,tag:'The empty slot',n:'03'},
- {id:'s4',s:16.4,e:22.6,tag:'Slots filled',n:'04'},
- {id:'s5',s:22.6,e:25.6,tag:'Referral to exam',n:'05'},
- {id:'s6',s:25.6,e:28.4,tag:'Schedule full',n:'06'},
- {id:'s7',s:28.4,e:32.0,tag:'Referral to payment',n:'07'}
+ {id:'s4',s:16.4,e:23.0,tag:'Slots filled',n:'04'},
+ {id:'s5',s:23.0,e:26.0,tag:'Referral to exam',n:'05'},
+ {id:'s6',s:26.0,e:28.6,tag:'With Gravity',n:'06'},
+ {id:'s7',s:28.6,e:35.0,tag:'Cancellation to booked',n:'07'},
+ {id:'s8',s:35.0,e:38.6,tag:'Referral to payment',n:'08'}
 ];
 const beats=[
- {sc:0,s:0,e:3.6,noEnter:true,w:[["It’s"],["3:15",1],["on"],["a"],["Tuesday."]]},
+ {sc:0,s:0,e:3.6,noEnter:true,cls:'hook',w:[["It’s"],["3:15",1,1],["on"],["a"],["Tuesday."]]},
  {sc:1,s:3.6,e:5.6,w:[["The"],["MRI"],["is"],["ready.",1]]},
  {sc:1,s:5.6,e:7.6,w:[["The"],["tech"],["is"],["ready.",1]]},
  {sc:1,s:7.6,e:10.0,w:[["The"],["table"],["is"],["empty.",1]]},
  {sc:2,s:10.0,e:12.6,w:[["That"],["slot"],["is"],["gone"],["for"],["good.",1]]},
  {sc:2,s:12.6,e:16.4,w:[["Like"],["an"],["empty",1],["seat",1],["when"],["the"],["plane"],["takes"],["off."]]},
- {sc:3,s:16.4,e:19.4,w:[["Airlines"],["fill"],["about"],["85%",1],["of"],["their"],["seats."]]},
- {sc:3,s:19.4,e:22.6,w:[["Imaging"],["centers"],["fill"],["about"],["65%",1],["of"],["their"],["slots."]]},
- {sc:4,s:22.6,e:25.6,w:[["And"],["patients"],["still"],["wait"],["weeks.",1]]},
- {sc:5,s:25.6,e:28.4,w:[["Phones"],["silent,"],["schedule",1],["full.",1]]},
- {sc:6,s:28.4,e:32.0,w:[["See"],["how"],["at"],["the"],["link",1],["in"],["bio.",1]]}
+ {sc:3,s:16.4,e:19.4,w:[["Airlines"],["fill"],["over"],["85%",1],["of"],["their"],["seats."]]},
+ {sc:3,s:19.4,e:23.0,sz:88,w:[["Many"],["imaging"],["centers"],["fill"],["only"],["about"],["65%",1],["of"],["their"],["MRI"],["slots."]]},
+ {sc:4,s:23.0,e:26.0,w:[["And"],["patients"],["still"],["wait"],["weeks.",1]]},
+ {sc:5,s:26.0,e:28.6,w:[["With"],["Gravity,",1],["that"],["changes.",1]]},
+ {sc:6,s:28.6,e:31.6,w:[["A"],["last-minute"],["cancellation"],["doesn’t"],["sit"],["empty.",1]]},
+ {sc:6,s:31.6,e:35.0,w:[["Gravity’s"],["agents"],["fill"],["the"],["slot"],["automatically.",1]]},
+ {sc:7,s:35.0,e:38.6,w:[["See"],["how"],["at"],["the"],["link",1],["in"],["bio."]]}
 ];
 
 /* ---------- svg helpers ---------- */
 const S=(tag,attrs={},parent)=>{const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n};
-const G=(parent,id)=>S('g',id?{id}:{},parent);
+const G=(parent)=>S('g',{},parent);
 const R=(p,x,y,w,h,rx,fill,stroke,extra={})=>S('rect',{x,y,width:w,height:h,rx,fill:fill||'none',stroke:stroke||'none','stroke-width':2,...extra},p);
 const Tx=(p,x,y,str,size,fill,anchor='start',ls=.16)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
 const setA=(g,o)=>{g.setAttribute('opacity',clamp(o).toFixed(3))};
@@ -100,46 +121,48 @@ const svgs={};
 scenes.forEach(sc=>{const s=S('svg',{viewBox:'0 0 860 460'});s.id=sc.id;stage.appendChild(s);svgs[sc.id]=s});
 
 const beatEls=beats.map(b=>{
-  const d=document.createElement('div');d.className='beat';
-  b.spans=b.w.map((w,i)=>{const sp=document.createElement('span');sp.className='w'+(w[1]?' em':'');sp.textContent=w[0];d.appendChild(sp);if(i<b.w.length-1)d.appendChild(document.createTextNode(' '));return sp});
+  const d=document.createElement('div');d.className='beat'+(b.cls?' '+b.cls:'');
+  b.spans=b.w.map((w,i)=>{const sp=document.createElement('span');sp.className='w'+(w[1]?' em':'')+(w[2]?' big':'');sp.textContent=w[0];d.appendChild(sp);if(i<b.w.length-1)d.appendChild(document.createTextNode(' '));return sp});
+  if(b.sz)d.style.fontSize=b.sz+'px';
   $('beats').appendChild(d);return d;
 });
 
-/* ---- S1: schedule card ---- */
+/* shared gantry drawing (scene 1 hero and scene 2) */
+function gantry(p,ringStroke,ringW){
+  const w=G(p);
+  S('line',{x1:40,x2:820,y1:402,y2:402,stroke:C.hair,'stroke-width':2},p);
+  const house=R(w,280,40,300,300,44,C.card,C.stroke,{'stroke-width':2.5});
+  Tx(w,312,86,'MRI 1',20,C.muted);
+  const ring=S('circle',{cx:430,cy:200,r:104,fill:'#F5F7FA',stroke:ringStroke||C.stroke,'stroke-width':ringW||2},w);
+  S('circle',{cx:430,cy:200,r:76,fill:'none',stroke:C.hair,'stroke-width':2},w);
+  S('circle',{cx:430,cy:200,r:48,fill:'none',stroke:C.hair,'stroke-width':2},w);
+  [230,630].forEach(x=>{S('line',{x1:x,y1:282,x2:x,y2:392,stroke:C.stroke,'stroke-width':3},w);R(w,x-42,388,84,14,7,C.card,C.stroke)});
+  const table=G(p);
+  R(table,150,262,560,20,10,C.card,C.stroke,{'stroke-width':2.5});
+  const pat=G(table);
+  R(pat,352,230,150,32,16,C.soft,C.blue,{'stroke-dasharray':'7 6'});
+  S('circle',{cx:330,cy:246,r:17,fill:C.soft,stroke:C.blue,'stroke-width':2,'stroke-dasharray':'6 5'},pat);
+  return {w,house,ring,table,pat};
+}
+
+/* ---- S1: hook, gantry with an empty table ---- */
 const A1={};
 (()=>{const p=svgs.s1;
- R(p,40,10,780,440,22,C.card,C.stroke);
- Tx(p,76,62,'SCHEDULE · MRI 1',20,C.muted);Tx(p,784,62,'TUESDAY',20,C.muted,'end');
- S('line',{x1:76,x2:784,y1:86,y2:86,stroke:C.hair,'stroke-width':2},p);
- const times=['01:45','02:30','03:15','04:00','04:45'];
- times.forEach((tm,i)=>{const y=106+i*66;
-  Tx(p,76,y+34,tm,22,i==2?C.ink:C.muted);
-  if(i==2){A1.open=R(p,190,y,594,52,12,C.soft,C.blue,{'stroke-dasharray':'8 7'});Tx(p,214,y+34,'OPEN SLOT',20,C.blue);}
-  else{R(p,190,y,594,52,12,C.bar);R(p,214,y+15,170,8,4,C.stroke);R(p,214,y+30,96,8,4,C.hair);}
- });
+ let stroke=C.stroke,sw=2;
+ if(COVER){
+  const defs=S('defs',{},p),lg=S('linearGradient',{id:'arcG',x1:0,y1:0,x2:1,y2:1},defs);
+  for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
+  stroke='url(#arcG)';sw=12;
+ }
+ Object.assign(A1,gantry(p,stroke,sw));
+ A1.chip=G(p);R(A1.chip,596,192,224,48,24,C.card,C.blue,{'stroke-dasharray':'7 6'});Tx(A1.chip,708,222,'OPEN SLOT',19,C.blue,'middle');
 })();
 
-/* ---- S2: gantry ---- */
+/* ---- S2: ready, ready, empty ---- */
 const A2={};
 (()=>{const p=svgs.s2;
- S('line',{x1:40,x2:820,y1:402,y2:402,stroke:C.hair,'stroke-width':2},p);
- A2.world=G(p);
- const w=A2.world;
- A2.house=R(w,280,40,300,300,44,C.card,C.stroke,{'stroke-width':2.5});
- Tx(w,312,86,'MRI 1',20,C.muted);
- S('circle',{cx:430,cy:200,r:104,fill:'#F5F7FA',stroke:C.stroke,'stroke-width':2},w);
- S('circle',{cx:430,cy:200,r:76,fill:'none',stroke:C.hair,'stroke-width':2},w);
- S('circle',{cx:430,cy:200,r:48,fill:'none',stroke:C.hair,'stroke-width':2},w);
- A2.arc=S('path',{d:'M430 96 A104 104 0 0 1 534 200',fill:'none',stroke:C.blue,'stroke-width':4,'stroke-linecap':'round'},w);
- // legs + base
- [230,630].forEach(x=>{S('line',{x1:x,y1:282,x2:x,y2:392,stroke:C.stroke,'stroke-width':3},w);R(w,x-42,388,84,14,7,C.card,C.stroke)});
- // table
- A2.table=G(p);
- R(A2.table,150,262,560,20,10,C.card,C.stroke,{'stroke-width':2.5});
- A2.pat=G(A2.table);
- R(A2.pat,352,230,150,32,16,C.soft,C.blue,{'stroke-dasharray':'7 6'});
- S('circle',{cx:330,cy:246,r:17,fill:C.soft,stroke:C.blue,'stroke-width':2,'stroke-dasharray':'6 5'},A2.pat);
- // chips
+ Object.assign(A2,gantry(p));
+ A2.arc=S('path',{d:'M430 96 A104 104 0 0 1 534 200',fill:'none',stroke:C.blue,'stroke-width':4,'stroke-linecap':'round'},A2.w);
  A2.chip1=G(p);R(A2.chip1,590,50,232,52,26,C.card,C.blue);check(A2.chip1,620,76,1.4,C.blue);Tx(A2.chip1,644,82,'MRI · READY',18,C.blue);
  A2.chip2=G(p);R(A2.chip2,20,50,240,52,26,C.card,C.blue);
  S('circle',{cx:50,cy:69,r:7,fill:'none',stroke:C.blue,'stroke-width':2},A2.chip2);
@@ -174,22 +197,22 @@ const A3={};
 /* ---- S4: cells ---- */
 const A4={};
 (()=>{const p=svgs.s4;
- const row=(y,label,filled,dashedEmpty)=>{
+ const row=(y,label,filled,dashedEmpty,suffix)=>{
   const g=G(p);Tx(g,14,y,label,20,C.muted);
   const num=Tx(g,846,y+8,'0%',54,C.ink,'end',0);num.setAttribute('font-family','Urbanist');num.setAttribute('font-weight','600');num.setAttribute('style','text-transform:none');
   const cells=[];
   for(let i=0;i<20;i++){const x=14+i*42;const e=R(g,x,y+26,34,64,8,'none',dashedEmpty?C.blue:C.stroke,dashedEmpty?{'stroke-dasharray':'6 5'}:{});
    const f=R(g,x,y+26,34,64,8,C.blue,'none',{opacity:0});cells.push({e,f,filled:i<filled});}
-  return {g,num,cells,filled};
+  return {g,num,cells,filled,suffix};
  };
- A4.r1=row(34,'AIRLINES · SEATS FILLED',17,false);
- A4.r2=row(250,'IMAGING CENTERS · SLOTS FILLED',13,true);
+ A4.r1=row(34,'AIRLINES · SEATS FILLED',17,false,'%+');
+ A4.r2=row(250,'IMAGING CENTERS · MRI SLOTS FILLED',13,true,'%');
 })();
 
 /* ---- S5: weeks ---- */
 const A5={};
 (()=>{const p=svgs.s5;
- A5.base=S('line',{x1:60,x2:780,y1:230,y2:230,stroke:C.stroke,'stroke-width':2},p);
+ S('line',{x1:60,x2:780,y1:230,y2:230,stroke:C.stroke,'stroke-width':2},p);
  A5.prog=S('line',{x1:60,x2:60,y1:230,y2:230,stroke:C.blue,'stroke-width':3},p);
  S('circle',{cx:60,cy:230,r:8,fill:C.ink},p);Tx(p,60,278,'REFERRAL',19,C.muted);
  S('circle',{cx:780,cy:230,r:28,fill:'none',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},p);Tx(p,780,290,'EXAM',19,C.blue,'end');
@@ -202,44 +225,54 @@ const A5={};
  A5.dot=S('circle',{cx:60,cy:230,r:14,fill:C.blue},p);
 })();
 
-/* ---- S6: phone silent, schedule full ---- */
+/* ---- S6: with Gravity, the same path closes fast ---- */
 const A6={};
 (()=>{const p=svgs.s6;
- const ph=G(p);
- R(ph,26,236,230,140,22,C.card,C.stroke,{'stroke-width':2.5});
- for(let r=0;r<3;r++)for(let c=0;c<3;c++)S('circle',{cx:74+c*40,cy:280+r*30,r:6,fill:C.stroke},ph);
- S('path',{d:'M50 236 Q50 196 88 188 L194 188 Q232 196 232 236',fill:C.card,stroke:C.stroke,'stroke-width':2.5},ph);
- S('path',{d:'M84 150 Q141 110 198 150',fill:'none',stroke:C.hair,'stroke-width':3,'stroke-dasharray':'4 8','stroke-linecap':'round'},ph);
- S('path',{d:'M104 118 Q141 94 178 118',fill:'none',stroke:C.hair,'stroke-width':3,'stroke-dasharray':'4 8','stroke-linecap':'round'},ph);
- A6.pill=G(p);R(A6.pill,20,406,242,44,22,'none',C.blue,{'stroke-dasharray':'6 6'});Tx(A6.pill,141,435,'PHONE · SILENT',18,C.blue,'middle');
- A6.card=G(p);
- R(A6.card,320,10,520,440,22,C.card,C.stroke);
- Tx(A6.card,352,62,'SCHEDULE · MRI 1',20,C.muted);Tx(A6.card,808,62,'FULL',20,C.blue,'end');
- S('line',{x1:352,x2:808,y1:86,y2:86,stroke:C.hair,'stroke-width':2},A6.card);
- const t=['01:45','02:30','03:15','04:00'];
- A6.rows=t.map((tm,i)=>{const y=110+i*84;
-  Tx(A6.card,352,y+34,tm,20,i==2?C.ink:C.muted);
-  const bar=R(A6.card,452,y,356,52,12,i==2?C.soft:C.bar,i==2?C.blue:'none',i==2?{'stroke-dasharray':'8 7'}:{});
-  if(i!=2){R(A6.card,472,y+15,130,8,4,C.stroke);R(A6.card,472,y+30,80,8,4,C.hair);}
-  return bar;});
- A6.fillbar=R(A6.card,452,110+2*84,0,52,12,C.blue);
- A6.fillG=G(A6.card);Tx(A6.fillG,472,110+2*84+34,'BOOKED',20,'#FFFFFF');
- A6.chk=G(A6.card);check(A6.chk,780,110+2*84+26,1.6,'#FFFFFF');
+ S('line',{x1:60,x2:780,y1:230,y2:230,stroke:C.stroke,'stroke-width':2},p);
+ A6.prog=S('line',{x1:60,x2:60,y1:230,y2:230,stroke:C.blue,'stroke-width':3},p);
+ S('circle',{cx:60,cy:230,r:8,fill:C.ink},p);Tx(p,60,278,'REFERRAL',19,C.muted);
+ S('circle',{cx:780,cy:230,r:28,fill:'none',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},p);
+ A6.examFill=G(p);S('circle',{cx:780,cy:230,r:28,fill:C.blue},A6.examFill);check(A6.examFill,780,230,1.7,'#FFFFFF',4);
+ Tx(p,780,290,'EXAM',19,C.blue,'end');
+ A6.wk=G(p);S('path',{d:'M60 322 V338 H780 V322',fill:'none',stroke:C.blue,'stroke-width':2},A6.wk);Tx(A6.wk,420,390,'WEEKS',24,C.blue,'middle',.3);
+ A6.strike=S('line',{x1:352,x2:352,y1:382,y2:382,stroke:C.ink,'stroke-width':3},A6.wk);
+ A6.pill=G(p);R(A6.pill,290,96,270,48,24,C.card,C.blue);S('circle',{cx:320,cy:120,r:7,fill:C.blue},A6.pill);Tx(A6.pill,338,127,'AGENTS AT WORK',18,C.blue);
+ A6.dot=S('circle',{cx:60,cy:230,r:14,fill:C.blue},p);
 })();
 
-/* ---- S7: journey ---- */
+/* ---- S7: cancellation, then an agent fills the slot ---- */
 const A7={};
 (()=>{const p=svgs.s7;
+ R(p,40,10,780,440,22,C.card,C.stroke);
+ Tx(p,76,62,'SCHEDULE · MRI 1',20,C.muted);Tx(p,784,62,'TUESDAY',20,C.muted,'end');
+ S('line',{x1:76,x2:784,y1:86,y2:86,stroke:C.hair,'stroke-width':2},p);
+ ['01:45','02:30','03:15','04:00'].forEach((tm,i)=>{const y=106+i*78;
+  Tx(p,76,y+34,tm,22,i==2?C.ink:C.muted);
+  if(i!=2){R(p,190,y,594,52,12,C.bar);R(p,214,y+15,170,8,4,C.stroke);R(p,214,y+30,96,8,4,C.hair);}
+ });
+ const y=262;
+ A7.bk=G(p);R(A7.bk,190,y,594,52,12,C.bar);R(A7.bk,214,y+15,170,8,4,C.stroke);R(A7.bk,214,y+30,96,8,4,C.hair);
+ A7.op=G(p);R(A7.op,190,y,594,52,12,C.soft,C.blue,{'stroke-dasharray':'8 7'});Tx(A7.op,214,y+34,'OPEN SLOT',20,C.blue);
+ A7.fill=R(p,190,y,0,52,12,C.blue);
+ A7.fillG=G(p);Tx(A7.fillG,214,y+34,'BOOKED',20,'#FFFFFF');check(A7.fillG,756,y+26,1.6,'#FFFFFF');
+ A7.stamp=G(p);R(A7.stamp,410,y+4,240,44,8,C.card,C.blue,{'stroke-width':3});Tx(A7.stamp,530,y+34,'CANCELLED',22,C.blue,'middle');
+ A7.stamp.setAttribute('data-rot','-5');
+ A7.chip=G(p);R(A7.chip,200,402,330,44,22,C.card,C.blue);S('circle',{cx:228,cy:424,r:7,fill:C.blue},A7.chip);Tx(A7.chip,246,430,'AGENT CALLS PATIENT',18,C.blue);
+})();
+
+/* ---- S8: journey + Arc chip ---- */
+const A8={};
+(()=>{const p=svgs.s8;
  S('line',{x1:70,x2:770,y1:110,y2:110,stroke:C.stroke,'stroke-width':2},p);
- A7.prog=S('line',{x1:70,x2:70,y1:110,y2:110,stroke:C.blue,'stroke-width':3},p);
+ A8.prog=S('line',{x1:70,x2:70,y1:110,y2:110,stroke:C.blue,'stroke-width':3},p);
  Tx(p,70,170,'REFERRAL',19,C.muted);Tx(p,800,170,'PAYMENT',19,C.blue,'end');
- A7.marks=[0.25,0.5,0.75].map((f,i)=>{const x=70+700*f;
-  const o=S('circle',{cx:x,cy:110,r:13,fill:C.page||'#F5F7FA',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'5 4'},p);
-  const fl=S('circle',{cx:x,cy:110,r:13,fill:C.blue,opacity:0},p);Tx(p,x,62,'0'+(i+1),18,C.muted,'middle');return {x,o,fl};});
- A7.pay=G(p);S('circle',{cx:790,cy:110,r:32,fill:'none',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},A7.pay);
- A7.payFill=G(p);S('circle',{cx:790,cy:110,r:32,fill:C.blue},A7.payFill);check(A7.payFill,790,110,2,'#FFFFFF',4);
+ A8.marks=[0.25,0.5,0.75].map((f,i)=>{const x=70+700*f;
+  S('circle',{cx:x,cy:110,r:13,fill:'#F5F7FA',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'5 4'},p);
+  const fl=S('circle',{cx:x,cy:110,r:13,fill:C.blue,opacity:0},p);Tx(p,x,62,'0'+(i+1),18,C.muted,'middle');return {x,fl};});
+ S('circle',{cx:790,cy:110,r:32,fill:'none',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},p);
+ A8.payFill=G(p);S('circle',{cx:790,cy:110,r:32,fill:C.blue},A8.payFill);check(A8.payFill,790,110,2,'#FFFFFF',4);
  S('circle',{cx:70,cy:110,r:8,fill:C.ink},p);
- A7.dot=S('circle',{cx:70,cy:110,r:14,fill:C.blue},p);
+ A8.dot=S('circle',{cx:70,cy:110,r:14,fill:C.blue},p);
 })();
 
 /* ---------- render ---------- */
@@ -249,133 +282,125 @@ function beatAnim(b,el,t){
   el.style.display='block';
   const dur=b.e-b.s, ex=clamp((u-(dur-.22))/.22);
   b.spans.forEach((sp,i)=>{
-    let e=b.noEnter?1:eo((u-i*.065)/.38);
-    let y=(1-e)*38-ex*28, o=e*(1-ex);
-    sp.style.opacity=o.toFixed(3);
-    sp.style.transform=`translateY(${y.toFixed(2)}px)`;
+    const e=b.noEnter?1:eo((u-i*.065)/.38);
+    sp.style.opacity=(e*(1-ex)).toFixed(3);
+    sp.style.transform=`translateY(${((1-e)*38-ex*28).toFixed(2)}px)`;
   });
 }
-
 function sceneAlpha(sc,t,first){
   const u=t-sc.s, dur=sc.e-sc.s;
   const en=first?1:eo(u/.25), ex=1-clamp((u-(dur-.22))/.22);
   return {a:en*ex, dy:(1-en)*16-(1-ex)*20};
 }
+const UPD={};
 
 window.render=function(t){
   t=Math.max(0,Math.min(T-1e-3,t));
-  // header progress
   const hx=500+(984-500)*(t/T);
   $('prog').setAttribute('x2',hx);$('hdot').setAttribute('cx',hx);
-  // beats
   beats.forEach((b,i)=>beatAnim(b,beatEls[i],t));
-  // scenes
   let cur=scenes[0];
   scenes.forEach((sc,i)=>{
     const svg=svgs[sc.id];
     if(t<sc.s||t>=sc.e){svg.style.display='none';return}
     cur=sc;svg.style.display='block';
     const {a,dy}=sceneAlpha(sc,t,i===0);
-    svg.style.opacity=a.toFixed(3);svg.style.transform=`translateY(${dy.toFixed(2)}px)`;
-    const u=t-sc.s;
-    ({s1:s1u,s2:s2u,s3:s3u,s4:s4u,s5:s5u,s6:s6u,s7:s7u})[sc.id](u,t);
+    svg.style.opacity=a.toFixed(3);svg.style.transform=`translateY(${(dy+(sc.off||0)).toFixed(2)}px)`;
+    UPD[sc.id](t-sc.s,t);
   });
-  $('footL').textContent=cur.tag;$('footR').textContent=cur.n+' / 07';
-  // chip (Arc moment)
-  const cu=t-28.4, chip=$('chip');
+  $('footL').textContent=cur.tag;$('footR').textContent=cur.n+' / 08';
+  const cs=scenes[7].s, cu=t-cs, chip=$('chip');
   if(cu>=1.3){const p=eo((cu-1.3)/.45), ex=1-clamp((cu-3.38)/.22);chip.style.display='flex';chip.style.opacity=(p*ex).toFixed(3);chip.style.transform=`translateY(${((1-p)*30-(1-ex)*20).toFixed(1)}px)`}
   else chip.style.display='none';
 };
 
-function s1u(u,t){A1.open.setAttribute('stroke-opacity',(.45+.55*pulse(t)).toFixed(3))}
+UPD.s1=(u,t)=>{setA(A1.pat,.55+.45*pulse(t));setA(A1.chip,.7+.3*pulse(t))};
+// hero scale for scene 1 (children of the svg are wrapped once)
+(()=>{const p=svgs.s1,g=S('g',{transform:'translate(430 230) scale(1.2) translate(-430 -230)'});while(p.firstChild)g.appendChild(p.firstChild);p.appendChild(g)})();
 
-function s2u(u,t){
-  const b1=u, b2=u-2.0, b3=u-4.0;
-  pop(A2.chip1,706,76,(b1-.15)/.4);
-  pop(A2.chip2,140,76,(b2-.15)/.4);
-  const dim=lerp(1,.4,eo((b3-.05)/.4));
-  setA(A2.world,dim);
+UPD.s2=(u,t)=>{
+  const b1=u,b2=u-2.0,b3=u-4.0;
+  setA(A2.w,lerp(1,.4,eo((b3-.05)/.4)));
   A2.house.setAttribute('stroke',b1>.15?C.blue:C.stroke);
-  setA(A2.chip1,eo((b1-.15)/.4)*lerp(1,.35,eo((b3)/.4)));
-  A2.chip1.removeAttribute('transform');pop(A2.chip1,706,76,(b1-.15)/.4);setA(A2.chip1,eo((b1-.15)/.4)*lerp(1,.3,eo(b3/.4)));
-  pop(A2.chip2,140,76,(b2-.15)/.4);setA(A2.chip2,eo((b2-.15)/.4)*lerp(1,.3,eo(b3/.4)));
+  const dm=lerp(1,.35,eo(b3/.4));
+  pop(A2.chip1,706,76,(b1-.15)/.4);setA(A2.chip1,eo((b1-.15)/.4)*dm);
+  pop(A2.chip2,140,76,(b2-.15)/.4);setA(A2.chip2,eo((b2-.15)/.4)*dm);
   A2.arc.setAttribute('transform',`rotate(${(u*140)%360} 430 200)`);
   setA(A2.arc,b3>0?1-eo(b3/.3):1);
-  setA(A2.pat,eo((b3-.1)/.4)*(.55+.45*pulse(t)));
+  setA(A2.pat,b3>0?eo((b3-.1)/.4)*(.55+.45*pulse(t)):0);
   pop(A2.chip3,708,216,(b3-.35)/.4);
-  setA(A2.table,1);
-}
+};
 
-function s3u(u,t){
-  const c1=u, c2=u-2.6;
-  // slot lifts off
-  const l=eio((c1-1.0)/1.3);
-  A3.slot.setAttribute('transform',`translate(${(l*210).toFixed(1)} ${(-l*230).toFixed(1)})`);
-  setA(A3.slot,c2>0?0:1-clamp((c1-1.7)/.7)*1);
-  if(c2<=0){setA(A3.slot,1-clamp((c1-1.7)/.7));setA(A3.cabin,0)}
-  else{A3.slot.setAttribute('opacity',0);setA(A3.cabin,1)}
-  A3.seats.forEach((s,i)=>{const e=eo((c2-.1-i*.1)/.35);s.g.setAttribute('transform',`translate(0 ${((1-e)*16).toFixed(1)})`);setA(s.g,e*(s.empty?(.6+.4*pulse(t)):1))});
-  const f=eio((c2-.9)/2.4);
-  const len=A3.path.getTotalLength();
-  const pt=A3.path.getPointAtLength(len*f),p2=A3.path.getPointAtLength(Math.min(len,len*f+2)),p0=A3.path.getPointAtLength(Math.max(0,len*f-2));
-  const ang=Math.atan2(p2.y-p0.y,p2.x-p0.x)*180/Math.PI;
-  const pe=eo((c2-.3)/.4);
-  A3.plane.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
-  setA(A3.plane,pe*(1-clamp((c2-3.6)/.2)));
-  // trail via dash length
-  A3.trail.setAttribute('d',A3.path.getAttribute('d'));
-  A3.trail.setAttribute('stroke-dasharray',`3 9`);
-  A3.trail.style.clipPath='none';
-  setA(A3.trail,f>0?.9:0);
-  A3.trail.setAttribute('stroke-dashoffset',0);
-  // reveal only traversed portion: emulate with mask-free approach using pathLength
-  A3.trail.setAttribute('pathLength',len);
-  A3.trail.setAttribute('stroke-dasharray',`3 9`);
-  A3.trail.setAttribute('d',trailD(A3.path,f));
-}
 function trailD(path,f){
   const len=path.getTotalLength(),n=28;let d='';
   for(let i=0;i<=n;i++){const q=path.getPointAtLength(len*f*i/n);d+=(i?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1)}
   return d;
 }
+UPD.s3=(u,t)=>{
+  const c1=u, c2=u-2.6;
+  const l=eio((c1-1.0)/1.3);
+  A3.slot.setAttribute('transform',`translate(${(l*210).toFixed(1)} ${(-l*230).toFixed(1)})`);
+  if(c2<=0){setA(A3.slot,1-clamp((c1-1.7)/.7));setA(A3.cabin,0)}
+  else{setA(A3.slot,0);setA(A3.cabin,1)}
+  A3.seats.forEach((s,i)=>{const e=eo((c2-.1-i*.1)/.35);s.g.setAttribute('transform',`translate(0 ${((1-e)*16).toFixed(1)})`);setA(s.g,e*(s.empty?(.6+.4*pulse(t)):1))});
+  const f=eio((c2-.9)/2.4),len=A3.path.getTotalLength();
+  const at=x=>A3.path.getPointAtLength(clamp(x,0,1)*len);
+  const pt=at(f),p2=at(f+.005),p0=at(f-.005);
+  const ang=Math.atan2(p2.y-p0.y,p2.x-p0.x)*180/Math.PI;
+  A3.plane.setAttribute('transform',`translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+  setA(A3.plane,eo((c2-.3)/.4)*(1-clamp((c2-3.6)/.2)));
+  A3.trail.setAttribute('d',f>0?trailD(A3.path,f):'M0 0');
+  setA(A3.trail,f>0?.9:0);
+};
 
-function s4u(u,t){
+UPD.s4=(u,t)=>{
   const fillRow=(r,v)=>{
-    r.cells.forEach((c,i)=>{const k=eo((v*1.0-i*.04)/.25);c.f.setAttribute('opacity',c.filled?k.toFixed(3):0);
+    r.cells.forEach((c,i)=>{const k=eo((v-i*.04)/.25);c.f.setAttribute('opacity',c.filled?k.toFixed(3):0);
       if(!c.filled)c.e.setAttribute('stroke-opacity',(v>1.1?(.5+.5*pulse(t)):1).toFixed(3));});
-    const p=clamp(v/.9);r.num.textContent=Math.round(eo(p)*(r.filled*5))+'%';
+    const p=clamp(v/.9),k=Math.round(eo(p)*(r.filled*5));
+    r.num.textContent=(p>=1&&r.suffix==='%+'?k+'%+':(r===A4.r2&&p>0?'~':'')+k+'%');
   };
-  const v1=Math.max(0,u-.2);
-  fillRow(A4.r1,v1);
-  const v2=Math.max(0,u-3.2);
-  fillRow(A4.r2,v2);
+  fillRow(A4.r1,Math.max(0,u-.2));
+  fillRow(A4.r2,Math.max(0,u-3.2));
   setA(A4.r2.g,eo((u-2.9)/.3));
   setA(A4.r1.g,u<3?1:lerp(1,.32,eo((u-3.0)/.4)));
-}
+};
 
-function s5u(u,t){
-  const f=clamp(u/2.4);const x=lerp(60,640,f);
+UPD.s5=(u,t)=>{
+  const x=lerp(60,640,clamp(u/2.4));
   A5.dot.setAttribute('cx',x);A5.prog.setAttribute('x2',x);
-  A5.cals.forEach((c,i)=>{const e=(x-(c.x-36));pop(c.g,c.x,132,e/60+ .0)});
-}
+  A5.cals.forEach(c=>pop(c.g,c.x,132,(x-(c.x-36))/60));
+};
 
-function s6u(u,t){
-  setA(A6.card,eo(u/.35));
-  A6.rows[2].setAttribute('stroke-opacity',(1-clamp((u-.7)/.2)).toFixed(3));
-  const p=eo((u-.7)/.6);
-  A6.fillbar.setAttribute('width',(356*p).toFixed(1));
-  setA(A6.fillG,clamp((u-1.0)/.3));setA(A6.chk,clamp((u-1.25)/.3));
-  setA(A6.pill,eo(u/.5)*(.55+.45*pulse(t,2)));
-}
+UPD.s6=(u,t)=>{
+  pop(A6.pill,425,120,(u-.1)/.4);
+  A6.strike.setAttribute('x2',352+132*eo((u-.15)/.4));
+  setA(A6.wk,1-clamp((u-.7)/.35));
+  const f=eio((u-.25)/1.3),x=lerp(60,780,f);
+  A6.dot.setAttribute('cx',x);A6.prog.setAttribute('x2',x);
+  setA(A6.examFill,eo((u-1.5)/.3));
+  setA(A6.dot,x>=779?0:1);
+};
 
-function s7u(u,t){
-  const f=eio((u-.2)/1.5);
-  const x=lerp(70,790,f);
-  A7.dot.setAttribute('cx',x);A7.prog.setAttribute('x2',x);
-  A7.marks.forEach(m=>m.fl.setAttribute('opacity',x>=m.x?1:0));
-  setA(A7.payFill,x>=789?eo((u-1.7)/.25):0);
-  setA(A7.dot,x>=789?0:1);
-}
+UPD.s7=(u,t)=>{
+  A7.stamp.setAttribute('transform',`rotate(-5 530 288)`);
+  pop(A7.stamp,530,288,(u-1.0)/.35);A7.stamp.setAttribute('transform',`translate(530 288) scale(${lerp(.86,1,eo((u-1.0)/.35))}) rotate(-5) translate(-530 -288)`);
+  setA(A7.stamp,eo((u-1.0)/.3)*(1-clamp((u-2.0)/.4)));
+  setA(A7.bk,1-clamp((u-1.4)/.5));
+  const opA=clamp((u-1.6)/.4)*(1-clamp((u-3.7)/.3));
+  setA(A7.op,opA*(.6+.4*pulse(t)));
+  pop(A7.chip,365,424,(u-3.0)/.4);
+  A7.fill.setAttribute('width',(594*eo((u-3.7)/.7)).toFixed(1));
+  setA(A7.fillG,clamp((u-4.3)/.3));
+};
+
+UPD.s8=(u,t)=>{
+  const x=lerp(70,790,eio((u-.2)/1.5));
+  A8.dot.setAttribute('cx',x);A8.prog.setAttribute('x2',x);
+  A8.marks.forEach(m=>m.fl.setAttribute('opacity',x>=m.x?1:0));
+  setA(A8.payFill,x>=789?eo((u-1.7)/.25):0);
+  setA(A8.dot,x>=789?0:1);
+};
 
 window.render(0);
 </script>
