@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cover: airlines vs MRI slots</title>
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:"DM Mono";font-weight:500;src:url(../../assets/fonts/DMMono-500.ttf)}
+:root{--page:#F5F7FA;--ink:#0F172A;--blue:#1D4ED8;--red:#B21500;--hair:#E2E8F0;--stroke:#CBD5E1;--muted:#64748B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;background:var(--page);overflow:hidden}
+#reel{position:relative;width:1080px;height:1920px;background:var(--page);font-family:Urbanist,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+.mono{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+#logo{left:90px;top:293px;width:348px;height:70.5px}
+#eyebrow{left:90px;top:392px;height:30px;display:flex;align-items:center;gap:14px;font-size:20px;letter-spacing:.2em;color:var(--red);white-space:nowrap}
+#eyebrow i{display:block;background:var(--red)}
+#head{left:90px;top:466px;width:900px;font-size:80px;font-weight:600;letter-spacing:-.026em;line-height:1.04}
+#head p+p{margin-top:26px}
+#head em{font-style:normal;color:var(--blue)}
+#stage{left:90px;top:960px;width:860px;height:400px}
+#stage svg{width:860px;height:400px;overflow:visible}
+#foot{left:90px;top:1462px;width:860px;height:1px;background:var(--hair)}
+#footL,#footR{top:1478px;font-size:19px;letter-spacing:.2em;color:var(--muted);white-space:nowrap}
+#footL{left:90px}
+#footR{right:130px;color:var(--blue)}
+svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="reel">
+  <img id="logo" class="abs" src="../../assets/logo_light.png" alt="AlphaNodus">
+  <svg class="abs" style="left:0;top:0" width="1080" height="1920" viewBox="0 0 1080 1920">
+    <line x1="500" y1="332" x2="984" y2="332" stroke="#E2E8F0" stroke-width="2"/>
+    <line x1="500" y1="332" x2="984" y2="332" stroke="#1D4ED8" stroke-width="2"/>
+    <circle cx="984" cy="332" r="13" fill="#1D4ED8"/>
+  </svg>
+  <div id="eyebrow" class="abs mono"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span>Gravity: Automate your imaging workflows</span></div>
+  <div id="head" class="abs">
+    <p>Airlines fill over <em>85%</em> of seats before takeoff.</p>
+    <p>Many imaging centers fill only about <em>65%</em> of MRI slots.</p>
+  </div>
+  <div id="stage" class="abs"><svg id="svg" viewBox="0 0 860 400"></svg></div>
+  <div id="foot" class="abs"></div>
+  <div id="footL" class="abs mono">Seats vs MRI slots</div>
+  <div id="footR" class="abs mono">The gap</div>
+</div>
+<script>
+const NS='http://www.w3.org/2000/svg',C={blue:'#1D4ED8',stroke:'#CBD5E1',muted:'#64748B',ink:'#0F172A'};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4),gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+ const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+ return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+const arcAt=t=>{const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`};
+
+const S=(tag,a={},p)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n};
+const Tx=(p,x,y,str,size,fill,anchor='start',ls=.16)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
+const svg=$=document.getElementById('svg');
+// the one Arc moment: the gap (empty MRI cells + bracket), gradient in userSpace across x 560..846
+const defs=S('defs',{},svg),lg=S('linearGradient',{id:'arcG',gradientUnits:'userSpaceOnUse',x1:560,y1:0,x2:846,y2:0},defs);
+for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
+
+function row(y,label,filled,gap,num){
+  Tx(svg,14,y,label,20,C.muted);
+  const n=Tx(svg,846,y+10,num,58,C.ink,'end',0);n.setAttribute('font-family','Urbanist');n.setAttribute('font-weight','600');n.setAttribute('style','text-transform:none');
+  for(let i=0;i<20;i++){const x=14+i*42,on=i<filled;
+    if(on)S('rect',{x,y:y+24,width:34,height:86,rx:9,fill:C.blue},svg);
+    else S('rect',{x,y:y+24,width:34,height:86,rx:9,fill:'none',stroke:gap?'url(#arcG)':C.stroke,'stroke-width':gap?3:2,'stroke-dasharray':gap?'7 6':'0'},svg);}
+}
+row(30,'AIRLINES · SEATS FILLED BEFORE TAKEOFF',17,false,'85%+');
+row(220,'IMAGING CENTERS · MRI SLOTS FILLED',13,true,'~65%');
+S('path',{d:'M560 352 V364 H846 V352',fill:'none',stroke:'url(#arcG)','stroke-width':3,'stroke-linecap':'round'},svg);
+Tx(svg,703,396,'The gap',20,C.blue,'middle',.24);
+window.render=()=>{};
+</script>
+</body>
+</html>
