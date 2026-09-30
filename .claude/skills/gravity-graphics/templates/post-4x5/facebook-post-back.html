@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Facebook post: AlphaNodus is back</title>
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:"DM Mono";font-weight:500;src:url(../../assets/fonts/DMMono-500.ttf)}
+:root{--page:#F5F7FA;--ink:#0F172A;--blue:#1D4ED8;--red:#B21500;--hair:#E2E8F0;--stroke:#CBD5E1;--muted:#64748B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;background:var(--page);overflow:hidden}
+#c{position:relative;width:1080px;height:1350px;background:var(--page);font-family:Urbanist,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#logo{left:82px;top:90px;width:352px;height:71.3px}
+#head{left:96px;top:236px;font-size:104px;font-weight:600;letter-spacing:-.028em;line-height:1.03;white-space:nowrap}
+#head em{font-style:normal;color:var(--blue)}
+#sub{left:96px;top:470px;display:flex;align-items:center;gap:16px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:22px;letter-spacing:.16em;color:var(--red);white-space:nowrap}
+#sub i{display:block;background:var(--red)}
+#foot{left:96px;top:1168px;width:888px;height:1px;background:var(--hair)}
+#line{left:96px;top:1196px;font-size:38px;font-weight:500;letter-spacing:-.015em;line-height:1.22;white-space:nowrap}
+#line em{font-style:normal;color:var(--blue)}
+svg{position:absolute;left:0;top:0}
+svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="c">
+  <svg id="s" width="1080" height="1350" viewBox="0 0 1080 1350"></svg>
+  <img id="logo" class="abs" src="../../assets/logo_light.png" alt="AlphaNodus">
+  <div id="head" class="abs">AlphaNodus is back<br><em>on Facebook.</em></div>
+  <div id="sub" class="abs"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span>Gravity: Automate your imaging workflows</span></div>
+  <div id="foot" class="abs"></div>
+  <div id="line" class="abs">Imaging centers don’t lose money in the scanner.<br><em>They lose it between the referral and the payment.</em></div>
+</div>
+<script>
+const NS='http://www.w3.org/2000/svg',C={blue:'#1D4ED8',stroke:'#CBD5E1',hair:'#E2E8F0',muted:'#64748B',ink:'#0F172A',card:'#FFFFFF'};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4),gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+ const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+ return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+const arcAt=t=>{const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`};
+const svg=document.getElementById('s');
+const S=(tag,a={},p=svg)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
+const Tx=(x,y,str,size,fill,anchor='start',ls=.16,p=svg)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
+const R=(x,y,w,h,rx,fill,stroke,extra={},p=svg)=>S('rect',{x,y,width:w,height:h,rx,fill:fill||'none',stroke:stroke||'none','stroke-width':2,...extra},p);
+
+/* brand header: logo, hairline, blue dot */
+S('line',{x1:476,y1:126,x2:978,y2:126,stroke:C.hair,'stroke-width':2});
+S('circle',{cx:991,cy:126,r:13,fill:C.blue});
+
+/* illustration: the order's path, referral (fax) > exam (MRI) > payment. The one Arc moment is the path. */
+const scene=S('g',{transform:'translate(96 322) scale(1.55)'});
+const defs=S('defs',{},scene),lg=S('linearGradient',{id:'arcG',gradientUnits:'userSpaceOnUse',x1:70,y1:0,x2:502,y2:0},defs);
+for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
+const PY=404,X=[70,286,502];
+S('line',{x1:X[0],y1:PY,x2:X[2],y2:PY,stroke:'url(#arcG)','stroke-width':6,'stroke-linecap':'round'},scene);
+X.forEach((x,i)=>S('line',{x1:x,y1:i==2?322:348,x2:x,y2:PY,stroke:C.stroke,'stroke-width':2},scene));
+[0,1].forEach(i=>S('circle',{cx:X[i],cy:PY,r:11,fill:C.blue},scene));
+S('circle',{cx:X[2],cy:PY,r:12,fill:C.blue},scene);
+Tx(X[0],448,'Referral',15,C.muted,'middle',.16,scene);Tx(X[1],448,'Exam',15,C.muted,'middle',.16,scene);Tx(X[2],448,'Payment',15,C.blue,'middle',.16,scene);
+
+/* fax stack */
+let g=S('g',{transform:`translate(${X[0]} 240) rotate(5)`},scene);
+R(-52,-78,110,140,10,C.card,C.stroke,{},g);
+g=S('g',{transform:`translate(${X[0]} 244) rotate(-4)`},scene);
+R(-56,-82,112,144,10,C.card,C.stroke,{'stroke-width':2.5},g);
+Tx(-40,-56,'FAX · PG 1/1',11,C.muted,'start',.1,g);
+S('line',{x1:-40,x2:40,y1:-44,y2:-44,stroke:C.hair,'stroke-width':2},g);
+Tx(-40,-22,'Imaging order',13.5,C.ink,'start',0,g).setAttribute('style','text-transform:none;font-family:Urbanist;font-weight:600');
+[-2,14,30].forEach((y,i)=>R(-40,y,i==2?48:80,7,3.5,C.stroke,'none',{},g));
+R(-40,44,14,14,3,'none',C.blue,{'stroke-width':2.5},g);
+S('path',{d:'M-37 51 l4 4 l7 -9',fill:'none',stroke:C.blue,'stroke-width':2.5,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+S('path',{d:'M-12 52 q8 -14 14 0 t16 -4',fill:'none',stroke:C.ink,'stroke-width':2,'stroke-linecap':'round'},g);
+
+/* MRI gantry with scan arc */
+const m=S('g',{transform:`translate(${X[1]} 0)`},scene);
+R(-78,186,156,142,30,C.card,C.stroke,{'stroke-width':2.5},m);
+S('circle',{cx:0,cy:257,r:50,fill:'#F5F7FA',stroke:C.stroke,'stroke-width':2.5},m);
+S('circle',{cx:0,cy:257,r:32,fill:'none',stroke:C.hair,'stroke-width':2},m);
+S('path',{d:'M0 207 A50 50 0 0 1 50 257',fill:'none',stroke:C.blue,'stroke-width':4.5,'stroke-linecap':'round'},m);
+Tx(-60,205,'MRI 1',12,C.muted,'start',.14,m);
+S('line',{x1:-96,x2:96,y1:340,y2:340,stroke:C.stroke,'stroke-width':2.5,'stroke-linecap':'round'},m);
+
+/* paid */
+S('circle',{cx:X[2],cy:272,r:50,fill:C.blue},scene);
+S('path',{d:`M${X[2]-18} 272 L${X[2]-5} 286 L${X[2]+20} 256`,fill:'none',stroke:'#fff','stroke-width':7,'stroke-linecap':'round','stroke-linejoin':'round'},scene);
+
+window.render=()=>{};
+</script>
+</body>
+</html>
