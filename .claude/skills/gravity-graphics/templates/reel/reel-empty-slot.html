@@ -54,7 +54,9 @@ svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercas
 
 <script>
 const T = 38.6;
-const COVER = /cover/.test(location.search);   // page.html?cover : still with the Arc ring on the gantry
+const COVER = /cover/.test(location.search);
+const WEB = /web/.test(location.search);       // page.html?web : LinkedIn / X version, URL instead of "link in bio"
+if(WEB){const c=document.getElementById('chip');c.textContent='alphanodus.com →';c.style.textTransform='none';c.style.letterSpacing='.06em'}   // page.html?cover : still with the Arc ring on the gantry
 const C = {ink:'#0F172A',blue:'#1D4ED8',card:'#FFFFFF',hair:'#E2E8F0',stroke:'#CBD5E1',soft:'#EAF0FE',muted:'#64748B',bar:'#EEF2F7'};
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const eo=x=>1-Math.pow(1-clamp(x),3);
@@ -102,7 +104,7 @@ const beats=[
  {sc:5,s:26.0,e:28.6,w:[["With"],["Gravity,",1],["that"],["changes.",1]]},
  {sc:6,s:28.6,e:31.6,w:[["A"],["last-minute"],["cancellation"],["doesn’t"],["sit"],["empty.",1]]},
  {sc:6,s:31.6,e:35.0,w:[["Gravity’s"],["agents"],["fill"],["the"],["slot"],["automatically.",1]]},
- {sc:7,s:35.0,e:38.6,w:[["See"],["how"],["at"],["the"],["link",1],["in"],["bio."]]}
+ {sc:7,s:35.0,e:38.6,w:WEB?[["See"],["how"],["it"],["works"],["at"],["alphanodus.com.",1]]:[["See"],["how"],["at"],["the"],["link",1],["in"],["bio."]]}
 ];
 
 /* ---------- svg helpers ---------- */
