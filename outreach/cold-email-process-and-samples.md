@@ -103,3 +103,42 @@ His sample (Doe Media, "this can't be a coincidence") works through a **name-on-
 4. Verify each flagged prospect fact on the prospect's own site in a normal browser.
 5. Who signs: Shamit (CEO) is assumed; confirm.
 6. Qualify the unusual organizations (14 Street Medical, ABQ Orthopedics, currentclinic.com) before writing for them.
+
+## Round 2: casual and attention-grabbing variants (for feedback)
+
+Rules that still hold: no link in touch 1 ("we have a live demo on our website" with the link sent on reply), plain text, one soft CTA, no fake familiarity or deceptive subject (CAN-SPAM), and no real patient details in the demo.
+
+**A. The timed experiment (finance seat, Amy Adams).** Subject: "Can prior auth beat 90 seconds?"
+> Amy,
+>
+> Small experiment. Our agent reads a faxed order in about 90 seconds. I'm curious how that compares to what Abercrombie does today.
+>
+> We have a live demo on our website, so you can try it with a test order. No call needed.
+>
+> Want the link, or is that too forward?
+>
+> Shamit
+
+**B. The Tuesday 3:15 hook (operator seat, Isaac Zwick).** Subject: "3T, Tuesday at 3:15"
+> Isaac,
+>
+> It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of the five 3T tables empty.
+>
+> Gravity's agents fill that slot automatically. We have a demo live on our website if you'd like to see it work.
+>
+> Odd to ask, or worth a look?
+>
+> Shamit
+
+**C. Skip the call (owner seat, Barb Neal).** Subject: "611 MRI, no call needed"
+> Barb,
+>
+> The honest pitch: you run 611 MRI day to day, and nobody has time for another vendor call. So skip the call.
+>
+> We have a live demo on our website where you can watch our agent work a referral on a test order. If it's a waste of your time, tell me and I'll send coffee for the trouble.
+>
+> Fair?
+>
+> Shamit
+
+Word counts: 53, 56 and 61. Check the coffee offer against your gift policy before using C.
