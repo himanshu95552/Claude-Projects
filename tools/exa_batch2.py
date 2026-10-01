@@ -17,6 +17,12 @@ import argparse, csv, json, re, subprocess, time, urllib.request, urllib.parse
 from html.parser import HTMLParser
 from pathlib import Path
 
+try:  # use the operating system's trusted certificates (needed behind VPNs / security software)
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
+
 UA = {"User-Agent": "Mozilla/5.0 (compatible; lead-research/1.0)"}
 PAGE_WORDS = re.compile(r"about|team|staff|physician|doctor|provider|radiolog|leader|manage|who-we-are|contact|our-", re.I)
 SOCIAL = re.compile(r"https?://(?:www\.)?(?:facebook|instagram|linkedin|twitter|x|youtube)\.com/[^\s\"'<>)]+", re.I)
@@ -135,6 +141,8 @@ def main():
             info, text = crawl(o["website"]); sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
         if not info.get("pages") and LAST_ERR["msg"]:
             print(f"    !! site fetch failed: {LAST_ERR['msg']}")
+            if "CERTIFICATE" in LAST_ERR["msg"]:
+                print("       fix: python3 -m pip install truststore   (then re-run)")
         print(f"[{oid}] {name}: site pages={len(info.get('pages', []))} emails={len(info.get('emails', []))} "
               f"phones={len(info.get('phones', []))} social={len(info.get('social', []))}")
         plist = people.get(oid, [])[: a.max_people]
