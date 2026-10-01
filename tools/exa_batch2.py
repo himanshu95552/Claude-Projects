@@ -39,12 +39,16 @@ class Links(HTMLParser):
         if not self.skip and d.strip(): self.text.append(d.strip())
 
 
+LAST_ERR = {"msg": ""}
+
+
 def get(url):
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=15) as r:
             if "html" not in r.headers.get("Content-Type", "html"): return ""
             return r.read(2_000_000).decode("utf-8", "ignore")
-    except Exception:
+    except Exception as e:
+        LAST_ERR["msg"] = f"{type(e).__name__}: {e}"[:160]
         return ""
 
 
@@ -129,6 +133,8 @@ def main():
             info = cached; text = (d / "site_text.txt").read_text() if (d / "site_text.txt").exists() else ""
         else:
             info, text = crawl(o["website"]); sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
+        if not info.get("pages") and LAST_ERR["msg"]:
+            print(f"    !! site fetch failed: {LAST_ERR['msg']}")
         print(f"[{oid}] {name}: site pages={len(info.get('pages', []))} emails={len(info.get('emails', []))} "
               f"phones={len(info.get('phones', []))} social={len(info.get('social', []))}")
         plist = people.get(oid, [])[: a.max_people]
