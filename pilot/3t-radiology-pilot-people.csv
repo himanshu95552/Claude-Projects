@@ -1,0 +1,13 @@
+person,input_title,verified_title,status,confidence,evidence,linkedin,contact_found,note
+Daryl Eber,,Medical Director & Lead Radiologist (LinkedIn: Co-Founder & CMO),current,high,3tradiology.com/about.html; LinkedIn,https://www.linkedin.com/in/daryl-eber-a7439430,office phone (305) 532-7460,"two title variants, both valid"
+Isaac Zwick,Chief Operating Officer,Chief Operating Officer (since Mar 2025),current,high,LinkedIn snippet; aggregator pages agree,https://www.linkedin.com/in/isaac-zwick-65a2a624,none public,not on org site team page
+Shelly (Rachelle) Weiss Lahn,International Marketing Director,International Marketing Director/Manager; also CEO of two other companies,"current, part-time role likely",medium,"LinkedIn headline; ZoomInfo says Manager, Intl Marketing",https://www.linkedin.com/in/shelly-rachelle-weiss-lahn-82a67611,none public,title differs by source
+Joshua Yellin,,Orthopedic Radiology Specialist (MSK),current,high,3tradiology.com/about.html; insiterad.com team page,,none public,also listed at Insite Radiology group
+Daniel Feinberg,,Musculoskeletal Radiologist,current,high,3tradiology.com/about.html; insiterad.com team page,,none public,also listed at Insite Radiology group
+Vanessa Lugo,Regional Manager,Regional Manager,unconfirmed,low,only a LinkedIn people-directory snippet,https://www.linkedin.com/in/vanessa-lugo-0b6525395,none public,needs a second source
+NEW: Maria Ramos,,Executive Virtual Assistant,candidate,low-medium,LinkedIn search snippet,https://www.linkedin.com/in/marrms,,
+NEW: Shannon Kasap,,Account Manager,candidate,low,ZoomInfo directory only,,,aggregator may be stale
+NEW: Aimee Castano,,MRI Technologist,candidate,low,ZoomInfo directory only,,,
+NEW: Christian Arroyo,,Medical Biller,candidate,low,ZoomInfo directory only,,,
+NEW: Rosemarie Chaneton,,Front Desk Clerk,candidate,low,ZoomInfo directory only,,,
+NEW: Donna Shahan,,Associate,candidate,low,ZoomInfo directory only,,,
