@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Personalised email image</title>
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:"DM Mono";font-weight:500;src:url(../../assets/fonts/DMMono-500.ttf)}
+:root{--page:#F5F7FA;--ink:#0F172A;--blue:#1D4ED8;--red:#B21500;--hair:#E2E8F0;--stroke:#CBD5E1;--muted:#64748B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;background:var(--page);overflow:hidden}
+#c{position:relative;width:1200px;height:630px;background:var(--page);font-family:Urbanist,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#logo{left:56px;top:40px;width:250px;height:50.6px}
+svg{position:absolute;left:0;top:0}
+svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="c"><svg id="s" width="1200" height="630" viewBox="0 0 1200 630"></svg><img id="logo" class="abs" src="../../assets/logo_light.png" alt=""></div>
+<script>
+/* usage: email-card.html?kind=slot|timer&org=3T%20Radiology%20and%20Research&short=3T */
+const q=new URLSearchParams(location.search);
+const kind=q.get('kind')||'slot', ORG=(q.get('org')||'Your Imaging Center'), SHORT=q.get('short')||ORG.split(' ')[0];
+const NS='http://www.w3.org/2000/svg',C={blue:'#1D4ED8',stroke:'#CBD5E1',hair:'#E2E8F0',muted:'#64748B',ink:'#0F172A',card:'#FFFFFF',soft:'#EAF0FE',bar:'#EEF2F7'};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4),gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+ const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+ return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+const arcAt=t=>{const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`};
+const svg=document.getElementById('s');
+const S=(tag,a={},p=svg)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
+const Tx=(x,y,str,size,fill,anchor='start',ls=.16,p=svg)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
+const R=(x,y,w,h,rx,fill,stroke,extra={},p=svg)=>S('rect',{x,y,width:w,height:h,rx,fill:fill||'none',stroke:stroke||'none','stroke-width':2,...extra},p);
+const Sans=(x,y,str,size,fill,weight=600,anchor='start',ls=-.025,p=svg)=>{const t=Tx(x,y,str,size,fill,anchor,0,p);t.setAttribute('style','text-transform:none;font-family:Urbanist;font-weight:'+weight+';letter-spacing:'+ls+'em');return t};
+
+/* brand header */
+S('line',{x1:340,y1:66,x2:1144,y2:66,stroke:C.hair,'stroke-width':2});S('circle',{cx:1144,cy:66,r:9,fill:C.blue});
+
+if(kind==='slot'){
+  /* name on the object: the open slot carries the prospect's centre name */
+  Sans(56,330,'3:15',230,C.blue,600,'start',-.05);
+  Sans(60,420,'on a Tuesday.',72,C.ink);
+  Tx(60,484,'MRI 1 · '+(ORG.length>26?SHORT:ORG),22,C.muted,'start',.1);
+  const cx=620,cw=520;
+  R(cx,128,cw,452,22,C.card,C.stroke);
+  Tx(cx+32,180,'SCHEDULE · MRI 1',20,C.muted);Tx(cx+cw-32,180,'TUESDAY',20,C.muted,'end');
+  S('line',{x1:cx+32,x2:cx+cw-32,y1:200,y2:200,stroke:C.hair,'stroke-width':2});
+  [['01:45'],['02:30'],['03:15',1],['04:00']].forEach(([t,open],i)=>{const y=222+i*86;
+    Tx(cx+32,y+42,t,24,open?C.ink:C.muted);
+    if(open){R(cx+138,y,cw-170,62,14,C.soft,C.blue,{'stroke-dasharray':'9 8','stroke-width':2.5});
+      Tx(cx+160,y+28,'OPEN SLOT',20,C.blue);Tx(cx+160,y+52,ORG.length>26?SHORT:ORG,17,C.blue,'start',.06);}
+    else{R(cx+138,y,cw-170,62,14,C.bar);R(cx+160,y+18,150,9,4.5,C.stroke);R(cx+160,y+36,90,9,4.5,C.hair);}
+  });
+}else{
+  /* timer: our agent reads a faxed order in about 90 seconds; the one Arc moment is the ring */
+  const TN=SHORT.length>14?SHORT.split(' ').slice(0,2).join(' '):SHORT;
+  const FS=Math.max(52,Math.min(84,84*15/(TN.length+4)));
+  Sans(56,260,'Can '+TN,FS,C.ink);
+  Sans(56,350,'beat 90 seconds?',84,C.blue);
+  Tx(60,414,'Our agent reads a faxed order in about 90 seconds',19,C.muted,'start',.08);
+  /* fax sheet with the prospect's name on it */
+  let g=S('g',{transform:'translate(236 534) rotate(-3)'});
+  R(-190,-82,380,146,12,C.card,C.stroke,{'stroke-width':2.5},g);
+  Tx(-164,-46,'FAX · PG 1/1',18,C.muted,'start',.1,g);
+  Tx(164,-46,(SHORT.length>14?SHORT.split(' ')[0]:SHORT),18,C.blue,'end',.06,g);
+  S('line',{x1:-164,x2:164,y1:-30,y2:-30,stroke:C.hair,'stroke-width':2},g);
+  Sans(-164,2,'Imaging order',28,C.ink,600,'start',-.025,g);
+  R(-164,16,220,9,4.5,C.stroke,'none',{},g);R(-164,36,130,9,4.5,C.hair,'none',{},g);
+  R(136,22,22,22,5,'none',C.blue,{'stroke-width':2.5},g);
+  S('path',{d:'M141 33 l5 5 l9 -12',fill:'none',stroke:C.blue,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  /* stopwatch */
+  const X=900,Y=370,Rr=170;
+  S('rect',{x:X-24,y:Y-Rr-44,width:48,height:22,rx:6,fill:C.card,stroke:C.stroke,'stroke-width':2.5});
+  const defs=S('defs'),lg=S('linearGradient',{id:'arcG',gradientUnits:'userSpaceOnUse',x1:X-Rr,y1:0,x2:X+Rr,y2:0},defs);
+  for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
+  S('circle',{cx:X,cy:Y,r:Rr,fill:C.card,stroke:C.hair,'stroke-width':14});
+  S('circle',{cx:X,cy:Y,r:Rr,fill:'none',stroke:'url(#arcG)','stroke-width':14,'stroke-linecap':'round','stroke-dasharray':(2*Math.PI*Rr*0.75)+' '+(2*Math.PI*Rr),'transform':`rotate(-90 ${X} ${Y})`});
+  for(let i=0;i<12;i++){const a=i/12*2*Math.PI,r1=Rr-30,r2=Rr-18;S('line',{x1:X+Math.sin(a)*r1,y1:Y-Math.cos(a)*r1,x2:X+Math.sin(a)*r2,y2:Y-Math.cos(a)*r2,stroke:C.stroke,'stroke-width':3,'stroke-linecap':'round'});}
+  Sans(X,Y+36,'90',150,C.ink,600,'middle',-.04);
+  Tx(X,Y+84,'SECONDS',22,C.muted,'middle',.2);
+}
+window.render=()=>{};
+</script>
+</body>
+</html>

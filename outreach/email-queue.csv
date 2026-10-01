@@ -1,0 +1,319 @@
+n,status,reason,group,organization,person,role,title,email,subject,body,footer,image,image_alt,words,verify
+1,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,14 Street Medical,Trisha Olivero,operator,Practice Director of Operations & Patient Care,tolivero@14streetmedical.com,"14 street medical, tuesday at 3:15","Trisha,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of 14 Street Medical's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/14-street-medical-slot.png,Schedule card showing an open 3:15 slot at 14 Street Medical,72,Not clearly an imaging center: qualify first
+2,SEND (day 1),Approved B1; first contact at 3T,A. Verified by Hunter,3T Radiology and Research,Isaac Zwick,operator,Chief Operating Officer,isaac@3tradiology.com,"3t, tuesday at 3:15","Isaac,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of the five 3T tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/3t-radiology-and-research-slot.png,Schedule card showing an open 3:15 slot at 3T Radiology and Research,72,Five South Florida sites per search snippet (verify). Not 3T Imaging of Morton Grove
+3,SEND (day 5),"Second contact at 3T, staggered 4 days after Isaac",A. Verified by Hunter,3T Radiology and Research,Vanessa Lugo,operator,Regional Manager,vanessa@3tradiology.com,"3t, tuesday at 3:15","Vanessa,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of 3T Radiology and Research's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/3t-radiology-and-research-slot.png,Schedule card showing an open 3:15 slot at 3T Radiology and Research,73,Five South Florida sites per search snippet (verify). Not 3T Imaging of Morton Grove
+4,SEND (day 1),First contact at 611 MRI; owner,A. Verified by Hunter,611 MRI,Barb Neal,owner,Managing Partner,barbn@611mri.com,"611 mri, tuesday at 3:15","Barb,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of 611 MRI's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-slot.png,Schedule card showing an open 3:15 slot at 611 MRI,71,"Altoona PA, since 2004 per search snippet (verify)"
+5,HOLD,Clinical seat: send only after an administrator at the same organization has replied or gone quiet,A. Verified by Hunter,611 MRI,Aric Berning,clinical,Diagnostic Radiologist (MD),aricb@611mri.com,prior auth at 611 mri,"Dr. Berning,
+
+A physician-side question. In the AMA's 2025 survey, 95% of physicians said prior authorization delays necessary care. Gravity automates 80% of the prior auth work, so the paperwork stays off your desk.
+
+Who owns prior auth at 611 MRI? I'd like to send them a short demo.
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-slot.png,Schedule card showing an open 3:15 slot at 611 MRI,50,"Altoona PA, since 2004 per search snippet (verify)"
+6,HOLD,Clinical seat: send only after an administrator at the same organization has replied or gone quiet,A. Verified by Hunter,611 MRI,Brian S. Polesuk,clinical,Diagnostic Radiologist (MD),brianp@611mri.com,prior auth at 611 mri,"Dr. Polesuk,
+
+A physician-side question. In the AMA's 2025 survey, 95% of physicians said prior authorization delays necessary care. Gravity automates 80% of the prior auth work, so the paperwork stays off your desk.
+
+Who owns prior auth at 611 MRI? I'd like to send them a short demo.
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-slot.png,Schedule card showing an open 3:15 slot at 611 MRI,50,"Altoona PA, since 2004 per search snippet (verify)"
+7,SEND (day 5),"Second contact at 611 MRI, staggered",A. Verified by Hunter,611 MRI,Shelley Reese,financer,Billing Supervisor,shelleyr@611mri.com,can 611 mri beat 90 seconds?,"Shelley,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what 611 MRI does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-timer.png,Can 611 MRI beat 90 seconds? Our agent reads a faxed order in about 90 seconds,69,"Altoona PA, since 2004 per search snippet (verify)"
+8,HOLD,Organization contact cap (2 per organization): hold until the first two have replied or gone quiet,A. Verified by Hunter,611 MRI,Lynn Hight,financer,Billing Associate,lhight@611mri.com,can 611 mri beat 90 seconds?,"Lynn,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what 611 MRI does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-timer.png,Can 611 MRI beat 90 seconds? Our agent reads a faxed order in about 90 seconds,69,"Altoona PA, since 2004 per search snippet (verify)"
+9,HOLD,Clinical seat: send only after an administrator at the same organization has replied or gone quiet,A. Verified by Hunter,611 MRI,Adam Trybus,clinical,Medical Director,adamt@611mri.com,prior auth at 611 mri,"Adam,
+
+A physician-side question. In the AMA's 2025 survey, 95% of physicians said prior authorization delays necessary care. Gravity automates 80% of the prior auth work, so the paperwork stays off your desk.
+
+Who owns prior auth at 611 MRI? I'd like to send them a short demo.
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/611-mri-slot.png,Schedule card showing an open 3:15 slot at 611 MRI,49,"Altoona PA, since 2004 per search snippet (verify)"
+10,HOLD,Organization contact cap (2 per organization): hold until the first two have replied or gone quiet,A. Verified by Hunter,Abercrombie Radiology,Shannon Hampson,owner,Chief Executive Officer,shampson@arcrad.org,"abercrombie, tuesday at 3:15","Shannon,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Abercrombie Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/abercrombie-radiology-slot.png,Schedule card showing an open 3:15 slot at Abercrombie Radiology,71,"Assumed Knoxville TN, e-Rad RIS per eRAD release of unknown date (verify)"
+11,SEND (day 1),Approved A1; first contact at Abercrombie,A. Verified by Hunter,Abercrombie Radiology,Amy Adams,financer,Director RCM,aadams@arcrad.org,can abercrombie beat 90 seconds?,"Amy,
+
+Small experiment. Our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Abercrombie does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/abercrombie-radiology-timer.png,Can Abercrombie beat 90 seconds? Our agent reads a faxed order in about 90 seconds,57,"Assumed Knoxville TN, e-Rad RIS per eRAD release of unknown date (verify)"
+12,HOLD,Organization contact cap (2 per organization): hold until the first two have replied or gone quiet,A. Verified by Hunter,Abercrombie Radiology,Becky Warwick,financer,Director of Financial Services,bwarwick@arcrad.org,can abercrombie beat 90 seconds?,"Becky,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Abercrombie Radiology does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/abercrombie-radiology-timer.png,Can Abercrombie beat 90 seconds? Our agent reads a faxed order in about 90 seconds,69,"Assumed Knoxville TN, e-Rad RIS per eRAD release of unknown date (verify)"
+13,SEND (day 5),"Second contact at Abercrombie, staggered",A. Verified by Hunter,Abercrombie Radiology,Jorja Clark,operator,Director of Operations,jclark@arcrad.org,"abercrombie, tuesday at 3:15","Jorja,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Abercrombie Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/abercrombie-radiology-slot.png,Schedule card showing an open 3:15 slot at Abercrombie Radiology,71,"Assumed Knoxville TN, e-Rad RIS per eRAD release of unknown date (verify)"
+14,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,ABQ Orthopedics,Darlenis Castillo,operator,Director of Operations,dcastillo@abqorthopedics.com,"abq orthopedics, tuesday at 3:15","Darlenis,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of ABQ Orthopedics's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/abq-orthopedics-slot.png,Schedule card showing an open 3:15 slot at ABQ Orthopedics,71,Orthopedic group: confirm it runs imaging before writing for it
+15,SEND (day 1),Owner; Hunter valid 100%,A. Verified by Hunter,Accurate Medical Diagnostic Services,Sid Prakash,owner,Medical Director & CEO,sidprakash@amds-nyc.com,"accurate medical, tuesday at 3:15","Sid,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Accurate Medical Diagnostic Services's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/accurate-medical-diagnostic-services-slot.png,Schedule card showing an open 3:15 slot at Accurate Medical Diagnostic Services,73,NYC; ownership and size unverified
+16,SEND (day 1),"Routing email only (marketing seat, only contact at this org)",A. Verified by Hunter,Advanced Diagnostic Imaging of New Jersey,Emelin Llorca,marketeer,Marketing Liaison,emelin@openmri17.com,who runs scheduling at advanced diagnostic?,"Emelin,
+
+Not a marketing pitch. I'm trying to reach whoever runs scheduling and prior authorization at Advanced Diagnostic Imaging of New Jersey, and I'm not sure who that is.
+
+We build software that automates 80% of the prior auth work and reads a faxed order in about 90 seconds. Could you point me to the right person?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-diagnostic-imaging-of-new-jersey-slot.png,Schedule card showing an open 3:15 slot at Advanced Diagnostic Imaging of New Jersey,58,Marketing contact only
+17,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Heart Vascular Center,Robert Marston,marketeer,Director of Marketing,robert@currentclinic.com,who runs scheduling at advanced heart vascular?,"Robert,
+
+Not a marketing pitch. I'm trying to reach whoever runs scheduling and prior authorization at Advanced Heart Vascular Center, and I'm not sure who that is.
+
+We build software that automates 80% of the prior auth work and reads a faxed order in about 90 seconds. Could you point me to the right person?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,56,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+18,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Heart Vascular Center,Jeremy Edes Pierotti,technical,Chief Technology Officer,jeremy@currentclinic.com,hl7 and fhir at advanced heart vascular,"Jeremy,
+
+A quick one for the IT seat. Gravity works alongside the RIS you already run, over HL7 and FHIR, and we list 13 integrations including e-Rad, Epic, ADS and RamSoft. It does not replace your RIS.
+
+We have a live demo on our website, and I can send the integration list and security statement first. Who owns RIS integrations at Advanced Heart Vascular Center?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,66,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+19,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Heart Vascular Center,Kai Worrell,owner,Founder and CEO,kai@currentclinic.com,"advanced heart vascular, tuesday at 3:15","Kai,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advanced Heart Vascular Center's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,73,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+20,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Heart Vascular Center,Anish Amin,clinical,Chief Medical Officer (MD),anish@currentclinic.com,prior auth at advanced heart vascular,"Dr. Amin,
+
+A physician-side question. In the AMA's 2025 survey, 95% of physicians said prior authorization delays necessary care. Gravity automates 80% of the prior auth work, so the paperwork stays off your desk.
+
+Who owns prior auth at Advanced Heart Vascular Center? I'd like to send them a short demo.
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,52,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+21,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Heart Vascular Center,Tina Lecy,financer,VP of Finance,tina@currentclinic.com,can advanced heart vascular beat 90 seconds?,"Tina,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Advanced Heart Vascular Center does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-timer.png,Can Advanced Heart Vascular beat 90 seconds? Our agent reads a faxed order in about 90 seconds,71,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+22,HOLD,Qualify the organization first (not clearly an imaging center),A. Verified by Hunter,Advanced Orthopedic and Spine Care,Patrick Maher,technical,Information Technology Manager,pmaher@aospinecare.com,hl7 and fhir at advanced ortho and spine,"Patrick,
+
+A quick one for the IT seat. Gravity works alongside the RIS you already run, over HL7 and FHIR, and we list 13 integrations including e-Rad, Epic, ADS and RamSoft. It does not replace your RIS.
+
+We have a live demo on our website, and I can send the integration list and security statement first. Who owns RIS integrations at Advanced Orthopedic and Spine Care?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-orthopedic-and-spine-care-slot.png,Schedule card showing an open 3:15 slot at Advanced Orthopedic and Spine Care,67,Orthopedic group: confirm it runs imaging
+23,HOLD,"radnet.com domain: enterprise, outside the independent ICP",A. Verified by Hunter,Advanced Radiology,Karen Sponaugle,operator,Director of Operations,karen.sponaugle@radnet.com,"advanced radiology, tuesday at 3:15","Karen,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advanced Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-radiology-slot.png,Schedule card showing an open 3:15 slot at Advanced Radiology,71,"Email domain is radnet.com: RadNet is enterprise, outside the independent ICP"
+24,HOLD,"radnet.com domain: enterprise, outside the independent ICP",A. Verified by Hunter,Advanced Radiology,Tina McGinley,operator,Regional Manager,tmcginley@radnet.com,"advanced radiology, tuesday at 3:15","Tina,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advanced Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-radiology-slot.png,Schedule card showing an open 3:15 slot at Advanced Radiology,71,"Email domain is radnet.com: RadNet is enterprise, outside the independent ICP"
+25,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Adirondack Radiology,Christopher Patnode,operator,Executive Director,cpatnode@adirondackradiology.com,"adirondack, tuesday at 3:15","Christopher,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Adirondack Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/adirondack-radiology-slot.png,Schedule card showing an open 3:15 slot at Adirondack Radiology,71,Catch-all domain: bounce risk
+26,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Adirondack Radiology,Richard Dimick,owner,Partner,rdimick@adirondackradiology.com,"adirondack, tuesday at 3:15","Richard,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Adirondack Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/adirondack-radiology-slot.png,Schedule card showing an open 3:15 slot at Adirondack Radiology,71,Catch-all domain: bounce risk
+27,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),3T Imaging,Anna Los,operator,Operations Manager,alos@3timaging.com,"3t imaging, tuesday at 3:15","Anna,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of 3T Imaging's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/3t-imaging-slot.png,Schedule card showing an open 3:15 slot at 3T Imaging,71,Catch-all domain; different company from 3T Radiology
+28,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),3T Imaging,Juan Gonzalez,technical,Director of IT,jgonzalez@3timaging.com,hl7 and fhir at 3t imaging,"Juan,
+
+A quick one for the IT seat. Gravity works alongside the RIS you already run, over HL7 and FHIR, and we list 13 integrations including e-Rad, Epic, ADS and RamSoft. It does not replace your RIS.
+
+We have a live demo on our website, and I can send the integration list and security statement first. Who owns RIS integrations at 3T Imaging?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/3t-imaging-slot.png,Schedule card showing an open 3:15 slot at 3T Imaging,64,Catch-all domain; different company from 3T Radiology
+29,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),3T Imaging,Craig Palmquist,marketeer,Sales and Marketing Representative,cpalmquist@3timaging.com,who runs scheduling at 3t imaging?,"Craig,
+
+Not a marketing pitch. I'm trying to reach whoever runs scheduling and prior authorization at 3T Imaging, and I'm not sure who that is.
+
+We build software that automates 80% of the prior auth work and reads a faxed order in about 90 seconds. Could you point me to the right person?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/3t-imaging-slot.png,Schedule card showing an open 3:15 slot at 3T Imaging,54,Catch-all domain; different company from 3T Radiology
+30,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advanced Health Imaging,Ana Diaz,operator,Director of Operations,ana@advancedhealthimg.com,"advanced health imaging, tuesday at 3:15","Ana,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advanced Health Imaging's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-health-imaging-slot.png,Schedule card showing an open 3:15 slot at Advanced Health Imaging,72,Catch-all domain: bounce risk
+31,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advance Technological Radiology,Kevin Burch,financer,Chief Financial Officer,kevinb@atradiology.cc,can advance technological beat 90 seconds?,"Kevin,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Advance Technological Radiology does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advance-technological-radiology-timer.png,Can Advance Technological beat 90 seconds? Our agent reads a faxed order in about 90 seconds,70,Catch-all domain: bounce risk
+32,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advance Technological Radiology,Sherri Griffin,operator,Chief Operating Officer,sherrig@atradiology.cc,"advance technological, tuesday at 3:15","Sherri,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advance Technological Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advance-technological-radiology-slot.png,Schedule card showing an open 3:15 slot at Advance Technological Radiology,72,Catch-all domain: bounce risk
+33,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advance Technological Radiology,Anthony T. Rosa,owner,President/Owner (MD),anthonyr@atradiology.cc,"advance technological, tuesday at 3:15","Anthony,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advance Technological Radiology's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advance-technological-radiology-slot.png,Schedule card showing an open 3:15 slot at Advance Technological Radiology,72,Catch-all domain: bounce risk
+34,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advance Technological Radiology,Yarilyn Cardona,financer,Billing Manager,yarilync@atradiology.cc,can advance technological beat 90 seconds?,"Yarilyn,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Advance Technological Radiology does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advance-technological-radiology-timer.png,Can Advance Technological beat 90 seconds? Our agent reads a faxed order in about 90 seconds,70,Catch-all domain: bounce risk
+35,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advanced Diagnostic Group,Dianne Lowden,marketeer,Marketing Director,dlowden@advanceddiagnosticgroup.com,who runs scheduling at advanced diagnostic group?,"Dianne,
+
+Not a marketing pitch. I'm trying to reach whoever runs scheduling and prior authorization at Advanced Diagnostic Group, and I'm not sure who that is.
+
+We build software that automates 80% of the prior auth work and reads a faxed order in about 90 seconds. Could you point me to the right person?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-diagnostic-group-slot.png,Schedule card showing an open 3:15 slot at Advanced Diagnostic Group,55,Catch-all domain: bounce risk
+36,HOLD,Catch-all domain: cannot verify the mailbox; bounce risk. Verify another way or send only a tiny test,B. Not verifiable (catch-all),Advanced Diagnostic Group,Ashley Groves,financer,Director of Collections and Legal Negotiations,agroves@advanceddiagnosticgroup.com,can advanced diagnostic group beat 90 seconds?,"Ashley,
+
+You see what a bad order costs once it reaches billing. Small experiment: our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Advanced Diagnostic Group does today.
+
+We have a live demo on our website. Try it with a test order, no call needed.
+
+Want the link, or is that too forward?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-diagnostic-group-timer.png,Can Advanced Diagnostic Group beat 90 seconds? Our agent reads a faxed order in about 90 seconds,70,Catch-all domain: bounce risk
+37,HOLD,Ambiguous: same mailbox returned for two different people,C. Ambiguous,Advanced Heart Vascular Center,Amanda Spencer,operator,VP of Strategy,amanda@currentclinic.com,"advanced heart vascular, tuesday at 3:15","Amanda,
+
+It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of Advanced Heart Vascular Center's tables empty.
+
+Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+
+We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,73,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
+38,HOLD,Ambiguous: same mailbox returned for two different people,C. Ambiguous,Advanced Heart Vascular Center,Amanda Ryan,clinical,"Medical Director, Carlsbad (DO)",amanda@currentclinic.com,prior auth at advanced heart vascular,"Dr. Ryan,
+
+A physician-side question. In the AMA's 2025 survey, 95% of physicians said prior authorization delays necessary care. Gravity automates 80% of the prior auth work, so the paperwork stays off your desk.
+
+Who owns prior auth at Advanced Heart Vascular Center? I'd like to send them a short demo.
+
+Shamit","Alpha Nodus, 1341 Sawgrass Corporate Parkway, Suite 104, Sunrise, FL 33323. Not the right person or not interested? Reply ""no"" and I will stop.",images/queue/advanced-heart-vascular-center-slot.png,Schedule card showing an open 3:15 slot at Advanced Heart Vascular Center,52,Cardiology organization on the currentclinic.com domain: qualify first; seven contacts on one domain
