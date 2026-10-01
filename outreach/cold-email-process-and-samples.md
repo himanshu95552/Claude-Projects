@@ -141,4 +141,4 @@ Rules that still hold: no link in touch 1 ("we have a live demo on our website" 
 >
 > Shamit
 
-Word counts: 53, 56 and 61. Check the coffee offer against your gift policy before using C.
+Word counts: 52, 56 and 62. Check the coffee offer against your gift policy before using C.
