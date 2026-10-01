@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://sgai-mcp-main.onrender.com",
       "headers": {
-        "X-API-Key": "${SGAI_API_KEY}"
+        "X-API-Key": "sgai-563fda97-eeae-4ee8-9117-18999968dd42"
       }
     }
   }
