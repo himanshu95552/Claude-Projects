@@ -115,9 +115,8 @@ def main():
         people.setdefault(r["org_id"], []).append(r)
     out = Path(a.out); out.mkdir(exist_ok=True)
     rf = out / "results.csv"
-    new = not rf.exists()
-    res = csv.writer(open(rf, "a", newline="", encoding="utf-8"))
-    if new: res.writerow(["org_id", "org_name", "person_id", "name", "input_title", "status", "site_context"])
+    res = csv.writer(open(rf, "w", newline="", encoding="utf-8"))  # rebuilt every run
+    if True: res.writerow(["org_id", "org_name", "person_id", "name", "input_title", "status", "site_context"])
 
     for oid in a.orgs.split(","):
         o = orgs.get(oid)
@@ -125,8 +124,9 @@ def main():
         d = out / oid; d.mkdir(exist_ok=True)
         name, states = o["org_name"], o["states"]
         sj = d / "summary.json"
-        if sj.exists():
-            info = json.loads(sj.read_text()); text = (d / "site_text.txt").read_text() if (d / "site_text.txt").exists() else ""
+        cached = json.loads(sj.read_text()) if sj.exists() else {}
+        if cached.get("pages"):  # an empty summary means the fetch failed: try again
+            info = cached; text = (d / "site_text.txt").read_text() if (d / "site_text.txt").exists() else ""
         else:
             info, text = crawl(o["website"]); sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
         print(f"[{oid}] {name}: site pages={len(info.get('pages', []))} emails={len(info.get('emails', []))} "
@@ -155,7 +155,10 @@ def main():
             if f.exists(): continue
             print(f"    search {tag}: {q}")
             if a.dry_run: continue
-            f.write_text(f"QUERY: {q}\n\n{exa(q, a.num)}"); time.sleep(a.delay)
+            r = exa(q, a.num)
+            if r.startswith("ERROR"):  # do not save failures, so a re-run retries them
+                print(f"    !! failed, will retry next run: {r[:120]!r}"); continue
+            f.write_text(f"QUERY: {q}\n\n{r}"); time.sleep(a.delay)
 
 
 if __name__ == "__main__":
