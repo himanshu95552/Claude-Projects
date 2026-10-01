@@ -142,3 +142,68 @@ Rules that still hold: no link in touch 1 ("we have a live demo on our website" 
 > Shamit
 
 Word counts: 52, 56 and 62. Check the coffee offer against your gift policy before using C.
+
+## Round 3: approved A and B, enriched (stats, public proof, demo, images)
+
+Research behind the choices: lowercase, workflow-anchored subjects read like a colleague; first-touch emails with no link showed up to 26% higher reply rates in one vendor test (directional only); a personalised image with the company name on a product mock-up is a recognised pattern interrupt; self-aware, honest openers beat "hope you're well". Public proof used below comes from the dossier (83M documents, 90 s, 80% prior auth automation, Atlantic Medical Imaging release of 27 Nov 2023, Bright Light release of 21 Nov 2024).
+
+**Test cells for wave 1 (learning round, not statistics).** Cell 1: link-free, "want the link?" (recommended default, safest for deliverability). Cell 2: plain-text demo URL in the first email (your "first impression" idea; one URL only, no tracking wrapper, no shortener, send from a warmed custom domain). Cell 3: cell 1 plus the personalised image from touch 2 onward. Compare reply rate and bounce rate by cell; pause the link cell if bounces or complaints rise.
+
+**A1. Amy Adams (link-free).** Subject: can abercrombie beat 90 seconds?
+> Amy,
+>
+> Small experiment. Our agent reads a faxed order in about 90 seconds, and it has processed 83M documents so far. I'm curious how that compares to what Abercrombie does today.
+>
+> We have a live demo on our website. Try it with a test order, no call needed.
+>
+> Want the link, or is that too forward?
+>
+> Shamit
+
+**A1 with the demo link upfront.** Same, but replace the last two paragraphs with:
+> Try it with a test order, no call needed (please no real patient details): alphanodus.com/demo
+>
+> Too forward, or fair?
+
+**B1. Isaac Zwick (link-free).** Subject: 3t, tuesday at 3:15
+> Isaac,
+>
+> It's 3:15 on a Tuesday. The MRI is ready, the tech is ready, and a late cancellation just left one of the five 3T tables empty.
+>
+> Gravity's agents fill that slot automatically. Atlantic Medical Imaging, a multi-site group in New Jersey, uses Gravity for scheduling and prior authorization.
+>
+> We have a demo live on our website if you'd like to watch it work. Odd to ask, or worth a look?
+>
+> Shamit
+
+**B1 with the demo link upfront.** Replace the last paragraph with: "Watch it work on a test order (no real patient details): alphanodus.com/demo" then "Odd to ask, or worth a look?"
+
+**Touch 2 (day 4), same thread.**
+A2, "Following up on the 90-second experiment":
+> Amy,
+>
+> Following up on the 90-second experiment. Bright Light Imaging, a physician-led group near Chicago, says prior auths used to take hours, sometimes days, and now often take minutes.
+>
+> If Abercrombie's prior auths ever feel like the hours version, I can send the short case study.
+>
+> Shamit
+
+B2, "One more thought on the 3:15 slot":
+> Isaac,
+>
+> One more thought on the 3:15 slot. Imaging centers don't lose money in the scanner. They lose it between the referral and the payment.
+>
+> If it would help, I can show how Gravity handles that across sites. Happy to send the demo link first.
+>
+> Shamit
+
+**Touch 3 (day 10): first links.** Demo link plus one proof link: the RamSoft release (only for RamSoft sites), the Bright Light release (https://www.prnewswire.com/news-releases/bright-light-imaging-leverages-alpha-noduss-gravity-auth-enhanced-by-integration-with-adss-medicsris-to-streamline-patient-care-302313533.html) or the Atlantic Medical Imaging release (https://www.prnewswire.com/news-releases/alpha-nodus-elevating-atlantic-medical-imagings-scheduling--prior-authorization-workflow-with-gravity-ai-301998530.html). Attach the personalised image here.
+
+**Touch 5 break-up idea:** subject "still empty at 3:15?" and one line: "Last note from me. If the 3:15 slot isn't a problem at 3T, tell me and I'll stop. If it is, the demo is on our site."
+
+**Personalised images** (1200x630, self-hosted, no tracking pixel; give each alt text because Outlook blocks images by default):
+- `outreach/images/email-3t-open-slot.png`, alt: "Schedule card showing an open 3:15 slot at 3T Radiology and Research".
+- `outreach/images/email-abercrombie-90-seconds.png`, alt: "Can Abercrombie beat 90 seconds? Our agent reads a faxed order in about 90 seconds".
+- Generator: `.claude/skills/gravity-graphics/templates/email/email-card.html?kind=slot|timer&org=...&short=...`, rendered with `scripts/render-still.js page.html out 0 1200 630`.
+
+**Not recommended:** emailing "I timed it" claims, fake-familiar subjects like "this can't be a coincidence", cold texts, cold Sandra calls, and any real patient data in the demo.
