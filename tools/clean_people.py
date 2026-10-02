@@ -20,7 +20,7 @@ office opportunities listings story stories menu resources forms portal policy p
 location services specialties procedures results insurance payment payments financial assistance coverage rights notice practices
 compliance feedback support help faq faqs testimonials reviews videos gallery education research residency fellowship program programs
 newsroom press media blog donate giving volunteer guide guides tools tour visitors patients referrals appointments statements
-arrow arrows button buttons icon icons link links toggle tab tabs close search
+arrow arrows icon icons toggle tabs
 questions phone fax email e-mail number admin content campus dept description requirements seeker seekers application form tool list checker estimator""".split())
 FIRST_STOP = set("chevron skip back next previous close expand toggle general main media price job share my online quick request schedule book view learn meet our about home contact patient find".split())
 SPAM = {"Ferdi, Bali", "Gigi, Solo", "Yudi, Bandung", "Ambre, Radhey"}
