@@ -19,6 +19,7 @@ from pathlib import Path
 
 BROKER = re.compile(r"zoominfo|rocketreach|apollo\.io|contactout|aeroleads|whitepages|spokeo|datanyze|adapt\.io|leadiq|seamless\.ai|salesgear|signalhire|lusha|peopledatalabs|radaris|truepeoplesearch|fastpeoplesearch|beenverified|mylife|intelius|clustrr|unifers|cience\.com|d7leadfinder|anymailfinder|hunter\.io|skrapp|kaspr|wiza|numlooker|411\.com|peoplefinder|nuwber|usphonebook|cocofinder|theorg\.com", re.I)
 CRED = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|dr\.?|rn|rt|np|pa-c|fnp-c|dpm|dc)\b", re.I)
+WEBWORD = re.compile(r"\b(menu|login|contact|about|services|privacy|policy|transparency|inquiries|information|news|careers|appointments?|billing|patient|health|hospital|clinic|imaging|radiology|center|group|medical|home|search|locations?|physicians?|staff|team|leadership|directory)\b", re.I)
 GENERIC = {"radiology", "imaging", "medical", "health", "center", "centre", "group", "associates", "clinic", "hospital", "services",
            "partners", "diagnostic", "physicians", "institute", "healthcare", "care", "systems", "system", "network", "specialists"}
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
@@ -180,18 +181,32 @@ def main():
                         if ph: rec["phones"] = "; ".join(sorted(set(ph))[:3])
                     em = sorted({e.lower() for e in EMAIL.findall(b) if dom(e.split("@")[1]).endswith(dm.split(":")[0]) and not JUNK_MAIL.search(e)})
                     if em and not rec["emails_named"] and not rec["emails_role"]: rec["emails_role"] = "; ".join(em[:3])
-                # people found for this organization on LinkedIn, not on your list
-                if "linkedin.com/in/" in ul:
-                    hl = headline(b); nm = b.split("\n", 1)[0].split(" - ")[0].strip()
-                    key = re.sub(r"[^a-z]", "", nm.lower())
-                    if hl and key and key not in known[oid] and any(w in b.lower()[:700] for w in ow):
-                        cand.append({"org_id": oid, "org_name": o.get("org_name", ""), "name": nm, "headline": hl, "linkedin_url": linkedin_url(u), "evidence_url": u})
-                        known[oid].add(key)
+                # people found for this organization who are not on your list
+                add = []
+                nm_re = r"[A-Z][A-Za-z.'’\-]+(?: [A-Z][A-Za-z.'’\-]*\.?){1,3}"
+                t0 = b.split("\n", 1)[0].strip()
+                orghit_b = (dm and dm in ul) or any(w in b.lower()[:900] for w in ow)
+                if "linkedin.com/in/" in ul and orghit_b:
+                    add.append((t0.split(" - ")[0].strip(), nice_headline(b), linkedin_url(u), "linkedin"))
+                elif orghit_b and not BROKER.search(ul):
+                    m = re.match(rf"^({nm_re}),? (MD|M\.D\.|DO|D\.O\.|PhD|NP|PA-C|RN|DPM)\b", t0)
+                    if m: add.append((m.group(1), m.group(2), "", "org_page_title"))
+                    if dm and dm in ul:
+                        for m in re.finditer(rf"({nm_re})(?:, | - |\n+)((?:Chief|Director|Manager|President|CEO|COO|CFO|CIO|Administrator|Owner|Supervisor|Vice President|VP|Head|Medical Director|Practice Administrator|Office Manager)[^\n,.;|]{{0,60}})", b):
+                            add.append((m.group(1), m.group(2).strip(), "", "org_page_text"))
+                for nm, ttl, li, how in add:
+                    key = re.sub(r"[^a-z]", "", re.sub(CRED, " ", nm.lower()))
+                    first_tok = nm.split()[0].strip(".,").lower() if nm.split() else ""
+                    if len(nm.split()) < 2 or len(nm) > 45 or WEBWORD.search(nm) or not key or key in known[oid] \
+                       or first_tok in ("md", "do", "rn", "np", "pa", "phd", "dr", "mr", "mrs", "ms", "chief", "vice", "senior", "director") or nm.split()[-1].strip(".,").lower() in ("md", "do", "rn", "president", "officer"): continue
+                    cand.append({"org_id": oid, "org_name": o.get("org_name", ""), "name": nm, "title_or_credential": ttl, "linkedin_url": li,
+                                 "found_via": how, "evidence_url": u})
+                    known[oid].add(key)
         org_rows.append(rec)
     with open(out / "orgs_final.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(org_rows[0].keys())); w.writeheader(); w.writerows(org_rows)
     with open(out / "new_people_candidates.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["org_id", "org_name", "name", "headline", "linkedin_url", "evidence_url"]); w.writeheader(); w.writerows(cand)
+        w = csv.DictWriter(f, fieldnames=["org_id", "org_name", "name", "title_or_credential", "linkedin_url", "found_via", "evidence_url"]); w.writeheader(); w.writerows(cand)
 
     n = len(people_out)
     have = lambda k: sum(1 for r in org_rows if r[k])
