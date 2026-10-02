@@ -234,6 +234,7 @@ def main():
     a.add_argument("--stop-after-failures", type=int, default=12, help="stop the run after this many searches in a row fail")
     a.add_argument("--verbose", action="store_true", help="print each website as it is fetched")
     a.add_argument("--search-filter", default="all", choices=["all", "dm"], help="dm = Exa-search only people whose title looks like a decision-maker")
+    a.add_argument("--only-people", default="", help="CSV with a person_id column: search only these people (status files still use the full --people list)")
     a.add_argument("--max-searches", type=int, default=0, help="hard cap on Exa searches in this run (0 = no cap); protects your balance")
     a = a.parse_args()
 
@@ -268,6 +269,8 @@ def main():
     lock = threading.Lock(); st = collections.Counter(); t0 = time.time()
     exa_ex = ThreadPoolExecutor(a.workers) if do_search_stage and not a.dry_run else None
 
+    only = {r["person_id"] for r in csv.DictReader(open(a.only_people, newline="", encoding="utf-8"))} if a.only_people else None
+
     def build_jobs(oid):
         o, d = orgs[oid], out / oid
         try: info = json.loads((d / "summary.json").read_text())
@@ -280,7 +283,7 @@ def main():
             status = {"confirmed": "confirmed_on_site", "possible": "possible_on_site"}.get(m, "needs_search")
             if status == "needs_search":
                 if a.search_filter == "dm" and not DM.search(p["title"] or ""): status = "not_searched"
-                else: need.append(p)
+                elif only is None or p["person_id"] in only: need.append(p)
             rows.append([oid, o["org_name"], p["person_id"], p["name"], p["title"], status, ctx.replace("\n", " ")])
         with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
             csv.writer(f).writerows(rows)
