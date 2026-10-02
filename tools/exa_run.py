@@ -50,14 +50,23 @@ class Page(HTMLParser):
         if not self.skip and d.strip(): self.text.append(d.strip())
 
 
-def get(url):
-    try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=15) as r:
-            if "html" not in r.headers.get("Content-Type", "html"): return ""
-            return r.read(2_000_000).decode("utf-8", "ignore")
-    except Exception as e:
-        ERR["msg"] = f"{type(e).__name__}: {e}"[:140]
-        return ""
+def get_ex(url):
+    """(html, error). One slow retry if the site says 429 (too many requests)."""
+    for attempt in (1, 2):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=15) as r:
+                if "html" not in r.headers.get("Content-Type", "html"): return "", ""
+                return r.read(2_000_000).decode("utf-8", "ignore"), ""
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and attempt == 1:
+                time.sleep(10); continue
+            return "", f"HTTPError: HTTP Error {e.code}"
+        except Exception as e:
+            return "", f"{type(e).__name__}: {e}"[:140]
+    return "", "HTTPError: HTTP Error 429"
+
+
+def get(url): return get_ex(url)[0]
 
 
 def parse(h):
@@ -69,12 +78,12 @@ def rank(path):
 
 
 def crawl(site, max_pages):
-    if not site: return {}, ""
+    if not site: return {"error": "no website"}, ""
     base = site if site.startswith("http") else "https://" + site
-    html = get(base)
-    if not html and not site.startswith("http"):
-        base = "http://" + site; html = get(base)
-    if not html: return {}, ""
+    html, err = get_ex(base)
+    if not html and not site.startswith("http") and "403" not in err:
+        base = "http://" + site; html, err2 = get_ex(base); err = err or err2
+    if not html: return {"error": err or "empty page"}, ""
     host = urllib.parse.urlparse(base).netloc.replace("www.", "")
     raw, texts, seen = html, [parse(html)[1]], {base}
     def cand(links, src):
@@ -129,12 +138,17 @@ def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:50]
 def do_crawl(o, d, max_pages):
     sj = d / "summary.json"
     try:
-        if json.loads(sj.read_text()).get("pages"): return o["org_id"], "cached", ""
+        old = json.loads(sj.read_text())
+        if old.get("pages"): return o["org_id"], "cached", ""
+        if "403" in old.get("error", ""): return o["org_id"], 0, "blocked (403), skipped"  # do not retry blocks
     except Exception: pass
-    ERR["msg"] = ""
     info, text = crawl(o["website"], max_pages)
     sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
-    return o["org_id"], len(info.get("pages", [])), ERR["msg"]
+    return o["org_id"], len(info.get("pages", [])), info.get("error", "")
+
+
+def domain(u):
+    return re.sub(r"^https?://(www\.)?", "", (u or "").lower()).split("/")[0]
 
 
 def main():
@@ -165,13 +179,21 @@ def main():
         sys.exit("mcporter not found on PATH")
 
     if a.stage in ("all", "crawl"):
-        todo = [i for i in ids if orgs[i]["website"]]
+        by_dom = {}
+        for i in ids:
+            if orgs[i]["website"]: by_dom.setdefault(domain(orgs[i]["website"]), []).append(i)
+        todo = [v[0] for v in by_dom.values()]
+        print(f"  {len(todo)} distinct websites to crawl ({sum(len(v) - 1 for v in by_dom.values())} organizations share a site)")
         done = fails = 0
         with ThreadPoolExecutor(a.crawl_workers) as ex:
-            futs = [ex.submit(do_crawl, orgs[i], out / i, a.max_pages) for i in todo]
+            futs = {ex.submit(do_crawl, orgs[i], out / i, a.max_pages): i for i in todo}
             for f in as_completed(futs):
                 oid, pages, err = f.result(); done += 1; fails += (pages == 0)
-                if pages == 0 and err: print(f"  !! {oid} site fetch failed: {err}")
+                dom = domain(orgs[oid]["website"])
+                for sib in by_dom[dom][1:]:  # share the result with organizations on the same site
+                    for fn in ("summary.json", "site_text.txt"):
+                        if (out / oid / fn).exists(): shutil.copyfile(out / oid / fn, out / sib / fn)
+                if pages == 0 and err: print(f"  !! {oid} ({dom}) {err}")
                 if done % 25 == 0 or done == len(todo): print(f"  crawled {done}/{len(todo)}  (failed so far: {fails})")
 
     if a.stage in ("all", "search"):
