@@ -13,12 +13,29 @@ SHEETS = [("People", "people_final.csv"), ("Organizations", "orgs_final.csv"),
           ("New people", "new_people_candidates.csv"), ("Needs review", "review_needed.csv")]
 
 
+def join_facilities(fac, orgs_csv, out_csv):
+    """Facilities + the owning organization's enriched columns (matched on org_id)."""
+    orgs = {r["org_id"]: r for r in csv.DictReader(open(orgs_csv, newline="", encoding="utf-8"))}
+    rows = list(csv.DictReader(open(fac, newline="", encoding="utf-8")))
+    ocols = [c for c in next(iter(orgs.values())) if c not in ("org_id",) and c not in rows[0]]
+    with open(out_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f); w.writerow(list(rows[0]) + ["org_" + c for c in ocols])
+        miss = 0
+        for r in rows:
+            o = orgs.get(r["org_id"]); miss += o is None
+            w.writerow(list(r.values()) + [(o or {}).get(c, "") for c in ocols])
+    print(f"  facilities joined to organizations: {len(rows) - miss}/{len(rows)}")
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--final", default="final"); ap.add_argument("--out", default="imaging-leads")
-    ap.add_argument("--facilities", help="facilities CSV to add as its own sheet (not enriched)")
+    ap.add_argument("--facilities", help="facilities CSV (needs an org_id column); joined to the organization data")
     a = ap.parse_args(); src = Path(a.final); out = Path(a.out).expanduser()
     files = [(n, src / f) for n, f in SHEETS if (src / f).exists()]
-    if a.facilities: files.insert(2, ("Facilities (original)", Path(a.facilities).expanduser()))
+    if a.facilities:
+        fj = src / "facilities_enriched.csv"
+        join_facilities(Path(a.facilities).expanduser(), src / "orgs_final.csv", fj)
+        files.insert(2, ("Facilities", fj))
     if (src / "summary.txt").exists(): files.append(("Summary", src / "summary.txt"))
     with zipfile.ZipFile(f"{out}.zip", "w", zipfile.ZIP_DEFLATED) as z:
         for _, p in files: z.write(p, p.name)
