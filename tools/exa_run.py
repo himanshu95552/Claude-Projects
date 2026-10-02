@@ -37,6 +37,7 @@ CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dp
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
 VERBOSE = [False]
+ABORT = {"on": False, "why": "", "streak": 0}
 SKIP_DOMAINS = {"lvradiology.com"}  # crashed the crawler three times; never fetch
 INFLIGHT = set(); INF_LOCK = threading.Lock(); INF_FILE = [None]
 
@@ -228,6 +229,7 @@ def main():
     a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
     a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
     a.add_argument("--skip-domains", default="", help="comma-separated websites never to fetch, e.g. lvradiology.com")
+    a.add_argument("--stop-after-failures", type=int, default=12, help="stop the run after this many searches in a row fail")
     a.add_argument("--verbose", action="store_true", help="print each website as it is fetched")
     a.add_argument("--search-filter", default="all", choices=["all", "dm"], help="dm = Exa-search only people whose title looks like a decision-maker")
     a.add_argument("--max-searches", type=int, default=0, help="hard cap on Exa searches in this run (0 = no cap); protects your balance")
@@ -293,15 +295,26 @@ def main():
         return [(f, q) for f, q in jobs if not f.exists()]
 
     def run_job(j):
-        f, q = j; r = exa(q, a.num, a.delay)
+        f, q = j
+        if ABORT["on"]: return f, q, "ABORTED"
+        r = exa(q, a.num, a.delay)
         if r.startswith("ERROR"):
-            time.sleep(20)  # back off after a failure (rate limit or network blip)
+            low = r.lower()
+            with lock:
+                ABORT["streak"] += 1
+                if any(w in low for w in ("credit", "402", "payment", "insufficient", "quota", "billing")) and not ABORT["on"]:
+                    ABORT["on"] = True; ABORT["why"] = "Exa says you are out of credits (or over quota)"
+                elif ABORT["streak"] >= a.stop_after_failures and not ABORT["on"]:
+                    ABORT["on"] = True; ABORT["why"] = f"{ABORT['streak']} searches in a row failed (out of credits, rate limit or network)"
+            if not ABORT["on"]: time.sleep(20)  # back off after a failure
             return f, q, r
+        with lock: ABORT["streak"] = 0
         f.write_text(f"QUERY: {q}\n\n{r}"); return f, q, None
 
     def exa_done(fut):
         f, q, err = fut.result()
         with lock:
+            if err == "ABORTED": st["aborted"] += 1; return
             st["bad" if err else "ok"] += 1; n = st["ok"] + st["bad"]
             if err and st["bad"] <= 5: print(f"  !! search failed (retried next run): {q[:60]}  {err[:70]}")
 
@@ -355,9 +368,12 @@ def main():
     if exa_ex: exa_ex.shutdown(wait=True)
     stop.set()
     if INF_FILE[0] and INF_FILE[0].exists(): INF_FILE[0].unlink()
+    if ABORT["on"]:
+        print(f"\n  STOPPED EARLY: {ABORT['why']}. Nothing was lost: finished searches are saved, failed ones are not.\n"
+              f"  Fix the cause (top up Exa, wait, or check the network), then run the same command again.\n")
     if do_search_stage:
         print(f"{st['queued']} searches {'would run' if a.dry_run else 'queued'}; "
-              f"{st['ok']} ok, {st['bad']} failed, {(time.time() - t0) / 60:.1f} min total")
+              f"{st['ok']} ok, {st['bad']} failed{(', ' + str(st['aborted']) + ' not attempted') if st['aborted'] else ''}, {(time.time() - t0) / 60:.1f} min total")
 
     if a.stage in ("all", "search", "merge"):
         # merge every organization folder in OUT, so results from earlier batches are kept
