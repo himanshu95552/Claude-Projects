@@ -37,7 +37,7 @@ CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dp
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
 VERBOSE = [False]
-SKIP_DOMAINS = set()
+SKIP_DOMAINS = {"lvradiology.com"}  # crashed the crawler three times; never fetch
 INFLIGHT = set(); INF_LOCK = threading.Lock(); INF_FILE = [None]
 
 
@@ -200,7 +200,7 @@ def do_crawl(o, d, max_pages):
         old = json.loads(sj.read_text())
         if old.get("pages"): return o["org_id"], "cached", ""
         if "403" in old.get("error", ""): return o["org_id"], 0, "blocked (403), skipped"  # do not retry blocks
-        if old.get("error", "").startswith("skipped: previous"): return o["org_id"], 0, "skipped (run stopped here before)"
+        if old.get("error", "").startswith("skipped:"): return o["org_id"], 0, "skipped (run stopped here before)"
     except Exception: pass
     dom_ = domain(o["website"])
     if dom_ in SKIP_DOMAINS or dom_.replace("www.", "") in SKIP_DOMAINS:
