@@ -15,8 +15,10 @@ SHEETS = [("People", "people_final.csv"), ("Organizations", "orgs_final.csv"),
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--final", default="final"); ap.add_argument("--out", default="imaging-leads")
+    ap.add_argument("--facilities", help="facilities CSV to add as its own sheet (not enriched)")
     a = ap.parse_args(); src = Path(a.final); out = Path(a.out).expanduser()
     files = [(n, src / f) for n, f in SHEETS if (src / f).exists()]
+    if a.facilities: files.insert(2, ("Facilities (original)", Path(a.facilities).expanduser()))
     if (src / "summary.txt").exists(): files.append(("Summary", src / "summary.txt"))
     with zipfile.ZipFile(f"{out}.zip", "w", zipfile.ZIP_DEFLATED) as z:
         for _, p in files: z.write(p, p.name)
