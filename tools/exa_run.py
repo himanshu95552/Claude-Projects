@@ -36,6 +36,7 @@ PHONE = re.compile(r"\(?\b\d{3}\)?[ .-]\d{3}[ .-]\d{4}\b")
 CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dpm|dc)\b", re.I)
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
+VERBOSE = [False]
 DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|information technology|marketing|business development|practice|lead)\b", re.I)
 
 
@@ -189,6 +190,7 @@ def do_crawl(o, d, max_pages):
         if old.get("pages"): return o["org_id"], "cached", ""
         if "403" in old.get("error", ""): return o["org_id"], 0, "blocked (403), skipped"  # do not retry blocks
     except Exception: pass
+    if VERBOSE[0]: print(f"  fetching {o['website']}", flush=True)
     info, text = crawl(o["website"], max_pages)
     sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
     return o["org_id"], len(info.get("pages", [])), info.get("error", "")
@@ -208,10 +210,12 @@ def main():
     a.add_argument("--workers", type=int, default=1, help="parallel Exa calls (try 3)")
     a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
     a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
+    a.add_argument("--verbose", action="store_true", help="print each website as it is fetched")
     a.add_argument("--search-filter", default="all", choices=["all", "dm"], help="dm = Exa-search only people whose title looks like a decision-maker")
     a.add_argument("--max-searches", type=int, default=0, help="hard cap on Exa searches in this run (0 = no cap); protects your balance")
     a = a.parse_args()
 
+    VERBOSE[0] = a.verbose
     orgs = {r["org_id"]: r for r in csv.DictReader(open(a.orgfile, newline="", encoding="utf-8"))}
     people = {}
     for r in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
