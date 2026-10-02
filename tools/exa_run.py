@@ -37,6 +37,7 @@ CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dp
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
 VERBOSE = [False]
+SKIP_DOMAINS = set()
 INFLIGHT = set(); INF_LOCK = threading.Lock(); INF_FILE = [None]
 
 
@@ -199,10 +200,13 @@ def do_crawl(o, d, max_pages):
         old = json.loads(sj.read_text())
         if old.get("pages"): return o["org_id"], "cached", ""
         if "403" in old.get("error", ""): return o["org_id"], 0, "blocked (403), skipped"  # do not retry blocks
-        if old.get("error", "").startswith("skipped:"): return o["org_id"], 0, "skipped (run stopped here before)"
+        if old.get("error", "").startswith("skipped: previous"): return o["org_id"], 0, "skipped (run stopped here before)"
     except Exception: pass
+    dom_ = domain(o["website"])
+    if dom_ in SKIP_DOMAINS or dom_.replace("www.", "") in SKIP_DOMAINS:
+        sj.write_text(json.dumps({"error": "skipped: on the skip list"})); return o["org_id"], 0, "on skip list"
     if VERBOSE[0]: print(f"  fetching {o['website']}", flush=True)
-    dom_ = domain(o["website"]); mark_inflight(dom_, True)
+    mark_inflight(dom_, True)
     info, text = crawl(o["website"], max_pages)
     mark_inflight(dom_, False)
     sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
@@ -223,12 +227,14 @@ def main():
     a.add_argument("--workers", type=int, default=1, help="parallel Exa calls (try 3)")
     a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
     a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
+    a.add_argument("--skip-domains", default="", help="comma-separated websites never to fetch, e.g. lvradiology.com")
     a.add_argument("--verbose", action="store_true", help="print each website as it is fetched")
     a.add_argument("--search-filter", default="all", choices=["all", "dm"], help="dm = Exa-search only people whose title looks like a decision-maker")
     a.add_argument("--max-searches", type=int, default=0, help="hard cap on Exa searches in this run (0 = no cap); protects your balance")
     a = a.parse_args()
 
     VERBOSE[0] = a.verbose
+    SKIP_DOMAINS.update(x.strip().lower().replace("www.", "") for x in a.skip_domains.split(",") if x.strip())
     orgs = {r["org_id"]: r for r in csv.DictReader(open(a.orgfile, newline="", encoding="utf-8"))}
     people = {}
     for r in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
