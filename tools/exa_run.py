@@ -204,7 +204,7 @@ def main():
     a.add_argument("--people", required=True); a.add_argument("--orgfile", required=True)
     a.add_argument("--out", default="exa_run_out"); a.add_argument("--stage", default="all", choices=["all", "crawl", "search", "merge"])
     a.add_argument("--offset", type=int, default=0); a.add_argument("--limit", type=int, default=0)
-    a.add_argument("--num", type=int, default=5); a.add_argument("--delay", type=float, default=3.0)
+    a.add_argument("--num", type=int, default=3, help="results per search (fewer = cheaper)"); a.add_argument("--delay", type=float, default=3.0)
     a.add_argument("--workers", type=int, default=1, help="parallel Exa calls (try 3)")
     a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
     a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
@@ -249,11 +249,10 @@ def main():
         with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
             csv.writer(f).writerows(rows)
         states = o["states"]; nm = o["org_name"]; web = o["website"]
-        if not any("linkedin" in x.lower() for x in info.get("social", [])):
-            jobs.append((d / "org-socials.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram page"))
-        if not info.get("emails") or not info.get("phones"):
-            jobs.append((d / "org-contact.txt", f"{nm} {web} contact phone email address"))
         unresolved = sum(1 for r_ in rows if r_[5] in ("needs_search", "not_searched"))
+        # one combined search for the organization's socials and contact details (instead of two)
+        if not any("linkedin" in x.lower() for x in info.get("social", [])) or not info.get("emails") or not info.get("phones"):
+            jobs.append((d / "org-info.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram website phone email contact"))
         if len(plist) < 3 or unresolved > len(plist) / 2:
             jobs.append((d / "org-staff.txt", f"{nm} {web} administrator OR manager OR director OR owner OR radiologist"))
         for p in need:
