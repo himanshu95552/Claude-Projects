@@ -15,6 +15,13 @@ ORGW = re.compile(r"\b(health|healthcare|hospital|clinic|clinics|center|centre|c
 STRONG = re.compile(r"^(M\.?D\.?|D\.?O\.?|D\.?C\.?|D\.?D\.?S\.?|D\.?M\.?D\.?|Ph\.?D\.?|FNP(-C)?|AGNP|PNP|CNM|N\.?P\.?|P\.?A\.?(-C)?|R\.?N\.?|DPM|DNP|CRNA|APRN|PT|DPT)\b", re.I)
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 PERSON = re.compile(r"^([A-Z][A-Za-z.'’\-]+(?: [A-Z][A-Za-z.'’\-]*\.?){1,3}),\s*(.+)$")
+LAST_STOP = set("""transparency inquiries inquiry estimates estimate information relations navigation account contacts contact counsel
+office opportunities listings story stories menu resources forms portal policy policies updates events news careers hours directions locations
+location services specialties procedures results insurance payment payments financial assistance coverage rights notice practices
+compliance feedback support help faq faqs testimonials reviews videos gallery education research residency fellowship program programs
+newsroom press media blog donate giving volunteer guide guides tools tour visitors patients referrals appointments statements
+questions phone fax email e-mail number admin content campus dept description requirements seeker seekers application form tool list checker estimator""".split())
+FIRST_STOP = set("general main media price job share my online quick request schedule book view learn meet our about home contact patient find".split())
 SPAM = {"Ferdi, Bali", "Gigi, Solo", "Yudi, Bandung", "Ambre, Radhey"}
 FILL = ("title", "email", "phone", "linkedin", "facebook", "instagram", "x_twitter")
 
@@ -56,6 +63,10 @@ def main(src):
                 if len(after) > 40 and not em and not r["title"]:
                     r["title"] = after[:120]; note.append("title_from_name")
                 n = before; note.append("creds_split"); orglike = False
+        w0 = n.split()
+        has_initial = any(re.fullmatch(r"[A-Z]\.?", t) for t in w0)  # "My T. Nguyen" is a person, not a label
+        if w0 and not has_initial and ((w0[-1].lower().strip(".,") in LAST_STOP and len(w0) <= 3) or (w0[0].lower() in FIRST_STOP and len(w0) <= 2)):
+            drop(r, n, "website label"); continue
         if orglike or re.search(r"\d", n):
             drop(r, n, "web/org-like name"); continue
         words = n.split()
