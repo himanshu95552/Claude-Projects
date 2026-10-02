@@ -118,8 +118,8 @@ def main():
             if r["status"] in ("confirmed_on_site", "possible_on_site"):
                 rec.update(confidence="high" if r["status"] == "confirmed_on_site" else "medium", evidence_type="org_site_crawl",
                            evidence_url=o.get("website", ""), site_context=r["site_context"][:240])
-            elif r["status"] == "not_searched":
-                rec.update(confidence="not_searched", evidence_type="not_searched")
+            elif r["status"] == "not_searched" and not any(x.startswith(f"person-{r['person_id']}-") for x in files):
+                rec.update(confidence="not_searched", evidence_type="not_searched")  # filtered out and never searched
             else:
                 f = next((x for x in files if x.startswith(f"person-{r['person_id']}-")), None)
                 if not f: rec.update(confidence="not_searched", evidence_type="search_pending")
