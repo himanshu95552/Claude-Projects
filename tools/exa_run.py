@@ -1,0 +1,235 @@
+#!/usr/bin/env python3
+"""Full-list runner: read each organization's website, then search Exa for what is missing.
+
+Stages (all resumable, safe to stop and restart):
+  1. crawl   fetch each site's team/staff/about/contact pages (parallel, free)
+  2. search  match people against the site text; Exa-search only the unresolved ones
+  3. merge   build OUT/results.csv (one row per person) and OUT/orgs.csv (one row per org)
+
+People status:  confirmed_on_site  (full name found)
+                possible_on_site   (first and last name both on the site, not adjacent)
+                needs_search       (searched via Exa)
+
+Examples
+  python3 exa_run.py --orgs ORG00081,ORG00116 --people P.csv --orgfile O.csv
+  python3 exa_run.py --orgs all --offset 0 --limit 200 --people P.csv --orgfile O.csv
+  python3 exa_run.py --orgs all --stage merge --people P.csv --orgfile O.csv
+"""
+import argparse, csv, json, re, shutil, subprocess, sys, time, urllib.parse, urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from html.parser import HTMLParser
+from pathlib import Path
+
+try:  # trust the operating system's certificates (VPNs / security software re-sign traffic)
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
+
+UA = {"User-Agent": "Mozilla/5.0 (compatible; lead-research/1.0)"}
+TEAM = re.compile(r"team|staff|physician|doctor|provider|radiolog|leader|manage|executive|our-people|meet|bio", re.I)
+MID = re.compile(r"about|who-we-are|our-", re.I)
+LOW = re.compile(r"contact|location", re.I)
+SOCIAL = re.compile(r"https?://(?:www\.)?(?:facebook|instagram|linkedin|twitter|x|youtube)\.com/[^\s\"'<>)]+", re.I)
+EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+PHONE = re.compile(r"\(?\b\d{3}\)?[ .-]\d{3}[ .-]\d{4}\b")
+CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dpm|dc)\b", re.I)
+JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
+ERR = {"msg": ""}
+
+
+class Page(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.links = []; self.text = []; self.skip = 0
+    def handle_starttag(self, t, a):
+        if t in ("script", "style"): self.skip += 1
+        if t == "a" and dict(a).get("href"): self.links.append(dict(a)["href"])
+    def handle_endtag(self, t):
+        if t in ("script", "style") and self.skip: self.skip -= 1
+    def handle_data(self, d):
+        if not self.skip and d.strip(): self.text.append(d.strip())
+
+
+def get(url):
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=15) as r:
+            if "html" not in r.headers.get("Content-Type", "html"): return ""
+            return r.read(2_000_000).decode("utf-8", "ignore")
+    except Exception as e:
+        ERR["msg"] = f"{type(e).__name__}: {e}"[:140]
+        return ""
+
+
+def parse(h):
+    p = Page(); p.feed(h); return p.links, " ".join(p.text)
+
+
+def rank(path):
+    return 0 if TEAM.search(path) else 1 if MID.search(path) else 2 if LOW.search(path) else 9
+
+
+def crawl(site, max_pages):
+    if not site: return {}, ""
+    base = site if site.startswith("http") else "https://" + site
+    html = get(base)
+    if not html and not site.startswith("http"):
+        base = "http://" + site; html = get(base)
+    if not html: return {}, ""
+    host = urllib.parse.urlparse(base).netloc.replace("www.", "")
+    raw, texts, seen = html, [parse(html)[1]], {base}
+    def cand(links, src):
+        out = []
+        for l in links:
+            u = urllib.parse.urljoin(src, l.split("#")[0].split("?")[0]); pu = urllib.parse.urlparse(u)
+            if pu.netloc.replace("www.", "") == host and u not in seen and not JUNK_EXT.search(pu.path) and rank(pu.path) < 9:
+                out.append((rank(pu.path), len(pu.path), u))
+        return sorted(set(out))
+    queue = cand(parse(html)[0], base); pages = [base]; depth2 = True
+    while queue and len(pages) < max_pages:
+        _, _, u = queue.pop(0)
+        if u in seen: continue
+        seen.add(u); h = get(u)
+        if not h: continue
+        raw += h; links, t = parse(h); texts.append(t); pages.append(u)
+        if depth2 and TEAM.search(urllib.parse.urlparse(u).path):  # follow one level into bio pages
+            queue = sorted(set(queue + cand(links, u)))
+        time.sleep(0.3)
+    full = " ".join(texts)
+    info = {"pages": pages,
+            "emails": sorted({e for e in EMAIL.findall(raw) if not JUNK_EXT.search(e)})[:20],
+            "phones": sorted(set(PHONE.findall(full)))[:20],
+            "social": sorted(set(SOCIAL.findall(raw)))[:20]}
+    return info, full
+
+
+def match(name, text):
+    """('confirmed'|'possible'|'', context)"""
+    n = CREDS.sub(" ", re.sub(r"\(.*?\)", " ", name))
+    parts = [x.strip(".,") for x in re.split(r"[\s,]+", n) if x.strip(".,")]
+    if len(parts) < 2 or not text: return "", ""
+    first, last = re.escape(parts[0]), re.escape(parts[-1])
+    m = re.search(rf"\b{first}\b.{{0,16}}\b{last}\b|\b{last}\b,\s*{first}\b", text, re.I)
+    if m: return "confirmed", text[max(0, m.start() - 80): m.end() + 140]
+    if len(text) > 2000 and re.search(rf"\b{first}\b", text, re.I) and re.search(rf"\b{last}\b", text, re.I):
+        m = re.search(rf"\b{last}\b", text, re.I)
+        return "possible", text[max(0, m.start() - 100): m.end() + 100]
+    return "", ""
+
+
+def exa(query, n, delay):
+    r = subprocess.run(["mcporter", "call", "exa.web_search_exa", f"query={query}", f"numResults={n}"],
+                       capture_output=True, text=True, timeout=120)
+    time.sleep(delay)
+    return r.stdout if r.returncode == 0 and r.stdout.strip() else f"ERROR rc={r.returncode} {r.stderr[:200]}"
+
+
+def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:50]
+
+
+def do_crawl(o, d, max_pages):
+    sj = d / "summary.json"
+    try:
+        if json.loads(sj.read_text()).get("pages"): return o["org_id"], "cached", ""
+    except Exception: pass
+    ERR["msg"] = ""
+    info, text = crawl(o["website"], max_pages)
+    sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
+    return o["org_id"], len(info.get("pages", [])), ERR["msg"]
+
+
+def main():
+    a = argparse.ArgumentParser()
+    a.add_argument("--orgs", required=True, help="'all', a comma list, or a file with one org_id per line")
+    a.add_argument("--people", required=True); a.add_argument("--orgfile", required=True)
+    a.add_argument("--out", default="exa_run_out"); a.add_argument("--stage", default="all", choices=["all", "crawl", "search", "merge"])
+    a.add_argument("--offset", type=int, default=0); a.add_argument("--limit", type=int, default=0)
+    a.add_argument("--num", type=int, default=5); a.add_argument("--delay", type=float, default=3.0)
+    a.add_argument("--workers", type=int, default=1, help="parallel Exa calls (try 3)")
+    a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
+    a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
+    a = a.parse_args()
+
+    orgs = {r["org_id"]: r for r in csv.DictReader(open(a.orgfile, newline="", encoding="utf-8"))}
+    people = {}
+    for r in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
+        people.setdefault(r["org_id"], []).append(r)
+    if a.orgs == "all": ids = sorted(orgs)
+    elif Path(a.orgs).exists(): ids = [x.strip() for x in open(a.orgs) if x.strip()]
+    else: ids = a.orgs.split(",")
+    ids = [i for i in ids if i in orgs]
+    ids = ids[a.offset: a.offset + a.limit] if a.limit else ids[a.offset:]
+    out = Path(a.out); out.mkdir(exist_ok=True)
+    for i in ids: (out / i).mkdir(exist_ok=True)
+    print(f"{len(ids)} organizations selected")
+    if not shutil.which("mcporter") and a.stage in ("all", "search") and not a.dry_run:
+        sys.exit("mcporter not found on PATH")
+
+    if a.stage in ("all", "crawl"):
+        todo = [i for i in ids if orgs[i]["website"]]
+        done = fails = 0
+        with ThreadPoolExecutor(a.crawl_workers) as ex:
+            futs = [ex.submit(do_crawl, orgs[i], out / i, a.max_pages) for i in todo]
+            for f in as_completed(futs):
+                oid, pages, err = f.result(); done += 1; fails += (pages == 0)
+                if pages == 0 and err: print(f"  !! {oid} site fetch failed: {err}")
+                if done % 25 == 0 or done == len(todo): print(f"  crawled {done}/{len(todo)}  (failed so far: {fails})")
+
+    if a.stage in ("all", "search"):
+        jobs = []
+        for oid in ids:
+            o, d = orgs[oid], out / oid
+            try: info = json.loads((d / "summary.json").read_text())
+            except Exception: info = {}
+            tf = d / "site_text.txt"; text = tf.read_text() if tf.exists() else ""
+            plist = people.get(oid, [])[: a.max_people]
+            rows, need = [], []
+            for p in plist:
+                st, ctx = match(p["name"], text)
+                status = {"confirmed": "confirmed_on_site", "possible": "possible_on_site"}.get(st, "needs_search")
+                if status == "needs_search": need.append(p)
+                rows.append([oid, o["org_name"], p["person_id"], p["name"], p["title"], status, ctx.replace("\n", " ")])
+            with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
+                csv.writer(f).writerows(rows)
+            states = o["states"]; nm = o["org_name"]; web = o["website"]
+            if not any("linkedin" in s.lower() for s in info.get("social", [])):
+                jobs.append((d / "org-socials.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram page"))
+            if not info.get("emails") or not info.get("phones"):
+                jobs.append((d / "org-contact.txt", f"{nm} {web} contact phone email address"))
+            if len(plist) < 3 or len(need) > len(plist) / 2:
+                jobs.append((d / "org-staff.txt", f"{nm} {web} administrator OR manager OR director OR owner OR radiologist"))
+            for p in need:
+                jobs.append((d / f"person-{p['person_id']}-{slug(p['name'])}.txt",
+                             f'"{p["name"]}" {p["title"] or p["credentials"] or "radiology"} {nm} {states}'))
+        jobs = [(f, q) for f, q in jobs if not f.exists()]
+        print(f"{len(jobs)} Exa searches to run  (~{len(jobs) * a.delay / 60 / max(a.workers, 1):.0f} min)")
+        if not a.dry_run:
+            def run(j):
+                f, q = j; r = exa(q, a.num, a.delay)
+                if r.startswith("ERROR"): return f, q, r
+                f.write_text(f"QUERY: {q}\n\n{r}"); return f, q, None
+            ok = bad = 0
+            with ThreadPoolExecutor(a.workers) as ex:
+                for f, q, err in ex.map(run, jobs):
+                    if err: bad += 1; print(f"  !! failed (retried next run): {q[:70]}  {err[:80]}")
+                    else: ok += 1
+                    if (ok + bad) % 25 == 0: print(f"  searched {ok + bad}/{len(jobs)}  (failed: {bad})")
+            print(f"searches done: {ok} ok, {bad} failed")
+
+    if a.stage in ("all", "search", "merge"):
+        with open(out / "results.csv", "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f); w.writerow(["org_id", "org_name", "person_id", "name", "input_title", "status", "site_context"])
+            for oid in ids:
+                pf = out / oid / "people_status.csv"
+                if pf.exists(): w.writerows(csv.reader(open(pf, newline="", encoding="utf-8")))
+        with open(out / "orgs.csv", "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f); w.writerow(["org_id", "org_name", "website", "site_pages", "emails", "phones", "social"])
+            for oid in ids:
+                try: s = json.loads((out / oid / "summary.json").read_text())
+                except Exception: s = {}
+                w.writerow([oid, orgs[oid]["org_name"], orgs[oid]["website"], len(s.get("pages", [])),
+                            "; ".join(s.get("emails", [])), "; ".join(s.get("phones", [])), "; ".join(s.get("social", []))])
+        print(f"wrote {out/'results.csv'} and {out/'orgs.csv'}")
+
+
+if __name__ == "__main__":
+    main()
