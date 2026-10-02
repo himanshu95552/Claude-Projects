@@ -124,7 +124,10 @@ def main():
                 f = next((x for x in files if x.startswith(f"person-{r['person_id']}-")), None)
                 if not f: rec.update(confidence="not_searched", evidence_type="search_pending")
                 else:
-                    sc = score_person(open(d / f, errors="ignore").read(), r, o)
+                    raw = open(d / f, errors="ignore").read()
+                    if "Title:" not in raw and re.search(r"rate limit|api key|exa", raw, re.I):  # Exa refused the search
+                        rec.update(confidence="not_searched", evidence_type="search_refused_redo"); stat[rec["confidence"]] += 1; people_out.append(rec); continue
+                    sc = score_person(raw, r, o)
                     rec.update(confidence=CONF[sc["cls"]], evidence_type=sc["cls"], evidence_url=sc.get("evidence_url", ""),
                                linkedin_url=sc.get("linkedin_url", ""), linkedin_headline=sc.get("headline", ""),
                                linkedin_unverified=sc.get("linkedin_unverified", ""),

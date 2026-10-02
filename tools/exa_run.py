@@ -144,6 +144,8 @@ def exa(query, n, delay):
         r = subprocess.run(["mcporter", "call", "exa.web_search_exa", f"query={query}", f"numResults={n}"],
                            capture_output=True, text=True, timeout=120)
         out = r.stdout if r.returncode == 0 and r.stdout.strip() else f"ERROR rc={r.returncode} {r.stderr[:200]}"
+        if not out.startswith("ERROR") and "Title:" not in out and not re.search(r"no (search )?results", out, re.I):
+            out = f"ERROR unexpected reply (no results): {out.strip()[:160]}"  # e.g. Exa's free-tier rate-limit notice
     except Exception as e:
         out = f"ERROR {type(e).__name__}: {e}"[:200]
     time.sleep(delay)
@@ -302,7 +304,7 @@ def main():
             low = r.lower()
             with lock:
                 ABORT["streak"] += 1
-                if any(w in low for w in ("credit", "402", "payment", "insufficient", "quota", "billing")) and not ABORT["on"]:
+                if any(w in low for w in ("credit", "402", "payment", "insufficient", "quota", "billing", "rate limit", "api key", "exaapikey")) and not ABORT["on"]:
                     ABORT["on"] = True; ABORT["why"] = "Exa says you are out of credits (or over quota)"
                 elif ABORT["streak"] >= a.stop_after_failures and not ABORT["on"]:
                     ABORT["on"] = True; ABORT["why"] = f"{ABORT['streak']} searches in a row failed (out of credits, rate limit or network)"
