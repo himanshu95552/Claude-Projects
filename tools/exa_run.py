@@ -36,6 +36,7 @@ PHONE = re.compile(r"\(?\b\d{3}\)?[ .-]\d{3}[ .-]\d{4}\b")
 CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dpm|dc)\b", re.I)
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
+DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|information technology|marketing|business development|practice|lead)\b", re.I)
 
 
 class Page(HTMLParser):
@@ -207,6 +208,8 @@ def main():
     a.add_argument("--workers", type=int, default=1, help="parallel Exa calls (try 3)")
     a.add_argument("--crawl-workers", type=int, default=8); a.add_argument("--max-pages", type=int, default=12)
     a.add_argument("--max-people", type=int, default=40); a.add_argument("--dry-run", action="store_true")
+    a.add_argument("--search-filter", default="all", choices=["all", "dm"], help="dm = Exa-search only people whose title looks like a decision-maker")
+    a.add_argument("--max-searches", type=int, default=0, help="hard cap on Exa searches in this run (0 = no cap); protects your balance")
     a = a.parse_args()
 
     orgs = {r["org_id"]: r for r in csv.DictReader(open(a.orgfile, newline="", encoding="utf-8"))}
@@ -239,7 +242,9 @@ def main():
         for p in plist:
             m, ctx = match(p["name"], text)
             status = {"confirmed": "confirmed_on_site", "possible": "possible_on_site"}.get(m, "needs_search")
-            if status == "needs_search": need.append(p)
+            if status == "needs_search":
+                if a.search_filter == "dm" and not DM.search(p["title"] or ""): status = "not_searched"
+                else: need.append(p)
             rows.append([oid, o["org_name"], p["person_id"], p["name"], p["title"], status, ctx.replace("\n", " ")])
         with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
             csv.writer(f).writerows(rows)
@@ -248,7 +253,8 @@ def main():
             jobs.append((d / "org-socials.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram page"))
         if not info.get("emails") or not info.get("phones"):
             jobs.append((d / "org-contact.txt", f"{nm} {web} contact phone email address"))
-        if len(plist) < 3 or len(need) > len(plist) / 2:
+        unresolved = sum(1 for r_ in rows if r_[5] in ("needs_search", "not_searched"))
+        if len(plist) < 3 or unresolved > len(plist) / 2:
             jobs.append((d / "org-staff.txt", f"{nm} {web} administrator OR manager OR director OR owner OR radiologist"))
         for p in need:
             jobs.append((d / f"person-{p['person_id']}-{slug(p['name'])}.txt",
@@ -283,6 +289,9 @@ def main():
 
     def queue_org(oid):
         jobs = build_jobs(oid)
+        if a.max_searches:
+            jobs = jobs[: max(a.max_searches - st["queued"], 0)]
+            if len(jobs) == 0 and not st["capped"]: st["capped"] = 1; print(f"  cap of {a.max_searches} searches reached; remaining organizations are not searched this run", flush=True)
         with lock: st["queued"] += len(jobs)
         if exa_ex:
             for j in jobs: exa_ex.submit(run_job, j).add_done_callback(exa_done)
