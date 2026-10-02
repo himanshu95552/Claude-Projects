@@ -126,10 +126,14 @@ def match(name, text):
 
 
 def exa(query, n, delay):
-    r = subprocess.run(["mcporter", "call", "exa.web_search_exa", f"query={query}", f"numResults={n}"],
-                       capture_output=True, text=True, timeout=120)
+    try:
+        r = subprocess.run(["mcporter", "call", "exa.web_search_exa", f"query={query}", f"numResults={n}"],
+                           capture_output=True, text=True, timeout=120)
+        out = r.stdout if r.returncode == 0 and r.stdout.strip() else f"ERROR rc={r.returncode} {r.stderr[:200]}"
+    except Exception as e:
+        out = f"ERROR {type(e).__name__}: {e}"[:200]
     time.sleep(delay)
-    return r.stdout if r.returncode == 0 and r.stdout.strip() else f"ERROR rc={r.returncode} {r.stderr[:200]}"
+    return out
 
 
 def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:50]
@@ -220,9 +224,20 @@ def main():
         f, q, err = fut.result()
         with lock:
             st["bad" if err else "ok"] += 1; n = st["ok"] + st["bad"]
-            if err: print(f"  !! failed (retried next run): {q[:70]}  {err[:80]}")
-            if n % 25 == 0:
-                print(f"  searched {n}/{st['queued']} queued  failed {st['bad']}  {n / max((time.time() - t0) / 60, 0.01):.1f}/min")
+            if err and st["bad"] <= 5: print(f"  !! search failed (retried next run): {q[:60]}  {err[:70]}")
+
+    stop = threading.Event(); crawl_err = collections.Counter(); crawl_state = {"done": 0, "total": 0}
+
+    def ticker():
+        while not stop.wait(15):
+            with lock:
+                n = st["ok"] + st["bad"]; mins = max((time.time() - t0) / 60, 0.01); rate = n / mins
+                left = max(st["queued"] - n, 0)
+                eta = f"ETA ~{left / rate:.0f} min" if rate > 0 and n >= 5 else "ETA ..."
+                crawl = f"sites {crawl_state['done']}/{crawl_state['total']}" if crawl_state["total"] else "sites -"
+                print(f"  [{mins:4.1f} min] {crawl} | searches {n}/{st['queued']} queued ({rate:.0f}/min, {eta}) | search failures {st['bad']}", flush=True)
+
+    threading.Thread(target=ticker, daemon=True).start()
 
     def queue_org(oid):
         jobs = build_jobs(oid)
@@ -237,6 +252,7 @@ def main():
             elif do_search_stage: queue_org(i)
         todo = [v[0] for v in by_dom.values()]
         print(f"  {len(todo)} distinct websites to crawl ({sum(len(v) - 1 for v in by_dom.values())} organizations share a site)")
+        crawl_state["total"] = len(todo)
         done = fails = 0
         with ThreadPoolExecutor(a.crawl_workers) as ex:
             futs = {ex.submit(do_crawl, orgs[i], out / i, a.max_pages): i for i in todo}
@@ -246,13 +262,16 @@ def main():
                 for sib in by_dom[dom][1:]:  # share the result with organizations on the same site
                     for fn in ("summary.json", "site_text.txt"):
                         if (out / oid / fn).exists(): shutil.copyfile(out / oid / fn, out / sib / fn)
-                if pages == 0 and err: print(f"  !! {oid} ({dom}) {err}")
+                if pages == 0:
+                    crawl_err["blocked by site (403)" if "403" in err else (err.split(":")[0] or "other")[:30]] += 1
+                crawl_state["done"] = done
                 if do_search_stage:  # start searching this organization right away
                     for member in by_dom[dom]: queue_org(member)
-                if done % 25 == 0 or done == len(todo): print(f"  crawled {done}/{len(todo)}  (failed so far: {fails})")
+        print(f"  sites done: {done - fails} loaded, {fails} not readable {dict(crawl_err)}  (those go to Exa search)")
     elif do_search_stage:
         for oid in ids: queue_org(oid)
     if exa_ex: exa_ex.shutdown(wait=True)
+    stop.set()
     if do_search_stage:
         print(f"{st['queued']} searches {'would run' if a.dry_run else 'queued'}; "
               f"{st['ok']} ok, {st['bad']} failed, {(time.time() - t0) / 60:.1f} min total")
