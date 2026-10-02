@@ -37,6 +37,16 @@ CREDS = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|rn|rt|dr\.?|np|pa-c|fnp-c|dp
 JUNK_EXT = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js|pdf|zip)$", re.I)
 ERR = {"msg": ""}
 VERBOSE = [False]
+INFLIGHT = set(); INF_LOCK = threading.Lock(); INF_FILE = [None]
+
+
+def mark_inflight(dom, on):
+    """Record which websites are being fetched, so a run that dies can skip them next time."""
+    if not INF_FILE[0]: return
+    with INF_LOCK:
+        (INFLIGHT.add if on else INFLIGHT.discard)(dom)
+        INF_FILE[0].write_text("\n".join(sorted(INFLIGHT)))
+
 DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|information technology|marketing|business development|practice|lead)\b", re.I)
 
 
@@ -189,9 +199,12 @@ def do_crawl(o, d, max_pages):
         old = json.loads(sj.read_text())
         if old.get("pages"): return o["org_id"], "cached", ""
         if "403" in old.get("error", ""): return o["org_id"], 0, "blocked (403), skipped"  # do not retry blocks
+        if old.get("error", "").startswith("skipped:"): return o["org_id"], 0, "skipped (run stopped here before)"
     except Exception: pass
     if VERBOSE[0]: print(f"  fetching {o['website']}", flush=True)
+    dom_ = domain(o["website"]); mark_inflight(dom_, True)
     info, text = crawl(o["website"], max_pages)
+    mark_inflight(dom_, False)
     sj.write_text(json.dumps(info, indent=1)); (d / "site_text.txt").write_text(text)
     return o["org_id"], len(info.get("pages", [])), info.get("error", "")
 
@@ -226,6 +239,15 @@ def main():
     ids = [i for i in ids if i in orgs]
     ids = ids[a.offset: a.offset + a.limit] if a.limit else ids[a.offset:]
     out = Path(a.out); out.mkdir(exist_ok=True)
+    INF_FILE[0] = out / "_inflight.txt"
+    if INF_FILE[0].exists() and INF_FILE[0].read_text().strip():
+        stuck = [x for x in INF_FILE[0].read_text().split() if x]
+        print(f"  previous run stopped while fetching: {', '.join(stuck)}  -> skipping these sites (list them to me)")
+        for oid_, o_ in orgs.items():
+            if domain(o_["website"]) in stuck:
+                (out / oid_).mkdir(exist_ok=True)
+                (out / oid_ / "summary.json").write_text(json.dumps({"error": "skipped: previous run stopped while fetching this site"}))
+        INF_FILE[0].write_text("")
     for i in ids: (out / i).mkdir(exist_ok=True)
     print(f"{len(ids)} organizations selected")
     if not shutil.which("mcporter") and a.stage in ("all", "search") and not a.dry_run:
@@ -326,6 +348,7 @@ def main():
         for oid in ids: queue_org(oid)
     if exa_ex: exa_ex.shutdown(wait=True)
     stop.set()
+    if INF_FILE[0] and INF_FILE[0].exists(): INF_FILE[0].unlink()
     if do_search_stage:
         print(f"{st['queued']} searches {'would run' if a.dry_run else 'queued'}; "
               f"{st['ok']} ok, {st['bad']} failed, {(time.time() - t0) / 60:.1f} min total")
