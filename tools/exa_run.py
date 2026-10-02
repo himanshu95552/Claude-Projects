@@ -15,7 +15,7 @@ Examples
   python3 exa_run.py --orgs all --offset 0 --limit 200 --people P.csv --orgfile O.csv
   python3 exa_run.py --orgs all --stage merge --people P.csv --orgfile O.csv
 """
-import argparse, csv, json, re, shutil, subprocess, sys, time, urllib.parse, urllib.request
+import argparse, collections, csv, json, re, shutil, subprocess, sys, threading, time, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from html.parser import HTMLParser
 from pathlib import Path
@@ -178,10 +178,63 @@ def main():
     if not shutil.which("mcporter") and a.stage in ("all", "search") and not a.dry_run:
         sys.exit("mcporter not found on PATH")
 
-    if a.stage in ("all", "crawl"):
+    do_crawl_stage = a.stage in ("all", "crawl")
+    do_search_stage = a.stage in ("all", "search")
+    lock = threading.Lock(); st = collections.Counter(); t0 = time.time()
+    exa_ex = ThreadPoolExecutor(a.workers) if do_search_stage and not a.dry_run else None
+
+    def build_jobs(oid):
+        o, d = orgs[oid], out / oid
+        try: info = json.loads((d / "summary.json").read_text())
+        except Exception: info = {}
+        tf = d / "site_text.txt"; text = tf.read_text() if tf.exists() else ""
+        plist = people.get(oid, [])[: a.max_people]
+        rows, need, jobs = [], [], []
+        for p in plist:
+            m, ctx = match(p["name"], text)
+            status = {"confirmed": "confirmed_on_site", "possible": "possible_on_site"}.get(m, "needs_search")
+            if status == "needs_search": need.append(p)
+            rows.append([oid, o["org_name"], p["person_id"], p["name"], p["title"], status, ctx.replace("\n", " ")])
+        with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerows(rows)
+        states = o["states"]; nm = o["org_name"]; web = o["website"]
+        if not any("linkedin" in x.lower() for x in info.get("social", [])):
+            jobs.append((d / "org-socials.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram page"))
+        if not info.get("emails") or not info.get("phones"):
+            jobs.append((d / "org-contact.txt", f"{nm} {web} contact phone email address"))
+        if len(plist) < 3 or len(need) > len(plist) / 2:
+            jobs.append((d / "org-staff.txt", f"{nm} {web} administrator OR manager OR director OR owner OR radiologist"))
+        for p in need:
+            jobs.append((d / f"person-{p['person_id']}-{slug(p['name'])}.txt",
+                         f'"{p["name"]}" {p["title"] or p["credentials"] or "radiology"} {nm} {states}'))
+        return [(f, q) for f, q in jobs if not f.exists()]
+
+    def run_job(j):
+        f, q = j; r = exa(q, a.num, a.delay)
+        if r.startswith("ERROR"):
+            time.sleep(20)  # back off after a failure (rate limit or network blip)
+            return f, q, r
+        f.write_text(f"QUERY: {q}\n\n{r}"); return f, q, None
+
+    def exa_done(fut):
+        f, q, err = fut.result()
+        with lock:
+            st["bad" if err else "ok"] += 1; n = st["ok"] + st["bad"]
+            if err: print(f"  !! failed (retried next run): {q[:70]}  {err[:80]}")
+            if n % 25 == 0:
+                print(f"  searched {n}/{st['queued']} queued  failed {st['bad']}  {n / max((time.time() - t0) / 60, 0.01):.1f}/min")
+
+    def queue_org(oid):
+        jobs = build_jobs(oid)
+        with lock: st["queued"] += len(jobs)
+        if exa_ex:
+            for j in jobs: exa_ex.submit(run_job, j).add_done_callback(exa_done)
+
+    if do_crawl_stage:
         by_dom = {}
         for i in ids:
             if orgs[i]["website"]: by_dom.setdefault(domain(orgs[i]["website"]), []).append(i)
+            elif do_search_stage: queue_org(i)
         todo = [v[0] for v in by_dom.values()]
         print(f"  {len(todo)} distinct websites to crawl ({sum(len(v) - 1 for v in by_dom.values())} organizations share a site)")
         done = fails = 0
@@ -194,63 +247,32 @@ def main():
                     for fn in ("summary.json", "site_text.txt"):
                         if (out / oid / fn).exists(): shutil.copyfile(out / oid / fn, out / sib / fn)
                 if pages == 0 and err: print(f"  !! {oid} ({dom}) {err}")
+                if do_search_stage:  # start searching this organization right away
+                    for member in by_dom[dom]: queue_org(member)
                 if done % 25 == 0 or done == len(todo): print(f"  crawled {done}/{len(todo)}  (failed so far: {fails})")
-
-    if a.stage in ("all", "search"):
-        jobs = []
-        for oid in ids:
-            o, d = orgs[oid], out / oid
-            try: info = json.loads((d / "summary.json").read_text())
-            except Exception: info = {}
-            tf = d / "site_text.txt"; text = tf.read_text() if tf.exists() else ""
-            plist = people.get(oid, [])[: a.max_people]
-            rows, need = [], []
-            for p in plist:
-                st, ctx = match(p["name"], text)
-                status = {"confirmed": "confirmed_on_site", "possible": "possible_on_site"}.get(st, "needs_search")
-                if status == "needs_search": need.append(p)
-                rows.append([oid, o["org_name"], p["person_id"], p["name"], p["title"], status, ctx.replace("\n", " ")])
-            with open(d / "people_status.csv", "w", newline="", encoding="utf-8") as f:
-                csv.writer(f).writerows(rows)
-            states = o["states"]; nm = o["org_name"]; web = o["website"]
-            if not any("linkedin" in s.lower() for s in info.get("social", [])):
-                jobs.append((d / "org-socials.txt", f"{nm} {web} {states} official LinkedIn Facebook Instagram page"))
-            if not info.get("emails") or not info.get("phones"):
-                jobs.append((d / "org-contact.txt", f"{nm} {web} contact phone email address"))
-            if len(plist) < 3 or len(need) > len(plist) / 2:
-                jobs.append((d / "org-staff.txt", f"{nm} {web} administrator OR manager OR director OR owner OR radiologist"))
-            for p in need:
-                jobs.append((d / f"person-{p['person_id']}-{slug(p['name'])}.txt",
-                             f'"{p["name"]}" {p["title"] or p["credentials"] or "radiology"} {nm} {states}'))
-        jobs = [(f, q) for f, q in jobs if not f.exists()]
-        print(f"{len(jobs)} Exa searches to run  (~{len(jobs) * a.delay / 60 / max(a.workers, 1):.0f} min)")
-        if not a.dry_run:
-            def run(j):
-                f, q = j; r = exa(q, a.num, a.delay)
-                if r.startswith("ERROR"): return f, q, r
-                f.write_text(f"QUERY: {q}\n\n{r}"); return f, q, None
-            ok = bad = 0
-            with ThreadPoolExecutor(a.workers) as ex:
-                for f, q, err in ex.map(run, jobs):
-                    if err: bad += 1; print(f"  !! failed (retried next run): {q[:70]}  {err[:80]}")
-                    else: ok += 1
-                    if (ok + bad) % 25 == 0: print(f"  searched {ok + bad}/{len(jobs)}  (failed: {bad})")
-            print(f"searches done: {ok} ok, {bad} failed")
+    elif do_search_stage:
+        for oid in ids: queue_org(oid)
+    if exa_ex: exa_ex.shutdown(wait=True)
+    if do_search_stage:
+        print(f"{st['queued']} searches {'would run' if a.dry_run else 'queued'}; "
+              f"{st['ok']} ok, {st['bad']} failed, {(time.time() - t0) / 60:.1f} min total")
 
     if a.stage in ("all", "search", "merge"):
+        # merge every organization folder in OUT, so results from earlier batches are kept
+        all_ids = sorted(p.name for p in out.iterdir() if p.is_dir() and p.name in orgs)
         with open(out / "results.csv", "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f); w.writerow(["org_id", "org_name", "person_id", "name", "input_title", "status", "site_context"])
-            for oid in ids:
+            for oid in all_ids:
                 pf = out / oid / "people_status.csv"
                 if pf.exists(): w.writerows(csv.reader(open(pf, newline="", encoding="utf-8")))
         with open(out / "orgs.csv", "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f); w.writerow(["org_id", "org_name", "website", "site_pages", "emails", "phones", "social"])
-            for oid in ids:
+            for oid in all_ids:
                 try: s = json.loads((out / oid / "summary.json").read_text())
                 except Exception: s = {}
                 w.writerow([oid, orgs[oid]["org_name"], orgs[oid]["website"], len(s.get("pages", [])),
                             "; ".join(s.get("emails", [])), "; ".join(s.get("phones", [])), "; ".join(s.get("social", []))])
-        print(f"wrote {out/'results.csv'} and {out/'orgs.csv'}")
+        print(f"wrote {out/'results.csv'} and {out/'orgs.csv'} ({len(all_ids)} organizations so far)")
 
 
 if __name__ == "__main__":
