@@ -136,6 +136,48 @@ def exa(query, n, delay):
     return out
 
 
+SOC_SKIP = {"facebook": {"sharer", "sharer.php", "share", "share.php", "tr", "plugins", "dialog", "2008", "login", "login.php", "policies", "help", "watch", "hashtag", "events", "groups", "pages", "tr.php", "l.php", "home.php", "legal", "privacy", "about"},
+            "instagram": {"accounts", "p", "reel", "reels", "explore", "stories", "tv", "about", "legal"},
+            "x": {"share", "intent", "home", "search", "i", "hashtag", "login", "privacy", "tos", "settings", "widgets.js"},
+            "youtube": set()}
+ROLE_MAIL = re.compile(r"^(info|contact|contactus|office|admin|administrator|billing|scheduling|schedule|appointments?|marketing|hr|careers?|jobs|media|press|privacy|compliance|support|service|services|records|medrec\w*|referrals?|hello|mail|frontdesk|reception|webmaster|noreply|no-reply|sales|help|feedback|customerservice|patientservices|orders|intake|registration|radiology|imaging|mri|xray|[a-z]*billing|[a-z]*scheduling|estimatedcost|pricing)@", re.I)
+JUNK_MAIL = re.compile(r"(sentry\.io|wixpress|example\.com|domain\.com|yoursite|email\.com$|\.(png|jpe?g|gif|svg|webp)$)|^[0-9a-f]{20,}@", re.I)
+
+
+def clean_social(urls):
+    """Pick one profile URL per platform from a raw list of social links."""
+    import html as _h, collections as _c
+    pick = {k: _c.Counter() for k in ("linkedin", "facebook", "instagram", "x", "youtube")}
+    for u in urls:
+        u = _h.unescape(_h.unescape(u)).split("&quot")[0].split("&#34")[0].strip(" \"'\\,;}{)")
+        m = re.match(r"https?://(?:www\.|m\.)?([a-z]+)\.com/(.+)$", u, re.I)
+        if not m: continue
+        host, path = m.group(1).lower(), m.group(2)
+        seg = path.split("?")[0].strip("/").split("/")
+        if host == "linkedin" and len(seg) >= 2 and seg[0] in ("company", "showcase", "in", "school") and seg[1] and "share" not in seg[1]:
+            pick["linkedin"]["https://www.linkedin.com/" + "/".join(seg[:2])] += 1
+        elif host == "facebook" and seg and seg[0].lower() not in SOC_SKIP["facebook"] and not re.search(r"[<>{}]", path):
+            if seg[0] == "profile.php" and "id=" in path: pick["facebook"]["https://www.facebook.com/profile.php?id=" + re.search(r"id=(\d+)", path).group(1)] += 1
+            elif seg[0] in ("p", "people", "pages") and len(seg) >= 2: pick["facebook"]["https://www.facebook.com/" + "/".join(seg[:3 if seg[0] == "pages" and len(seg) > 2 else 2])] += 1
+            elif re.fullmatch(r"[A-Za-z0-9.\-]{3,}", seg[0]): pick["facebook"]["https://www.facebook.com/" + seg[0]] += 1
+        elif host == "instagram" and seg and seg[0].lower() not in SOC_SKIP["instagram"] and re.fullmatch(r"[A-Za-z0-9._]{2,30}", seg[0]):
+            pick["instagram"]["https://www.instagram.com/" + seg[0]] += 1
+        elif host in ("twitter", "x") and seg and seg[0].lower() not in SOC_SKIP["x"] and re.fullmatch(r"@?[A-Za-z0-9_]{2,15}", seg[0]):
+            pick["x"]["https://x.com/" + seg[0].lstrip("@")] += 1
+        elif host == "youtube" and seg and (seg[0].startswith("@") or (seg[0] in ("channel", "c", "user") and len(seg) > 1)):
+            pick["youtube"]["https://www.youtube.com/" + "/".join(seg[:2] if seg[0] in ("channel", "c", "user") else seg[:1])] += 1
+    return {k: (v.most_common(1)[0][0] if v else "") for k, v in pick.items()}
+
+
+def split_emails(emails):
+    named, role = [], []
+    for e in emails:
+        e = e.strip().strip(".,;")
+        if not e or JUNK_MAIL.search(e) or e.count("@") != 1: continue
+        (role if ROLE_MAIL.match(e) else named).append(e.lower())
+    return sorted(set(named)), sorted(set(role))
+
+
 def slug(s): return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:50]
 
 
@@ -285,12 +327,13 @@ def main():
                 pf = out / oid / "people_status.csv"
                 if pf.exists(): w.writerows(csv.reader(open(pf, newline="", encoding="utf-8")))
         with open(out / "orgs.csv", "w", newline="", encoding="utf-8") as f:
-            w = csv.writer(f); w.writerow(["org_id", "org_name", "website", "site_pages", "emails", "phones", "social"])
+            w = csv.writer(f); w.writerow(["org_id", "org_name", "website", "site_pages", "linkedin", "facebook", "instagram", "x", "youtube", "emails_named", "emails_role", "phones"])
             for oid in all_ids:
                 try: s = json.loads((out / oid / "summary.json").read_text())
                 except Exception: s = {}
-                w.writerow([oid, orgs[oid]["org_name"], orgs[oid]["website"], len(s.get("pages", [])),
-                            "; ".join(s.get("emails", [])), "; ".join(s.get("phones", [])), "; ".join(s.get("social", []))])
+                soc = clean_social(s.get("social", [])); named, role = split_emails(s.get("emails", []))
+                w.writerow([oid, orgs[oid]["org_name"], orgs[oid]["website"], len(s.get("pages", [])), soc["linkedin"], soc["facebook"],
+                            soc["instagram"], soc["x"], soc["youtube"], "; ".join(named), "; ".join(role), "; ".join(s.get("phones", []))])
         print(f"wrote {out/'results.csv'} and {out/'orgs.csv'} ({len(all_ids)} organizations so far)")
 
 
