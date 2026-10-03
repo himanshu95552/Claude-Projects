@@ -10,7 +10,7 @@ Output columns: person_id, org_id, name, linkedin_url, work_email, domain_matche
 organization's website: yes / no), note. Rows already in --out are skipped on re-run.
 
 ASSUMPTIONS (verify with the first run): POST https://api.crustdata.com/person/enrich, headers Authorization: Bearer <key>,
-x-api-version: 2025-11-01, body {professional_network_profile_urls: [<=25], fields: ["contact.business_email"]}.
+x-api-version: 2025-11-01, body {professional_network_profile_urls: [<=25], fields: ["contact.business_emails"]}.
 Any API error text is printed so the field name can be corrected quickly. The first raw reply is saved to <out>.raw.json.
 """
 import argparse, csv, json, os, re, sys, time, urllib.error, urllib.request
@@ -49,7 +49,7 @@ def flatten(v):
 
 
 def call(urls, key, verified):
-    body = {"professional_network_profile_urls": urls, "fields": ["contact.business_email"]}
+    body = {"professional_network_profile_urls": urls, "fields": ["contact.business_emails"]}
     req = urllib.request.Request(URL, data=json.dumps(body).encode(), method="POST",
         headers={"Authorization": f"Bearer {key}", "x-api-version": "2025-11-01", "Content-Type": "application/json"})
     try:
