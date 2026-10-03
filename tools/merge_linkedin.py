@@ -79,6 +79,15 @@ def main():
         cnt[row["linkedin_how"]] += 1; out.append(row)
     with open(a.out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0])); w.writeheader(); w.writerows(out)
+    # review file: everything a person should look at, with the website so each can be checked in seconds
+    web = {o["org_id"]: o["website"] for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
+    rev = [dict(r, website=web.get(r["org_id"], "")) for r in out if r["linkedin_how"] in ("needs_review", "site_non_company_page")]
+    rp = re.sub(r"[^/]*$", "orgs_linkedin_review.csv", a.out)
+    with open(rp, "w", newline="", encoding="utf-8") as f:
+        cols = ["org_id", "org_name", "website", "linkedin_final", "linkedin_other", "crustdata_name", "linkedin_how", "decision"]
+        w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore"); w.writeheader()
+        for r in rev: r["decision"] = ""; w.writerow(r)
+    print(f"review file: {len(rev)} organizations -> {rp}")
     have = sum(1 for r in out if r["linkedin_final"])
     print(dict(cnt)); print(f"organizations with a LinkedIn link: {have}/{len(out)} ({have * 100 // len(out)}%)  -> {a.out}")
 
