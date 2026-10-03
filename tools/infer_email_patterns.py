@@ -32,9 +32,16 @@ def local_domain(e):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--orgs", required=True)
-    ap.add_argument("--out", required=True); a = ap.parse_args()
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--extra-emails", default="", help="work_emails.csv from crustdata_work_email.py: its emails (domain_matches_org = yes) count as evidence and as known emails")
+    a = ap.parse_args()
     orgs = {o["org_id"]: o for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     ppl = list(csv.DictReader(open(a.people, newline="", encoding="utf-8")))
+    if a.extra_emails and __import__("os").path.exists(a.extra_emails):
+        known = {r["person_id"]: r["work_email"] for r in csv.DictReader(open(a.extra_emails, newline="", encoding="utf-8"))
+                 if r.get("work_email") and r.get("domain_matches_org") == "yes"}
+        for p in ppl:
+            if p["person_id"] in known and not p.get("published_email"): p["published_email"] = known[p["person_id"]]
     by_org = collections.defaultdict(list)
     for p in ppl: by_org[p["org_id"]].append(p)
     out, stats = [], collections.Counter()
