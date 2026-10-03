@@ -6,7 +6,7 @@
 How: for each organization, look at the named business emails we actually found (a person's published_email, plus the
 organization's emails_named when the part before @ fits one of our people's names). If they agree on one pattern
 (first.last, flast, firstl, ...), apply it to the other people at that organization.
-Every row is INFERRED and UNVERIFIED. Verify before sending (see notes in the chat: a verification service, or
+Every row is INFERRED and UNVERIFIED. Also writes <out>_to_verify_all.csv and <out>_to_verify_decision_makers.csv (one 'email' column) for a verification service. Verify before sending (see notes in the chat: a verification service, or
 Crustdata's reverse-email lookup). Domains where inference fails or patterns conflict are skipped.
 """
 import argparse, csv, collections, re
@@ -66,6 +66,14 @@ def main():
     if out:
         with open(a.out, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=list(out[0])); w.writeheader(); w.writerows(out)
+        base = re.sub(r"\.csv$", "", a.out)
+        DMX = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|practice|lead|radiologist)\b", re.I)
+        title = {p["person_id"]: (p.get("title_final") or p.get("listed_title") or p.get("title") or "") for p in ppl}
+        for suffix, rows in (("_to_verify_all.csv", out), ("_to_verify_decision_makers.csv", [r for r in out if DMX.search(title.get(r["person_id"], ""))])):
+            em = sorted({r["inferred_email"] for r in rows})
+            with open(base + suffix, "w", newline="", encoding="utf-8") as f:
+                w = csv.writer(f); w.writerow(["email"]); w.writerows([[e] for e in em])
+            print(f"upload list: {len(em)} unique emails -> {base + suffix}")
     print(dict(stats), f"-> {len(out)} inferred emails -> {a.out}")
 
 

@@ -4,7 +4,7 @@ Business email only: personal emails and phone numbers are never requested, and 
 Cost: roughly 1 credit per person found (+0.5 if --verified). Start with --limit 20. Needs a plan that allows contact data.
 
   read -s CRUSTDATA_KEY; export CRUSTDATA_KEY
-  python3 crustdata_work_email.py --people final/people_with_crustdata.csv --orgs final/orgs_final.csv --out final/work_emails.csv --limit 20
+  python3 crustdata_work_email.py --people final/people_with_crustdata.csv --orgs final/orgs_final.csv --out final/work_emails.csv --limit 20   # add --decision-makers-only for the full run
 
 Output columns: person_id, org_id, name, linkedin_url, work_email, domain_matches_org (does the email's domain match the
 organization's website: yes / no), note. Rows already in --out are skipped on re-run.
@@ -22,6 +22,7 @@ except ImportError:
 
 URL = "https://api.crustdata.com/person/enrich"
 EMAIL = re.compile(r"^[A-Za-z0-9._%+'-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|information technology|marketing|business development|practice|lead|medical director|radiologist)\b", re.I)
 dom = lambda u: re.sub(r"^https?://(www\.)?", "", (u or "").strip().lower()).split("/")[0]
 
 
@@ -60,6 +61,7 @@ def call(urls, key, verified):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--orgs", required=True)
     ap.add_argument("--out", required=True); ap.add_argument("--limit", type=int, default=20, help="people to look up (0 = all)")
+    ap.add_argument("--decision-makers-only", action="store_true", help="only people whose title looks like a decision-maker")
     ap.add_argument("--verified", action="store_true", help="ask for deliverability-checked emails only (costs 0.5 more per hit)")
     a = ap.parse_args()
     key = os.environ.get("CRUSTDATA_KEY") or sys.exit("set CRUSTDATA_KEY (read -s CRUSTDATA_KEY; export CRUSTDATA_KEY)")
@@ -68,6 +70,10 @@ def main():
     if os.path.exists(a.out): done = {r["person_id"] for r in csv.DictReader(open(a.out, newline="", encoding="utf-8"))}
     todo = [p for p in csv.DictReader(open(a.people, newline="", encoding="utf-8"))
             if (p.get("linkedin_final") or "").strip() and p["person_id"] not in done and p.get("linkedin_source") != "CONFLICT"]
+    title = lambda p: (p.get("title_final") or p.get("listed_title") or p.get("title") or "")
+    todo.sort(key=lambda p: 0 if DM.search(title(p)) else 1)   # decision-makers first, always
+    if a.decision_makers_only: todo = [p for p in todo if DM.search(title(p))]
+    print(f"{sum(1 for p in todo if DM.search(title(p)))} decision-makers among {len(todo)} people to look up")
     if a.limit: todo = todo[: a.limit]
     new = not os.path.exists(a.out)
     f = open(a.out, "a", newline="", encoding="utf-8")
