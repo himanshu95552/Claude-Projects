@@ -44,6 +44,8 @@ def main():
     ap.add_argument("--facilities", help="facilities CSV (needs an org_id column); joined to the organization data")
     a = ap.parse_args(); src = Path(a.final); out = Path(a.out).expanduser()
     files = [(n, src / f) for n, f in SHEETS if (src / f).exists()]
+    if (src / "people_with_crustdata.csv").exists():
+        files = [(n, (src / "people_with_crustdata.csv") if n == "People" else p) for n, p in files]
     if (src / "linkedin_merged.csv").exists() and (src / "orgs_final.csv").exists():
         join_linkedin(src / "orgs_final.csv", src / "linkedin_merged.csv", src / "orgs_with_linkedin.csv")
         files = [(n, (src / "orgs_with_linkedin.csv") if n == "Organizations" else p) for n, p in files]
