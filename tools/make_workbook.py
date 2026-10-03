@@ -27,11 +27,26 @@ def join_facilities(fac, orgs_csv, out_csv):
     print(f"  facilities joined to organizations: {len(rows) - miss}/{len(rows)}")
 
 
+def join_linkedin(orgs_csv, merged_csv, out_csv):
+    """Add the verified LinkedIn columns from merge_linkedin.py to the organizations table."""
+    m = {r["org_id"]: r for r in csv.DictReader(open(merged_csv, newline="", encoding="utf-8"))}
+    rows = list(csv.DictReader(open(orgs_csv, newline="", encoding="utf-8")))
+    add = ["linkedin_final", "linkedin_confidence", "linkedin_how", "linkedin_other", "crustdata_name", "crustdata_employees"]
+    with open(out_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f); w.writerow(list(rows[0]) + add)
+        for r in rows:
+            x = m.get(r["org_id"], {}); w.writerow(list(r.values()) + [x.get(c, "") for c in add])
+    print(f"  organizations joined to verified LinkedIn: {sum(1 for r in rows if r['org_id'] in m)}/{len(rows)}")
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--final", default="final"); ap.add_argument("--out", default="imaging-leads")
     ap.add_argument("--facilities", help="facilities CSV (needs an org_id column); joined to the organization data")
     a = ap.parse_args(); src = Path(a.final); out = Path(a.out).expanduser()
     files = [(n, src / f) for n, f in SHEETS if (src / f).exists()]
+    if (src / "linkedin_merged.csv").exists() and (src / "orgs_final.csv").exists():
+        join_linkedin(src / "orgs_final.csv", src / "linkedin_merged.csv", src / "orgs_with_linkedin.csv")
+        files = [(n, (src / "orgs_with_linkedin.csv") if n == "Organizations" else p) for n, p in files]
     if a.facilities:
         fj = src / "facilities_enriched.csv"
         join_facilities(Path(a.facilities).expanduser(), src / "orgs_final.csv", fj)
