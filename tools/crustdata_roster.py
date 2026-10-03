@@ -43,7 +43,7 @@ def dig(d, path):
 
 def search(domain, key, limit, cursor=None):
     body = {"filters": {"field": "experience.employment_details.current.company_website_domain", "type": "=", "value": domain},
-            "fields": FIELDS, "limit": limit, "format": "json"}
+            "fields": FIELDS, "limit": limit}
     if cursor: body["cursor"] = cursor
     req = urllib.request.Request(URL, data=json.dumps(body).encode(), method="POST",
         headers={"Authorization": f"Bearer {key}", "x-api-version": "2025-11-01", "Content-Type": "application/json"})
