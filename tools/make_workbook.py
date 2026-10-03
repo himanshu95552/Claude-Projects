@@ -49,7 +49,7 @@ def main():
         files = [(n, (src / "orgs_with_linkedin.csv") if n == "Organizations" else p) for n, p in files]
     if a.facilities:
         fj = src / "facilities_enriched.csv"
-        join_facilities(Path(a.facilities).expanduser(), src / "orgs_final.csv", fj)
+        join_facilities(Path(a.facilities).expanduser(), src / ("orgs_with_linkedin.csv" if (src / "orgs_with_linkedin.csv").exists() else "orgs_final.csv"), fj)
         files.insert(2, ("Facilities", fj))
     if (src / "summary.txt").exists(): files.append(("Summary", src / "summary.txt"))
     with zipfile.ZipFile(f"{out}.zip", "w", zipfile.ZIP_DEFLATED) as z:
