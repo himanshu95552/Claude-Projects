@@ -15,7 +15,7 @@ ASSUMPTIONS (verify with the first run): POST https://api.crustdata.com/person/s
 Authorization: Bearer <key> and x-api-version: 2025-11-01, body {filters, fields, limit, cursor}.
 The first raw response is saved to <out>_raw_first.json so the parser can be fixed quickly if the shape differs.
 """
-import argparse, csv, json, os, random, re, sys, time, urllib.request
+import argparse, csv, json, os, random, re, sys, time, urllib.error, urllib.request
 
 try:
     import truststore; truststore.inject_into_ssl()
@@ -25,7 +25,7 @@ except ImportError:
 URL = "https://api.crustdata.com/person/search"
 CREDIT = 0.03
 FIELDS = ["basic_profile.name", "basic_profile.headline", "experience.employment_details.current.title",
-          "experience.employment_details.current.company_name", "social_handles.professional_network_identifier.profile_url"]
+          "experience.employment_details.current.name", "social_handles.professional_network_identifier.profile_url"]
 dom = lambda u: re.sub(r"^https?://(www\.)?", "", (u or "").strip().lower()).split("/")[0]
 CRED = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|r\.?n\.?|rt|rdms|rrt|dr|jr|sr|ii|iii|np|pa-c|crna|dpt|mba|msn|bsn|facr)\b\.?", re.I)
 
@@ -47,7 +47,10 @@ def search(domain, key, limit, cursor=None):
     if cursor: body["cursor"] = cursor
     req = urllib.request.Request(URL, data=json.dumps(body).encode(), method="POST",
         headers={"Authorization": f"Bearer {key}", "x-api-version": "2025-11-01", "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=90) as r: return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=90) as r: return json.loads(r.read())
+    except urllib.error.HTTPError as e:  # show Crustdata's own explanation, never the key
+        raise RuntimeError(f"HTTP {e.code}: {e.read().decode('utf-8', 'ignore')[:400]}") from None
 
 
 def profiles_of(resp):
