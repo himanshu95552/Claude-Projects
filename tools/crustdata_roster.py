@@ -7,7 +7,8 @@ Costs about 0.03 credits per person returned (no results = no charge). Start wit
 
 Writes <out>_people.csv (every roster person) and <out>_matches.csv (our people compared with the roster):
   same_title        found, current title agrees with ours
-  title_changed     found at the organization, title differs (new title in found_title)
+  title_added       found at the organization and we had NO title for them: the found title fills the gap
+  title_differs     found at the organization, title wording differs from ours (review: promotion, move, or just different wording)
   ours_not_found    on our list but not in the roster (may have left, or just not on LinkedIn)
   new_candidate     in the roster but not on our list (possible new joiner)
 
@@ -41,9 +42,19 @@ def dig(d, path):
     return d
 
 
-def search(domain, key, limit, cursor=None):
-    body = {"filters": {"field": "experience.employment_details.current.company_website_domain", "type": "=", "value": domain},
-            "fields": FIELDS, "limit": limit}
+def name_variants(n):
+    """Exact-case spellings to ask Crustdata for: the cleaned name, and first + last only (keeps McAneny-style capitals)."""
+    clean = re.sub(r"\s+", " ", CRED.sub(" ", re.sub(r"\(.*?\)", " ", n or ""))).strip(" ,.")
+    t = [x for x in clean.replace(",", " ").split() if len(x.strip(".")) > 1]
+    v = {clean}
+    if len(t) >= 2: v.add(f"{t[0]} {t[-1]}")
+    return {x for x in v if " " in x}
+
+
+def search(domain, key, limit, cursor=None, names=None):
+    flt = {"field": "experience.employment_details.current.company_website_domain", "type": "=", "value": domain}
+    if names: flt = {"op": "and", "conditions": [flt, {"field": "basic_profile.name", "type": "in", "value": sorted(names)}]}
+    body = {"filters": flt, "fields": FIELDS, "limit": limit}
     if cursor: body["cursor"] = cursor
     req = urllib.request.Request(URL, data=json.dumps(body).encode(), method="POST",
         headers={"Authorization": f"Bearer {key}", "x-api-version": "2025-11-01", "Content-Type": "application/json"})
@@ -64,7 +75,11 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--orgs", required=True); ap.add_argument("--people", required=True)
     ap.add_argument("--out", required=True); ap.add_argument("--limit", type=int, default=20, help="number of organizations")
     ap.add_argument("--max-per-org", type=int, default=100); ap.add_argument("--max-credits", type=float, default=15.0)
-    ap.add_argument("--seed", type=int, default=7); a = ap.parse_args()
+    ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--mode", choices=["roster", "names"], default="roster",
+                    help="roster = pull everyone currently at the organization; names = ask only for the people on OUR list (cheaper, no 100-person cap)")
+    ap.add_argument("--domains", default="", help="comma-separated website domains to run instead of a random sample")
+    a = ap.parse_args()
     key = os.environ.get("CRUSTDATA_KEY") or sys.exit("set CRUSTDATA_KEY (read -s CRUSTDATA_KEY; export CRUSTDATA_KEY)")
     ours = {}
     for p in csv.DictReader(open(a.people, newline="", encoding="utf-8")): ours.setdefault(p["org_id"], []).append(p)
@@ -74,10 +89,15 @@ def main():
         d = dom(o["website"])
         if d not in seen and 3 <= len(ours[o["org_id"]]) <= 40: seen.add(d); cand.append(o)
     random.Random(a.seed).shuffle(cand); cand = cand[: a.limit]
+    if a.domains:
+        want = {d.strip().lower() for d in a.domains.split(",") if d.strip()}
+        cand = [o for o in orgs if dom(o["website"]) in want]; seen2 = set(); cand = [o for o in cand if not (dom(o["website"]) in seen2 or seen2.add(dom(o["website"])))]
     spent, roster_rows, match_rows = 0.0, [], []
     for i, o in enumerate(cand):
         d = dom(o["website"])
-        try: resp = search(d, key, a.max_per_org)
+        names = set().union(*(name_variants(p["name"]) for p in ours[o["org_id"]])) if a.mode == "names" else None
+        if a.mode == "names" and not names: continue
+        try: resp = search(d, key, a.max_per_org if a.mode == "roster" else min(1000, max(50, len(names))), names=names)
         except Exception as e: sys.exit(f"API call failed ({e}); check the assumptions in the docstring")
         if i == 0: open(a.out + "_raw_first.json", "w").write(json.dumps(resp, indent=1)[:60000])
         profs = profiles_of(resp); spent += CREDIT * len(profs)
@@ -94,10 +114,10 @@ def main():
             lt = (p.get("listed_title") or p.get("title") or "").strip()
             if hit:
                 used.add(k); same = lt and (set(re.findall(r"[a-z]+", lt.lower())) & set(re.findall(r"[a-z]+", hit[1].lower())) - {"of", "the", "and"})
-                st = "same_title" if same else "title_changed"
+                st = "title_added" if not lt else ("same_title" if same else "title_differs")
                 match_rows.append({"org_id": o["org_id"], "domain": d, "name": p["name"], "listed_title": lt, "found_title": hit[1], "linkedin_url": hit[2], "status": st})
             else: match_rows.append({"org_id": o["org_id"], "domain": d, "name": p["name"], "listed_title": lt, "found_title": "", "linkedin_url": "", "status": "ours_not_found"})
-        for k, (nm, t, url) in found.items():
+        for k, (nm, t, url) in (found.items() if a.mode == "roster" else []):
             if k not in used: match_rows.append({"org_id": o["org_id"], "domain": d, "name": nm, "listed_title": "", "found_title": t, "linkedin_url": url, "status": "new_candidate"})
         print(f"{i + 1}/{len(cand)} {d}: roster {len(profs)}  (credits so far ~{spent:.1f})", flush=True)
         if spent >= a.max_credits: print("credit cap reached, stopping"); break
