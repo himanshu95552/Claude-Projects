@@ -16,7 +16,7 @@ linkedin_how values:
   needs_review      conflicting candidates, none clearly right (our link kept if any)
   none              nothing found
 """
-import argparse, csv, re, collections
+import argparse, csv, os, re, collections
 
 slug = lambda u: re.sub(r"[?#].*", "", (u or "").lower().rstrip("/")).split("/company/")[-1].strip("/")
 norm = lambda s: re.sub(r"[^a-z0-9]", "", (s or "").lower())
@@ -82,7 +82,7 @@ def main():
     # review file: everything a person should look at, with the website so each can be checked in seconds
     web = {o["org_id"]: o["website"] for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     rev = [dict(r, website=web.get(r["org_id"], "")) for r in out if r["linkedin_how"] in ("needs_review", "site_non_company_page")]
-    rp = re.sub(r"[^/]*$", "orgs_linkedin_review.csv", a.out)
+    rp = os.path.join(os.path.dirname(a.out), "orgs_linkedin_review.csv")
     with open(rp, "w", newline="", encoding="utf-8") as f:
         cols = ["org_id", "org_name", "website", "linkedin_final", "linkedin_other", "crustdata_name", "linkedin_how", "decision"]
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore"); w.writeheader()
