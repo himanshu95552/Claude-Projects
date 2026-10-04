@@ -24,6 +24,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--inferred", required=True); ap.add_argument("--results", required=True)
     ap.add_argument("--email-col", required=True); ap.add_argument("--status-col", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--also", action="append", default=[], help="another results file as path:email_col:status_col (repeatable), e.g. ~/Downloads/zb/zb_test5_all_results.csv:email:'ZB Status'")
+    ap.add_argument("--also-valid-only", action="append", default=[], help="like --also, but only trust 'valid' and 'catch_all' answers; an 'invalid' becomes 'unknown' (use for Reacher, whose 'invalid' was sometimes wrong)")
     a = ap.parse_args()
     res = {}
     for r in csv.DictReader(open(a.results, newline="", encoding="utf-8-sig")):
@@ -33,6 +34,11 @@ def main():
         path, ecol, scol = spec.rsplit(":", 2)
         for r in csv.DictReader(open(os.path.expanduser(path), newline="", encoding="utf-8-sig")):
             res.setdefault((r.get(ecol.strip("'\"")) or "").strip().lower(), r.get(scol.strip("'\""), ""))
+    for spec in a.also_valid_only:
+        path, ecol, scol = spec.rsplit(":", 2)
+        for r in csv.DictReader(open(os.path.expanduser(path), newline="", encoding="utf-8-sig")):
+            raw = r.get(scol.strip("'\""), ""); st = norm(raw)
+            res.setdefault((r.get(ecol.strip("'\"")) or "").strip().lower(), "unknown" if st == "invalid" else raw)
     rows = list(csv.DictReader(open(a.inferred, newline="", encoding="utf-8")))
     cnt = collections.Counter()
     with open(a.out, "w", newline="", encoding="utf-8") as f:
