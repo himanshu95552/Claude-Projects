@@ -10,10 +10,13 @@ Merge into the People data exactly like the ZeroBounce results:
   python3 merge_email_verification.py --inferred final/inferred_emails.csv --results final/reacher_results.csv --email-col email --status-col status --out final/inferred_emails_verified.csv
 
 Be gentle: one address at a time with a delay, so mail servers do not rate-limit or blacklist your IP. Resumable: emails already in --out are skipped.
-Honest limits: many home connections block outbound port 25; Microsoft 365 / Google Workspace and many hospital gateways answer
+Honest limits (learned on a real test: Reacher called a Microsoft 365 mailbox that ZeroBounce marked valid 'invalid'): many home connections block outbound port 25; Microsoft 365 / Google Workspace and many hospital gateways answer
 'catch-all' or 'unknown', which proves nothing about the mailbox. Treat only 'valid' as safe.
 """
-import argparse, csv, json, os, sys, time, urllib.error, urllib.request
+import argparse, csv, json, os, re, sys, time, urllib.error, urllib.request
+
+# Mail hosts that do not answer honestly to an SMTP probe from a home/laptop IP: a "no" from them proves nothing.
+UNRELIABLE = re.compile(r"protection\.outlook\.com|outlook\.com|office365|google\.com|googlemail|mimecast|pphosted|proofpoint|barracuda|iphmx|sophos|ess\.|messagelabs|trendmicro|fireeye|mxlogic|secureserver|hydra", re.I)
 
 
 def check(url, email, secret):
@@ -25,8 +28,9 @@ def check(url, email, secret):
 def status_of(res):
     reach = (res.get("is_reachable") or "unknown").lower()
     smtp = res.get("smtp") or {}
+    mx = " ".join((res.get("mx") or {}).get("records") or [])
     if reach == "safe": return "valid"
-    if reach == "invalid": return "invalid"
+    if reach == "invalid": return "unknown" if UNRELIABLE.search(mx) else "invalid"   # do not trust a 'no' from O365/gateways
     if smtp.get("is_catch_all"): return "catch_all"
     return "unknown"          # includes 'risky' without catch-all and servers that blocked the check
 
@@ -43,7 +47,7 @@ def main():
     if a.limit: todo = todo[: a.limit]
     new = not os.path.exists(a.out)
     f = open(a.out, "a", newline="", encoding="utf-8")
-    w = csv.DictWriter(f, fieldnames=["email", "status", "reachable", "catch_all", "can_connect_smtp", "deliverable", "note"])
+    w = csv.DictWriter(f, fieldnames=["email", "status", "reachable", "mx_host", "catch_all", "can_connect_smtp", "deliverable", "note"])
     if new: w.writeheader()
     counts = {}
     for i, e in enumerate(todo, 1):
@@ -53,7 +57,8 @@ def main():
         if i == 1 and new: open(a.out + ".raw.json", "w").write(json.dumps(res, indent=1)[:20000])
         smtp = res.get("smtp") or {}
         st = status_of(res); counts[st] = counts.get(st, 0) + 1
-        w.writerow({"email": e, "status": st, "reachable": res.get("is_reachable", ""), "catch_all": smtp.get("is_catch_all", ""),
+        mxr = " ".join((res.get("mx") or {}).get("records") or [])
+        w.writerow({"email": e, "status": st, "reachable": res.get("is_reachable", ""), "mx_host": mxr[:80], "catch_all": smtp.get("is_catch_all", ""),
                     "can_connect_smtp": smtp.get("can_connect_smtp", ""), "deliverable": smtp.get("is_deliverable", ""),
                     "note": (res.get("error") or "")[:120] if isinstance(res.get("error"), str) else ""})
         f.flush(); print(f"{i}/{len(todo)} {e}: {st}", flush=True); time.sleep(a.delay)
