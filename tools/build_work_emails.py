@@ -12,16 +12,22 @@ Priority per person (first that exists wins):
   3b finder_unproven Hunter found it but the domain accepts everything (accept_all)
   4 inferred_unproven guessed, but the domain accepts everything (accept-all): cannot be confirmed. Do not send a campaign.
   5 inferred_untestable / inferred_unchecked  guessed; a verifier could not tell, or it was never checked
+  (finder_other_domain, confidence medium: Hunter's email is on a different domain than the organization's website, e.g. a parent company or a same-name person elsewhere; needs a check. Needs --orgs)
 Columns added: work_email_final, work_email_how, work_email_confidence (high / medium / unproven / none).
 Guesses a verifier called undeliverable are dropped.
 """
-import argparse, csv, collections, os
+import argparse, csv, collections, os, re
 
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--crustdata", default=""); ap.add_argument("--verified", default="")
+    ap.add_argument("--orgs", default="", help="orgs_final.csv; a Hunter email whose domain differs from the organization's website is marked medium, not high")
     ap.add_argument("--finder", action="append", default=[], help="Hunter bulk Email Finder result CSV (repeatable)"); a = ap.parse_args()
+    odom = {}
+    if a.orgs and os.path.exists(a.orgs):
+        odom = {o["org_id"]: re.sub(r"^https?://(www\.)?", "", (o.get("website") or "").strip().lower()).split("/")[0] for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
+    same = lambda e, p: (not odom) or not odom.get(p.get("org_id")) or e.lower().split("@")[-1].endswith(odom[p["org_id"]]) or odom[p["org_id"]].endswith(e.lower().split("@")[-1])
     fd = {}
     for path in a.finder:
         for r in csv.DictReader(open(path, newline="", encoding="utf-8-sig")):
@@ -43,7 +49,8 @@ def main():
             e, how, conf = "", "none", "none"; i = inf.get(p["person_id"], {})
             if (p.get("published_email") or "").strip(): e, how, conf = p["published_email"].strip(), "published", "high"
             elif p["person_id"] in cd: e, how, conf = cd[p["person_id"]], "crustdata", "high"
-            elif fd.get(p["person_id"], ("", ""))[1] == "valid": e, how, conf = fd[p["person_id"]][0], "finder_valid", "high"
+            elif fd.get(p["person_id"], ("", ""))[1] == "valid":
+                e = fd[p["person_id"]][0]; how, conf = ("finder_valid", "high") if same(e, p) else ("finder_other_domain", "medium")
             elif i.get("verification") == "valid": e, how, conf = i["inferred_email"], "inferred_valid", "high"
             elif p["person_id"] in fd: e, how, conf = fd[p["person_id"]][0], "finder_unproven", "unproven"
             elif i.get("verification") == "catch_all": e, how, conf = i["inferred_email"], "inferred_unproven", "unproven"
