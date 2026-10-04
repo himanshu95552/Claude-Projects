@@ -23,10 +23,16 @@ def norm(s):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--inferred", required=True); ap.add_argument("--results", required=True)
     ap.add_argument("--email-col", required=True); ap.add_argument("--status-col", required=True); ap.add_argument("--out", required=True)
+    ap.add_argument("--also", action="append", default=[], help="another results file as path:email_col:status_col (repeatable), e.g. ~/Downloads/zb/zb_test5_all_results.csv:email:'ZB Status'")
     a = ap.parse_args()
     res = {}
     for r in csv.DictReader(open(a.results, newline="", encoding="utf-8-sig")):
         res[(r.get(a.email_col) or "").strip().lower()] = r.get(a.status_col, "")
+    import os
+    for spec in a.also:
+        path, ecol, scol = spec.rsplit(":", 2)
+        for r in csv.DictReader(open(os.path.expanduser(path), newline="", encoding="utf-8-sig")):
+            res.setdefault((r.get(ecol.strip("'\"")) or "").strip().lower(), r.get(scol.strip("'\""), ""))
     rows = list(csv.DictReader(open(a.inferred, newline="", encoding="utf-8")))
     cnt = collections.Counter()
     with open(a.out, "w", newline="", encoding="utf-8") as f:
