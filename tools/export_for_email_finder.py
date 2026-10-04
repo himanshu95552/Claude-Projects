@@ -11,6 +11,7 @@ import argparse, csv, os, re
 
 CRED = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|r\.?n\.?|rt|rdms|rrt|dr|jr|sr|ii|iii|np|pa-c|crna|dpt|mba|msn|bsn|facr)\b\.?", re.I)
 DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|practice|lead|medical director|radiologist)\b", re.I)
+TOP = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|co-?owner|partner|founder|administrator|managing|medical director|director of (radiology|imaging|operations)|practice manager|executive director|radiology director|imaging director|head of)\b", re.I)
 dom = lambda u: re.sub(r"^https?://(www\.)?", "", (u or "").strip().lower()).split("/")[0]
 
 
@@ -21,7 +22,9 @@ def split(name):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--orgs", required=True)
-    ap.add_argument("--out", required=True); ap.add_argument("--decision-makers-only", action="store_true"); a = ap.parse_args()
+    ap.add_argument("--out", required=True); ap.add_argument("--decision-makers-only", action="store_true")
+    ap.add_argument("--top-tier-only", action="store_true", help="only owners, C-suite, presidents, administrators, medical and practice directors")
+    a = ap.parse_args()
     orgs = {o["org_id"]: o for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     have = set()
     wf = os.path.join(os.path.dirname(a.out) or ".", "work_emails.csv")
@@ -34,6 +37,7 @@ def main():
         t = p.get("title_final") or p.get("listed_title") or p.get("title") or ""
         dm = bool(DM.search(t))
         if a.decision_makers_only and not dm: continue
+        if a.top_tier_only and not TOP.search(t): continue
         rows.append((0 if dm else 1, {"first_name": n[0].title(), "last_name": n[1].title(), "company": o["org_name"], "domain": dom(o["website"]),
                      "title": t, "person_id": p["person_id"]}))
     rows.sort(key=lambda r: r[0])
