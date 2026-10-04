@@ -9,6 +9,7 @@ Priority per person (first that exists wins):
   2 crustdata        Crustdata's work email, only where its domain matches the organization (domain_matches_org = yes)
   3 inferred_valid   guessed from the organization's pattern AND a verifier says deliverable
   4 inferred_unproven guessed, but the domain accepts everything (accept-all): cannot be confirmed. Do not send a campaign.
+  5 inferred_untestable / inferred_unchecked  guessed; a verifier could not tell, or it was never checked
 Columns added: work_email_final, work_email_how, work_email_confidence (high / medium / unproven / none).
 Guesses a verifier called undeliverable are dropped.
 """
@@ -35,6 +36,7 @@ def main():
             elif p["person_id"] in cd: e, how, conf = cd[p["person_id"]], "crustdata", "high"
             elif i.get("verification") == "valid": e, how, conf = i["inferred_email"], "inferred_valid", "high"
             elif i.get("verification") == "catch_all": e, how, conf = i["inferred_email"], "inferred_unproven", "unproven"
+            elif i.get("verification") == "unknown" and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_untestable", "unproven"   # a verifier could not tell: keep the guess, flagged
             elif i.get("verification") in ("", None, "not_checked") and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_unchecked", "unproven"
             p.update(work_email_final=e, work_email_how=how, work_email_confidence=conf); cnt[how] += 1; w.writerow(p)
     print(dict(cnt), "->", a.out)
