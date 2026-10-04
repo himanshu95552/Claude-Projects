@@ -7,7 +7,9 @@
 Priority per person (first that exists wins):
   1 published        an address the organization itself published for that person (people_final.published_email)
   2 crustdata        Crustdata's work email, only where its domain matches the organization (domain_matches_org = yes)
+  2b finder_valid    Hunter Email Finder result marked valid (--finder, repeatable; person_id column kept from the upload)
   3 inferred_valid   guessed from the organization's pattern AND a verifier says deliverable
+  3b finder_unproven Hunter found it but the domain accepts everything (accept_all)
   4 inferred_unproven guessed, but the domain accepts everything (accept-all): cannot be confirmed. Do not send a campaign.
   5 inferred_untestable / inferred_unchecked  guessed; a verifier could not tell, or it was never checked
 Columns added: work_email_final, work_email_how, work_email_confidence (high / medium / unproven / none).
@@ -18,7 +20,14 @@ import argparse, csv, collections, os
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--out", required=True)
-    ap.add_argument("--crustdata", default=""); ap.add_argument("--verified", default=""); a = ap.parse_args()
+    ap.add_argument("--crustdata", default=""); ap.add_argument("--verified", default="")
+    ap.add_argument("--finder", action="append", default=[], help="Hunter bulk Email Finder result CSV (repeatable)"); a = ap.parse_args()
+    fd = {}
+    for path in a.finder:
+        for r in csv.DictReader(open(path, newline="", encoding="utf-8-sig")):
+            em, st = (r.get("Email") or "").strip(), (r.get("Verification status") or "").strip().lower()
+            if r.get("person_id") and em and st in ("valid", "accept_all") and (r["person_id"] not in fd or st == "valid"):
+                fd[r["person_id"]] = (em, st)
     cd = {}
     if a.crustdata and os.path.exists(a.crustdata):
         cd = {r["person_id"]: r["work_email"] for r in csv.DictReader(open(a.crustdata, newline="", encoding="utf-8"))
@@ -34,7 +43,9 @@ def main():
             e, how, conf = "", "none", "none"; i = inf.get(p["person_id"], {})
             if (p.get("published_email") or "").strip(): e, how, conf = p["published_email"].strip(), "published", "high"
             elif p["person_id"] in cd: e, how, conf = cd[p["person_id"]], "crustdata", "high"
+            elif fd.get(p["person_id"], ("", ""))[1] == "valid": e, how, conf = fd[p["person_id"]][0], "finder_valid", "high"
             elif i.get("verification") == "valid": e, how, conf = i["inferred_email"], "inferred_valid", "high"
+            elif p["person_id"] in fd: e, how, conf = fd[p["person_id"]][0], "finder_unproven", "unproven"
             elif i.get("verification") == "catch_all": e, how, conf = i["inferred_email"], "inferred_unproven", "unproven"
             elif i.get("verification") == "unknown" and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_untestable", "unproven"   # a verifier could not tell: keep the guess, flagged
             elif i.get("verification") in ("", None, "not_checked") and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_unchecked", "unproven"
