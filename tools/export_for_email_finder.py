@@ -25,6 +25,7 @@ def main():
     ap.add_argument("--out", required=True); ap.add_argument("--decision-makers-only", action="store_true")
     ap.add_argument("--top-tier-only", action="store_true", help="only owners, C-suite, presidents, administrators, medical and practice directors")
     ap.add_argument("--exclude", action="append", default=[], help="earlier finder result/upload CSV with a person_id column; those people are skipped (repeatable)")
+    ap.add_argument("--chunk-size", type=int, default=0, help="split into files of this many rows (Hunter bulk takes 2,500): out_001.csv, out_002.csv ...")
     a = ap.parse_args()
     orgs = {o["org_id"]: o for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     have = set()
@@ -43,10 +44,16 @@ def main():
         rows.append((0 if dm else 1, {"first_name": n[0].title(), "last_name": n[1].title(), "company": o["org_name"], "domain": dom(o["website"]),
                      "title": t, "person_id": p["person_id"]}))
     rows.sort(key=lambda r: r[0])
-    with open(a.out, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["first_name", "last_name", "company", "domain", "title", "person_id"]); w.writeheader()
-        w.writerows(r for _, r in rows)
-    print(f"{len(rows)} people ({sum(1 for k, _ in rows if k == 0)} decision-makers) -> {a.out}")
+    fields = ["first_name", "last_name", "company", "domain", "title", "person_id"]
+    data = [r for _, r in rows]
+    parts = [data[i:i + a.chunk_size] for i in range(0, len(data), a.chunk_size)] if a.chunk_size > 0 else [data]
+    base, ext = os.path.splitext(a.out)
+    for n, part in enumerate(parts, 1):
+        path = a.out if len(parts) == 1 else f"{base}_{n:03d}{ext}"
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(part)
+        print(f"  {len(part)} rows -> {path}")
+    print(f"{len(rows)} people ({sum(1 for k, _ in rows if k == 0)} decision-makers) in {len(parts)} file(s)")
 
 
 if __name__ == "__main__":
