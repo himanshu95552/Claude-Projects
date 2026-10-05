@@ -1,5 +1,7 @@
 # Gravity Flow hero animation
 
+**All-in-one banner:** `banners/banner-all-in-one.png` (`python3 src/build_banner_all.py`) carries all seven points of the Flow summary, numbered 01 to 07.
+
 **Current stage: static banner concepts (no animation until one is chosen).** `banners/` has three variations as 3200x2400 PNG plus HTML source: 1 one engine / three ways in, 2 supervised first, 3 every pillar. Research and rationale: `research/gravity-flow-notes.md`. Rebuild: `python3 src/build_banners.py && python3 src/render_banners.py`.
 
 **Latest, original composition: "one run, traced"** `gravity-flow-hero-trace.html` (preview), `flow-trace-embed.html` (drop-in), `export/gravity-flow-hero-trace-*` (MP4, WebM, poster; 16s loop). Rebuild: `python3 src/build_trace.py`. The earlier `ink-b` file copies the home diagram's layout and is kept only as a reference.
