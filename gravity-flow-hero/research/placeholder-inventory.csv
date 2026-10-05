@@ -1,0 +1,51 @@
+Page,Path,Needed,Found,Placeholder,Composition,Ratio,Surface,Section,Note
+Gravity Get the Order,no-referral-leaks,2,2,Hero artwork,web-leak-referral,16:9,ink,We don't just run your orders. We go get them.,the line never reaches its node
+Gravity Get the Order,no-referral-leaks,2,2,Video poster frame,web-video-ink,16:9 (video),ink,"Get the order, in two minutes",
+Gravity grow,products/gravity-grow,2,2,Hero artwork,web-product-ink-b,4:3,ink,"Every referring provider, and everything they’ve sent you.",
+Gravity grow,products/gravity-grow,2,2,Product screenshot,,16:9,"1px border, large shadow",Practice locations and groups,needs your screenshot
+Gravity Referral,products/gravity-referral,2,2,Hero artwork,web-product-ink-c,4:3,ink,Upload the order and it’s a digital order.,
+Gravity Referral,products/gravity-referral,2,2,Product screenshot,,16:9,"1px border, large shadow",Reports and images in the portal,needs your screenshot
+Gravity Doc,products/gravity-doc,1,1,Hero artwork,web-product-ink-a,4:3,ink,"Gravity reads the fax, finds or creates the patient, and creates the order.",
+Gravity Complete the Exam,no-order-leaks,2,2,Hero artwork,web-leak-noshow,16:9,ink,"Full schedules, without more schedulers.",a gap in the line
+Gravity Complete the Exam,no-order-leaks,2,2,Video poster frame,web-video-ink,16:9 (video),ink,"Complete the exam, in two minutes",
+Gravity Booking,products/gravity-booking,1,1,Hero artwork,web-product-ink-d,4:3,ink,"Booked right the first time, with every rule checked.",
+Gravity Visit,products/gravity-visit,1,1,Hero artwork,web-product-ink-a,4:3,ink,Checked in and paid before they arrive.,
+Gravity Greeter,products/gravity-greeter,1,1,Hero artwork,web-product-ink-b,4:3,ink,"Check-in at a lobby tablet, not a line at the desk.",
+Gravity Paid,no-revenue-leaks,2,2,Hero artwork,web-leak-unpaid,16:9,ink,"Every exam you complete, you get paid for.",the final node hollow
+Gravity Paid,no-revenue-leaks,2,2,Video poster frame,web-video-ink,16:9 (video),ink,"Get paid, in two minutes",
+Gravity Estimate,products/gravity-estimate,1,1,Hero artwork,web-product-ink-c,4:3,ink,"Coverage verified before the patient arrives, without calling the payer or logging into a portal.",
+Gravity Prior Auth,products/gravity-priorauth,2,2,Hero artwork,web-product-ink-d,4:3,ink,Every exam that needs a prior authorization has one.,
+Gravity Prior Auth,products/gravity-priorauth,2,2,Product screenshot,,16:9,"1px border, large shadow",AI case assistant,needs your screenshot
+Gravity Pay,products/gravity-pay,1,1,Hero artwork,web-product-ink-d,4:3,ink,"The patient’s share, collected at booking or at the visit, from the same screen as the estimate.",
+Gravity Communication,products/gravity-communication,1,1,Product screenshot,,16:9,"1px border, large shadow",Two-way email,needs your screenshot
+Gravity Flow,products/gravity-flow,1,1,Hero artwork,web-product-ink-b,4:3,ink,"The routine work, done on its own.",
+Gravity Work,products/gravity-work,1,1,Hero artwork,web-product-ink-c,4:3,ink,Every task in front of the right person.,
+Gravity Trust,products/gravity-trust,2,2,Hero artwork,web-product-ink-a,4:3,ink,"Controls who can get in, what they can do, and records what was done.",
+Gravity Trust,products/gravity-trust,2,2,Product screenshot,,16:9,"1px border, large shadow",Order timeline,needs your screenshot
+Gravity Insight,products/gravity-insight,2,2,Hero artwork,web-product-ink-b,4:3,ink,See how the center is running without exporting a spreadsheet.,
+Gravity Insight,products/gravity-insight,2,2,Product screenshot,,16:9,"1px border, large shadow",Scheduled report emails,needs your screenshot
+Marketing and Liaisons,solutions/referral-tracking,2,3,Hero artwork,web-team-white-b,16:9,"paper, white or tint","Know who refers, who stopped, and win them back.",
+Marketing and Liaisons,solutions/referral-tracking,2,3,Product screenshot,,16:9,"1px border, large shadow","How referral tracking works, from the campaign to the report back",needs your screenshot
+Marketing and Liaisons,solutions/referral-tracking,2,3,Video poster frame,web-video-ink,16:9 (video),ink,"Walkthrough: one referring office, from campaign to report",
+Order Intake and Documents,solutions/fax-order-intake,2,2,Hero artwork,web-team-paper-a,16:9,"paper, white or tint","Every fax read, filed and turned into an order before anyone opens it.",
+Order Intake and Documents,solutions/fax-order-intake,2,2,Video poster frame,web-video-ink,16:9 (video),ink,"Walkthrough: one fax, from arrival to booking",
+Booking,solutions/radiology-patient-booking,2,2,Hero artwork,web-team-white-b,16:9,"paper, white or tint","Full schedules, without more schedulers.",
+Booking,solutions/radiology-patient-booking,2,2,Video poster frame,web-video-ink,16:9 (video),ink,Walkthrough: from new order to booked visit,
+Front Desk and Checkin,solutions/patient-check-in,2,2,Hero artwork,web-team-tint-c,16:9,"paper, white or tint",Most of check-in is done before the patient walks in the door.,
+Front Desk and Checkin,solutions/patient-check-in,2,2,Video poster frame,web-video-ink,16:9 (video),ink,Walkthrough: a visit checked in before the patient arrives,
+Report Delivery,solutions/report-and-image-delivery,2,2,Hero artwork,web-team-tint-c,16:9,"paper, white or tint",Every referral captured. Every report returned.,
+Report Delivery,solutions/report-and-image-delivery,2,2,Video poster frame,web-video-ink,16:9 (video),ink,"Walkthrough: one signed report, delivered",
+Prior Authorization,solutions/prior-authorization-automation,2,2,Hero artwork,web-team-white-d,16:9,"paper, white or tint",Authorized before arrival. The denial is fixed before it exists.,
+Prior Authorization,solutions/prior-authorization-automation,2,2,Video poster frame,web-video-ink,16:9 (video),ink,Walkthrough: an order that needs an authorization,
+Revenue Cycle and Estimates,solutions/radiology-revenue-cycle,2,2,Hero artwork,web-team-paper-a,16:9,"paper, white or tint","Every exam you complete, you get paid for.",
+Revenue Cycle and Estimates,solutions/radiology-revenue-cycle,2,2,Video poster frame,web-video-ink,16:9 (video),ink,Walkthrough: from new order to the patient's share collected,
+IT and Security,solutions/ris-ehr-integration,3,3,Hero artwork,web-team-white-d,16:9,"paper, white or tint","One cloud system for the work, on top of the systems you already run.",
+IT and Security,solutions/ris-ehr-integration,3,3,Product screenshot,,16:9,"1px border, large shadow","How Gravity connects to your RIS and EHR, record by record",needs your screenshot
+IT and Security,solutions/ris-ehr-integration,3,3,Video poster frame,web-video-ink,16:9 (video),ink,"Walkthrough: one order's data, in and back out",
+Referring Offices,referring-providers,3-4,3,Hero artwork,web-team-white-b,16:9,"paper, white or tint","Find the right imaging center, place the order in one step, and get the report back the day it's signed.",
+Referring Offices,referring-providers,3-4,3,Product screenshot,,16:9,"1px border, large shadow",How to refer a patient for imaging through a referring physician portal,needs your screenshot
+Referring Offices,referring-providers,3-4,3,Video poster frame,web-video-ink,16:9 (video),ink,"Ordering imaging, in 90 seconds",
+Partners,partners,2,1,Hero artwork,web-team-paper-a,16:9,"paper, white or tint",Your customers keep your system of record; Gravity writes to it.,
+Developers,products/gravity-developer,2,2,Hero artwork,web-product-ink-d,4:3,ink,"Any message in, any message out, on any trigger.",
+Developers,products/gravity-developer,2,2,Product screenshot,,16:9,"1px border, large shadow",HL7 interfaces,needs your screenshot
+Solutions,solutions,1,0,none marked in copy,,,,,needs a decision

@@ -1,5 +1,7 @@
 # Gravity Flow hero animation
 
+**Placeholder programme:** `research/placeholder-inventory.md` (every placeholder by page), `research/placeholders/` (notes per section), `sections/` (variants). Section 1 done: `sections/01-get-the-order/` (`python3 src/build_s1.py && python3 src/render_sections.py sections/01-get-the-order`).
+
 **All-in-one banner:** `banners/banner-all-in-one.png` (`python3 src/build_banner_all.py`) carries all seven points of the Flow summary, numbered 01 to 07.
 
 **Current stage: static banner concepts (no animation until one is chosen).** `banners/` has three variations as 3200x2400 PNG plus HTML source: 1 one engine / three ways in, 2 supervised first, 3 every pillar. Research and rationale: `research/gravity-flow-notes.md`. Rebuild: `python3 src/build_banners.py && python3 src/render_banners.py`.
