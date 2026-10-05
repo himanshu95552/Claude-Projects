@@ -46,3 +46,10 @@ Code session's model calls do not traverse this container, so headroom
 cannot intercept them here — it only takes effect where the Claude Code
 client itself runs. Use it on a local install: `headroom init`, then
 `headroom proxy` / `headroom wrap claude`.
+
+## alphanodus-brand
+
+Internal brand skill at `.claude/skills/alphanodus-brand/`: AlphaNodus / Gravity
+brand v2.0 (Plum), with `assets/plum-tokens.css`, logos, component references,
+and references for the visual system and AN27 voice. Hex values were
+transcribed from screenshots; verify against the canonical tokens file.
