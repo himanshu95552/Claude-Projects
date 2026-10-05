@@ -1,5 +1,7 @@
 # Gravity Flow hero animation
 
+**Flow banner, two options (4:3, 3200x2400):** `flow-banners/banner-flow-A-real-screens.png` (real product screens restyled to the brand) and `banner-flow-B-diagram-with-screens.png` (numbered diagram with the real screens embedded). Source: `src/screens.py`, `src/build_flow_banners.py`.
+
 **Placeholder programme:** `research/placeholder-inventory.md` (every placeholder by page), `research/placeholders/` (notes per section), `sections/` (variants). Section 1 done: `sections/01-get-the-order/` (`python3 src/build_s1.py && python3 src/render_sections.py sections/01-get-the-order`).
 
 **All-in-one banner:** `banners/banner-all-in-one.png` (`python3 src/build_banner_all.py`) carries all seven points of the Flow summary, numbered 01 to 07.
