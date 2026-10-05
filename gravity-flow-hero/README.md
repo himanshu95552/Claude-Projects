@@ -1,6 +1,6 @@
 # Gravity Flow hero animation
 
-**Recommended Flow banner (product-design pass):** `flow-banners/banner-flow-PRO.png` (`python3 src/build_flow_pro.py`). Earlier options kept for reference: `banner-flow-A/B`, `banner-flow-v3-*`.
+**Recommended Flow banner:** `flow-banners/banner-flow-PRO2.png` (`python3 src/build_flow_pro2.py`): simplified 4-step real workflow plus "Workflows for every step, from the referral to the payment". Previous pass: `banner-flow-PRO.png`. Earlier options kept for reference: `banner-flow-A/B`, `banner-flow-v3-*`.
 
 **Flow banner, two options (4:3, 3200x2400):** `flow-banners/banner-flow-A-real-screens.png` (real product screens restyled to the brand) and `banner-flow-B-diagram-with-screens.png` (numbered diagram with the real screens embedded). Source: `src/screens.py`, `src/build_flow_banners.py`.
 
