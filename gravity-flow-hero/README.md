@@ -1,3 +1,5 @@
+**Product banners (4:3, 3200x2400):** `product-banners/gravity-{doc,booking,work,priorauth,visit}.png` (`python3 src/build_products.py && python3 src/render_products.py`). Drawn from each page's own steps; screens are illustrative until real screenshots are supplied.
+
 # Gravity Flow hero animation
 
 **Recommended Flow banner:** `flow-banners/banner-flow-PRO2.png` (`python3 src/build_flow_pro2.py`): simplified 4-step real workflow plus "Workflows for every step, from the referral to the payment". Previous pass: `banner-flow-PRO.png`. Earlier options kept for reference: `banner-flow-A/B`, `banner-flow-v3-*`.
