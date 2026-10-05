@@ -1,0 +1,213 @@
+/* AlphaNodus brand tokens · v2.0 · "Plum"
+ * Raw hex lives ONLY in this file. Everything else uses the variables.
+ * Hex values were transcribed from the v2.0 guidelines screenshots; verify
+ * against the canonical plum-tokens.css from the brand owner before
+ * production use (see SKILL.md, "Provenance").
+ *
+ * THE TEN RULES
+ *  01 The logo is black or white. Never recoloured, never on a gradient.
+ *  02 One accent per surface, at full strength. Quiet = tint, never a faded accent.
+ *  03 No gradients as colour. Anywhere, including product buttons.
+ *  04 On ink, the accent is Plum 300. Plum 600 on ink (2.9:1) is forbidden.
+ *  05 Accent as text is Plum 700. Plum 600 is for fills.
+ *  06 Lagoon is an outcome, never a status. Once per surface.
+ *  07 On ink, hierarchy comes from weight and size. Never opacity.
+ *  08 One node per surface as a graphic. Never pulses, never a network.
+ *  09 Status colours mean the same thing on the website and in the product.
+ *  10 Retired means retired: arc, orange, magenta, personas.
+ */
+
+:root {
+  /* Plum ramp: the one accent */
+  --plum-50:  #F3EEFE;  /* tint: callouts, tags, highlighted rows */
+  --plum-100: #E7DDFF;  /* selected rows, chips */
+  --plum-200: #C9B9F8;  /* data series 3 */
+  --plum-300: #C9B3FF;  /* THE accent on ink (9.6:1) */
+  --plum-400: #8E67EA;  /* data series 2, never text */
+  --plum-500: #7B4FE6;  /* reserved */
+  --plum-600: #6B3FE4;  /* PRIMARY: fills, buttons, node */
+  --plum-700: #582FD1;  /* accent text, hover */
+  --plum-800: #4A25AD;  /* pressed, emphasis text */
+  --plum-900: #3A1C86;  /* deepest, rare */
+
+  /* Ink and paper */
+  --ink:            #1B1430;  /* plum-black. The ONLY dark field */
+  --ink-raised:     #2A2050;  /* cards inside an ink field */
+  --paper:          #F6F4FA;  /* page canvas */
+  --surface:        #FFFFFF;  /* cards, nav, content */
+  --surface-muted:  #F8F8FA;  /* alternating sections, table headers */
+  --border:         #E5E7EB;  /* dividers, inputs, hairline */
+  --border-strong:  #CBD5E1;  /* secondary buttons */
+
+  /* Text, shared with the product */
+  --text:               #0F172A;  /* headings, values (16.4:1) */
+  --text-secondary:     #334155;  /* body (9.5:1) */
+  --text-tertiary:      #64748B;  /* labels on white only */
+  --text-muted:         #94A3B8;  /* decorative, never meaning */
+  --text-on-ink:        #FFFFFF;  /* on ink (17.7:1) */
+  --text-on-ink-muted:  #B4A8D6;  /* the only muted tone on ink */
+
+  /* Lagoon: the outcome, never a status */
+  --outcome:          #22C1CE;  /* the "it got paid" mark; ink text on it, never white */
+  --outcome-text:     #0B6E78;  /* Lagoon as type on paper (5.5:1) */
+  --outcome-tint:     #DDF6F8;  /* outcome block background */
+  --outcome-on-ink:   #67E3EE;  /* the outcome on ink (11.6:1) */
+
+  /* Status: identical to the product, every state carries a written label */
+  --success:       #10B981;  --success-bg: #ECFDF5;  --success-text: #047857;
+  --warning:       #F59E0B;  --warning-bg: #FFFBEB;  --warning-text: #B45309;
+  --danger:        #EF4444;  --danger-bg:  #FEF2F2;  --danger-text:  #B91C1C;
+  --info-bg:       #F1F5F9;                          --info-text:    #334155;
+
+  /* Data series on paper: three lightness steps of one hue */
+  --series-1: var(--plum-600);
+  --series-2: var(--plum-400);
+  --series-3: var(--plum-200);
+  --series-4: #64748B;
+  --highlight: var(--outcome);   /* one Lagoon highlight per chart */
+  --grid: #E5E7EB;
+  --label: #5B6878;
+
+  /* Data series on ink */
+  --series-ink-1: #C9B3FF;
+  --series-ink-2: #8E86B8;
+  --series-ink-3: #4A4270;
+  --series-ink-4: #B4A8D6;
+  --highlight-ink: #67E3EE;
+  --grid-ink: rgba(255, 255, 255, 0.18);
+
+  /* Typography */
+  --font-display: "Urbanist", "Avenir Next", "Century Gothic", sans-serif;
+  --font-text:    "Inter", Arial, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  /* Spacing, 4px base */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 20px;  --space-6: 24px;  /* card padding */
+  --space-8: 32px;  /* gutter */
+  --space-10: 40px; --space-12: 48px; /* sub-section */
+  --space-16: 64px; --space-20: 80px;
+  --space-24: 96px; /* section padding */
+  --container: 1200px;
+
+  /* Radii */
+  --radius-sm: 6px;    /* inputs */
+  --radius-md: 8px;    /* buttons */
+  --radius-lg: 14px;   /* cards */
+  --radius-xl: 20px;   /* panels */
+  --radius-full: 9999px; /* pills, node */
+
+  /* Shadows: only for things that float. Cards have none at rest. */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);                         /* rare */
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);                        /* hover lift */
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.18);                       /* screenshot on ink */
+
+  /* Motion: the 1px lift only. The node never animates. */
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --dur-1: 120ms;  --dur-2: 200ms;  --dur-3: 360ms;
+}
+
+/* Surface modes. Set data-surface on any frame and every semantic token follows. */
+:root, [data-surface="paper"] {
+  --accent-fill:      var(--plum-600);
+  --accent-text:      var(--plum-700);
+  --accent-on-accent: #FFFFFF;
+  --bg-canvas:        var(--paper);
+  --bg-surface:       var(--surface);
+  --bg-tint:          var(--plum-50);
+  --text-primary:     var(--text);
+  --text-secondary-s: var(--text-secondary);
+  --text-tertiary-s:  var(--text-tertiary);
+  --border-default:   var(--border);
+  --device-hairline:  var(--border);
+  --device-node:      var(--plum-600);
+  --outcome-fill:     var(--outcome);
+  --outcome-type:     var(--outcome-text);
+}
+[data-surface="ink"] {
+  --accent-fill:      var(--plum-300);
+  --accent-text:      var(--plum-300);
+  --accent-on-accent: var(--ink);
+  --bg-canvas:        var(--ink);
+  --bg-surface:       var(--ink-raised);
+  --bg-tint:          rgba(255, 255, 255, 0.08);
+  --text-primary:     var(--text-on-ink);
+  --text-secondary-s: var(--text-on-ink);      /* weight and size, never opacity */
+  --text-tertiary-s:  var(--text-on-ink-muted);
+  --border-default:   rgba(255, 255, 255, 0.18);
+  --device-hairline:  rgba(255, 255, 255, 0.35);
+  --device-node:      var(--plum-300);
+  --outcome-fill:     var(--outcome-on-ink);
+  --outcome-type:     var(--outcome-on-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}
+
+/* Base */
+body { font-family: var(--font-text); font-size: 16px; line-height: 1.65;
+       color: var(--text-secondary); background: var(--paper); }
+
+/* Type ramp: size / line-height / weight / tracking. Headings 600, never 700. */
+.t-display { font: 600 56px/1.04 var(--font-display); letter-spacing: -.025em; color: var(--text-primary); }
+.t-h1 { font: 600 40px/1.1  var(--font-display); letter-spacing: -.02em;  color: var(--text-primary); }
+.t-h2 { font: 600 30px/1.16 var(--font-display); letter-spacing: -.015em; color: var(--text-primary); }
+.t-h3 { font: 600 20px/1.3  var(--font-display); letter-spacing: -.01em;  color: var(--text-primary); }
+.t-lead    { font: 400 19px/1.6  var(--font-text); }
+.t-body    { font: 400 16px/1.65 var(--font-text); max-width: 74ch; }
+.t-small   { font: 400 14px/1.6  var(--font-text); }
+.t-caption { font: 400 13px/1.5  var(--font-text); }
+.t-number  { font: 600 40px/1.1  var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-primary); }
+
+/* Eyebrow: the ONLY all-caps text. Hairline, then a 7px node. */
+.eyebrow { display: inline-flex; align-items: center; gap: 8px;
+           font: 600 11px/1.4 var(--font-mono); text-transform: uppercase;
+           letter-spacing: .14em; color: var(--accent-text); }
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--device-hairline); }
+.node { display: inline-block; width: 7px; height: 7px;
+           border-radius: var(--radius-full); background: var(--device-node); }
+
+/* Buttons: 44px min target, one primary per section, flat fill, no gradient */
+.btn { min-height: 44px; padding: 0 20px; border-radius: var(--radius-md);
+       font: 600 15px/1 var(--font-text); cursor: pointer;
+       border: 1px solid transparent;
+       transition: background var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary   { background: var(--accent-fill); color: var(--accent-on-accent); }
+[data-surface="paper"] .btn-primary:hover, .btn-primary:hover { background: var(--plum-700); }
+[data-surface="ink"] .btn-primary:hover { background: var(--plum-200); }
+.btn-secondary { background: var(--bg-surface); color: var(--text-primary); border-color: var(--border-strong); }
+[data-surface="ink"] .btn-secondary { border-color: var(--text-on-ink); }
+.btn-ghost     { background: none; color: var(--accent-text); padding: 0 8px; }
+
+/* Tag (mono, small) and pill (status: label is always written) */
+.tag  { display: inline-block; padding: 2px 8px; border-radius: var(--radius-sm);
+        font: 600 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
+        background: var(--plum-50); color: var(--plum-700); }
+[data-surface="ink"] .tag { background: var(--bg-tint); color: var(--plum-300); }
+.pill { display: inline-block; padding: 4px 12px; border-radius: var(--radius-full);
+        font: 600 14px/1.3 var(--font-text); }
+.pill-success { background: var(--success-bg); color: var(--success-text); }
+.pill-warning { background: var(--warning-bg); color: var(--warning-text); }
+.pill-danger  { background: var(--danger-bg);  color: var(--danger-text); }
+.pill-info    { background: var(--info-bg);    color: var(--info-text); }
+.pill-outcome { background: var(--outcome-tint); color: var(--outcome-text); }  /* once per surface */
+[data-surface="ink"] .pill-outcome { background: var(--ink-raised); color: var(--outcome-on-ink); }
+
+/* Callout: tint field, node marker, never a faded accent */
+.callout { display: flex; gap: 14px; padding: var(--space-6); border-radius: var(--radius-xl);
+           background: var(--bg-tint); color: var(--text-secondary-s); }
+.callout::before { content: ""; flex: none; width: 9px; height: 9px; margin-top: 9px;
+                   border-radius: var(--radius-full); background: var(--device-node); }
+
+/* Card: no shadow at rest; hover = one stop darker border plus 1px lift */
+.card { padding: var(--space-6); border-radius: var(--radius-lg);
+        background: var(--bg-surface); border: 1px solid var(--border-default);
+        transition: transform var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
+.card:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+
+/* Device: a 1px hairline that ends in a filled node (14px hero/section closer) */
+.device { display: flex; align-items: center; }
+.device::before { content: ""; flex: 1; height: 1px; background: var(--device-hairline); }
+.device::after  { content: ""; width: 14px; height: 14px; border-radius: var(--radius-full); background: var(--device-node); }
