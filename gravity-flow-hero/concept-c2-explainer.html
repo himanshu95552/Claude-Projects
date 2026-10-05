@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gravity Flow explainer, concept C2</title>
+<link rel="stylesheet" href="plum-tokens.css">
+<style>
+  @font-face{font-family:Urbanist;font-weight:600;src:url(fonts/urbanist-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:"JetBrains Mono";font-weight:600;src:url(fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2")}
+  html,body{margin:0;height:100%;background:var(--ink);overflow:hidden}
+  #frame{width:1600px;height:1200px;position:absolute;left:50%;top:50%;transform-origin:center;background:var(--ink);overflow:hidden;font-family:var(--font-text);color:var(--text)}
+  .ghost{position:absolute;border-radius:20px;background:var(--ink-raised);border:2px solid rgba(255,255,255,.14)}
+  #card{position:absolute;left:160px;top:70px;width:1280px;height:900px;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+  .scene{position:absolute;inset:0}
+  .a{position:absolute}
+  .tabs{position:absolute;left:0;top:0;width:100%;height:92px;border-bottom:2px solid var(--border);background:var(--surface-muted)}
+  .tab{position:absolute;top:30px;font:600 24px/1 var(--font-text);color:var(--text-tertiary)}.tab.on{color:var(--plum-700)}
+  .tabline{position:absolute;top:84px;height:4px;border-radius:2px;background:var(--plum-600)}
+  .eb{position:absolute;font:600 16px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--plum-700);display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .eb i{display:block;width:22px;height:2px;background:var(--border-strong)} .eb b{display:block;width:8px;height:8px;border-radius:50%;background:var(--plum-600)}
+  .h{position:absolute;left:40px;width:1200px;font:600 44px/1.12 var(--font-display);letter-spacing:-.02em;color:var(--text)}
+  .sub{position:absolute;left:40px;width:1100px;font:400 26px/1.45 var(--font-text);color:var(--text-secondary)}
+  .box{position:absolute;box-sizing:border-box;border:2px solid var(--border);border-radius:14px;background:#fff}
+  .box.t{background:var(--plum-50);border-color:var(--plum-100)}
+  .nm{position:absolute;font:600 27px/1.15 var(--font-display);letter-spacing:-.01em;color:var(--text)}
+  .ds{position:absolute;font:400 22px/1.4 var(--font-text);color:var(--text-secondary)}
+  .tag{position:absolute;padding:4px 12px;border-radius:6px;font:600 16px/1.4 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;background:var(--plum-50);color:var(--plum-700);white-space:nowrap}
+  .pill{position:absolute;padding:4px 16px;border-radius:9999px;font:600 19px/1.4 var(--font-text);white-space:nowrap}
+  .p-ok{background:var(--success-bg);color:var(--success-text)}.p-warn{background:var(--warning-bg);color:var(--warning-text)}
+  .p-info{background:var(--info-bg);color:var(--info-text)}.p-plum{background:var(--plum-50);color:var(--plum-700)}.p-sol{background:var(--plum-600);color:#fff}
+  .sk{position:absolute;height:16px;border-radius:8px;background:#E5E7EB}.sk.d{background:#CBD5E1}
+  .th{position:absolute;font:600 20px/1 var(--font-text);color:var(--text-tertiary)}
+  .row{position:absolute;left:0;width:100%;border-top:2px solid var(--border)}
+  .t{font:400 24px/1.3 var(--font-text);color:var(--text-secondary)}
+  .btn{position:absolute;height:52px;padding:0 24px;border-radius:8px;font:600 21px/52px var(--font-text);border:2px solid var(--border-strong);color:var(--text);background:#fff}
+  .dot{position:absolute;border-radius:50%}
+  .call{position:absolute;left:40px;width:1200px;height:84px;border-radius:20px;background:var(--plum-50);display:flex;align-items:center;gap:16px;padding:0 28px;box-sizing:border-box;font:400 26px/1.35 var(--font-text);color:var(--text-secondary)}
+  .call::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--plum-600)}
+  .num{position:absolute;font:600 64px/1 var(--font-mono);color:var(--text);font-variant-numeric:tabular-nums}
+  .rail-l{position:absolute;font:600 15px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-on-ink-muted);transform:translateX(-50%);white-space:nowrap}
+  .hl{position:absolute;background:var(--plum-100);border-radius:4px}
+</style>
+</head>
+<body>
+<div id="frame" role="img" aria-label="Gravity Flow explained: any event starts a workflow; thousands of ready-made workflows across getting the order, completing the exam and getting paid; shown on real work from document to claim; set once with automation rules; agentic workflows handle decisions and hand exceptions to your team; every run is on record and under your limits; one engine under the whole system.">
+  <div class="ghost" style="left:216px;top:126px;width:1280px;height:900px;opacity:.55"></div>
+  <div class="ghost" style="left:188px;top:98px;width:1280px;height:900px;opacity:.85"></div>
+  <div id="card"></div><div id="rail"></div>
+</div>
+<script>
+const T=58, EASE='cubic-bezier(.4,0,.2,1)', END=57.2;
+const card=document.getElementById('card'),rail=document.getElementById('rail'),frame=document.getElementById('frame'),anims=[];
+const fit=()=>{frame.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1600,innerHeight/1200)})`};addEventListener('resize',fit);fit();
+const h=(c,css,html,p)=>{const e=document.createElement('div');if(c)e.className=c;if(css)e.style.cssText=css;if(html!=null)e.innerHTML=html;p.appendChild(e);return e};
+function kf(e,pts){let pv=0;const fr=pts.map(([t,p])=>{pv=Math.max(pv,Math.min(1,Math.max(0,t/T)));return {offset:pv,easing:EASE,...p}});
+ if(fr[0].offset>0)fr.unshift({offset:0,...pts[0][1]});if(fr[fr.length-1].offset<1)fr.push({offset:1,...pts[pts.length-1][1]});
+ anims.push(e.animate(fr,{duration:T*1000,iterations:Infinity,fill:'both',easing:'linear'}))}
+let OUT=END; // current scene end, children disappear with their scene
+function appear(e,t0,{dur:d=.5,dx=0,dy=12,out=OUT}={}){const a={opacity:0,transform:`translate(${dx}px,${dy}px)`},b={opacity:1,transform:'translate(0,0)'};
+ kf(e,[[0,a],[t0,a],[t0+d,b],[out,b],[Math.min(out+.4,T),{...a,transform:'translate(0,0)'}]])}
+function sweep(e,t0,t1,out=OUT){kf(e,[[0,{transform:'scaleX(0)',opacity:1}],[t0,{transform:'scaleX(0)'}],[t1,{transform:'scaleX(1)'}],[out,{transform:'scaleX(1)',opacity:1}],[out+.4,{transform:'scaleX(1)',opacity:0}]])}
+function scene(t0,t1){OUT=t1;const s=h('scene','',null,card),a={opacity:0,transform:'translateX(36px)'};
+ kf(s,[[0,a],[t0,a],[t0+.6,{opacity:1,transform:'translateX(0)'}],[t1-.2,{opacity:1,transform:'translateX(0)'}],[t1+.3,{opacity:0,transform:'translateX(-24px)'}],[Math.min(t1+.4,T),a]]);s.t0=t0;return s}
+const head=(s,eb,title,sub)=>{const e=h('eb','left:40px;top:62px','<i></i><b></b>'+eb,s);appear(e,s.t0+.3);
+ const t=h('h','top:96px',title,s);appear(t,s.t0+.5);if(sub){const u=h('sub','top:'+(title.length>48?224:168)+'px',sub,s);appear(u,s.t0+.9)}};
+const tabsBar=(s,act)=>{h('tabs','',null,s);const xs=[40,248,418,626,806],ws=[168,98,114,102,118];['Documents','Orders','Patients','Charges','Analytics'].forEach((w,i)=>h('tab'+(i===act?' on':''),`left:${xs[i]}px`,w,s));h('tabline',`left:${xs[act]}px;width:${ws[act]}px`,null,s)};
+const pillCls={Automated:'p-plum',Agentic:'p-sol'};
+function wf(s,x,y,w,hh,name,mode,desc,t){const g=h('a',`left:${x}px;top:${y}px;width:${w}px;height:${hh}px`,null,s);
+ h('box','left:0;top:0;width:100%;height:100%',null,g);const n=h('nm','left:24px;top:18px',name,g);
+ h('pill '+pillCls[mode],`right:20px;top:16px`,mode,g);h('ds',`left:24px;top:62px;width:${w-48}px`,desc,g);appear(g,t,{dy:16});return g}
+// ===== S1: how a workflow runs =====
+let s=scene(.3,6.3);head(s,'How a workflow runs','Any event in Gravity can start one.');
+['Order created','Report signed','Appointment booked','Patient missed the visit'].forEach((w,i)=>{const y=270+i*104;
+ const c=h('a',`left:40px;top:${y}px;width:340px;height:76px`,null,s);h('box','left:0;top:0;width:100%;height:100%',null,c);h('dot','left:22px;top:31px;width:12px;height:12px;background:var(--plum-600)',null,c);h('nm','left:50px;top:20px;font:600 24px/1.2 var(--font-text)',w,c);appear(c,1.0+i*.25,{dx:-20,dy:0});
+ const l=h('a',`left:380px;top:${y+37}px;width:150px;height:2px;background:var(--plum-300);transform-origin:left`,null,s);sweep(l,1.8+i*.15,2.4+i*.15)});
+const fl=h('a','left:530px;top:290px;width:210px;height:330px;border-radius:14px;background:var(--plum-600)',null,s);
+h('eb','left:0;width:100%;top:120px;justify-content:center;color:#fff','Engine',fl);h('a','left:0;width:100%;top:156px;text-align:center;font:600 34px/1.1 var(--font-display);color:#fff','Gravity Flow',fl);appear(fl,2.2);
+[[290,'Nothing to decide','Done on its own','Automated','p-plum'],[470,'Something to decide','An agent does the work','Agentic','p-sol']].forEach(([y,e,t,m,pc],i)=>{
+ const c=h('a',`left:810px;top:${y}px;width:430px;height:150px`,null,s);h('box','left:0;top:0;width:100%;height:100%',null,c);h('eb','left:24px;top:22px',e,c);h('nm','left:24px;top:56px;font-size:30px',t,c);h('pill '+pc,'left:24px;top:98px',m,c);appear(c,3.0+i*.9);
+ const l=h('a',`left:740px;top:${y+75}px;width:70px;height:2px;background:var(--plum-300);transform-origin:left`,null,s);sweep(l,2.8+i*.8,3.3+i*.8)});
+const ex=h('a','left:810px;top:650px;width:430px;height:100px',null,s);h('box t','left:0;top:0;width:100%;height:100%',null,ex);h('dot','left:24px;top:42px;width:14px;height:14px;background:var(--plum-600)',null,ex);h('nm','left:52px;top:18px;font:600 26px/1.2 var(--font-text)','Exceptions go to your team',ex);h('ds','left:52px;top:54px;font-size:21px','With the history attached',ex);appear(ex,4.8);
+const l2=h('a','left:1025px;top:620px;width:2px;height:30px;background:var(--plum-300)',null,s);appear(l2,4.6,{dy:0});
+const cp=h('call','top:790px;width:1200px','<span><b style="color:var(--text)">Automated</b> follows a rule. <b style="color:var(--text)">Agentic</b> reads, decides and acts, and hands what it can’t finish to a person.</span>',s);appear(cp,5.0,{dy:10});
+// ===== S2: marketplace by pillar =====
+s=scene(6.3,9.8);head(s,'Flow Marketplace · Get the order','We don’t just run your orders. We go get them.');
+[['Referrer outreach campaigns','Automated','Marketing sends fax and email campaigns to referring providers’ offices, built from the center’s own referrer data.'],
+ ['Report back to the referring office','Automated','The signed report goes back to the referring office on its own.'],
+ ['Breast tracking and recall','Agentic','Reads the BI-RADS score, recall interval, density and recommendation from the signed report, creates the follow-up order and sends the lay letter.']].forEach((o,i)=>wf(s,40,220+i*190,1200,i==2?170:150,...o,s.t0+.9+i*.55));
+s=scene(9.8,16.3);head(s,'Flow Marketplace · Complete the exam','Full schedules, without more schedulers.');
+[['Order completeness check','Automated','When an order is created, flags anything missing before it moves on.'],
+ ['Clinical clearance','Agentic','Flags whether the exam is appropriate, necessary and correct for the patient.'],
+ ['Booking outreach','Agentic','Texts or calls patients to book, with a secure link straight to open slots.'],
+ ['Confirmations and reminders','Automated','Booking confirmations and appointment reminders by text or call, on a schedule.'],
+ ['Earlier-slot nudges','Automated','When an earlier opening appears, eligible booked patients are offered it and moved when they accept.'],
+ ['No-show outreach','Automated','Re-engages patients who missed an appointment.'],
+ ['Pre-check-in and document requests','Automated','A link to check in and upload documents before the visit.'],
+ ['Results to the patient','Automated','Patients read and download the latest report, and open shared images, in the portal or from a text link.']].forEach((o,i)=>{
+ const col=i%2,row=Math.floor(i/2);wf(s,40+col*610,176+row*172,590,160,...o,s.t0+.8+i*.6)});
+s=scene(16.3,21.3);head(s,'Flow Marketplace · Get paid','Every exam you complete, you get paid for.');
+[['Financial clearance','Agentic','Flags coverage, eligibility and authorization gaps before the exam.'],
+ ['Eligibility checks','Automated','Eligibility runs on a schedule for orders waiting to start.'],
+ ['Prior auth status checks','Automated','Starts prior auth for pending orders and checks status on booked MR and CT orders every weekday.'],
+ ['Secondary insurance finder','Automated','Finds a secondary insurance the patient has that isn’t attached to the order.'],
+ ['Referring provider PECOS check','Automated','Flags a Medicare order whose referring provider isn’t enrolled in PECOS, before the claim is denied.'],
+ ['Patient estimates','Automated','Estimates are created and sent automatically.']].forEach((o,i)=>{
+ const col=i%2,row=Math.floor(i/2);wf(s,40+col*610,200+row*200,590,185,...o,s.t0+.8+i*.55)});
+// ===== S3: real work =====
+s=scene(21.3,24.8);tabsBar(s,0);
+[['Patient',40],['Source',390],['Category',640],['Created',900],['Action',1100]].forEach(([w,x])=>h('th',`left:${x}px;top:128px`,w,s));
+const box=h('a','left:0;top:170px;width:100%;height:560px',null,s);
+const drows=[];for(let i=0;i<5;i++){const r=h('row',`top:${i*110}px;height:110px`,null,box);h('sk d',`left:40px;top:44px;width:${150+(i*23)%70}px`,null,r);h('sk','left:40px;top:70px;width:90px;height:12px',null,r);h('a t','left:390px;top:36px','Web upload',r);const c=h('tag','left:640px;top:36px','None',r);h('a t','left:900px;top:36px',i?(i+3)+' days ago':'Just now',r);const b=h('btn','left:1100px;top:28px','Process',r);drows.push({r,c,b})}
+drows.forEach((o,i)=>{if(i)kf(o.r,[[0,{transform:'translateY(-110px)'}],[s.t0+.9,{transform:'translateY(-110px)'}],[s.t0+1.5,{transform:'translateY(0)'}]])});
+drows[0].r.style.background='var(--plum-50)';drows[0].r.style.borderTop='2px solid var(--plum-600)';appear(drows[0].r,s.t0+.9,{dy:-30});
+kf(drows[0].b,[[0,{backgroundColor:'#fff',color:'#0F172A',borderColor:'#CBD5E1'}],[s.t0+1.6,{backgroundColor:'#fff',color:'#0F172A',borderColor:'#CBD5E1'}],[s.t0+2.0,{backgroundColor:'#6B3FE4',color:'#fff',borderColor:'#6B3FE4'}],[OUT,{backgroundColor:'#6B3FE4',color:'#fff',borderColor:'#6B3FE4'}]]);
+drows[0].c.textContent='Order';kf(drows[0].c,[[0,{backgroundColor:'#F3EEFE',color:'#582FD1'}],[s.t0+2.4,{backgroundColor:'#F3EEFE',color:'#582FD1'}],[s.t0+2.7,{backgroundColor:'#6B3FE4',color:'#fff'}],[OUT,{backgroundColor:'#6B3FE4',color:'#fff'}]]);
+appear(h('call','top:780px','A new document arrives. Flow starts the moment Gravity Doc files it.',s),s.t0+.6,{dy:10});
+s=scene(24.8,28.3);tabsBar(s,0);
+const pg=h('a','left:40px;top:128px;width:600px;height:620px;background:var(--surface-muted);border:2px solid var(--border);border-radius:8px',null,s);
+h('a','left:32px;top:28px;font:600 24px/1.2 var(--font-text);color:var(--text)','Mammo pre booking',pg);
+[[90,520],[130,380],[190,500],[230,300],[290,520],[330,440],[390,480]].forEach(([y,w],i)=>{h('sk d',`left:32px;top:${y+40}px;width:${w}px;height:${i%2?12:16}px`,null,pg);const hi=h('hl',`left:28px;top:${y+34}px;width:${w+8}px;height:${i%2?24:28}px;transform-origin:left`,null,pg);sweep(hi,s.t0+.5+i*.28,s.t0+.8+i*.28)});
+const rp=h('a','left:700px;top:128px;width:540px;height:620px',null,s);
+appear(h('pill p-ok','left:0;top:26px','Completed',rp),s.t0+2.2);h('nm','left:0;top:90px;font-size:40px','Document processed',rp);
+const lk=h('box','left:0;top:190px;width:540px;height:170px',null,rp);h('eb','left:26px;top:26px','Linked patient',lk);h('sk d','left:26px;top:72px;width:240px;height:20px;border-radius:10px',null,lk);h('sk','left:26px;top:110px;width:170px',null,lk);appear(lk,s.t0+1.8);
+appear(h('btn','left:0;top:400px','Go to orders →',rp),s.t0+2.5);
+appear(h('call','top:780px','The document is read, linked to the patient and filed. No one re-keys it.',s),s.t0+.6,{dy:10});
+s=scene(28.3,31.8);tabsBar(s,1);
+[['Patient',40],['Service',380],['Appointment',560],['Status',900],['Priority',1100]].forEach(([w,x])=>h('th',`left:${x}px;top:128px`,w,s));
+const o1=h('row','top:170px;height:110px;background:var(--plum-50);border-top:2px solid var(--plum-600)',null,s);h('sk d','left:40px;top:46px;width:170px',null,o1);h('tag','left:380px;top:36px','MG',o1);h('sk d','left:560px;top:40px;width:200px',null,o1);h('sk','left:560px;top:68px;width:120px;height:12px',null,o1);h('a t','left:1100px;top:36px','Routine',o1);
+appear(o1,s.t0+.5,{dy:-30});const pw=h('pill p-warn','left:900px;top:34px','Waiting to book',o1),pb=h('pill p-info','left:900px;top:34px','Booked',o1);
+kf(pw,[[0,{opacity:0}],[s.t0+.9,{opacity:0}],[s.t0+1.2,{opacity:1}],[s.t0+1.6,{opacity:1}],[s.t0+1.9,{opacity:0}],[OUT,{opacity:0}]]);kf(pb,[[0,{opacity:0}],[s.t0+1.8,{opacity:0}],[s.t0+2.2,{opacity:1}],[OUT,{opacity:1}]]);
+h('eb','left:40px;top:330px','What Flow did',s);const hair=h('a','left:40px;top:400px;width:1100px;height:2px;background:var(--plum-300);transform-origin:left',null,s);sweep(hair,s.t0+1.2,s.t0+2.9);
+['Booking text sent','Patient booked','Reminder set'].forEach((w,i)=>{const x=40+i*520;appear(h('dot',`left:${x-7}px;top:394px;width:14px;height:14px;background:var(--plum-600)`,null,s),s.t0+1.3+i*.5,{dy:0});appear(h('a',`left:${x}px;top:424px;font:500 25px/1.2 var(--font-text);color:var(--text-secondary)`,w,s),s.t0+1.4+i*.5,{dy:8})});
+appear(h('call','top:560px;height:100px','Earlier opening? Eligible booked patients are offered it, and moved when they accept. Whoever confirms first gets it.',s),s.t0+2.6,{dy:10});
+appear(h('call','top:780px','Confirmations and reminders go out by text or call, on a schedule.',s),s.t0+.6,{dy:10});
+s=scene(31.8,35.3);tabsBar(s,3);
+h('eb','left:40px;top:128px','Claim',s);h('sk d','left:40px;top:172px;width:250px;height:24px;border-radius:12px',null,s);
+const acc=h('pill p-ok','left:310px;top:160px','Accepted by payer',s);kf(acc,[[0,{opacity:0}],[s.t0+2.4,{opacity:0}],[s.t0+2.8,{opacity:1}],[OUT,{opacity:1}]]);
+h('a th','left:900px;top:150px;width:340px;text-align:right','Billed total',s);h('sk d','left:1040px;top:186px;width:200px;height:26px;border-radius:13px',null,s);
+h('eb','left:40px;top:262px','Service lines',s);const sl=h('box','left:40px;top:300px;width:1200px;height:110px',null,s);
+[['CPT',30],['Modality',300],['Serviced',560],['Billed',900]].forEach(([w,x],i)=>{h('th',`left:${x}px;top:16px;font-size:18px`,w,sl);h('sk d',`left:${x}px;top:60px;width:${i==1?60:(i==3?150:130)}px`,null,sl)});
+h('eb','left:40px;top:444px','Submission history',s);const vl=h('a','left:57px;top:500px;width:2px;height:210px;background:var(--border);transform-origin:top',null,s);sweep(vl,s.t0+.8,s.t0+2.8);
+[['Created','#94A3B8',.8],['Accepted by clearinghouse','#64748B',1.6],['Accepted by payer','#10B981',2.4]].forEach(([w,c,t],i)=>{const y=490+i*84;
+ appear(h('dot',`left:51px;top:${y+8}px;width:14px;height:14px;background:${c}`,null,s),s.t0+t,{dy:0});appear(h('a',`left:100px;top:${y}px;font:600 26px/1.2 var(--font-text);color:var(--text)`,w,s),s.t0+t,{dy:8});appear(h('sk',`left:100px;top:${y+38}px;width:${[360,300,420][i]}px;height:12px`,null,s),s.t0+t+.1,{dy:6})});
+appear(h('call','top:780px','Claims go to the payer from the same record. Eligibility and prior auth ran before the exam.',s),s.t0+.6,{dy:10});
+// ===== S4: automation rules =====
+s=scene(35.3,39.3);head(s,'Automation rules','Set it once. The system does the rest.');
+[['Trigger','Any event in Gravity, or a schedule.',['Order created','Report signed','Every weekday']],['Conditions','On orders or documents.',['Service','Insurance','Referrer']],['Action','Then it does the work.',['Assign','Tag','Text','Fax','Estimate']]].forEach(([e,d,tags],i)=>{
+ const x=40+i*410,c=h('a',`left:${x}px;top:220px;width:380px;height:300px`,null,s);h('box','left:0;top:0;width:100%;height:100%',null,c);h('eb','left:24px;top:24px','0'+(i+1)+' · '+e,c);h('nm','left:24px;top:62px;width:330px;font-size:30px',d,c);
+ let tx=24,ty=170;tags.forEach(w=>{const t=h('tag',`left:${tx}px;top:${ty}px`,w,c);const wd=w.length*13+34;if(tx+wd>350){tx=24;ty+=46;t.style.left=tx+'px';t.style.top=ty+'px'}tx+=wd+10});appear(c,s.t0+.9+i*.6);
+ if(i<2){const l=h('a',`left:${x+380}px;top:370px;width:30px;height:2px;background:var(--plum-300)`,null,s);appear(l,s.t0+1.2+i*.6,{dy:0})}});
+[['Work assignment and tagging','Routes and tags orders and documents by rule, round-robin or weighted.'],['Bulk and one-off outreach','Staff send any message to one patient or hundreds at once from the order list, each with their own secure link.']].forEach(([t,d],i)=>{
+ const c=h('a',`left:${40+i*620}px;top:560px;width:580px;height:210px`,null,s);h('box t','left:0;top:0;width:100%;height:100%',null,c);h('nm','left:24px;top:22px;font-size:28px',t,c);h('ds','left:24px;top:68px;width:530px',d,c);appear(c,s.t0+2.4+i*.4)});
+// ===== S5: agentic =====
+s=scene(39.3,43.8);head(s,'Agentic workflows','Where there is something to decide, an agent does the work.');
+h('sub','top:250px','Example: breast tracking and recall, from the signed report.',s).t=0;appear(s.lastChild,s.t0+.9);
+[['Reads the signed report',['BI-RADS score','Recall interval','Density','Recommendation']],['Creates the follow-up order',['Follow-up exam']],['Sends the lay letter',['MQSA schedule']],['Hands off what it can’t finish',['Worklist','History attached']]].forEach(([t,tags],i)=>{
+ const x=40+i*308,c=h('a',`left:${x}px;top:330px;width:280px;height:340px`,null,s);h('box'+(i==3?' t':''),'left:0;top:0;width:100%;height:100%',null,c);
+ h('dot',`left:22px;top:26px;width:14px;height:14px;background:${i==3?'var(--warning)':'var(--plum-600)'}`,null,c);h('nm','left:22px;top:56px;width:240px;font-size:27px',t,c);
+ let ty=150;tags.forEach(w=>{h('tag',`left:22px;top:${ty}px`,w,c);ty+=44});appear(c,s.t0+1.2+i*.6);
+ if(i<3){const l=h('a',`left:${x+280}px;top:480px;width:28px;height:2px;background:var(--plum-300)`,null,s);appear(l,s.t0+1.5+i*.6,{dy:0})}});
+appear(h('call','top:690px;height:100px','We don’t read the scan. We make sure it gets back.',s),s.t0+2.8,{dy:10});
+// ===== S6: control and record =====
+s=scene(43.8,48.3);head(s,'Under your control','Every run on record. Every message within your limits.');
+const oc=h('a','left:40px;top:220px;width:560px;height:520px',null,s);h('box','left:0;top:0;width:100%;height:100%',null,oc);h('eb','left:26px;top:26px','Outreach controls',oc);
+['Editable wording with patient variables','Several versions per message','Contact caps per day and visit','Do-not-contact checked before anything goes out'].forEach((w,i)=>{h('dot',`left:28px;top:${92+i*84}px;width:10px;height:10px;background:var(--plum-600)`,null,oc);const l=h('a',`left:56px;top:${80+i*84}px;width:470px;font:500 25px/1.3 var(--font-text);color:var(--text)`,w,oc);appear(l,s.t0+1.0+i*.5,{dx:-10,dy:0})});
+h('ds','left:26px;top:430px;width:510px;font-size:21px','When a limit is reached, the next message is declined, not sent late.',oc);appear(oc,s.t0+.7);
+const rh=h('a','left:640px;top:220px;width:600px;height:520px',null,s);h('box','left:0;top:0;width:100%;height:100%',null,rh);h('eb','left:26px;top:26px','Run history and delivery record',rh);
+[['Text','Delivered','p-ok'],['Fax','Delivered','p-ok'],['Report','Delivered','p-ok'],['Text','Declined at limit','p-warn'],['Fax','Delivered','p-ok']].forEach(([m,st,pc],i)=>{const y=80+i*80;
+ const r=h('a',`left:0;top:${y}px;width:100%;height:80px;border-top:2px solid var(--border)`,null,rh);h('sk d',`left:26px;top:30px;width:${120+i*14}px`,null,r);h('a t','left:260px;top:24px',m,r);h('pill '+pc,'left:360px;top:20px;font-size:18px',st,r);appear(r,s.t0+1.2+i*.45,{dy:10})});appear(rh,s.t0+.9);
+appear(h('call','top:770px','Every run and every message, fax or report sent is logged with who, when and whether it went through.',s),s.t0+2.8,{dy:10});
+// ===== S7: one engine =====
+s=scene(48.3,52.3);head(s,'One engine under the whole system','Every system you add is another place for work to leak.');
+const ce=h('a','left:490px;top:320px;width:300px;height:170px;border-radius:14px;background:var(--plum-600)',null,s);h('eb','left:0;width:100%;top:48px;justify-content:center;color:#fff','The engine',ce);h('a','left:0;width:100%;top:84px;text-align:center;font:600 36px/1.1 var(--font-display);color:#fff','Gravity Flow',ce);appear(ce,s.t0+.8);
+[[40,250,'Gravity Communication','Every text, call, fax and email goes out on the center’s own numbers.'],[880,250,'Gravity Doc','A new document can start a workflow the moment it is filed.'],[460,540,'Gravity Work','What a workflow can’t finish lands on a worklist with the history attached.']].forEach(([x,y,t,d],i)=>{
+ const c=h('a',`left:${x}px;top:${y}px;width:360px;height:${i==2?150:200}px`,null,s);h('box','left:0;top:0;width:100%;height:100%',null,c);h('nm','left:22px;top:20px;font-size:26px',t,c);h('ds','left:22px;top:62px;width:316px;font-size:21px',d,c);appear(c,s.t0+1.3+i*.5)});
+[[400,405,90,2],[790,405,90,2],[640,490,2,50]].forEach(([x,y,w,hh],i)=>{const l=h('a',`left:${x}px;top:${y}px;width:${w}px;height:${hh}px;background:var(--plum-300)`,null,s);appear(l,s.t0+1.1+i*.3,{dy:0})});
+appear(h('call','top:730px;height:100px','Works with your RIS, PACS and RCM over HL7, FHIR and browser-driven work where no API exists.',s),s.t0+2.4,{dy:10});
+// ===== S8: close =====
+s=scene(52.3,58);OUT=END;head(s,'Gravity Flow today','The routine work, done on its own.');
+[['Thousands','ready-made workflows in the Flow Marketplace'],['About 200,000','workflow runs a month'],['Same day','from install to running'],['460+','imaging centers across the US']].forEach(([n,d],i)=>{
+ const col=i%2,row=Math.floor(i/2),c=h('a',`left:${40+col*620}px;top:${220+row*230}px;width:580px;height:200px`,null,s);h('box'+(i==3?' t':''),'left:0;top:0;width:100%;height:100%',null,c);h('num','left:28px;top:40px;font-size:'+(n.length>10?'50px':'64px'),n,c);h('ds','left:28px;top:128px;width:520px;font-size:24px',d,c);appear(c,s.t0+.5+i*.3)});
+appear(h('call','top:700px;height:100px','Your team reviews the work instead of re-keying it.',s),s.t0+1.9,{dy:10});
+// ===== rail =====
+const RY=1090,labs=['Any event','Ready-made','On real work','Set once','Agentic','Controlled','One engine','Paid'],tsn=[.3,6.3,21.3,35.3,39.3,43.8,48.3,52.6];
+const X0=120,X1=1480,xs=labs.map((_,i)=>X0+i*(X1-X0)/7);
+h('a',`left:${X0}px;top:${RY}px;width:${X1-X0}px;height:2px;background:rgba(255,255,255,.18)`,null,rail);
+const prog=h('a',`left:${X0}px;top:${RY}px;width:${X1-X0}px;height:2px;background:var(--plum-300);transform-origin:left`,null,rail);
+kf(prog,[[0,{transform:'scaleX(0)'}],...tsn.map((t,i)=>[t,{transform:`scaleX(${i/7})`}]),[END,{transform:'scaleX(1)',opacity:1}],[END+.6,{transform:'scaleX(1)',opacity:0}]]);
+xs.forEach((x,i)=>{const last=i===7,r=last?13:6;appear(h('a',`left:${x-r}px;top:${RY+1-r}px;width:${2*r}px;height:${2*r}px;border-radius:50%;background:${last?'var(--outcome-on-ink)':'var(--plum-300)'}`,null,rail),tsn[i],{dy:0,dur:.4,out:END});
+ appear(h('rail-l',`left:${x}px;top:${RY+34}px`,labs[i],rail),tsn[i],{dy:6,out:END})});
+const who=h('a','left:160px;top:26px;display:flex;align-items:center;gap:12px;font:600 18px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--plum-300)','<span style="width:34px;height:2px;background:rgba(255,255,255,.35)"></span><span style="width:10px;height:10px;border-radius:50%;background:var(--plum-300)"></span>Gravity Flow is running',frame);appear(who,.2,{out:END});
+window.__seek=ms=>anims.forEach(a=>{a.pause();a.currentTime=ms});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)window.__seek(56500);
+</script>
+</body>
+</html>

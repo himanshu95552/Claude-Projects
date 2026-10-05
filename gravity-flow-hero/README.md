@@ -1,9 +1,12 @@
 # Gravity Flow hero animation
 
-- `concept-a-onbrand.html`: flat, no text, ink panel and device (vector).
-- `concept-b-3d.html`: isometric 3D exploration with labels (breaks brand rules; exception).
-- `concept-c-hybrid.html`: on-brand with depth, re-skinned product screens (vector, live HTML).
-- `export/`: rendered MP4 (H.264) and WebM (VP9) of concept C at 1600x1200, 30fps, 30s loop, plus poster.
-- `fonts/`: Urbanist, Inter, JetBrains Mono (OFL, self-hosted).
+- `concept-a-onbrand.html`: flat on-brand ink panel, now with text labels (vector).
+- `concept-b-3d.html`: real 3D (three.js, PBR materials, reflections, bloom), with labels. Needs WebGL. Breaks brand rules (gradients, lighting); exception to approve.
+- `concept-c2-explainer.html`: in-depth 58s explainer on re-skinned product screens (vector). Covers every workflow, rule, control and number on the Gravity Flow page.
+- `concept-c-hybrid.html`: the earlier 30s overview.
+- `export/`: MP4 (H.264) and WebM (VP9) of C2 and C at 1600x1200, 30fps, plus posters for A, B, C and C2.
+- `fonts/`: Urbanist, Inter, JetBrains Mono (OFL, self-hosted). `vendor/`: three.js (MIT) and the bundled concept B script. `src/`: concept B source.
 
-Embed the video muted: `<video autoplay muted loop playsinline poster="...">` with the WebM source first, MP4 second.
+Rebuild B: `esbuild src/concept-b3d.js --bundle --minify --format=iife --alias:three=./vendor/three/three.module.js --alias:three/addons=./vendor/three/addons --outfile=vendor/concept-b.bundle.js`
+
+Embed video muted: `<video autoplay muted loop playsinline poster="...">` with the WebM source first, MP4 second.

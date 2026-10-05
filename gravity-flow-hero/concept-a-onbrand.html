@@ -18,6 +18,15 @@
   .bar-w{fill:var(--text-on-ink)} .bar-m{fill:var(--text-on-ink-muted)} .bar-p{fill:var(--plum-300)}
   .track{fill:rgba(255,255,255,.12)}
   .node{fill:var(--plum-300)} .lagoon{fill:var(--outcome-on-ink)}
+  @font-face{font-family:Urbanist;font-weight:600;src:url(fonts/urbanist-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:"JetBrains Mono";font-weight:600;src:url(fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2")}
+  .eb{font:600 17px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;fill:var(--plum-300)}
+  .hd{font:600 42px Urbanist,sans-serif;letter-spacing:-.02em;fill:#fff}
+  .ev{font:600 23px Inter,sans-serif;fill:#fff}
+  .lb{font:600 30px Urbanist,sans-serif;fill:#fff}
+  .sm{font:400 22px Inter,sans-serif;fill:var(--text-on-ink-muted)}
 </style>
 </head>
 <body>
@@ -47,10 +56,11 @@ function line(d,t0,t1,{cls='hair',len}={}){
   return p;
 }
 function fade(e,t0,t1,from=0){kf(e,[[0,{opacity:from}],[t0*S,{opacity:from}],[t1*S,{opacity:1}],[22.6*S,{opacity:1}],[23.6*S,{opacity:0}]])}
+function txt(x,y,str,cls,t,anchor='start'){const e=el('text',{x,y,class:cls,'text-anchor':anchor});e.textContent=str;fade(e,t,t+.5);return e}
 function node(x,y,r,t,cls='node'){const c=el('circle',{cx:x,cy:y,r,class:cls});fade(c,t,t+.35);return c}
 
 // engine panel
-const eng=el('rect',{x:560,y:120,width:620,height:960,rx:20,class:'panel'});fade(eng,.2,1.4);
+const eng=el('rect',{x:560,y:150,width:620,height:930,rx:20,class:'panel'});fade(eng,.2,1.4);
 
 // events
 const rows=[240,470,700,930];
@@ -60,9 +70,10 @@ rows.forEach((cy,i)=>{
   el('rect',{x:96,y:cy-75,width:300,height:150,rx:14,class:'card'},g);
   el('circle',{cx:132,cy:cy-40,r:3.5,class:'node'},g);
   el('rect',{x:146,y:cy-43,width:a,height:6,rx:3,class:'bar-p'},g);
-  el('rect',{x:128,y:cy-14,width:b,height:14,rx:7,class:'bar-w'},g);
   el('rect',{x:128,y:cy+18,width:c,height:8,rx:4,class:'bar-m'},g);
   el('rect',{x:128,y:cy+40,width:c-30,height:8,rx:4,class:'bar-m'},g);
+  const nm=['Appointment booked','Report signed','Order created','Patient missed the visit'][i];
+  const tt=el('text',{x:128,y:cy+4,class:'ev'},g);tt.textContent=nm;
   kf(g,[[0,{opacity:0,transform:'translateX(-24px)'}],[(.3+i*.3)*S,{opacity:0,transform:'translateX(-24px)'}],[(1.1+i*.3)*S,{opacity:1,transform:'translateX(0)'}],[22.6*S,{opacity:1,transform:'translateX(0)'}],[23.6*S,{opacity:0,transform:'translateX(0)'}]]);
 });
 
@@ -103,9 +114,6 @@ el('rect',{x:1244,y:840,width:260,height:200,rx:14,class:'card'},wl);
   el('rect',{x:1302,y:y+16,width:r==0?150:120,height:12,rx:6,fill:r==0?'#1B1430':'#B4A8D6'},wl);
 });
 kf(wl,[[0,{opacity:0}],[11.0*S,{opacity:0}],[12.0*S,{opacity:1}],[22.6*S,{opacity:1}],[23.6*S,{opacity:0}]]);
-// history attached: a short hairline of markers below the worklist
-line('M1262 1068 H1486',13.0,14.4); [0,1,2,3,4].forEach(i=>node(1262+i*56,1068,4.5,13.2+i*.25));
-
 // every run on record: ticks accumulate along the bottom hairline, then the outcome
 line('M96 1140 H1504',15.0,20.0,{});
 for(let i=0;i<30;i++){
@@ -115,6 +123,13 @@ for(let i=0;i<30;i++){
 node(1504,1140,13,20.2,'lagoon');
 // stage the outcome node larger (one Lagoon mark per surface)
 
+// labels: what each part of the picture means
+txt(96,56,'HOW A WORKFLOW RUNS','eb',.3);txt(96,106,'Any event in Gravity can start one.','hd',.5);
+txt(596,188,'NOTHING TO DECIDE','eb',2.2);txt(596,224,'Done on its own','lb',2.4);
+txt(596,566,'SOMETHING TO DECIDE','eb',3.2);txt(596,604,'An agent does the work','lb',3.4);
+txt(1504,822,'EXCEPTIONS GO TO YOUR TEAM','eb',11.0,'end');
+txt(1504,1072,'With the history attached','sm',13.2,'end');
+txt(96,1108,'EVERY RUN ON RECORD','eb',15.0);txt(1504,1108,'PAID','eb',20.2,'end');
 // reduced motion: hold the finished composition
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){anims.forEach(a=>{a.pause();a.currentTime=21500})}
 window.__seek=ms=>{anims.forEach(a=>{a.pause();a.currentTime=ms})};
