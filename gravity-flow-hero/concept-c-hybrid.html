@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gravity Flow hero, concept C (hybrid)</title>
+<link rel="stylesheet" href="plum-tokens.css">
+<style>
+  @font-face{font-family:Urbanist;font-weight:600;src:url(fonts/urbanist-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format("woff2")}
+  @font-face{font-family:Inter;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
+  @font-face{font-family:"JetBrains Mono";font-weight:600;src:url(fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2")}
+  html,body{margin:0;height:100%;background:var(--ink);overflow:hidden}
+  #wrap{position:fixed;inset:0;display:grid;place-items:center}
+  #frame{width:1600px;height:1200px;position:absolute;left:50%;top:50%;transform-origin:center;background:var(--ink);overflow:hidden;font-family:var(--font-text);color:var(--text)}
+  .abs{position:absolute}
+  .ghost{position:absolute;border-radius:20px;background:var(--ink-raised);border:2px solid rgba(255,255,255,.14)}
+  #card{position:absolute;left:160px;top:70px;width:1280px;height:900px;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+  .scene{position:absolute;inset:0}
+  .tabs{position:absolute;left:0;top:0;width:100%;height:92px;border-bottom:2px solid var(--border);background:var(--surface-muted)}
+  .tab{position:absolute;top:30px;font:600 24px/1 var(--font-text);color:var(--text-tertiary)}
+  .tab.on{color:var(--plum-700)} .tabline{position:absolute;top:84px;height:4px;border-radius:2px;background:var(--plum-600)}
+  .th{position:absolute;font:600 20px/1 var(--font-text);color:var(--text-tertiary)}
+  .row{position:absolute;left:0;width:100%;height:110px;border-top:2px solid var(--border)}
+  .cell{position:absolute;top:40px}
+  .sk{position:absolute;height:16px;border-radius:8px;background:#E5E7EB}
+  .sk.d{background:#CBD5E1}
+  .t{font:400 24px/1.3 var(--font-text);color:var(--text-secondary)}
+  .tag{position:absolute;padding:4px 12px;border-radius:6px;font:600 16px/1.4 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;background:var(--plum-50);color:var(--plum-700)}
+  .pill{position:absolute;padding:6px 18px;border-radius:9999px;font:600 20px/1.3 var(--font-text);white-space:nowrap}
+  .p-ok{background:var(--success-bg);color:var(--success-text)} .p-warn{background:var(--warning-bg);color:var(--warning-text)}
+  .p-info{background:var(--info-bg);color:var(--info-text)} .p-plum{background:var(--plum-50);color:var(--plum-700)}
+  .btn{position:absolute;height:52px;padding:0 24px;border-radius:8px;font:600 21px/52px var(--font-text);border:2px solid var(--border-strong);color:var(--text);background:#fff}
+  .btn.pri{background:var(--plum-600);color:#fff;border-color:var(--plum-600)}
+  .eb{position:absolute;font:600 15px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--plum-700)}
+  .h{position:absolute;font:600 40px/1.1 var(--font-display);letter-spacing:-.02em;color:var(--text)}
+  .dot{position:absolute;width:14px;height:14px;border-radius:50%}
+  .rail-l{position:absolute;font:600 18px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-on-ink-muted);transform:translateX(-50%);white-space:nowrap}
+  .rail-l.on{color:var(--plum-300)}
+  .hl{position:absolute;background:var(--plum-100);border-radius:4px}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="frame" role="img" aria-label="One document filed in Gravity is read and processed by Flow, becomes an order, gets booked, becomes an accepted claim, and anything it cannot finish lands on a worklist for your team.">
+  <div class="ghost" style="left:216px;top:126px;width:1280px;height:900px;opacity:.55"></div>
+  <div class="ghost" style="left:188px;top:98px;width:1280px;height:900px;opacity:.85"></div>
+  <div id="card"></div>
+  <div id="rail"></div>
+</div></div>
+<script>
+const T=30, S=1, EASE='cubic-bezier(.4,0,.2,1)';
+const card=document.getElementById('card'), rail=document.getElementById('rail'), frame=document.getElementById('frame');
+const anims=[];
+function fit(){const s=Math.min(innerWidth/1600,innerHeight/1200);frame.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+const h=(cls,css,html,parent)=>{const e=document.createElement('div');if(cls)e.className=cls;if(css)e.style.cssText=css;if(html!=null)e.innerHTML=html;parent.appendChild(e);return e};
+function kf(e,pts){const fr=pts.map(([t,p])=>({offset:Math.min(1,Math.max(0,t/T)),easing:EASE,...p}));
+  if(fr[0].offset>0)fr.unshift({offset:0,...pts[0][1]});if(fr[fr.length-1].offset<1)fr.push({offset:1,...pts[pts.length-1][1]});
+  anims.push(e.animate(fr,{duration:T*1000,iterations:Infinity,fill:'both',easing:'linear'}))}
+const END=29.0;
+// appear at t0 (fade+rise), optionally hide at tOut; everything fades at loop end
+function appear(e,t0,{dur=.6,dx=0,dy=14,out=END-.2}={}){
+  const a={opacity:0,transform:`translate(${dx}px,${dy}px)`},b={opacity:1,transform:'translate(0,0)'};
+  kf(e,[[0,a],[t0,a],[t0+dur,b],[out,b],[Math.min(out+.6,T),{...a,transform:'translate(0,0)'}]])}
+function sweep(e,t0,t1,out=END-.2){kf(e,[[0,{transform:'scaleX(0)',opacity:1}],[t0,{transform:'scaleX(0)'}],[t1,{transform:'scaleX(1)'}],[out,{transform:'scaleX(1)',opacity:1}],[out+.6,{transform:'scaleX(1)',opacity:0}]])}
+const sc=(t0,t1)=>{const s=h('scene','',null,card);const a={opacity:0,transform:'translateX(36px)'};
+  kf(s,[[0,a],[t0,a],[t0+.7,{opacity:1,transform:'translateX(0)'}],[t1-.4,{opacity:1,transform:'translateX(0)'}],[t1+.2,{opacity:0,transform:'translateX(-24px)'}],[Math.min(t1+.3,T),a]]);return s};
+function tabs(s,active){h('tabs','',null,s);['Documents','Orders','Patients','Charges','Analytics'].forEach((w,i)=>{
+  const x=[40,248,418,626,806][i];h('tab'+(i===active?' on':''),`left:${x}px`,w,s)});
+  const xs=[40,248,418,626,806],ws=[168,98,114,102,118];h('tabline',`left:${xs[active]}px;width:${ws[active]}px`,null,s)}
+// ---------- Scene 1: Documents ----------
+const s1=sc(0.3,6.4);tabs(s1,0);
+[['Patient',40],['Source',390],['Category',640],['Created',900],['Action',1100]].forEach(([w,x])=>h('th',`left:${x}px;top:128px`,w,s1));
+const rowsBox=h('abs','left:0;top:170px;width:100%;height:700px',null,s1);
+function docRow(i,new_){const r=h('row',`top:${i*110}px`,null,rowsBox);
+  h('sk d',`left:40px;top:46px;width:${150+(i*23)%70}px`,null,r);
+  h('sk',`left:40px;top:72px;width:90px;height:12px`,null,r);
+  h('cell t','left:390px;top:36px','Web upload',r);
+  const cat=h('tag','left:640px;top:36px',new_?'None':'None',r);
+  h('cell t','left:900px;top:36px',new_?'Just now':(i+3)+' days ago',r);
+  h('btn','left:1100px;top:28px','Process',r);return {r,cat}}
+const rows1=[];for(let i=0;i<5;i++)rows1.push(docRow(i,i===0));
+// existing rows drop one slot while a new row arrives at the top
+rows1.slice(0,5).forEach((o,i)=>{if(i>0){kf(o.r,[[0,{transform:'translateY(-110px)'}],[1.0,{transform:'translateY(-110px)'}],[1.7,{transform:'translateY(0)'}],[6.3,{transform:'translateY(0)'}]])}});
+// the arriving document is the first row
+const newRow=rows1[0].r;newRow.style.background='var(--plum-50)';newRow.style.borderTop='2px solid var(--plum-600)';
+appear(newRow,1.0,{dy:-30,out:6.2});
+// Flow takes the document: the Process button is pressed by the system, not a person
+const flowTag=h('tag','left:1030px;top:100px;background:var(--plum-600);color:#fff;font-size:16px','Flow',s1);
+const procBtn=newRow.querySelector('.btn');
+kf(procBtn,[[0,{backgroundColor:'#fff',color:'#0F172A',borderColor:'#CBD5E1'}],[2.6,{backgroundColor:'#fff',color:'#0F172A',borderColor:'#CBD5E1'}],[3.0,{backgroundColor:'#6B3FE4',color:'#fff',borderColor:'#6B3FE4'}],[6.3,{backgroundColor:'#6B3FE4',color:'#fff',borderColor:'#6B3FE4'}]]);
+flowTag.style.display='none';
+const catEl=rows1[0].cat;
+kf(catEl,[[0,{backgroundColor:'#F3EEFE',color:'#582FD1'}],[3.6,{backgroundColor:'#F3EEFE',color:'#582FD1'}],[3.9,{backgroundColor:'#6B3FE4',color:'#fff'}],[6.3,{backgroundColor:'#6B3FE4',color:'#fff'}]]);
+catEl.textContent='Order';
+// caption-free: the status changes from None to Order
+// ---------- Scene 2: Document processed ----------
+const s2=sc(6.2,12.0);tabs(s2,0);
+const pg=h('abs','left:40px;top:128px;width:620px;height:720px;background:var(--surface-muted);border:2px solid var(--border);border-radius:8px',null,s2);
+h('abs','left:32px;top:30px;font:600 24px/1.2 var(--font-text);color:var(--text)','Mammo pre booking',pg);
+const lines=[[90,520],[130,380],[190,500],[230,300],[290,520],[330,440]];
+lines.forEach(([y,w],i)=>{const b=h('sk d',`left:32px;top:${y+40}px;width:${w}px;height:${i%2?12:16}px`,null,pg);
+  const hi=h('hl',`left:28px;top:${y+34}px;width:${w+8}px;height:${i%2?24:28}px;transform-origin:left;`,null,pg);sweep(hi,6.9+i*.45,7.3+i*.45+.2,11.8)});
+const rp=h('abs','left:720px;top:128px;width:520px;height:720px',null,s2);
+const done=h('pill p-ok','left:0;top:30px','Completed',rp);appear(done,9.4,{out:11.8});
+h('h','left:0;top:100px;width:520px','Document processed',rp);
+const lk=h('abs','left:0;top:230px;width:520px;height:190px;border:2px solid var(--border);border-radius:14px;background:#fff',null,rp);
+h('eb','left:28px;top:30px','Linked patient',lk);h('sk d','left:28px;top:76px;width:240px;height:20px;border-radius:10px',null,lk);h('sk','left:28px;top:118px;width:170px',null,lk);
+appear(lk,8.8,{out:11.8});
+const gb=h('btn','left:0;top:470px','Go to orders →',rp);appear(gb,10.4,{out:11.8});
+// ---------- Scene 3: Orders ----------
+const s3=sc(11.8,17.6);tabs(s3,1);
+[['Patient',40],['Service',380],['Appointment',560],['Status',900],['Priority',1100]].forEach(([w,x])=>h('th',`left:${x}px;top:128px`,w,s3));
+const ob=h('abs','left:0;top:170px;width:100%;height:600px',null,s3);
+const o1=h('row','top:0',null,ob);h('sk d','left:40px;top:46px;width:170px',null,o1);h('tag','left:380px;top:36px','MG',o1);h('sk d','left:560px;top:40px;width:200px',null,o1);h('sk','left:560px;top:68px;width:120px;height:12px',null,o1);
+h('cell t','left:1100px;top:36px','Routine',o1);
+o1.style.background='var(--plum-50)';o1.style.borderTop='2px solid var(--plum-600)';
+const o1b=h('pill p-info','left:900px;top:34px','Booked',o1);
+const pend=h('pill p-warn','left:900px;top:34px','Waiting to book',o1);
+appear(o1,12.4,{dy:-30,out:17.4});
+kf(pend,[[0,{opacity:0}],[12.4,{opacity:0}],[13.0,{opacity:1}],[14.0,{opacity:1}],[14.4,{opacity:0}],[17.4,{opacity:0}]]);
+kf(o1b,[[0,{opacity:0}],[14.2,{opacity:0}],[14.8,{opacity:1}],[17.4,{opacity:1}],[18,{opacity:0}]]);
+// patient is texted, confirms, reminder set: a hairline with three markers
+const tl=h('abs','left:40px;top:430px;width:1200px;height:200px',null,s3);
+h('eb','left:0;top:0','What Flow did',tl);
+const hair=h('abs','left:0;top:80px;width:1100px;height:2px;background:var(--plum-300);transform-origin:left',null,tl);sweep(hair,14.6,16.8,17.4);
+['Booking text sent','Patient booked','Reminder set'].forEach((w,i)=>{const x=i*520;
+  const d=h('dot',`left:${x-7}px;top:74px;background:var(--plum-600)`,null,tl);appear(d,14.8+i*.9,{dy:0,out:17.4});
+  const l=h('abs',`left:${x}px;top:110px;font:500 24px/1.2 var(--font-text);color:var(--text-secondary)`,w,tl);appear(l,14.9+i*.9,{dy:8,out:17.4})});
+// ---------- Scene 4: Claim ----------
+const s4=sc(17.4,23.4);tabs(s4,3);
+h('eb','left:40px;top:128px','Claim',s4);h('sk d','left:40px;top:172px;width:250px;height:24px;border-radius:12px',null,s4);
+const acc=h('pill p-ok','left:310px;top:160px','Accepted by payer',s4);kf(acc,[[0,{opacity:0}],[21.0,{opacity:0}],[21.6,{opacity:1}],[23.2,{opacity:1}],[23.6,{opacity:0}]]);
+h('sk','left:40px;top:214px;width:340px;height:12px',null,s4);
+h('abs','left:900px;top:150px;width:340px;text-align:right;font:600 20px/1 var(--font-text);color:var(--text-tertiary)','Billed total',s4);h('sk d','left:1040px;top:186px;width:200px;height:26px;border-radius:13px',null,s4);
+h('eb','left:40px;top:290px','Service lines',s4);
+const sl=h('abs','left:40px;top:330px;width:1200px;height:120px;border:2px solid var(--border);border-radius:14px',null,s4);
+[['CPT',30],['Modality',300],['Serviced',560],['Billed',900]].forEach(([w,x],i)=>{h('th',`left:${x}px;top:20px;font-size:18px`,w,sl);h('sk d',`left:${x}px;top:62px;width:${i==1?60:(i==3?150:130)}px`,null,sl)});
+h('eb','left:40px;top:490px','Submission history',s4);
+const hl=h('abs','left:57px;top:552px;width:2px;height:240px;background:var(--border);transform-origin:top',null,s4);sweep(hl,18.6,21.6,23.2);
+[['Created','#94A3B8',18.6],['Accepted by clearinghouse','#64748B',19.9],['Accepted by payer','#10B981',21.0]].forEach(([w,c,t],i)=>{const y=540+i*100;
+  const d=h('dot',`left:51px;top:${y+8}px;background:${c}`,null,s4);appear(d,t,{dy:0,out:23.2});
+  const l=h('abs',`left:100px;top:${y}px;font:600 26px/1.2 var(--font-text);color:var(--text)`,w,s4);appear(l,t,{dy:10,out:23.2});
+  const sk=h('sk',`left:100px;top:${y+40}px;width:${[360,300,420][i]}px;height:12px`,null,s4);appear(sk,t+.1,{dy:6,out:23.2})});
+// ---------- Scene 5: Worklist (what a workflow can't finish) ----------
+const s5=sc(23.2,29.4);tabs(s5,1);
+h('h','left:40px;top:128px','What Flow can’t finish',s5);
+h('abs','left:40px;top:190px;width:900px;font:400 24px/1.5 var(--font-text);color:var(--text-secondary)','Lands on a worklist with the history attached.',s5);
+const wl=h('abs','left:40px;top:270px;width:1200px;height:560px',null,s5);
+for(let i=0;i<4;i++){const r=h('row',`top:${i*130}px;height:130px`,null,wl);
+  if(i===0){r.style.background='var(--plum-50)';r.style.borderTop='2px solid var(--plum-600)'}
+  h('sk d',`left:30px;top:${i?52:46}px;width:${200+i*17}px`,null,r);h('sk',`left:30px;top:${i?78:72}px;width:120px;height:12px`,null,r);
+  if(i===0){const p=h('pill p-warn','left:520px;top:44px','Needs review',r);const g=h('tag','left:740px;top:50px','History attached',r);
+    appear(p,24.6,{out:29.0});appear(g,25.6,{out:29.0});appear(r,24.0,{dy:-40,out:29.0})}
+  else{h('pill p-info',`left:520px;top:44px`,'Done',r);}}
+// Flow is the actor: no person clicks anything
+const who=h('abs','left:160px;top:26px;display:flex;align-items:center;gap:12px;font:600 18px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--plum-300)','<span style="width:34px;height:2px;background:rgba(255,255,255,.35)"></span><span style="width:10px;height:10px;border-radius:50%;background:var(--plum-300)"></span>Gravity Flow is running',frame);appear(who,.2,{out:29.0});
+// ---------- Rail: the lifecycle line, ending in the outcome ----------
+const RY=1090,X0=120,X1=1480,labs=['Document','Order','Booked','Claim','Paid'],xs=[120,460,800,1140,1480],tsn=[.4,6.2,11.8,17.4,27.6];
+const base=h('abs',`left:${X0}px;top:${RY}px;width:${X1-X0}px;height:2px;background:rgba(255,255,255,.18)`,null,rail);
+const prog=h('abs',`left:${X0}px;top:${RY}px;width:${X1-X0}px;height:2px;background:var(--plum-300);transform-origin:left`,null,rail);
+kf(prog,[[0,{transform:'scaleX(0)'}],[.4,{transform:'scaleX(0)'}],[6.2,{transform:'scaleX(.25)'}],[11.8,{transform:'scaleX(.5)'}],[17.4,{transform:'scaleX(.75)'}],[27.6,{transform:'scaleX(1)'}],[29.0,{transform:'scaleX(1)',opacity:1}],[29.6,{transform:'scaleX(1)',opacity:0}]]);
+xs.forEach((x,i)=>{const last=i===4,r=last?13:6;
+  const d=h('abs',`left:${x-r}px;top:${RY+1-r}px;width:${2*r}px;height:${2*r}px;border-radius:50%;background:${last?'var(--outcome-on-ink)':'var(--plum-300)'}`,null,rail);
+  appear(d,tsn[i],{dy:0,dur:.4,out:29.0});
+  const l=h('rail-l',`left:${x}px;top:${RY+34}px`,labs[i],rail);appear(l,tsn[i],{dy:6,out:29.0})});
+// Reduced motion: hold the finished frame
+window.__seek=ms=>anims.forEach(a=>{a.pause();a.currentTime=ms});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)window.__seek(28500);
+</script>
+</body>
+</html>
