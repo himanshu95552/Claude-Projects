@@ -1,5 +1,7 @@
 # Gravity Flow hero animation
 
+**Primary (matches the home page hero, AN27 `web-product-ink-b`):** `gravity-flow-hero-ink-b.html` (preview), `flow-hero-embed.html` (drop-in `<figure class="ga">` + CSS using the home page's own `.ga` classes and 12s animation language), `export/gravity-flow-hero-ink-b-*` (MP4, WebM, poster; 1600x1200, 12s seamless loop). Rebuild with `python3 src/build_ink_b.py`.
+
 - `concept-a-onbrand.html`: flat on-brand ink panel, now with text labels (vector).
 - `concept-b-3d.html`: real 3D (three.js, PBR materials, reflections, bloom), with labels. Needs WebGL. Breaks brand rules (gradients, lighting); exception to approve.
 - `concept-c2-explainer.html`: in-depth 58s explainer on re-skinned product screens (vector). Covers every workflow, rule, control and number on the Gravity Flow page.
