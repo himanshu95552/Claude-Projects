@@ -1,5 +1,7 @@
 # Gravity Flow hero animation
 
+**Latest, original composition: "one run, traced"** `gravity-flow-hero-trace.html` (preview), `flow-trace-embed.html` (drop-in), `export/gravity-flow-hero-trace-*` (MP4, WebM, poster; 16s loop). Rebuild: `python3 src/build_trace.py`. The earlier `ink-b` file copies the home diagram's layout and is kept only as a reference.
+
 **Primary (matches the home page hero, AN27 `web-product-ink-b`):** `gravity-flow-hero-ink-b.html` (preview), `flow-hero-embed.html` (drop-in `<figure class="ga">` + CSS using the home page's own `.ga` classes and 12s animation language), `export/gravity-flow-hero-ink-b-*` (MP4, WebM, poster; 1600x1200, 12s seamless loop). Rebuild with `python3 src/build_ink_b.py`.
 
 - `concept-a-onbrand.html`: flat on-brand ink panel, now with text labels (vector).
