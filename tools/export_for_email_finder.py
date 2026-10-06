@@ -12,6 +12,8 @@ import argparse, csv, html, os, re
 CRED = re.compile(r"\b(m\.?d\.?|d\.?o\.?|ph\.?d\.?|r\.?n\.?|rt|rdms|rrt|dr|jr|sr|ii|iii|np|pa-c|crna|dpt|mba|msn|bsn|facr)\b\.?", re.I)
 DM = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|partner|administrator|director|manager|head of|supervisor|officer|controller|coordinator|executive|operations|billing|revenue|practice|lead|medical director|radiologist)\b", re.I)
 TOP = re.compile(r"\b(chief|ceo|coo|cfo|cio|cmo|cto|president|vice president|vp|owner|co-?owner|partner|founder|administrator|managing|medical director|director of (radiology|imaging|operations)|practice manager|executive director|radiology director|imaging director|head of)\b", re.I)
+JUNK_WORD = re.compile(r"^(you|your|find|view|read|learn|meet|contact|about|our|the|team|staff|board|member|specialist|specialists|physician|physicians|doctor|doctors|clinic|center|centre|services|request|appointment|appointments|schedule|locations|location|patients|providers|provider|news|menu|home|search|click|here|more|careers|donate|login|portal|imaging|radiology|health|medical|hospital|group|associates)$", re.I)
+JUNK_TITLE = re.compile(r"^\s*(find a|find an|view|learn more|read more|contact|schedule|request|make an)\b", re.I)
 dom = lambda u: re.sub(r"^https?://(www\.)?", "", (u or "").strip().lower()).split("/")[0]
 
 
@@ -32,12 +34,14 @@ def main():
     wf = os.path.join(os.path.dirname(a.out) or ".", "work_emails.csv")
     if os.path.exists(wf): have = {r["person_id"] for r in csv.DictReader(open(wf, newline="", encoding="utf-8")) if r.get("work_email")}
     for path in a.exclude: have |= {r["person_id"] for r in csv.DictReader(open(path, newline="", encoding="utf-8-sig")) if r.get("person_id")}
-    rows = []
+    rows = []; skipped_junk = 0
     for p in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
         if p.get("published_email") or p["person_id"] in have: continue
         o, n = orgs.get(p["org_id"]), split(p["name"])
         if not o or not n or not dom(o["website"]): continue
+        if JUNK_WORD.match(n[0]) or JUNK_WORD.match(n[1]): skipped_junk += 1; continue
         t = html.unescape(p.get("title_final") or p.get("listed_title") or p.get("title") or "").replace("\n", " ").strip()
+        if JUNK_TITLE.match(t): skipped_junk += 1; continue
         dm = bool(DM.search(t))
         if a.decision_makers_only and not dm: continue
         if a.top_tier_only and not TOP.search(t): continue
@@ -53,6 +57,7 @@ def main():
         with open(path, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(part)
         print(f"  {len(part)} rows -> {path}")
+    print(f"skipped {skipped_junk} rows that look like website labels, not people (e.g. 'You Trust', 'Find a Specialist')")
     print(f"{len(rows)} people ({sum(1 for k, _ in rows if k == 0)} decision-makers) in {len(parts)} file(s)")
 
 
