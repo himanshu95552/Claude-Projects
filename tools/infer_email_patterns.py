@@ -34,7 +34,22 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--orgs", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--extra-emails", default="", help="work_emails.csv from crustdata_work_email.py: its emails (domain_matches_org = yes) count as evidence and as known emails")
+    ap.add_argument("--domain-lists", action="append", default=[], help="text/CSV of known emails at a domain (e.g. Hunter or Snov domain search). A domain where >=70% of >=10 addresses are first.last gets that pattern, for organizations with no other evidence")
     a = ap.parse_args()
+    dpat = {}
+    if a.domain_lists:
+        cnt = collections.defaultdict(collections.Counter)
+        for path in a.domain_lists:
+            for line in open(path, encoding="utf-8-sig"):
+                m = re.search(r"[\w.+'-]+@[\w.-]+\.\w+", line)
+                if not m: continue
+                loc, d = m.group(0).lower().split("@")
+                if loc in ("info", "contact", "support", "admin", "sales", "hello", "careers", "billing", "office"): continue
+                cnt[dom(d)]["first.last" if re.fullmatch(r"[a-z]{2,}\.[a-z]{2,}", loc) else "other"] += 1
+        for d, c in cnt.items():
+            n = sum(c.values())
+            if n >= 10 and c["first.last"] / n >= 0.7: dpat[d] = ("first.last", c["first.last"], n)
+        print("domain patterns from lists:", {d: f"first.last {x}/{n}" for d, (_p, x, n) in dpat.items()})
     orgs = {o["org_id"]: o for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     ppl = list(csv.DictReader(open(a.people, newline="", encoding="utf-8")))
     if a.extra_emails and __import__("os").path.exists(a.extra_emails):
@@ -57,6 +72,9 @@ def main():
             if not ld or not k: continue
             for pn, fn in PATTERNS.items():
                 if fn(*k) == ld[0]: evid.append((pn, e)); domains[ld[1]] += 1
+        if not evid and site in dpat:
+            evid = [("first.last", f"domain list ({dpat[site][1]}/{dpat[site][2]} addresses)")] * dpat[site][1]; domains[site] = dpat[site][1]
+            stats["from_domain_list"] += 1
         if not evid: stats["no_evidence"] += 1; continue
         votes = collections.Counter(pn for pn, _ in evid)
         top = votes.most_common(2)

@@ -23,8 +23,12 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--crustdata", default=""); ap.add_argument("--verified", default="")
     ap.add_argument("--orgs", default="", help="orgs_final.csv; a Hunter email whose domain differs from the organization's website is marked medium, not high")
+    ap.add_argument("--guesses", default="", help="unverified pattern guesses (infer_email_patterns.py output); used only when nothing better exists, always unproven")
     ap.add_argument("--matched", default="", help="final/matched_emails.csv from match_emails.py (domain-list and Apollo matches)")
     ap.add_argument("--finder", action="append", default=[], help="Hunter bulk Email Finder result CSV (repeatable)"); a = ap.parse_args()
+    gs = {}
+    if a.guesses and os.path.exists(a.guesses):
+        gs = {r["person_id"]: r for r in csv.DictReader(open(a.guesses, newline="", encoding="utf-8")) if r.get("inferred_email")}
     mt = {}
     if a.matched and os.path.exists(a.matched):
         mt = {r["person_id"]: r for r in csv.DictReader(open(a.matched, newline="", encoding="utf-8"))}
@@ -62,6 +66,7 @@ def main():
             elif i.get("verification") == "catch_all": e, how, conf = i["inferred_email"], "inferred_unproven", "unproven"
             elif i.get("verification") == "unknown" and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_untestable", "unproven"   # a verifier could not tell: keep the guess, flagged
             elif i.get("verification") in ("", None, "not_checked") and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_unchecked", "unproven"
+            if how == "none" and p["person_id"] in gs: e, how, conf = gs[p["person_id"]]["inferred_email"], "pattern_unverified", "unproven"
             p.update(work_email_final=e, work_email_how=how, work_email_confidence=conf); cnt[how] += 1; w.writerow(p)
     print(dict(cnt), "->", a.out)
 
