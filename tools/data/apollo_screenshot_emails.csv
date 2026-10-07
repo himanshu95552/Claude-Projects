@@ -1,9 +1,9 @@
-name,email,apollo_status
-William Millard,william.millard@sandiegoimaging.com,verified
-Kim Avery,kwavery@mspulmonary.com,verified
-Ingy Sleman,ingys@guilfordradiology.com,unverified
-Dinko Franceschi,dfranceschi@nyimaging.com,verified
-Jourdan Garcia,jourdang@floridatheranostics.com,verified
-Rebecca Gehris,rebecca@jupitersinusandallergy.com,verified
-Jonathan Lebowitz,jlebowitz@prapa.com,verified
-Alex Nguyen,anguyen@oncologyconsultants.com,verified
+name,company,email,apollo_status
+William Millard,San Diego Imaging Chula Vista,william.millard@sandiegoimaging.com,verified
+Kim Avery,Mid South Pulmonary,kwavery@mspulmonary.com,verified
+Ingy Sleman,Guilford Radiology,ingys@guilfordradiology.com,unverified
+Dinko Franceschi,North Shore Hematology,dfranceschi@nyimaging.com,verified
+Jourdan Garcia,Florida Theranostics,jourdang@floridatheranostics.com,verified
+Rebecca Gehris,Jupiter Sinus and Allergy,rebecca@jupitersinusandallergy.com,verified
+Jonathan Lebowitz,Princeton Radiology,jlebowitz@prapa.com,verified
+Alex Nguyen,Oncology Consultants,anguyen@oncologyconsultants.com,verified

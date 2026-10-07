@@ -19,9 +19,9 @@ from infer_email_patterns import PATTERNS, fl, dom
 
 def read(path):
     if path.lower().endswith(".csv"):
-        return [{"email": (r.get("email") or "").strip(), "name": r.get("name", ""), "status": (r.get("apollo_status") or "").lower()}
+        return [{"email": (r.get("email") or "").strip(), "name": r.get("name", ""), "company": r.get("company", ""), "status": (r.get("apollo_status") or "").lower()}
                 for r in csv.DictReader(open(path, newline="", encoding="utf-8-sig"))]
-    return [{"email": l.strip(), "name": "", "status": ""} for l in open(path, encoding="utf-8") if "@" in l]
+    return [{"email": l.strip(), "name": "", "company": "", "status": ""} for l in open(path, encoding="utf-8") if "@" in l]
 
 
 def main():
@@ -34,6 +34,8 @@ def main():
     for p in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
         o, n = orgs.get(p.get("org_id")), fl(p.get("name"))
         if o and n and dom(o.get("website")): by_dom[dom(o["website"])].append((p, o, n))
+    allp = [x for v in by_dom.values() for x in v]
+    W = lambda t: set(re.findall(r"[a-z]{3,}", (t or "").lower())) - {"the", "and", "inc", "llc", "group", "associates", "center", "centers"}
     matched, unmatched, seen = [], [], set()
     for path, src in zip(a.emails, a.source):
         for r in read(path):
@@ -50,6 +52,15 @@ def main():
                 conf = "high" if strong and r["status"] != "unverified" else "medium"
                 matched.append({"person_id": p["person_id"], "name": p["name"], "organization": o["org_name"], "work_email": e.lower(),
                                 "domain_matches_org": "yes", "source": src, "match": pn, "confidence": conf})
+            elif r["name"] and r["company"] and not hits:
+                # the email domain differs from the website we have (old or alternate domain): fall back to exact name + organization-name overlap
+                cw = W(r["company"]); alt = [(p, o) for p, o, n in allp if n == fl(r["name"]) and cw and len(cw & W(o["org_name"])) / len(cw) >= 0.5]
+                if len(alt) == 1:
+                    p, o = alt[0]
+                    matched.append({"person_id": p["person_id"], "name": p["name"], "organization": o["org_name"], "work_email": e.lower(),
+                                    "domain_matches_org": "no", "source": src, "match": "name+company", "confidence": "high" if r["status"] == "verified" else "medium"})
+                else:
+                    unmatched.append({"email": e, "source": src, "reason": "no person fits" if not alt else f"{len(alt)} people fit"})
             else:
                 unmatched.append({"email": e, "source": src, "reason": "no person fits" if not hits else f"{len(hits)} people fit"})
     # one email per person: prefer high, then the full first.last form
