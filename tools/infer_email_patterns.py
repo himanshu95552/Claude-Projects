@@ -91,7 +91,7 @@ def main():
         if len(top) > 1 and top[0][1] == top[1][1]: stats["conflicting_pattern"] += 1; continue
         pat, n = top[0]; edom = domains.most_common(1)[0][0]
         c = dshape.get(site)
-        if c and sum(c.values()) >= 5 and c[SHAPE_OF.get(pat, "single")] / sum(c.values()) < 0.7:
+        if c and sum(c.values()) >= 5 and c[SHAPE_OF.get(pat, "single")] / sum(c.values()) < 0.7 and tool_pat.get(site) != pat:   # a pattern stated in domain_patterns.csv overrides the mixed-domain check
             stats["mixed_domain_skipped"] += 1; continue   # the domain list shows several address shapes: do not spread one pattern to everyone
         have = {pid for _n, _e, pid in cands}  # people who already have a known email
         for p in people:
