@@ -51,6 +51,7 @@ def main():
         inf = {r["person_id"]: r for r in csv.DictReader(open(a.verified, newline="", encoding="utf-8"))}
     rows = list(csv.DictReader(open(a.people, newline="", encoding="utf-8")))
     add = ["work_email_final", "work_email_how", "work_email_confidence"]; cnt = collections.Counter()
+    guess_count = collections.Counter(g["inferred_email"].lower() for pid, g in gs.items())
     with open(a.out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]) + [c for c in add if c not in rows[0]]); w.writeheader()
         for p in rows:
@@ -66,7 +67,8 @@ def main():
             elif i.get("verification") == "catch_all": e, how, conf = i["inferred_email"], "inferred_unproven", "unproven"
             elif i.get("verification") == "unknown" and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_untestable", "unproven"   # a verifier could not tell: keep the guess, flagged
             elif i.get("verification") in ("", None, "not_checked") and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_unchecked", "unproven"
-            if how == "none" and p["person_id"] in gs: e, how, conf = gs[p["person_id"]]["inferred_email"], "pattern_unverified", "unproven"
+            if how == "none" and p["person_id"] in gs and guess_count[gs[p["person_id"]]["inferred_email"].lower()] == 1:   # an address guessed for two people is dropped for both
+                e, how, conf = gs[p["person_id"]]["inferred_email"], "pattern_unverified", "unproven"
             p.update(work_email_final=e, work_email_how=how, work_email_confidence=conf); cnt[how] += 1; w.writerow(p)
     print(dict(cnt), "->", a.out)
 
