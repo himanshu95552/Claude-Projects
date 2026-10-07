@@ -26,6 +26,30 @@ def fl(name):
     return (t[0], t[-1]) if len(t) >= 2 else None
 
 
+NONPERSON = re.compile(r"\b(health|healthcare|hospital|clinic|clinics|center|centre|imaging|radiology|llc|inc|ltd|associates|group|institute|medical|physicians|partners|services|systems|pllc|corp|company|foundation|laboratory|diagnostics?|wellness|consultants?|school|schools|areas?|interest|special|menu|login|contact|careers|policy|directory|department|billing|search|news)\b", re.I)
+
+
+def person_row(name):
+    """False for page text that slipped into the names (e.g. 'MA School', 'Special Interest Areas')."""
+    return bool(fl(name)) and not NONPERSON.search(name or "") and not re.search(r"\d", name or "")
+
+
+def variant_people(people):
+    """person_ids that share an organization and last name with another person whose first name is a prefix of theirs
+    (Alex / Alexander Polsinelli): one of the two spellings is the real email and we cannot tell which, so we skip them."""
+    by_last = collections.defaultdict(set)
+    for p in people:
+        k = fl(p["name"])
+        if k: by_last[k[1]].add(k[0])
+    amb = set()
+    for last, firsts in by_last.items():
+        fs = sorted(firsts)
+        for a in fs:
+            for b in fs:
+                if a != b and len(a) >= 3 and b.startswith(a): amb.add((a, last)); amb.add((b, last))
+    return {p["person_id"] for p in people if fl(p["name"]) and tuple(fl(p["name"])) in amb}
+
+
 def local_domain(e):
     e = (e or "").strip().lower(); return tuple(e.split("@", 1)) if "@" in e else None
 
@@ -65,9 +89,12 @@ def main():
                  if r.get("work_email") and r.get("domain_matches_org") == "yes"}
         for p in ppl:
             if p["person_id"] in known and not p.get("published_email"): p["published_email"] = known[p["person_id"]]
+    stats_pre = collections.Counter()
     by_org = collections.defaultdict(list)
-    for p in ppl: by_org[p["org_id"]].append(p)
-    out, stats = [], collections.Counter()
+    for p in ppl:
+        if person_row(p["name"]): by_org[p["org_id"]].append(p)
+        else: stats_pre["non_person_rows_skipped"] += 1
+    out, stats = [], collections.Counter(stats_pre)
     for oid, people in by_org.items():
         o = orgs.get(oid); site = dom(o["website"]) if o else ""
         if not site: stats["no_website"] += 1; continue
@@ -94,12 +121,14 @@ def main():
         if c and sum(c.values()) >= 5 and c[SHAPE_OF.get(pat, "single")] / sum(c.values()) < 0.7 and tool_pat.get(site) != pat:   # a pattern stated in domain_patterns.csv overrides the mixed-domain check
             stats["mixed_domain_skipped"] += 1; continue   # the domain list shows several address shapes: do not spread one pattern to everyone
         have = {pid for _n, _e, pid in cands}  # people who already have a known email
+        amb = variant_people(people)
         for p in people:
             if p["person_id"] in have: continue
             k = fl(p["name"])
             if not k: continue
+            if p["person_id"] in amb: stats["name_variant_skipped"] += 1; continue
             out.append({"person_id": p["person_id"], "org_id": oid, "name": p["name"], "inferred_email": f"{PATTERNS[pat](*k)}@{edom}",
-                        "pattern": pat, "evidence_count": n, "example": evid[0][1], "status": "inferred_unverified"})
+                        "cluster": f"{oid}|{k[0]}|{k[1]}", "pattern": pat, "evidence_count": n, "example": evid[0][1], "status": "inferred_unverified"})
         stats["orgs_inferred"] += 1
     if out:
         with open(a.out, "w", newline="", encoding="utf-8") as f:

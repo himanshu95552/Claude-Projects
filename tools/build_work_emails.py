@@ -63,7 +63,8 @@ def main():
         inf = {r["person_id"]: r for r in csv.DictReader(open(a.verified, newline="", encoding="utf-8"))}
     rows = list(csv.DictReader(open(a.people, newline="", encoding="utf-8")))
     add = ["work_email_final", "work_email_how", "work_email_confidence"]; cnt = collections.Counter()
-    guess_count = collections.Counter(g["inferred_email"].lower() for pid, g in gs.items())
+    # an address guessed for two different people is dropped for both; the same person listed twice (Craig Brown / Craig M. Brown) is one cluster
+    guess_count = collections.Counter(e for e in {(g["inferred_email"].lower(), g.get("cluster") or pid) for pid, g in gs.items()} for e in [e[0]])
     with open(a.out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]) + [c for c in add if c not in rows[0]]); w.writeheader()
         for p in rows:
