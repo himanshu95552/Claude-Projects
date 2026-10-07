@@ -35,7 +35,11 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--extra-emails", default="", help="work_emails.csv from crustdata_work_email.py: its emails (domain_matches_org = yes) count as evidence and as known emails")
     ap.add_argument("--domain-lists", action="append", default=[], help="text/CSV of known emails at a domain (e.g. Hunter or Snov domain search). A domain where >=70% of >=5 addresses share one shape (first.last, first.l, f.last, first_last) gets that pattern, for organizations with no other evidence")
+    ap.add_argument("--domain-patterns", default="", help="CSV domain,pattern[,source]: a pattern a finder tool states for a domain (e.g. Hunter shows flast@domain). Used only where there is no other evidence")
     a = ap.parse_args()
+    tool_pat = {}
+    if a.domain_patterns and __import__("os").path.exists(a.domain_patterns):
+        tool_pat = {r["domain"].strip().lower(): r["pattern"].strip() for r in csv.DictReader(open(a.domain_patterns, newline="", encoding="utf-8")) if r.get("pattern", "").strip() in PATTERNS}
     dpat, dshape = {}, {}
     SHAPE_OF = {"first.last": "first.last", "first.l": "first.l", "f.last": "f.last", "first_last": "first_last"}   # every other pattern is a single token (flast, first, lastf ...)
     if a.domain_lists:
@@ -79,6 +83,8 @@ def main():
         if not evid and site in dpat:
             evid = [(dpat[site][0], f"domain list ({dpat[site][1]}/{dpat[site][2]} addresses)")] * dpat[site][1]; domains[site] = dpat[site][1]
             stats["from_domain_list"] += 1
+        if not evid and site in tool_pat:
+            evid = [(tool_pat[site], "pattern stated by a finder tool")] * 2; domains[site] = 2; stats["from_tool_pattern"] += 1
         if not evid: stats["no_evidence"] += 1; continue
         votes = collections.Counter(pn for pn, _ in evid)
         top = votes.most_common(2)
