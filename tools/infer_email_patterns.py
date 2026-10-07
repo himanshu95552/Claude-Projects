@@ -36,7 +36,8 @@ def main():
     ap.add_argument("--extra-emails", default="", help="work_emails.csv from crustdata_work_email.py: its emails (domain_matches_org = yes) count as evidence and as known emails")
     ap.add_argument("--domain-lists", action="append", default=[], help="text/CSV of known emails at a domain (e.g. Hunter or Snov domain search). A domain where >=70% of >=5 addresses share one shape (first.last, first.l, f.last, first_last) gets that pattern, for organizations with no other evidence")
     a = ap.parse_args()
-    dpat = {}
+    dpat, dshape = {}, {}
+    SHAPE_OF = {"first.last": "first.last", "first.l": "first.l", "f.last": "f.last", "first_last": "first_last"}   # every other pattern is a single token (flast, first, lastf ...)
     if a.domain_lists:
         cnt = collections.defaultdict(collections.Counter)
         SHAPES = [("first.last", r"[a-z]{2,}\.[a-z]{2,}"), ("first.l", r"[a-z]{2,}\.[a-z]"), ("f.last", r"[a-z]\.[a-z]{2,}"), ("first_last", r"[a-z]{2,}_[a-z]{2,}")]
@@ -47,10 +48,11 @@ def main():
                 loc, d = m.group(0).lower().split("@")
                 if loc in ("info", "contact", "support", "admin", "sales", "hello", "careers", "billing", "office"): continue
                 loc = re.sub(r"\d+$", "", loc)
-                cnt[dom(d)][next((n for n, rx in SHAPES if re.fullmatch(rx, loc)), "other")] += 1
+                cnt[dom(d)][next((n for n, rx in SHAPES if re.fullmatch(rx, loc)), "single" if re.fullmatch(r"[a-z]{3,}", loc) else "other")] += 1
         for d, c in cnt.items():
             n = sum(c.values()); pat, k = c.most_common(1)[0]
-            if pat != "other" and n >= 5 and k / n >= 0.7: dpat[d] = (pat, k, n)
+            if pat not in ("other", "single") and n >= 5 and k / n >= 0.7: dpat[d] = (pat, k, n)
+        dshape = cnt
         print("domain patterns from lists:", {d: f"{p} {x}/{n}" for d, (p, x, n) in dpat.items()})
     orgs = {o["org_id"]: o for o in csv.DictReader(open(a.orgs, newline="", encoding="utf-8"))}
     ppl = list(csv.DictReader(open(a.people, newline="", encoding="utf-8")))
@@ -82,6 +84,9 @@ def main():
         top = votes.most_common(2)
         if len(top) > 1 and top[0][1] == top[1][1]: stats["conflicting_pattern"] += 1; continue
         pat, n = top[0]; edom = domains.most_common(1)[0][0]
+        c = dshape.get(site)
+        if c and sum(c.values()) >= 5 and c[SHAPE_OF.get(pat, "single")] / sum(c.values()) < 0.7:
+            stats["mixed_domain_skipped"] += 1; continue   # the domain list shows several address shapes: do not spread one pattern to everyone
         have = {pid for _n, _e, pid in cands}  # people who already have a known email
         for p in people:
             if p["person_id"] in have: continue
