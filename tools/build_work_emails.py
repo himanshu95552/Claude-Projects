@@ -17,15 +17,27 @@ Columns added: work_email_final, work_email_how, work_email_confidence (high / m
 Guesses a verifier called undeliverable are dropped.
 """
 import argparse, csv, collections, os, re
+from merge_email_verification import norm as vnorm
 
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--crustdata", default=""); ap.add_argument("--verified", default="")
     ap.add_argument("--orgs", default="", help="orgs_final.csv; a Hunter email whose domain differs from the organization's website is marked medium, not high")
+    ap.add_argument("--verification", action="append", default=[], help="verifier result file as path:email_col:status_col (repeatable). Valid -> high confidence, invalid -> dropped, catch-all/unknown -> unchanged")
+    ap.add_argument("--verification-valid-only", action="append", default=[], help="like --verification, but an 'invalid' answer is ignored (use for Reacher)")
     ap.add_argument("--guesses", default="", help="unverified pattern guesses (infer_email_patterns.py output); used only when nothing better exists, always unproven")
     ap.add_argument("--matched", default="", help="final/matched_emails.csv from match_emails.py (domain-list and Apollo matches)")
     ap.add_argument("--finder", action="append", default=[], help="Hunter bulk Email Finder result CSV (repeatable)"); a = ap.parse_args()
+    vres = {}
+    def load_ver(specs, trust_invalid):
+        for spec in specs:
+            path, ecol, scol = spec.rsplit(":", 2)
+            for r in csv.DictReader(open(os.path.expanduser(path), newline="", encoding="utf-8-sig")):
+                em = (r.get(ecol.strip("'\"")) or "").strip().lower(); st = vnorm(r.get(scol.strip("'\""), ""))
+                if st == "invalid" and not trust_invalid: st = "unknown"
+                if em and (em not in vres or st == "valid"): vres[em] = st
+    load_ver(a.verification, True); load_ver(a.verification_valid_only, False)
     gs = {}
     if a.guesses and os.path.exists(a.guesses):
         gs = {r["person_id"]: r for r in csv.DictReader(open(a.guesses, newline="", encoding="utf-8")) if r.get("inferred_email")}
@@ -69,6 +81,10 @@ def main():
             elif i.get("verification") in ("", None, "not_checked") and i.get("inferred_email"): e, how, conf = i["inferred_email"], "inferred_unchecked", "unproven"
             if how == "none" and p["person_id"] in gs and guess_count[gs[p["person_id"]]["inferred_email"].lower()] == 1:   # an address guessed for two people is dropped for both
                 e, how, conf = gs[p["person_id"]]["inferred_email"], "pattern_unverified", "unproven"
+            if e and (conf in ("medium", "unproven")) and (how.startswith("listed_") or how in ("pattern_unverified", "finder_other_domain")):
+                st = vres.get(e.lower())
+                if st == "valid": how, conf = how + "_verified", "high"
+                elif st == "invalid": e, how, conf = "", "dropped_invalid", "none"
             p.update(work_email_final=e, work_email_how=how, work_email_confidence=conf); cnt[how] += 1; w.writerow(p)
     print(dict(cnt), "->", a.out)
 
