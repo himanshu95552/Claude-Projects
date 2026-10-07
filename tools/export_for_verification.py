@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """List the probable-but-unconfirmed work emails so a verifier (Emailable, ZeroBounce, Reacher ...) can check them. FREE.
 
-  python3 export_for_verification.py --people final/people_with_emails.csv --out final/verify_these.csv [--chunk-size 1000] [--limit 0]
+  python3 export_for_verification.py --people final/people_with_emails.csv --out final/verify_these.csv [--chunk-size 1000] [--limit 0] [--skip 'final/verify_these*.csv']
 
 Picks people whose email came from a list match (medium), a pattern guess, or a Hunter email on another domain.
 Imaging / radiology organizations come first, then decision-makers. One row per unique email.
@@ -22,8 +22,16 @@ def needs_check(p):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--people", default="final/people_with_emails.csv"); ap.add_argument("--out", default="final/verify_these.csv")
-    ap.add_argument("--chunk-size", type=int, default=0); ap.add_argument("--limit", type=int, default=0); a = ap.parse_args()
+    ap.add_argument("--chunk-size", type=int, default=0); ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--skip", action="append", default=[], help="an earlier verify_these*.csv (or a verifier result with an email column): those emails are left out. Repeatable; wildcards are fine")
+    a = ap.parse_args()
+    import glob
     seen, rows = set(), []
+    for pat in a.skip:
+        for path in glob.glob(os.path.expanduser(pat)):
+            for r in csv.DictReader(open(path, newline="", encoding="utf-8-sig")):
+                em = (r.get("email") or r.get("Email") or r.get("Email Address") or "").strip().lower()
+                if em: seen.add(em)
     for p in csv.DictReader(open(a.people, newline="", encoding="utf-8")):
         e = (p.get("work_email_final") or "").strip().lower()
         if not e or e in seen or not needs_check(p): continue
