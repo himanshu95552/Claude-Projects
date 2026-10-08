@@ -7,6 +7,8 @@
 - 🟧 **Screenshot** = the Service and Diagnosis card you shared.
 - 🟨 **General industry knowledge** = standard healthcare practice that the guide doesn't state. These items are marked, so you know which ones to confirm with the team.
 
+**Related:** `gravity-document-to-order-guide.md` zooms into the document-to-order stage (Documents list, filters, review screen, printed order, Orders list).
+
 **Freshness caveat (from the guide):** Gravity-specific mechanics come from internal documentation last modified 14 May 2026. Confirm anything you plan to publish with engineering.
 
 ---
@@ -73,12 +75,12 @@ Alpha Nodus calls this category an **AOS (Agentic Operations System)**. Their li
 | **Location** | River City Imaging Center Oak Sprawl | The **Facility/Location** where the scan will happen. |
 | **Date / Time** | Oct 08, 2026, 8:00 am | The appointment **Slot**. It is the same as today, so this patient has just arrived. |
 | **Priority** | Routine | Not **STAT** (urgent/immediate). Routine means normal scheduling. |
-| `RCI883325` | italic ID | An order or accession-style reference number. The guide doesn't define it, so **ask your team what it is**. |
+| `RCI883325` | italic ID | The **Appointment ID** (confirmed by the "Appointment ID" column in the Orders list). 🟨 The "RCI" prefix probably identifies the center's RIS. |
 
 **Why this combination matters.** CPT (what) plus ICD-10 (why) is the pair the insurer uses to judge **medical necessity**. Screening mammograms are generally covered preventive care. 🟨 That is why the **Estimate shows $0** and **Authorized is skipped** in the timeline.
 
 ### 2.2 The top right
-- **Study Status: Tech Start.** The scan itself is underway. The technologist has started the exam. 🟨 Not in the guide, so confirm the full status list with the team.
+- **Study Status: Tech Start.** The scan itself is underway. The technologist has started the exam. A later screenshot of the same order shows **Completed**, then **Study Status: Unread** (images done, waiting for the radiologist to read them). Confirm the full status list with the team.
 - **"…" menu.** Row-level actions (🟨 assumption).
 - The **tag icon** is a label/flag for the order (🟨 assumption).
 
@@ -97,7 +99,7 @@ The stages do not have to be strictly sequential (Estimate came *after* Booked, 
 ### 2.4 The tabs at the bottom (where each workflow lives)
 **Booking · Estimate · Prior Authorization · Documents · Check-In · Reports · Charges · Timeline**
 
-- **Booking:** appointment details and screening answers.
+- **Booking:** appointment details and screening answers. On the sample order it shows a padlock: "Please contact Support to unlock this service", so the Booking module is not enabled for that tenant. See `gravity-document-to-order-guide.md`, Part 5.6.
 - **Estimate:** the patient's cost calculation.
 - **Prior Authorization:** the PA submission and result.
 - **Documents:** the original referral/fax and attachments.
@@ -681,8 +683,8 @@ Order/Script/Referral · Progress notes · Encounter · Study · Series · Modal
 
 ## Part 8. Open questions for your team (things I could not confirm)
 
-1. What does **RCI883325** represent (order number, accession number, other)?
-2. What is the **full list of Study Status values**, and which stage comes after "Tech Start"?
+1. ~~What does RCI883325 represent?~~ Answered: it is the **Appointment ID**.
+2. What is the **full list of Study Status values**? Known so far: Tech Start, then Unread.
 3. Is the **"MA"** in "77067 MA" the department or modality code, and is "MG" the Service Category value for mammography?
 4. Is "by System" on **Booked** and **Checked In** Sandra, a kiosk, or an HL7 feed?
 5. What do the **cropped timeline stages** to the right of "Complete" show?
