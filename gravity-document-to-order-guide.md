@@ -430,6 +430,8 @@ Where the other systems sit:
 
 For everything else (CPT, ICD-10, eligibility, prior auth, COB, Compendium, Auth Rule, HL7 and so on), see the glossary in `gravity-process-walkthrough.md` (Part 6).
 
+**Where your team's glossary connects to this stage.** The data points from your team glossary (**ordering provider**, **NPI**, **payer**, **subscriber ID**, **ICD-10**, **CPT**) are the exact fields the review screen asks for in Steps 4 to 8. If one is empty or wrong at this stage, the later **PASQ** (check for an existing auth) and **APAS** (assisted submission) cannot succeed. Full mapping of each term to its screen: `gravity-process-walkthrough.md`, Part 9.
+
 ---
 
 ## Part 9. Talking like an insider about this stage

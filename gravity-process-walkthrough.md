@@ -318,6 +318,8 @@ Patient → Referring provider → Order → Healthcare Service (from Compendium
 
 In your screenshot the **Authorized** stage is grey. The auth rule probably said no auth was required for this payer and screening mammogram. 🟨 (confirm)
 
+> **Team terms for this step:** **PASQ** (check whether an auth already exists) and **APAS** (assisted submission) are explained in Part 9, with the inputs a submission needs (NPI, subscriber ID, ICD-10, CPT, payer).
+
 #### 7b. If yes, who approves?
 - **RBM (Radiology Benefit Manager):** a company an insurer hires to decide imaging approvals. **Your customers submit PA requests TO them. They are never competitors.**
   - **eviCore** (Evernorth/Cigna, the biggest, say "EV-ee-core")
@@ -692,6 +694,77 @@ Order/Script/Referral · Progress notes · Encounter · Study · Series · Modal
 7. Are **screening mammograms** configured with "No Auth Required" in the auth rules by default?
 8. What is in the **Check-In** and **Charges** tabs?
 9. Which of the Part 3 mechanics (automation percentages, rule behavior, product names) are still current as of today?
+
+---
+
+## Part 9. Your team's working vocabulary, linked to the process
+
+This part adds the vocabulary your team uses day to day. Source: the team glossary you provided (🟫 **Team**). Notes marked 🟨 are my inference. Each term is tied to the step and the screen where it appears.
+
+### 9.1 The prior-auth inputs: where each one lives
+A prior-auth request is built from a handful of data points. Each one is a term from your glossary and each has a home in Gravity.
+
+| Term (team definition) | Where it comes from | Where you see it in Gravity | Process step |
+|---|---|---|---|
+| **Referring Physician / Ordering Provider**: the doctor requesting the exam | The referral or fax | **Provider** section on the review screen; **Ordering Provider** card on the printed order | Step 1, 3 |
+| **NPI Number** (National Provider Identifier): **the facility has one and the referring physician has one** | Provider record; facility record | Ordering Provider card (Type 1, the doctor); printed order header (Type 2, the facility) | Step 3, 7 |
+| **Facility / Place of Service**: the servicing provider (our tenant) | The imaging center | Header of the printed order; tenant switcher at the top | Step 7, 12 |
+| **Tenant**: our customers, the radiology centers, the facility | The customer organization | The **"River City Imaging Centers - New"** dropdown | All |
+| **Payer**: the health insurance (BCBS, United Healthcare, Cigna, Aetna and so on) | Insurance card or fax | **Coverage** card; **Select Insurance** list | Step 5, 7 |
+| **Subscriber ID**: the member ID on the insurance card, an identification number issued by the insurer, like a government-issued ID number | Insurance card | The long ID under the payer name on the Coverage card | Step 5, 7 |
+| **ICD-10 Code** (International Classification of Diseases, 10th revision), the diagnosis code. Examples: **R51.9**, **M54.12** | The doctor's order | **Diagnosis** line on the order (e.g., Z12.31 on your sample) | Step 4, 7 |
+| **CPT Code** (Current Procedural Terminology), the "service type": a **5-digit** number for the imaging exam | The doctor's order | **Service** line on the order (e.g., 77067 on your sample) | Step 4, 7 |
+
+Two examples from the glossary, decoded 🟨: **R51.9** is "headache, unspecified" and **M54.12** is "radiculopathy, cervical region" (a pinched nerve in the neck). Both are typical reasons a doctor orders an MRI, and payers check that the diagnosis supports the exam.
+
+**Why this table matters.** If any one of these is missing or wrong, the authorization request fails or gets denied. 🟦 The guide says 50% of denials trace to missing or inaccurate data, and 32% to registration errors. When someone says "the auth bounced," ask: *which of these eight was wrong?*
+
+### 9.2 The authorization terms
+| Term | Team definition | Notes and links |
+|---|---|---|
+| **Auth** | Authorization, an approval from the insurance for an imaging exam | The same thing as **prior authorization** (Step 7). In Gravity it is the **Authorized** stage on the order timeline and the **Prior Authorization** tab. |
+| **Auth Number** | Also called **order ID #, reference #, tracking ID, case number**. The number provided to identify and track an approval. | 🟦 Issued when a PA is approved. **It does not guarantee payment.** Different payers use different names for it, so expect all five labels. |
+| **Payer Portal** | The insurance website where providers go to get authorizations | 🟦 This is where **GravityAuth** (the Chrome extension) and its AI assistant **Susan** log in, fill the form, submit and screenshot each step. |
+| **Gravity** | Our application, which has our user interface and AI assistants | The user interface plus Susan (prior auth), Sandra (booking) and the Document Center AI. |
+| **UI (User Interface)** | Our Gravity app | Everything you saw in your screenshots: Documents, Orders, review screen, tabs. |
+
+### 9.3 APAS and PASQ: the two prior-auth actions
+| Acronym | Stands for | Plain meaning | Where it fits |
+|---|---|---|---|
+| **PASQ** | **Prior Auth Status Query** | **Check whether an authorization already exists** (or what state it is in) | 🟨 Done first, before submitting, so the team does not file a duplicate. Also used later to see whether a pending request has been decided. |
+| **APAS** | **Assisted Prior Auth Submission** | **Submit** a prior-auth request with Gravity assisting | 🟨 This is the **Sidekick / assisted** mode from the guide: the AI does the work (GravityAuth and Susan in the payer portal) and a person is involved. This is the "assistive" step between fully manual and fully autonomous. |
+
+**Order of operations** 🟨 (a logical reading of the definitions; confirm with your team):
+```
+Order needs an auth?  (Auth Rule: Auth Required / No Auth Required / Unknown)
+      │
+      ├─ No Auth Required ──► skip (the Authorized stage stays grey, as on the mammogram sample)
+      │
+      └─ Auth Required / Unknown
+              │
+         PASQ: is there already an auth?
+              ├─ Yes ──► record the Auth Number on the order; done
+              └─ No  ──► APAS: submit via the payer portal (GravityAuth + Susan)
+                              │
+                              ▼
+                       Auth Number issued  ──or──  Denial ──► P2P / appeal
+```
+
+### 9.4 Support and engineering vocabulary
+| Term | Team definition | How to use it |
+|---|---|---|
+| **Release** | When a **stable version switches**, for example from 3.10 to 3.11 | "That fix ships in the next release." A release changes what customers see in the UI, so it is the point where behavior (and screenshots like yours) can change. 🟨 This is also why Gravity details need re-checking from time to time. |
+| **Critical Issue** | A defect that **affects productivity and interrupts the flow of operations** | Use this word only when work is actually blocked (for example, auths cannot be submitted). It decides how urgent the response is. |
+| **Log a Bug** | Use the **support button in the Gravity app** to report an issue affecting the auth process. **Managers and the internal customer success team** create a **ticket in GitHub**. | Two routes: (1) users click the support button in the UI, (2) managers or customer success open a GitHub ticket. The support button is the blue help icon at the bottom right of your screenshots 🟨. |
+
+### 9.5 Putting it together: a sentence in the team's own language
+> "The **tenant** sent an **ordering provider's** referral. Gravity read the **CPT** and **ICD-10**, matched the **payer** and **subscriber ID**, and the auth rule says an **auth** is required. We ran a **PASQ** to see whether one already existed. It didn't, so we did an **APAS** through the **payer portal**. We got an **auth number** back. If the **UI** had blocked us, that would be a **critical issue**, and we would **log a bug** with the support button."
+
+### 9.6 How these terms reconcile with earlier parts
+- **Facility** here means the imaging center (our **tenant**). Do not confuse it with **POS (Place of Service)** in billing, which is a *code* for where care was given. Your team uses "Facility / Place of Service" for the servicing provider itself.
+- **Auth Number** and **Authorization number** (Part 3, Step 7d) are the same thing.
+- **Prior authorization** (guide term) = **Auth** (team shorthand). Say "prior auth" externally and "auth" internally.
+- **Gravity** (team definition) = the **UI plus the AI assistants**, which matches the "four Centers" view in Part 1.
 
 ---
 
