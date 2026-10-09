@@ -101,10 +101,10 @@ const F={
   rows.forEach((r,i)=>{const y=112+i*92;S('line',{x1:44,y1:y+38,x2:96,y2:y+38,stroke:C.stroke,'stroke-width':2.5},g);S('circle',{cx:44,cy:y+38,r:9,fill:C.blue},g);orderRow(g,96,y,792,r[0],r[1],r[2],{dashed:!!r[3]})});
 }},
 2:{eb:'Referral tracking',size:84,head:'Where does that answer<br><em>live today?</em>',body:'The order in the RIS. The appointment on the schedule. The authorization in a portal. The provider on a list.',draw(){
-  const g=G(svg,96,820);const W=434,H=180;
-  windowCard(g,0,0,W,H,'RIS','The order','lines');windowCard(g,454,0,W,H,'Schedule','The appointment','time');
-  windowCard(g,0,200,W,H,'Payer portal','The authorization','lock');windowCard(g,454,200,W,H,'List','The provider','list');
-  S('circle',{cx:444,cy:190,r:34,fill:C.card,stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},g);Tx(g,444,203,'?',36,C.blue,'middle',0);
+  const g=G(svg,96,810);const W=428,H=170;
+  windowCard(g,0,0,W,H,'RIS','The order','lines');windowCard(g,460,0,W,H,'Schedule','The appointment','time');
+  windowCard(g,0,226,W,H,'Payer portal','The authorization','lock');windowCard(g,460,226,W,H,'List','The provider','list');
+  S('circle',{cx:444,cy:198,r:30,fill:C.page||'#F5F7FA',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},g);Tx(g,444,210,'?',34,C.blue,'middle',0);
 }},
 3:{eb:'Referral tracking',size:96,head:'Four places.<br><em>One relationship.</em>',body:'Someone carries the answer between them by hand.',draw(){
   const g=G(svg,96,760);const W=380,H=170;
