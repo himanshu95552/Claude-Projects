@@ -45,7 +45,7 @@ svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercas
   <div id="foot" class="abs"></div><div id="footL" class="abs">Gravity</div><div id="footR" class="abs"></div>
 </div>
 <script>
-const FRAME=+(new URLSearchParams(location.search).get('frame')||1), TOTAL=7;
+const FRAME=+(new URLSearchParams(location.search).get('frame')||1), TOTAL=8;
 const NS='http://www.w3.org/2000/svg',C={blue:'#1D4ED8',stroke:'#CBD5E1',hair:'#E2E8F0',muted:'#64748B',ink:'#0F172A',card:'#FFFFFF',soft:'#EAF0FE',bar:'#EEF2F7'};
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
 const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
@@ -104,13 +104,13 @@ const F={
   pill(g,0,350,330,'Swipe to see where',{h:64,size:19});
   arrow(g,350,382,430,382,false);
 }},
-2:{eb:'Referral tracking',size:84,head:'Where does that answer<br><em>live today?</em>',body:'The order in the RIS. The appointment on the schedule. The authorization in a portal. The provider on a list.',draw(){
+2:{eb:'Without Gravity',size:92,head:'The answer lives in<br><em>four places.</em>',body:'The order in the RIS. The appointment on the schedule. The authorization in a payer portal. The provider on a list.',draw(){
   const g=G(svg,96,810);const W=428,H=170;
   windowCard(g,0,0,W,H,'RIS','The order','lines');windowCard(g,460,0,W,H,'Schedule','The appointment','time');
   windowCard(g,0,226,W,H,'Payer portal','The authorization','lock');windowCard(g,460,226,W,H,'List','The provider','list');
   S('circle',{cx:444,cy:198,r:30,fill:C.page||'#F5F7FA',stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},g);Tx(g,444,210,'?',34,C.blue,'middle',0);
 }},
-3:{eb:'Referral tracking',size:96,head:'Four places.<br><em>One relationship.</em>',body:'Someone carries the answer between them by hand.',draw(){
+3:{eb:'Without Gravity',size:96,head:'Four places.<br><em>One relationship.</em>',body:'Nobody designed it this way. The answer gets carried between them by hand.',draw(){
   const g=G(svg,96,760);const W=380,H=170;
   [[0,0,'RIS','The order','lines'],[508,0,'Schedule','The appointment','time'],[0,270,'Payer portal','The authorization','lock'],[508,270,'List','The provider','list']].forEach(a=>windowCard(g,a[0],a[1],W,H,a[2],a[3],a[4]));
   const d='stroke:'+C.blue;
@@ -119,7 +119,16 @@ const F={
   S('line',{x1:W+8,y1:355,x2:500,y2:355,stroke:C.blue,'stroke-width':3.5,'stroke-dasharray':'3 9','stroke-linecap':'round'},g);
   pill(g,444-135,220-24,270,'Carried by hand',{h:48,size:19,dashed:true});
 }},
-4:{eb:'The referrer record',size:88,head:'Built from<br><em>the orders they sent.</em>',body:'Not a list someone keeps. Each referring provider’s record fills from the orders themselves.',draw(){
+4:{eb:'With Gravity Grow',size:84,head:'Gravity Grow puts it<br>on <em>one record.</em>',body:'Each referring provider gets a referral history, built from the orders themselves.',draw(){
+  const g=G(svg,96,790);mkGrad('arcG',250,420);
+  const labs=[['RIS','The order'],['Schedule','The appointment'],['Payer portal','The authorization'],['List','The provider']];
+  R(g,420,0,468,346,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,466,46,22);Tx(g,504,54,'Referring provider',19,C.ink,'start',.1);
+  S('line',{x1:444,y1:92,x2:864,y2:92,stroke:C.hair,'stroke-width':2},g);
+  ['Order','Appointment','Authorization'].forEach((t,i)=>{const y=112+i*74;R(g,444,y,420,58,12,C.bar);Tx(g,466,y+35,t,17,C.ink,'start',.08);R(g,700,y+22,140,10,5,C.blue)});
+  labs.forEach((l,i)=>{const y=i*92;R(g,0,y,250,70,14,C.card,C.stroke,{'stroke-width':2});Tx(g,22,y+30,l[0],14,C.muted,'start',.14);Tx(g,22,y+54,l[1],19,C.ink,'start',.06);
+    S('path',{d:`M 250 ${y+35} C 335 ${y+35}, 335 173, 420 173`,fill:'none',stroke:'url(#arcG)','stroke-width':5,'stroke-linecap':'round'},g)});
+}},
+5:{eb:'With Gravity Grow',size:88,head:'Built from<br><em>the orders they sent.</em>',body:'Not a list someone keeps. Each referring provider’s record fills from the orders themselves.',draw(){
   const g=G(svg,96,820);
   [[0,40,5],[20,20,-3],[36,0,2]].forEach(([x,y,r],i)=>{const s=G(g,x,y,{});s.setAttribute('transform',`translate(${x+110} ${y+110}) rotate(${r})`);R(s,-110,-110,220,190,12,C.card,C.stroke,{'stroke-width':2.5});if(i==2){Tx(s,-90,-76,'Order',15,C.muted,'start',.14);R(s,-90,-58,150,9,4.5,C.stroke);R(s,-90,-38,110,9,4.5,C.hair);R(s,-90,-18,130,9,4.5,C.hair);R(s,-90,10,16,16,3,'none',C.blue,{'stroke-width':2.5})}});
   arrow(g,262,150,376,150);
@@ -129,19 +138,19 @@ const F={
     if(r[2]){R(g,410,y,454,66,12,C.soft,C.blue,{'stroke-dasharray':'8 7','stroke-width':2});Tx(g,436,y+40,r[0],17,C.blue,'start',.1)}
     else{R(g,410,y,454,66,12,C.bar);Tx(g,436,y+30,r[0],18,C.ink,'start',.08);pill(g,436,y+36,r[1]==='Scheduled'?130:170,r[1],{h:26,size:13})}});
 }},
-5:{eb:'The record',size:92,head:'<em>One line per order</em>',body:'',draw(){
+6:{eb:'With Gravity Grow',size:92,head:'<em>One line per order</em>',body:'',draw(){
   const g=G(svg,96,418);R(g,0,0,888,140,18,C.card,C.stroke,{'stroke-width':2.5});
   [0,296,592].forEach((x,i)=>{if(i)S('line',{x1:x,y1:20,x2:x,y2:120,stroke:C.hair,'stroke-width':2},g);S('circle',{cx:x+44,cy:34,r:15,fill:C.blue},g);Tx(g,x+44,40,String(i+1),16,'#fff','middle',0);});
   Tx(g,22,98,'MRI lumbar spine',20,C.ink,'start',.06);Tx(g,22,122,'Sent Monday',15,C.muted,'start',.12);
   Tx(g,318,98,'Scheduled',20,C.ink,'start',.06);Tx(g,318,122,'Tuesday 10:30',15,C.muted,'start',.12);
   Tx(g,614,98,'Auth approved',20,C.blue,'start',.06);Tx(g,614,122,'Same line',15,C.muted,'start',.12);
 }},
-6:{eb:'The record',size:88,head:'How are we doing<br>with this office?<br><em>Ask the orders.</em>',body:'Not a guess. Not a phone call.',draw(){
+7:{eb:'With Gravity Grow',size:88,head:'How are we doing<br>with this office?<br><em>Ask the orders.</em>',body:'Not a guess. Not a phone call.',draw(){
   const g=G(svg,96,850);R(g,0,0,888,330,18,C.card,C.stroke,{'stroke-width':2.5});
   avatar(g,50,52,24);Tx(g,92,60,'This office',20,C.ink,'start',.1);pill(g,720,32,148,'Illustrative',{h:34,size:14});
   [['Orders sent',1],['Became appointments',.74],['Authorized',.56]].forEach((r,i)=>{const y=108+i*72;Tx(g,32,y+4,r[0],17,C.muted,'start',.12);R(g,32,y+16,824,22,11,C.bar);R(g,32,y+16,824*r[1],22,11,C.blue)});
 }},
-7:{eb:'The record',size:96,head:'See one provider’s<br><em>whole record.</em>',body:'Gravity Grow: referral management for imaging centers.',draw(){
+8:{eb:'Gravity Grow',size:96,head:'See one provider’s<br><em>whole record.</em>',body:'Gravity Grow: referral management for imaging centers.',draw(){
   const g=G(svg,96,700);R(g,0,0,888,232,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,50,48,22);Tx(g,90,56,'Referring provider',19,C.ink,'start',.1);
   [['MRI lumbar spine','Scheduled',0],['CT abdomen','Auth approved',0],['MRI knee','Not scheduled',1]].forEach((r,i)=>{const y=88+i*46;R(g,24,y,840,38,10,r[2]?C.soft:C.bar,r[2]?C.blue:'none',{'stroke-dasharray':r[2]?'7 6':'0','stroke-width':1.5});Tx(g,44,y+25,r[0],16,C.ink,'start',.08);Tx(g,844,y+25,r[1],15,r[2]?C.blue:C.muted,'end',.1)});
   mkGrad('arcG',96,756);
@@ -152,10 +161,11 @@ const f=F[FRAME];
 $('eb').textContent=f.eb;$('head').innerHTML=f.head;$('head').style.fontSize=f.size+'px';
 if(f.body){$('body').textContent=f.body}else{$('body').style.display='none'}
 $('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
-if(FRAME===1)$('head').style.lineHeight='.94';f.draw();
-if(FRAME===5){const l=$('list');l.style.display='block';l.style.top='616px';
+if(FRAME===1)$('head').style.lineHeight='.94';if(/^With|^Gravity/.test(f.eb)){$('eyebrow').style.color=C.blue;document.querySelectorAll('#eyebrow i').forEach(i=>i.style.background=C.blue)}
+f.draw();
+if(FRAME===6){const l=$('list');l.style.display='block';l.style.top='616px';
   l.innerHTML=[['Service and date','Which exam, and when the order was sent.'],['Appointment status','Whether the order became an appointment.'],['Authorization result','On the same line, not in a separate portal.']].map((a,i)=>`<div class="it"><div class="n">${i+1}</div><div><div class="t">${a[0]}</div><div class="d">${a[1]}</div></div></div>`).join('')}
-if(FRAME===7){const c=$('chip');c.style.display='flex';c.style.top='988px';const a=$('aos');a.style.display='block';a.style.top='1118px'}
+if(FRAME===8){const c=$('chip');c.style.display='flex';c.style.top='988px';const a=$('aos');a.style.display='block';a.style.top='1118px'}
 window.render=()=>{};
 </script>
 </body>
