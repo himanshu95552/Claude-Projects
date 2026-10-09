@@ -91,14 +91,18 @@ const arrow=(p,x1,y1,x2,y2,dash=true)=>{const a=Math.atan2(y2-y1,x2-x1);S('line'
   S('path',{d:`M${x2} ${y2} l${-14*Math.cos(a-.45)} ${-14*Math.sin(a-.45)} M${x2} ${y2} l${-14*Math.cos(a+.45)} ${-14*Math.sin(a+.45)}`,fill:'none',stroke:C.blue,'stroke-width':3,'stroke-linecap':'round'},p)};
 
 const F={
-1:{eb:'Referral tracking',size:72,head:'One referring provider.<br><em>Every order they sent.</em><br>And where each one stands.',body:'',draw(){
-  const g=G(svg,96,622);mkGrad('arcG',0,0);
-  /* gradient on the vertical connector needs a vertical vector */
-  const lg=S('linearGradient',{id:'arcV',gradientUnits:'userSpaceOnUse',x1:0,y1:84,x2:0,y2:480},defs);for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
-  R(g,0,0,430,84,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,50,42,24);Tx(g,92,50,'Referring provider',20,C.ink,'start',.1);
-  S('line',{x1:44,y1:88,x2:44,y2:474,stroke:'url(#arcV)','stroke-width':7,'stroke-linecap':'round'},g);
-  const rows=[['MRI lumbar spine','Sent Monday','Scheduled',0],['CT abdomen','Sent Monday','Auth approved',0],['MRI knee','Sent Tuesday','Not scheduled',1],['Ultrasound','Sent Wednesday','Auth pending',0]];
-  rows.forEach((r,i)=>{const y=112+i*92;S('line',{x1:44,y1:y+38,x2:96,y2:y+38,stroke:C.stroke,'stroke-width':2.5},g);S('circle',{cx:44,cy:y+38,r:9,fill:C.blue},g);orderRow(g,96,y,792,r[0],r[1],r[2],{dashed:!!r[3]})});
+1:{eb:'Referral tracking for imaging centers',size:136,head:'Where did<br>that referral<br><em>go?</em>',body:'',draw(){
+  /* cover: big hook type, fanned orders trailing off into a question, one Arc path, swipe cue */
+  const g=G(svg,96,760);mkGrad('arcG',330,770);
+  [[40,60,-7],[80,30,-1],[120,0,6]].forEach(([x,y,r],i)=>{const s=G(g,0,0);s.setAttribute('transform',`translate(${x+110} ${y+120}) rotate(${r})`);
+    R(s,-110,-120,230,250,14,C.card,C.stroke,{'stroke-width':2.5});
+    Tx(s,-88,-84,'Order',15,C.muted,'start',.14);R(s,-88,-62,150,9,4.5,C.stroke);R(s,-88,-42,110,9,4.5,C.hair);R(s,-88,-22,130,9,4.5,C.hair);
+    if(i==2){R(s,-88,10,18,18,4,'none',C.blue,{'stroke-width':2.5});Tx(s,-58,25,'Sent',15,C.blue,'start',.12)}});
+  S('path',{d:'M 372 150 C 480 20, 620 300, 748 160',fill:'none',stroke:'url(#arcG)','stroke-width':8,'stroke-linecap':'round'},g);
+  S('circle',{cx:820,cy:160,r:74,fill:'#F5F7FA',stroke:C.blue,'stroke-width':3,'stroke-dasharray':'8 8'},g);
+  Tx(g,820,196,'?',100,C.blue,'middle',0);
+  pill(g,0,350,330,'Swipe to see where',{h:64,size:19});
+  arrow(g,350,382,430,382,false);
 }},
 2:{eb:'Referral tracking',size:84,head:'Where does that answer<br><em>live today?</em>',body:'The order in the RIS. The appointment on the schedule. The authorization in a portal. The provider on a list.',draw(){
   const g=G(svg,96,810);const W=428,H=170;
@@ -148,7 +152,7 @@ const f=F[FRAME];
 $('eb').textContent=f.eb;$('head').innerHTML=f.head;$('head').style.fontSize=f.size+'px';
 if(f.body){$('body').textContent=f.body}else{$('body').style.display='none'}
 $('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
-f.draw();
+if(FRAME===1)$('head').style.lineHeight='.94';f.draw();
 if(FRAME===5){const l=$('list');l.style.display='block';l.style.top='616px';
   l.innerHTML=[['Service and date','Which exam, and when the order was sent.'],['Appointment status','Whether the order became an appointment.'],['Authorization result','On the same line, not in a separate portal.']].map((a,i)=>`<div class="it"><div class="n">${i+1}</div><div><div class="t">${a[0]}</div><div class="d">${a[1]}</div></div></div>`).join('')}
 if(FRAME===7){const c=$('chip');c.style.display='flex';c.style.top='988px';const a=$('aos');a.style.display='block';a.style.top='1118px'}
