@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LinkedIn carousel: referral tracking</title>
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:"DM Mono";font-weight:500;src:url(../../assets/fonts/DMMono-500.ttf)}
+:root{--page:#F5F7FA;--ink:#0F172A;--blue:#1D4ED8;--red:#B21500;--hair:#E2E8F0;--stroke:#CBD5E1;--muted:#64748B}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;background:var(--page);overflow:hidden}
+#c{position:relative;width:1080px;height:1350px;background:var(--page);font-family:Urbanist,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#logo{left:82px;top:90px;width:352px;height:71.3px}
+#text{left:96px;top:222px;width:888px}
+#eyebrow{display:flex;align-items:center;gap:16px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:22px;letter-spacing:.16em;color:var(--red);white-space:nowrap;margin-bottom:26px}
+#eyebrow i{display:block;background:var(--red)}
+#head{font-weight:600;letter-spacing:-.028em;line-height:1.04;white-space:nowrap}
+#head em{font-style:normal;color:var(--blue)}
+#body{margin-top:30px;font-size:38px;font-weight:500;line-height:1.32;letter-spacing:-.012em;color:#1E293B;width:860px}
+#list{left:96px;width:888px}
+#list .it{display:flex;gap:26px;margin-bottom:46px}
+#list .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--blue);color:#fff;font-family:"DM Mono",monospace;font-size:22px;display:flex;align-items:center;justify-content:center;margin-top:6px}
+#list .t{font-size:44px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+#list .d{font-size:33px;font-weight:500;color:#334155;line-height:1.3;margin-top:8px;letter-spacing:-.01em}
+#foot{left:96px;top:1244px;width:888px;height:1px;background:var(--hair)}
+#footL,#footR{top:1264px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:20px;letter-spacing:.2em;white-space:nowrap}
+#footL{left:96px;color:var(--muted)}
+#footR{right:96px;color:var(--blue)}
+#chip{left:96px;width:660px;height:88px;border-radius:44px;display:flex;align-items:center;justify-content:center;background:linear-gradient(in oklch 90deg,#FF6B34,#F900C8,#0E59FF);color:#fff;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:25px;letter-spacing:.16em}
+#aos{left:96px;width:888px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:17px;letter-spacing:.12em;color:var(--muted);line-height:1.6}
+svg{position:absolute;left:0;top:0}
+svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="c">
+  <svg id="s" width="1080" height="1350" viewBox="0 0 1080 1350"></svg>
+  <img id="logo" class="abs" src="../../assets/logo_light.png" alt="AlphaNodus">
+  <div id="text" class="abs"><div id="eyebrow"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span id="eb"></span></div><div id="head"></div><div id="body"></div></div>
+  <div id="list" class="abs" style="display:none"></div>
+  <div id="chip" class="abs" style="display:none">Link in the first comment</div>
+  <div id="aos" class="abs" style="display:none">Gravity is the Agentic Operations System (AOS) for imaging centers.</div>
+  <div id="foot" class="abs"></div><div id="footL" class="abs">Gravity</div><div id="footR" class="abs"></div>
+</div>
+<script>
+const FRAME=+(new URLSearchParams(location.search).get('frame')||1), TOTAL=7;
+const NS='http://www.w3.org/2000/svg',C={blue:'#1D4ED8',stroke:'#CBD5E1',hair:'#E2E8F0',muted:'#64748B',ink:'#0F172A',card:'#FFFFFF',soft:'#EAF0FE',bar:'#EEF2F7'};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4),gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+ const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+ return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+const arcAt=t=>{const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`};
+const svg=document.getElementById('s');
+const S=(tag,a={},p=svg)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
+const Tx=(p,x,y,str,size,fill,anchor='start',ls=.14)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
+const R=(p,x,y,w,h,rx,fill,stroke,extra={})=>S('rect',{x,y,width:w,height:h,rx,fill:fill||'none',stroke:stroke||'none','stroke-width':2,...extra},p);
+const G=(p,x=0,y=0,extra={})=>S('g',{transform:`translate(${x} ${y})`,...extra},p);
+const $=id=>document.getElementById(id);
+const defs=S('defs');
+const mkGrad=(id,x1,x2)=>{const lg=S('linearGradient',{id,gradientUnits:'userSpaceOnUse',x1,y1:0,x2,y2:0},defs);for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg)};
+
+/* brand header with carousel progress: the hairline fills as you swipe */
+const hx=lerp(476,978,FRAME/TOTAL), dx=lerp(560,991,FRAME/TOTAL);
+S('line',{x1:476,y1:126,x2:978,y2:126,stroke:C.hair,'stroke-width':2});
+S('line',{x1:476,y1:126,x2:hx,y2:126,stroke:C.blue,'stroke-width':2.5});
+S('circle',{cx:FRAME===TOTAL?991:Math.max(hx,560),cy:126,r:13,fill:C.blue});
+
+/* shared pieces */
+const pill=(p,x,y,w,txt,{dashed=false,fill='#fff',col=C.blue,h=40,size=16}={})=>{R(p,x,y,w,h,h/2,dashed?C.soft:fill,C.blue,dashed?{'stroke-dasharray':'7 6'}:{});Tx(p,x+w/2,y+h/2+size*.36,txt,size,col,'middle',.1)};
+const avatar=(p,cx,cy,r=22)=>{S('circle',{cx,cy,r,fill:C.soft,stroke:C.blue,'stroke-width':2},p);S('circle',{cx,cy:cy-r*.2,r:r*.3,fill:'none',stroke:C.blue,'stroke-width':2},p);S('path',{d:`M${cx-r*.55} ${cy+r*.6} Q${cx} ${cy-r*.1} ${cx+r*.55} ${cy+r*.6}`,fill:'none',stroke:C.blue,'stroke-width':2},p)};
+const orderRow=(p,x,y,w,exam,sent,status,{dashed=false}={})=>{R(p,x,y,w,76,14,C.card,C.stroke,{'stroke-width':2});
+  Tx(p,x+26,y+34,exam,21,C.ink,'start',.08);Tx(p,x+26,y+58,sent,16,C.muted,'start',.12);
+  pill(p,x+w-258,y+18,232,status,{dashed})};
+const windowCard=(p,x,y,w,h,title,sub,kind)=>{R(p,x,y,w,h,16,C.card,C.stroke);
+  R(p,x,y,w,40,16,C.bar);R(p,x,y+24,w,16,0,C.bar);
+  [0,1,2].forEach(i=>S('circle',{cx:x+24+i*18,cy:y+20,r:4.5,fill:C.stroke},p));
+  Tx(p,x+w-20,y+26,title,15,C.muted,'end',.14);
+  Tx(p,x+24,y+78,sub,22,C.ink,'start',.08);
+  if(kind==='lines'){R(p,x+24,y+100,w*.62,9,4.5,C.stroke);R(p,x+24,y+120,w*.42,9,4.5,C.hair);R(p,x+24,y+140,w*.5,9,4.5,C.hair)}
+  if(kind==='time'){[0,1,2].forEach(i=>{Tx(p,x+24,y+108+i*22,['09:00','10:30','13:15'][i],14,C.muted,'start',.1);R(p,x+96,y+95+i*22,w*(i==1?.5:.38),13,6.5,i==1?C.soft:C.bar,i==1?C.blue:'none',{'stroke-dasharray':i==1?'5 4':'0','stroke-width':1.5})})}
+  if(kind==='lock'){S('rect',{x:x+24,y:y+108,width:30,height:24,rx:5,fill:'none',stroke:C.muted,'stroke-width':2.5},p);S('path',{d:`M${x+31} ${y+108} v-8 a8 8 0 0 1 16 0 v8`,fill:'none',stroke:C.muted,'stroke-width':2.5},p);Tx(p,x+70,y+128,'Pending',15,C.muted,'start',.12)}
+  if(kind==='list'){[0,1,2,3].forEach(i=>{S('circle',{cx:x+30,cy:y+104+i*20,r:4,fill:C.stroke},p);R(p,x+46,y+99+i*20,w*(.55-i*.07),9,4.5,C.stroke)})}};
+const arrow=(p,x1,y1,x2,y2,dash=true)=>{const a=Math.atan2(y2-y1,x2-x1);S('line',{x1,y1,x2:x2-Math.cos(a)*8,y2:y2-Math.sin(a)*8,stroke:C.blue,'stroke-width':3,'stroke-dasharray':dash?'3 9':'0','stroke-linecap':'round'},p);
+  S('path',{d:`M${x2} ${y2} l${-14*Math.cos(a-.45)} ${-14*Math.sin(a-.45)} M${x2} ${y2} l${-14*Math.cos(a+.45)} ${-14*Math.sin(a+.45)}`,fill:'none',stroke:C.blue,'stroke-width':3,'stroke-linecap':'round'},p)};
+
+const F={
+1:{eb:'Referral tracking',size:72,head:'One referring provider.<br><em>Every order they sent.</em><br>And where each one stands.',body:'',draw(){
+  const g=G(svg,96,622);mkGrad('arcG',0,0);
+  /* gradient on the vertical connector needs a vertical vector */
+  const lg=S('linearGradient',{id:'arcV',gradientUnits:'userSpaceOnUse',x1:0,y1:84,x2:0,y2:480},defs);for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg);
+  R(g,0,0,430,84,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,50,42,24);Tx(g,92,50,'Referring provider',20,C.ink,'start',.1);
+  S('line',{x1:44,y1:88,x2:44,y2:474,stroke:'url(#arcV)','stroke-width':7,'stroke-linecap':'round'},g);
+  const rows=[['MRI lumbar spine','Sent Monday','Scheduled',0],['CT abdomen','Sent Monday','Auth approved',0],['MRI knee','Sent Tuesday','Not scheduled',1],['Ultrasound','Sent Wednesday','Auth pending',0]];
+  rows.forEach((r,i)=>{const y=112+i*92;S('line',{x1:44,y1:y+38,x2:96,y2:y+38,stroke:C.stroke,'stroke-width':2.5},g);S('circle',{cx:44,cy:y+38,r:9,fill:C.blue},g);orderRow(g,96,y,792,r[0],r[1],r[2],{dashed:!!r[3]})});
+}},
+2:{eb:'Referral tracking',size:84,head:'Where does that answer<br><em>live today?</em>',body:'The order in the RIS. The appointment on the schedule. The authorization in a portal. The provider on a list.',draw(){
+  const g=G(svg,96,820);const W=434,H=180;
+  windowCard(g,0,0,W,H,'RIS','The order','lines');windowCard(g,454,0,W,H,'Schedule','The appointment','time');
+  windowCard(g,0,200,W,H,'Payer portal','The authorization','lock');windowCard(g,454,200,W,H,'List','The provider','list');
+  S('circle',{cx:444,cy:190,r:34,fill:C.card,stroke:C.blue,'stroke-width':2.5,'stroke-dasharray':'6 6'},g);Tx(g,444,203,'?',36,C.blue,'middle',0);
+}},
+3:{eb:'Referral tracking',size:96,head:'Four places.<br><em>One relationship.</em>',body:'Someone carries the answer between them by hand.',draw(){
+  const g=G(svg,96,760);const W=380,H=170;
+  [[0,0,'RIS','The order','lines'],[508,0,'Schedule','The appointment','time'],[0,270,'Payer portal','The authorization','lock'],[508,270,'List','The provider','list']].forEach(a=>windowCard(g,a[0],a[1],W,H,a[2],a[3],a[4]));
+  const d='stroke:'+C.blue;
+  S('line',{x1:W+8,y1:85,x2:500,y2:85,stroke:C.blue,'stroke-width':3.5,'stroke-dasharray':'3 9','stroke-linecap':'round'},g);
+  S('line',{x1:640,y1:H+8,x2:250,y2:262,stroke:C.blue,'stroke-width':3.5,'stroke-dasharray':'3 9','stroke-linecap':'round'},g);
+  S('line',{x1:W+8,y1:355,x2:500,y2:355,stroke:C.blue,'stroke-width':3.5,'stroke-dasharray':'3 9','stroke-linecap':'round'},g);
+  pill(g,444-135,220-24,270,'Carried by hand',{h:48,size:19,dashed:true});
+}},
+4:{eb:'The referrer record',size:88,head:'Built from<br><em>the orders they sent.</em>',body:'Not a list someone keeps. Each referring provider’s record fills from the orders themselves.',draw(){
+  const g=G(svg,96,820);
+  [[0,40,5],[20,20,-3],[36,0,2]].forEach(([x,y,r],i)=>{const s=G(g,x,y,{});s.setAttribute('transform',`translate(${x+110} ${y+110}) rotate(${r})`);R(s,-110,-110,220,190,12,C.card,C.stroke,{'stroke-width':2.5});if(i==2){Tx(s,-90,-76,'Order',15,C.muted,'start',.14);R(s,-90,-58,150,9,4.5,C.stroke);R(s,-90,-38,110,9,4.5,C.hair);R(s,-90,-18,130,9,4.5,C.hair);R(s,-90,10,16,16,3,'none',C.blue,{'stroke-width':2.5})}});
+  arrow(g,262,150,376,150);
+  R(g,386,0,502,400,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,436,52,24);Tx(g,478,60,'Referring provider',19,C.ink,'start',.1);
+  S('line',{x1:410,y1:100,x2:864,y2:100,stroke:C.hair,'stroke-width':2},g);
+  [['MRI lumbar spine','Scheduled',0],['CT abdomen','Auth approved',0],['Next order arrives','',1]].forEach((r,i)=>{const y=122+i*86;
+    if(r[2]){R(g,410,y,454,66,12,C.soft,C.blue,{'stroke-dasharray':'8 7','stroke-width':2});Tx(g,436,y+40,r[0],17,C.blue,'start',.1)}
+    else{R(g,410,y,454,66,12,C.bar);Tx(g,436,y+30,r[0],18,C.ink,'start',.08);pill(g,436,y+36,r[1]==='Scheduled'?130:170,r[1],{h:26,size:13})}});
+}},
+5:{eb:'The record',size:92,head:'<em>One line per order</em>',body:'',draw(){
+  const g=G(svg,96,418);R(g,0,0,888,140,18,C.card,C.stroke,{'stroke-width':2.5});
+  [0,296,592].forEach((x,i)=>{if(i)S('line',{x1:x,y1:20,x2:x,y2:120,stroke:C.hair,'stroke-width':2},g);S('circle',{cx:x+44,cy:34,r:15,fill:C.blue},g);Tx(g,x+44,40,String(i+1),16,'#fff','middle',0);});
+  Tx(g,22,98,'MRI lumbar spine',20,C.ink,'start',.06);Tx(g,22,122,'Sent Monday',15,C.muted,'start',.12);
+  Tx(g,318,98,'Scheduled',20,C.ink,'start',.06);Tx(g,318,122,'Tuesday 10:30',15,C.muted,'start',.12);
+  Tx(g,614,98,'Auth approved',20,C.blue,'start',.06);Tx(g,614,122,'Same line',15,C.muted,'start',.12);
+}},
+6:{eb:'The record',size:88,head:'How are we doing<br>with this office?<br><em>Ask the orders.</em>',body:'Not a guess. Not a phone call.',draw(){
+  const g=G(svg,96,850);R(g,0,0,888,330,18,C.card,C.stroke,{'stroke-width':2.5});
+  avatar(g,50,52,24);Tx(g,92,60,'This office',20,C.ink,'start',.1);pill(g,720,32,148,'Illustrative',{h:34,size:14});
+  [['Orders sent',1],['Became appointments',.74],['Authorized',.56]].forEach((r,i)=>{const y=108+i*72;Tx(g,32,y+4,r[0],17,C.muted,'start',.12);R(g,32,y+16,824,22,11,C.bar);R(g,32,y+16,824*r[1],22,11,C.blue)});
+}},
+7:{eb:'The record',size:96,head:'See one provider’s<br><em>whole record.</em>',body:'Gravity Grow: referral management for imaging centers.',draw(){
+  const g=G(svg,96,700);R(g,0,0,888,232,18,C.card,C.stroke,{'stroke-width':2.5});avatar(g,50,48,22);Tx(g,90,56,'Referring provider',19,C.ink,'start',.1);
+  [['MRI lumbar spine','Scheduled',0],['CT abdomen','Auth approved',0],['MRI knee','Not scheduled',1]].forEach((r,i)=>{const y=88+i*46;R(g,24,y,840,38,10,r[2]?C.soft:C.bar,r[2]?C.blue:'none',{'stroke-dasharray':r[2]?'7 6':'0','stroke-width':1.5});Tx(g,44,y+25,r[0],16,C.ink,'start',.08);Tx(g,844,y+25,r[1],15,r[2]?C.blue:C.muted,'end',.1)});
+  mkGrad('arcG',96,756);
+}}
+};
+
+const f=F[FRAME];
+$('eb').textContent=f.eb;$('head').innerHTML=f.head;$('head').style.fontSize=f.size+'px';
+if(f.body){$('body').textContent=f.body}else{$('body').style.display='none'}
+$('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
+f.draw();
+if(FRAME===5){const l=$('list');l.style.display='block';l.style.top='616px';
+  l.innerHTML=[['Service and date','Which exam, and when the order was sent.'],['Appointment status','Whether the order became an appointment.'],['Authorization result','On the same line, not in a separate portal.']].map((a,i)=>`<div class="it"><div class="n">${i+1}</div><div><div class="t">${a[0]}</div><div class="d">${a[1]}</div></div></div>`).join('')}
+if(FRAME===7){const c=$('chip');c.style.display='flex';c.style.top='988px';const a=$('aos');a.style.display='block';a.style.top='1118px'}
+window.render=()=>{};
+</script>
+</body>
+</html>
