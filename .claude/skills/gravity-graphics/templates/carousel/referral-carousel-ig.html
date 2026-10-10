@@ -171,7 +171,7 @@ const F={
 4:O[3],
 5:Object.assign({},O[4],{body:'Built from the orders themselves, not a list someone keeps.'}),
 6:O[7],
-7:{eb:'Save this',size:80,head:'Four things every<br><em>referrer record shows.</em>',body:'',draw(){}}
+7:{eb:'Send this to your team',size:80,head:'Can your record show<br><em>all four?</em>',body:'',draw(){}}
 };
 
 const f=F[FRAME];
@@ -181,8 +181,8 @@ $('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
 if(FRAME===1)$('head').style.lineHeight='.94';if(/^With|^Gravity/.test(f.eb)){$('eyebrow').style.color=C.blue;document.querySelectorAll('#eyebrow i').forEach(i=>i.style.background=C.blue)}
 f.draw();
 if(FRAME===7){const l=$('list');l.style.display='block';l.style.top='500px';
-  l.innerHTML=[['Service','Which exam the order is for.'],['Date','When it was sent and when it was scheduled.'],['Appointment status','Booked, or not yet.'],['Authorization result','On the same line, not in a separate portal.']].map((a,i)=>`<div class="it"><div class="n">${i+1}</div><div><div class="t">${a[0]}</div><div class="d">${a[1]}</div></div></div>`).join('')}
-if(FRAME===7){const c=$('chip');c.textContent='Save this checklist';c.style.display='flex';c.style.top='1134px';const a=$('aos');a.style.display='block';a.style.top='1050px'}
+  l.querySelectorAll;l.innerHTML=[['Service','Which exam the order is for.'],['Date','When it was sent and when it was scheduled.'],['Appointment status','Booked, or not yet.'],['Authorization result','On the same line, not in a separate portal.']].map((a,i)=>`<div class="it"><div class="n" style="background:#fff;border:3px solid #1D4ED8;border-radius:12px"></div><div><div class="t">${a[0]}</div><div class="d">${a[1]}</div></div></div>`).join('')}
+if(FRAME===7){const c=$('chip');c.textContent='Send to your liaison lead';c.style.display='flex';c.style.top='1134px';const a=$('aos');a.style.display='block';a.style.top='1050px'}
 window.render=()=>{};
 </script>
 </body>
