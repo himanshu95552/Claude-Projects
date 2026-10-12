@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Carousel: one fax, five steps (plum)</title>
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:"DM Mono";font-weight:500;src:url(../../assets/fonts/DMMono-500.ttf)}
+:root{--bg:#1B1430;--ink:#FFFFFF;--acc:#C9B3FF;--mono:#BAAED2;--card:#241B3E;--stroke:#4A4260;--line:#6A6678;--soft:#2A2046;--muted:#8C86A0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;background:var(--bg);overflow:hidden}
+#c{position:relative;width:1080px;height:1350px;background:var(--bg);font-family:Urbanist,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#logo{left:88px;top:94px;height:64px;width:auto}
+#text{left:96px;top:222px;width:888px}
+#eyebrow{display:flex;align-items:center;gap:16px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:22px;letter-spacing:.16em;color:var(--mono);white-space:nowrap;margin-bottom:26px}
+#eyebrow i{display:block;background:var(--acc)}
+#head{font-weight:600;letter-spacing:-.028em;line-height:1.04;white-space:nowrap}
+#head em{font-style:normal;color:var(--acc)}
+#head .sub{display:block;font-size:72px;line-height:1.08;margin-top:14px}
+#body{margin-top:30px;font-size:38px;font-weight:500;line-height:1.32;letter-spacing:-.012em;color:#E7E2F6;width:860px}
+#note{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:22px;letter-spacing:.16em;color:var(--mono);margin-top:34px}
+#foot{left:96px;top:1244px;width:888px;height:1px;background:#3A3152}
+#footL,#footR{top:1264px;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:20px;letter-spacing:.2em;white-space:nowrap}
+#footL{left:96px;color:var(--muted)}
+#footR{right:96px;color:var(--acc)}
+#chip{left:96px;width:660px;height:88px;border-radius:44px;display:none;align-items:center;justify-content:center;background:linear-gradient(in oklch 90deg,#FF6B34,#F900C8,#0E59FF);color:#fff;font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;font-size:25px;letter-spacing:.16em}
+svg{position:absolute;left:0;top:0}
+svg text{font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="c">
+  <svg id="s" width="1080" height="1350" viewBox="0 0 1080 1350"></svg>
+  <img id="logo" class="abs" src="../../assets/logo_dark.svg" alt="Alpha Nodus">
+  <div id="text" class="abs"><div id="eyebrow"><i style="width:10px;height:10px;border-radius:50%"></i><i style="width:34px;height:1.5px"></i><span id="eb"></span></div><div id="head"></div><div id="body"></div><div id="note"></div></div>
+  <div id="chip" class="abs">Link in the first comment</div>
+  <div id="foot" class="abs"></div><div id="footL" class="abs">Gravity</div><div id="footR" class="abs"></div>
+</div>
+<script>
+const FRAME=+(new URLSearchParams(location.search).get('frame')||1), TOTAL=8;
+const NS='http://www.w3.org/2000/svg';
+const C={bg:'#1B1430',card:'#241B3E',card2:'#201837',stroke:'#4A4260',line:'#6A6678',soft:'#2A2046',soft2:'#2F2550',acc:'#C9B3FF',ink:'#FFFFFF',muted:'#8C86A0',mono:'#BAAED2',cyan:'#67E3EE',light:'#E7E2F6'};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),lerp=(a,b,x)=>a+(b-a)*x;
+const hex2rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const lin=c=>c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4),gam=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function toLch([r,g,b]){r=lin(r);g=lin(g);b=lin(b);const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+ const L=.2104542553*l+.793617785*m-.0040720468*s,a=1.9779984951*l-2.428592205*m+.4505937099*s,bb=.0259040371*l+.7827717662*m-.808675766*s;return [L,Math.hypot(a,bb),Math.atan2(bb,a)]}
+function fromLch([L,c,h]){const a=c*Math.cos(h),b=c*Math.sin(h);const l=Math.pow(L+.3963377774*a+.2158037573*b,3),m=Math.pow(L-.1055613458*a-.0638541728*b,3),s=Math.pow(L-.0894841775*a-1.291485548*b,3);
+ return [4.0767416621*l-3.3077115913*m+.2309699292*s,-1.2684380046*l+2.6097574011*m-.3413193965*s,-.0041960863*l-.7034186147*m+1.707614701*s].map(v=>Math.round(clamp(gam(clamp(v)))*255))}
+function mixLch(a,b,t){let dh=b[2]-a[2];while(dh>Math.PI)dh-=2*Math.PI;while(dh<-Math.PI)dh+=2*Math.PI;return [lerp(a[0],b[0],t),lerp(a[1],b[1],t),a[2]+dh*t]}
+const ARC=['#FF6B34','#F900C8','#0E59FF'].map(h=>toLch(hex2rgb(h)));
+const arcAt=t=>{const seg=t<.5?0:1,k=seg?(t-.5)*2:t*2;const [r,g,b]=fromLch(mixLch(ARC[seg],ARC[seg+1],k));return `rgb(${r},${g},${b})`};
+const svg=document.getElementById('s');
+const S=(tag,a={},p=svg)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
+const Tx=(p,x,y,str,size,fill,anchor='start',ls=.14)=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor,'letter-spacing':size*ls},p);t.textContent=str;return t};
+const Sa=(p,x,y,str,size,fill,weight=600,anchor='start')=>{const t=S('text',{x,y,'font-size':size,fill,'text-anchor':anchor},p);t.setAttribute('style','text-transform:none;font-family:Urbanist;font-weight:'+weight+';letter-spacing:-.02em');t.textContent=str;return t};
+const R=(p,x,y,w,h,rx,fill,stroke,extra={})=>S('rect',{x,y,width:w,height:h,rx,fill:fill||'none',stroke:stroke||'none','stroke-width':2,...extra},p);
+const G=(p,x=0,y=0,extra={})=>S('g',{transform:`translate(${x} ${y})`,...extra},p);
+const $=id=>document.getElementById(id);
+const defs=S('defs');
+const mkGrad=(id,x1,y1,x2,y2)=>{const lg=S('linearGradient',{id,gradientUnits:'userSpaceOnUse',x1,y1,x2,y2},defs);for(let i=0;i<=16;i++)S('stop',{offset:(i/16*100)+'%','stop-color':arcAt(i/16)},lg)};
+
+/* header: logo, hairline that fills as you swipe, dot */
+const hx=lerp(500,978,FRAME/TOTAL);
+S('line',{x1:500,y1:126,x2:978,y2:126,stroke:'#3A3152','stroke-width':2});
+S('line',{x1:500,y1:126,x2:hx,y2:126,stroke:C.acc,'stroke-width':2.5});
+S('circle',{cx:Math.max(hx,580),cy:126,r:13,fill:C.acc});
+
+/* shared pieces */
+const pill=(p,x,y,w,txt,{dashed=false,col=C.acc,h=40,size=16,fill=null}={})=>{R(p,x,y,w,h,h/2,fill||(dashed?C.soft:C.card),C.acc,dashed?{'stroke-dasharray':'7 6'}:{});Tx(p,x+w/2,y+h/2+size*.36,txt,size,col,'middle',.1)};
+const avatar=(p,cx,cy,r=22)=>{S('circle',{cx,cy,r,fill:C.soft,stroke:C.acc,'stroke-width':2},p);S('circle',{cx,cy:cy-r*.2,r:r*.3,fill:'none',stroke:C.acc,'stroke-width':2},p);S('path',{d:`M${cx-r*.55} ${cy+r*.6} Q${cx} ${cy-r*.1} ${cx+r*.55} ${cy+r*.6}`,fill:'none',stroke:C.acc,'stroke-width':2},p)};
+const page=(p,x,y,w,h,{tint=C.stroke,lines=3,rot=0,label=''}={})=>{const g=G(p,x,y);if(rot)g.setAttribute('transform',`translate(${x} ${y}) rotate(${rot})`);R(g,0,0,w,h,10,C.card,tint,{'stroke-width':2.5});
+  for(let i=0;i<lines;i++)R(g,16,18+i*16,(w-32)*(i==lines-1?.5:.85),7,3.5,i==0?tint:C.stroke);
+  if(label)Tx(g,w-14,h-14,label,13,tint,'end',.1);return g};
+const check=(p,cx,cy,r=18,fill=C.acc)=>{S('circle',{cx,cy,r,fill},p);S('path',{d:`M${cx-r*.4} ${cy} l${r*.3} ${r*.34} l${r*.55} ${-r*.7}`,fill:'none',stroke:C.bg,'stroke-width':r*.2,'stroke-linecap':'round','stroke-linejoin':'round'},p)};
+const dash=(p,x1,y1,x2,y2,col=C.acc)=>S('line',{x1,y1,x2,y2,stroke:col,'stroke-width':3,'stroke-dasharray':'3 9','stroke-linecap':'round'},p);
+
+const F={
+1:{eb:'Order intake',size:150,head:'One fax.<span class="sub"><em>Five steps</em><br>before anyone touches it.</span>',body:'Swipe for each one, and for where a person steps in.',draw(){
+  const g=G(svg,96,850);mkGrad('arcG',150,0,740,0);
+  page(g,6,6,128,170,{tint:C.line,lines:4,rot:-5});page(g,0,0,128,170,{tint:C.acc,lines:4,rot:3});Tx(g,12,150,'Fax',13,C.acc);
+  S('line',{x1:150,y1:92,x2:748,y2:92,stroke:'url(#arcG)','stroke-width':7,'stroke-linecap':'round'},g);
+  [230,340,450,560,670].forEach((x,i)=>{S('circle',{cx:x,cy:92,r:25,fill:C.bg,stroke:C.acc,'stroke-width':3},g);Tx(g,x,100,String(i+1),22,C.ink,'middle',0)});
+  R(g,740,22,148,140,16,C.card,C.acc,{'stroke-width':2.5});Tx(g,764,58,'Order',15,C.mono);R(g,764,76,100,8,4,C.stroke);R(g,764,96,70,8,4,C.stroke);check(g,860,138,14);
+  dash(g,670,125,670,210);avatar(g,670,240,26);Tx(g,712,248,'A person',17,C.mono,'start',.12);
+}},
+2:{eb:'Step 1 of 5',size:92,head:'Every page is<br><em>read and sorted.</em>',body:'Order, insurance card, progress note, records request. Each one indexed and linked to the right record.',draw(){
+  const g=G(svg,96,790);
+  ['Order','Insurance card','Progress note','Records request'].forEach((t,i)=>{const y=i*100;R(g,0,y,470,80,14,C.card,C.stroke,{'stroke-width':2.5});
+    page(g,20,y+14,40,52,{tint:C.acc,lines:2});Sa(g,84,y+50,t,30,C.ink);
+    S('line',{x1:470,y1:y+40,x2:560,y2:y+40,stroke:C.acc,'stroke-width':3,'stroke-dasharray':'3 9','stroke-linecap':'round'},g)});
+  R(g,560,0,328,380,18,C.card,C.acc,{'stroke-width':2.5});avatar(g,608,52,24);Tx(g,648,60,'Patient record',17,C.ink,'start',.1);
+  S('line',{x1:584,y1:102,x2:864,y2:102,stroke:C.stroke,'stroke-width':2},g);
+  [0,1,2,3].forEach(i=>{const y=124+i*60;R(g,584,y,280,44,10,C.soft);check(g,610,y+22,11);R(g,634,y+17,170-(i%2)*40,9,4.5,C.stroke)});
+}},
+3:{eb:'Step 2 of 5',size:84,head:'Several patients,<br>one fax: <em>split.</em>',body:'The pages are split by patient and put in order.',draw(){
+  const g=G(svg,96,700);const col={A:C.acc,B:C.cyan,C:C.light};
+  const order=[['A',1],['B',1],['A',2],['B',2],['C',1],['B',3]];
+  order.forEach(([p,n],i)=>{const y=i*62;R(g,0,y,230,52,10,C.card,col[p],{'stroke-width':2.5});Tx(g,18,y+32,'Page '+(i+1),14,C.muted,'start',.1);R(g,130,y+20,80,8,4,col[p])});
+  S('path',{d:'M 250 190 L 330 190',stroke:C.acc,'stroke-width':3,'stroke-linecap':'round'},g);S('path',{d:'M 318 176 L 334 190 L 318 204',fill:'none',stroke:C.acc,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  [['A',[1,3]],['B',[2,4,6]],['C',[5]]].forEach(([p,pgs],i)=>{const y=i*130;R(g,360,y,528,108,16,C.card,col[p],{'stroke-width':2.5});Tx(g,386,y+38,'Patient '+p,17,col[p],'start',.12);
+    pgs.forEach((n,k)=>{R(g,386+k*100,y+54,86,36,9,C.soft,col[p],{'stroke-width':2});Tx(g,386+k*100+43,y+78,'P'+n,15,C.ink,'middle',.08)})});
+}},
+4:{eb:'Step 3 of 5',size:88,head:'The patient is<br><em>looked up first.</em>',body:'Found on file, or flagged as new. Then the referring provider and the exam are checked.',draw(){
+  const g=G(svg,96,780);
+  R(g,0,0,888,84,16,C.card,C.stroke,{'stroke-width':2.5});S('circle',{cx:44,cy:40,r:12,fill:'none',stroke:C.acc,'stroke-width':3},g);S('line',{x1:53,y1:49,x2:64,y2:60,stroke:C.acc,'stroke-width':3,'stroke-linecap':'round'},g);Sa(g,86,52,'Patient lookup',30,C.ink);
+  R(g,0,118,428,118,16,C.card,C.acc,{'stroke-width':2.5});check(g,52,177,18);Sa(g,86,172,'Found on file',32,C.ink);Tx(g,86,206,'Match linked',15,C.mono,'start',.12);
+  R(g,460,118,428,118,16,C.soft,C.acc,{'stroke-dasharray':'8 7','stroke-width':2.5});pill(g,484,148,90,'New',{h:34,size:15,dashed:true});Sa(g,484,208,'Flagged as new',32,C.ink);
+  [['Referring provider',0],['Exam',1]].forEach(([t,i])=>{const y=270+i*78;R(g,0,y,888,64,14,C.card,C.stroke,{'stroke-width':2});check(g,40,y+32,15);Sa(g,74,y+42,t,28,C.ink);Tx(g,860,y+38,'Checked',15,C.mono,'end',.12)});
+}},
+5:{eb:'Step 4 of 5',size:92,head:'Duplicates are<br><em>checked first.</em>',body:'Before a new order or a new patient is created, Gravity looks for one that already exists.',draw(){
+  const g=G(svg,96,800);
+  [[0,'Incoming',C.acc],[508,'Already on file',C.line]].forEach(([x,t,col])=>{R(g,x,0,380,250,18,C.card,col,{'stroke-width':2.5});Tx(g,x+26,44,t,17,col===C.acc?C.acc:C.mono);S('line',{x1:x+26,y1:64,x2:x+354,y2:64,stroke:C.stroke,'stroke-width':2},g);[0,1,2].forEach(i=>R(g,x+26,88+i*44,(i==1?220:290),12,6,C.stroke))});
+  S('circle',{cx:444,cy:125,r:36,fill:C.bg,stroke:C.acc,'stroke-width':3,'stroke-dasharray':'6 6'},g);Sa(g,444,140,'=?',38,C.acc,600,'middle');
+  pill(g,0,296,400,'No match: create new',{h:56,size:16});pill(g,488,296,400,'Match: link to existing',{h:56,size:16,dashed:true});
+}},
+6:{eb:'Order intake',size:96,head:'<em>Step 5 of 5:</em><br><em>the order.</em>',body:'',draw(){
+  const g=G(svg,96,640);mkGrad('arcV',0,70,0,330);
+  check(g,44,44,26);Sa(g,100,58,'Patient, provider and exam all match',40,C.ink);
+  S('line',{x1:44,y1:80,x2:44,y2:316,stroke:'url(#arcV)','stroke-width':7,'stroke-linecap':'round'},g);
+  check(g,44,350,30);Sa(g,100,364,'The order is created.',40,C.ink);
+  dash(g,44,200,100,200);
+  R(g,100,128,788,170,18,C.soft,C.acc,{'stroke-dasharray':'8 7','stroke-width':2.5});Tx(g,128,172,'Exit ramp',18,C.acc,'start',.16);
+  Sa(g,128,224,'Anything uncertain goes to a person,',32,C.ink,500);Sa(g,128,264,'fax attached.',32,C.ink,500);
+  avatar(g,800,213,32);page(g,832,236,34,44,{tint:C.acc,lines:2});
+}},
+7:{eb:'Order intake',size:200,head:'<em>5.7 million</em>',body:'imaging orders a year run on Gravity.',note:'As of September 2026.',draw(){
+  const g=G(svg,96,780);
+  S('line',{x1:30,y1:60,x2:858,y2:60,stroke:C.stroke,'stroke-width':3,'stroke-linecap':'round'},g);
+  [0,1,2,3,4].forEach(i=>{const x=30+i*207;S('circle',{cx:x,cy:60,r:24,fill:C.bg,stroke:C.acc,'stroke-width':3},g);Tx(g,x,68,String(i+1),20,C.ink,'middle',0)});
+  Tx(g,0,150,'One fax, five steps, every order',17,C.mono,'start',.14);
+}},
+8:{eb:'Order intake',size:100,head:'See one fax<br><em>become an order.</em>',body:'Your team reviews what didn’t match. Nobody re\u2011types the rest.',draw(){
+  const g=G(svg,96,720);
+  page(g,6,6,150,200,{tint:C.line,lines:4,rot:-5});page(g,0,0,150,200,{tint:C.acc,lines:4,rot:3});Tx(g,16,176,'Fax',14,C.acc);
+  S('line',{x1:200,y1:100,x2:680,y2:100,stroke:C.acc,'stroke-width':3,'stroke-dasharray':'3 9','stroke-linecap':'round'},g);S('path',{d:'M 666 86 L 684 100 L 666 114',fill:'none',stroke:C.acc,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+  R(g,720,0,168,200,18,C.card,C.acc,{'stroke-width':2.5});Tx(g,746,46,'Order',16,C.mono);R(g,746,66,116,9,4.5,C.stroke);R(g,746,88,80,9,4.5,C.stroke);check(g,806,152,22);
+}}
+};
+const f=F[FRAME];
+$('eb').textContent=f.eb;$('head').innerHTML=f.head;$('head').style.fontSize=f.size+'px';
+if(FRAME===7)$('head').style.lineHeight='1.0';
+if(f.body){$('body').textContent=f.body;if(FRAME===7){$('body').style.fontSize='52px';$('body').style.color=C.ink;$('body').style.marginTop='18px'}}else{$('body').style.display='none'}
+if(f.note){$('note').textContent=f.note}else{$('note').style.display='none'}
+$('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
+f.draw();
+if(FRAME===8){const c=$('chip');c.style.display='flex';c.style.top='1060px'}
+window.render=()=>{};
+</script>
+</body>
+</html>
