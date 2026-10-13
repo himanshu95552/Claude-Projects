@@ -6,7 +6,7 @@
 Sheets: People, Organizations, New people, Needs review, Summary.
 Needs: python3 -m pip install openpyxl   (without it only the zip is written)
 """
-import argparse, csv, zipfile
+import argparse, csv, re, zipfile
 from pathlib import Path
 
 SHEETS = [("People", "people_final.csv"), ("Organizations", "orgs_final.csv"),
@@ -39,8 +39,33 @@ def join_linkedin(orgs_csv, merged_csv, out_csv):
     print(f"  organizations joined to verified LinkedIn: {sum(1 for r in rows if r['org_id'] in m)}/{len(rows)}")
 
 
+PREFER = ["info", "contact", "contactus", "hello", "office", "appointments", "scheduling", "reception", "admin"]
+
+
+def join_org_emails(orgs_csv, emails_csv, out_csv):
+    """Add each organization's general (info@-type) addresses, matched on the website domain. Also folds in the crawl's emails_role."""
+    dom = lambda u: (u or "").strip().lower().replace("https://", "").replace("http://", "").replace("www.", "").split("/")[0]
+    by = {}
+    for r in csv.DictReader(open(emails_csv, newline="", encoding="utf-8")):
+        by.setdefault(r["domain"].strip().lower(), []).append(r["email"].strip().lower())
+    rows = list(csv.DictReader(open(orgs_csv, newline="", encoding="utf-8")))
+    n = 0
+    with open(out_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f); w.writerow(list(rows[0]) + ["general_emails", "org_email_primary", "org_email_source"])
+        for r in rows:
+            snov = by.get(dom(r.get("website")), [])
+            crawl = [e.strip().lower() for e in re.split(r"[;,\s|]+", r.get("emails_role") or "") if "@" in e]
+            allx = list(dict.fromkeys(snov + crawl))
+            pick = next((e for p in PREFER for e in allx if e.split("@")[0] == p), allx[0] if allx else "")
+            src = "snov_domain_search" if pick in snov else ("website_crawl" if pick else "")
+            n += bool(allx)
+            w.writerow(list(r.values()) + ["; ".join(allx), pick, src])
+    print(f"  organizations with a general email: {n}/{len(rows)}")
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--final", default="final"); ap.add_argument("--out", default="imaging-leads")
+    ap.add_argument("--org-emails", default="data/org_general_emails.csv", help="domain,email,source list of organization-level general addresses")
     ap.add_argument("--facilities", help="facilities CSV (needs an org_id column); joined to the organization data")
     a = ap.parse_args(); src = Path(a.final); out = Path(a.out).expanduser()
     files = [(n, src / f) for n, f in SHEETS if (src / f).exists()]
@@ -50,9 +75,14 @@ def main():
     if (src / "linkedin_merged.csv").exists() and (src / "orgs_final.csv").exists():
         join_linkedin(src / "orgs_final.csv", src / "linkedin_merged.csv", src / "orgs_with_linkedin.csv")
         files = [(n, (src / "orgs_with_linkedin.csv") if n == "Organizations" else p) for n, p in files]
+    oe = Path(a.org_emails).expanduser()
+    if oe.exists():
+        base = src / ("orgs_with_linkedin.csv" if (src / "orgs_with_linkedin.csv").exists() else "orgs_final.csv")
+        join_org_emails(base, oe, src / "orgs_with_emails.csv")
+        files = [(n, (src / "orgs_with_emails.csv") if n == "Organizations" else p) for n, p in files]
     if a.facilities:
         fj = src / "facilities_enriched.csv"
-        join_facilities(Path(a.facilities).expanduser(), src / ("orgs_with_linkedin.csv" if (src / "orgs_with_linkedin.csv").exists() else "orgs_final.csv"), fj)
+        join_facilities(Path(a.facilities).expanduser(), src / ("orgs_with_emails.csv" if (src / "orgs_with_emails.csv").exists() else "orgs_with_linkedin.csv" if (src / "orgs_with_linkedin.csv").exists() else "orgs_final.csv"), fj)
         files.insert(2, ("Facilities", fj))
     if (src / "email_bank.csv").exists(): files.append(("Email bank", src / "email_bank.csv"))
     if (src / "summary.txt").exists(): files.append(("Summary", src / "summary.txt"))
