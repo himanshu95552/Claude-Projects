@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const path=require('path');const {spawn}=
   const [,,page,out,dur='32',fps='30']=process.argv;
   const ff=process.env.FFMPEG||require('child_process').execSync('python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())"').toString().trim();
   const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
-  const p=await b.newPage({viewport:{width:1080,height:1920}});
+  const p=await b.newPage({viewport:{width:+(process.env.VW||1080),height:+(process.env.VH||1920)}});
   await p.goto('file://'+path.resolve(page));await p.evaluate(()=>document.fonts.ready);
   const n=Math.round(+dur*+fps);
   const f=spawn(ff,['-y','-loglevel','error','-f','image2pipe','-framerate',fps,'-i','-','-f','lavfi','-i','anullsrc=r=44100:cl=stereo','-shortest',

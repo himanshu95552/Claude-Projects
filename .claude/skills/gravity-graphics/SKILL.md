@@ -8,6 +8,8 @@ metadata:
 
 # Gravity graphics playbook
 
+> **Brand Guidelines v2.0 (September 2026) govern and supersede everything below that conflicts.** Read `reference/Alpha-Nodus-Brand-Guidelines-v2.0.md` and use `reference/plum-tokens.css` (copy it, never retype a hex) before making any visual. In short: ink `#1B1430` and paper `#F6F4FA`; Plum 600 `#6B3FE4` fills, Plum 700 `#5B2FD1` accent text on paper, Plum 300 `#C9B3FF` on ink; Lagoon `#22C1CE` (on ink `#67E3EE`) once per surface for the outcome only; Urbanist 600 display, Inter text, JetBrains Mono for eyebrows and numbers; the device is a hairline ending in a node; logos from `assets/logos/` (black on light, white on ink); no gradients, no illustration, no icons, no emoji, no title case. **Retired: the Arc gradient, blue `#1D4ED8`, red eyebrow, `#F5F7FA` canvas, DM Mono, personas (Sasha, Sandra, Susan) in public copy.** The v1 palette, template list and rules below are kept only as history; templates built on them (the earlier Reel, referral carousel, Facebook post, cold-email banners) need rebuilding on v2.0. v2.0 builds so far: `templates/carousel/fax-carousel-v2.html`, `templates/ads/google-ads-video.html`.
+
 Everything here was worked out on real deliverables (Reels, banners, LinkedIn and X posts) and approved by the marketing team. Follow it exactly; the user's own words in a request always win over it.
 
 ## 0. Before you start (every time)

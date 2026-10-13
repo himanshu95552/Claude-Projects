@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Google Ads video and thumbnail (brand v2.0)</title>
+<link rel="stylesheet" href="../../reference/plum-tokens.css">
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:Inter;font-weight:400;src:url(../../assets/fonts/Inter-400.ttf)}
+@font-face{font-family:Inter;font-weight:600;src:url(../../assets/fonts/Inter-600.ttf)}
+@font-face{font-family:"JetBrains Mono";font-weight:600;src:url(../../assets/fonts/JetBrainsMono-600.ttf)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow:hidden;background:var(--an-ink)}
+#c{position:relative;background:var(--an-ink);color:var(--an-text-on-ink);font-family:var(--an-font);overflow:hidden}
+.abs{position:absolute}
+#logo{position:absolute;left:72px;top:64px;height:56px}
+.scene{position:absolute;left:72px;right:72px;top:190px;bottom:150px;display:flex;flex-direction:column;justify-content:center}
+.eb{display:flex;align-items:center;gap:12px;font:600 21px var(--an-font-mono);letter-spacing:var(--an-eyebrow-tracking);text-transform:uppercase;color:var(--an-on-ink);margin-bottom:28px}
+.eb::before{content:"";flex:none;width:36px;height:12px;background:radial-gradient(circle at 30px 6px,var(--an-on-ink) 5.6px,transparent 6.4px),linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)) 0 50%/22px 1.5px no-repeat}
+.h{font-family:var(--an-font-display);font-weight:600;letter-spacing:var(--an-display-tracking);line-height:1.04;color:#fff}
+.h em{font-style:normal;color:var(--an-on-ink)}
+.p{font:400 36px/1.45 var(--an-font);color:var(--an-text-on-ink-muted);margin-top:26px}
+.nm{position:relative;padding-left:46px;font-family:var(--an-font-display);font-weight:600;font-size:60px;line-height:1.2;letter-spacing:-.02em;margin-top:16px;color:#fff}
+.nm::before{content:"";position:absolute;left:0;top:.6em;width:22px;height:1.5px;background:rgba(255,255,255,.45)}
+.nm::after{content:"";position:absolute;left:14px;top:.6em;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:var(--an-on-ink)}
+.btn{display:inline-flex;align-self:flex-start;align-items:center;font:600 34px var(--an-font);padding:22px 42px;border-radius:var(--an-radius-md);background:var(--an-on-ink);color:var(--an-ink);margin-top:36px}
+.cap{font:400 30px var(--an-font);color:var(--an-text-on-ink-muted);margin-top:22px}
+.closer{position:absolute;left:72px;right:72px;display:flex;align-items:center}
+.closer::before{content:"";flex:1;height:1px;background:rgba(255,255,255,.35)}
+.closer i{width:var(--an-node-hero);height:var(--an-node-hero);border-radius:50%;background:var(--an-on-ink);flex:none}
+.track{position:relative;height:90px;margin-top:44px}
+.track .ln{position:absolute;left:0;right:0;top:12px;height:1px;background:rgba(255,255,255,.35)}
+.track .n{position:absolute;top:5px;width:14px;height:14px;border-radius:50%;background:var(--an-on-ink)}
+.track .n.last{top:-1px;width:26px;height:26px;background:var(--an-outcome-on-ink)}
+.track .t{position:absolute;top:44px;font:600 20px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:#fff;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="c"></div>
+<script>
+const q=new URLSearchParams(location.search);
+const FMT=q.get('fmt')||'sq', THUMB=q.get('thumb')==='1';
+const SZ={sq:[1080,1080],'45':[1080,1350],wide:[1280,720]}[FMT];
+const [W,H]=SZ;
+const c=document.getElementById('c');c.style.width=W+'px';c.style.height=H+'px';
+document.documentElement.style.width=W+'px';document.documentElement.style.height=H+'px';
+const S=Math.min(W,H)/1080; /* type scale for the short side */
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const items=[];
+const mk=(html,parent=c)=>{const d=document.createElement('div');d.innerHTML=html.trim();const e=d.firstChild;parent.appendChild(e);return e};
+const logo=mk('<img id="logo" src="../../assets/logos/logo-horizontal-white.svg" alt="Alpha Nodus">');
+const scene=(t0,t1,inner)=>{const s=mk(`<div class="scene">${inner}</div>`);const kids=[...s.children];kids.forEach((k,i)=>items.push({e:k,t0:t0+i*0.0,t1,stagger:0}));return {s,kids,t0,t1}};
+const HS=(n)=>Math.round(n*(FMT==='wide'?0.78:1)); /* headline size helper */
+const sizes={sq:[112,88,72],'45':[116,92,76],wide:[96,76,60]}[FMT];
+
+if(THUMB){
+  /* thumbnail: the hook question, brand type only, one Plum 300 word, one node */
+  c.innerHTML='';
+  mk('<img id="logo" src="../../assets/logos/logo-horizontal-white.svg" alt="Alpha Nodus" style="left:72px;top:56px;height:52px;position:absolute">');
+  mk(`<div class="abs" style="left:72px;top:150px;width:${W-144}px"><div class="eb" style="margin-bottom:22px">For imaging centers</div><div class="h" style="font-size:112px;line-height:1.02">How many <em>referrals</em><br>did you lose<br>last month?</div></div>`);
+  mk(`<div class="abs" style="left:72px;top:${H-132}px;font:600 22px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-on-ink-muted)">Gravity · The Agentic Operations System (AOS) for imaging</div>`);
+  mk(`<div class="closer" style="top:${H-64}px"><i></i></div>`);
+  window.render=()=>{};
+}else{
+  const A=scene(0.2,3.6,`<div class="eb">For imaging centers</div><div class="h" style="font-size:${sizes[0]}px">How many <em>referrals</em><br>did you lose<br>last month?</div>`);
+  const B=scene(3.6,8.4,`<div class="h" style="font-size:${sizes[1]}px">Most imaging centers<br>can’t say.</div><div class="p">The answer is split across three systems.</div><div style="margin-top:22px"><div class="nm">CRM</div><div class="nm">RIS</div><div class="nm">RCM</div></div>`);
+  const C=scene(8.4,13.4,`<div class="eb">The Agentic Operations System (AOS) for imaging</div><div class="h" style="font-size:${sizes[2]}px">Gravity gets the order.<br>Completes the exam.<br><em>Gets it paid.</em></div><div class="track"><div class="ln"></div><div class="n" style="left:0"></div><div class="n" style="left:calc(50% - 7px)"></div><div class="n last" style="right:0"></div><div class="t" style="left:0">Order</div><div class="t" style="left:calc(50% - 30px)">Exam</div><div class="t" style="right:0">Paid</div></div>`);
+  const D=scene(13.4,18.0,`<div class="h" style="font-size:${sizes[1]}px">No referral leaks.<br>No order leaks.<br><em>No revenue leaks.</em></div><div class="btn">Book a demo →</div><div class="cap">alphanodus.com</div>`);
+  const cl=mk(`<div class="closer" style="top:${H-82}px"><i></i></div>`);
+  /* node reveals inside scenes */
+  const lines=[...B.s.querySelectorAll('.nm')];
+  window.render=(t)=>{
+    /* scene fades: in 0.4s, out 0.3s; the closer node is static from the start (the one node graphic) */
+    [A,B,C,D].forEach(sc=>{
+      const a=clamp((t-sc.t0)/0.4)*clamp((sc.t1-t)/0.3 + (sc===D?1:0));
+      sc.s.style.opacity=a;sc.s.style.transform=`translateY(${(1-clamp((t-sc.t0)/0.4))*14}px)`;
+    });
+    lines.forEach((l,i)=>{l.style.opacity=clamp((t-(5.6+i*0.55))/0.3)});
+    const tr=C.s.querySelector('.track');tr.style.opacity=clamp((t-10.6)/0.4);
+    const ps=B.s.querySelector('.p');
+    /* scene C draws its own node graphic (the stepper), so the closer node steps aside there */
+    cl.style.opacity=1-clamp((t-8.2)/0.3)*clamp((13.6-t)/0.3);
+  };
+  window.render(0);
+}
+document.fonts.ready.then(()=>{});
+</script>
+</body>
+</html>

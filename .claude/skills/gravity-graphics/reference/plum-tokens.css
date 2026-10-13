@@ -1,0 +1,124 @@
+/* ============================================================
+   Alpha Nodus brand tokens · v2.0 · September 2026
+   One system, two surfaces. Corporate surfaces use these directly;
+   the Gravity product maps them onto --gravity-color-* (see §11).
+   Raw hex appears in this file and nowhere else.
+   ============================================================ */
+:root {
+  /* ---------- Primary: Plum ---------- */
+  --an-plum-50:  #F3EEFE;   /* tint: callouts, highlighted rows, tag backgrounds */
+  --an-plum-100: #E7DDFC;   /* strong tint: selected rows, chip backgrounds */
+  --an-plum-200: #CDB9F8;   /* data series 3 */
+  --an-plum-300: #C9B3FF;   /* THE ACCENT ON INK: 9.6:1 on --an-ink */
+  --an-plum-400: #8E67EA;   /* data series 2; never text */
+  --an-plum-500: #7B4FE6;   /* reserved */
+  --an-plum-600: #6B3FE4;   /* PRIMARY: fills, buttons, node. White text 6.1:1 */
+  --an-plum-700: #5B2FD1;   /* hover; accent as TEXT on paper 6.9:1 (7.6:1 on white) */
+  --an-plum-800: #4A25AD;   /* pressed; emphasis text 9.7:1 on white */
+  --an-plum-900: #3A1C86;   /* deepest; rare */
+
+  --an-primary:       var(--an-plum-600);
+  --an-primary-hover: var(--an-plum-700);
+  --an-primary-press: var(--an-plum-800);
+  --an-primary-text:  var(--an-plum-700);
+  --an-on-ink:        var(--an-plum-300);  /* the accent switches to this on any ink surface */
+  --an-link:          var(--an-plum-700);
+  --an-link-hover:    var(--an-plum-800);
+  --an-focus:         var(--an-plum-600);
+
+  /* ---------- Ink and paper ---------- */
+  --an-ink:        #1B1430;   /* plum-black. The ONLY dark field. Booth, hero band, dark cards */
+  --an-ink-raised: #2A2050;   /* cards sitting inside an ink field */
+  --an-paper:      #F6F4FA;   /* page canvas, tinted a hair toward plum */
+  --an-surface:    #FFFFFF;   /* cards, nav, content */
+  --an-surface-muted: #F8FAFC;/* alternating sections, table headers (shared with product) */
+  --an-border:        #E5E7EB;/* dividers, inputs (shared with product) */
+  --an-border-strong: #CBD5E1;/* secondary buttons, input hover (shared with product) */
+  --an-border-on-ink: rgba(255,255,255,.18);
+
+  /* ---------- Text (shared with product) ---------- */
+  --an-text:               #0F172A;   /* headings, values          16.4:1 on paper */
+  --an-text-secondary:     #334155;   /* body                        9.5:1 on paper */
+  --an-text-tertiary:      #64748B;   /* labels ON WHITE only        4.8:1 */
+  --an-text-tertiary-alt:  #5B6878;   /* labels on paper             5.2:1 */
+  --an-text-muted:         #94A3B8;   /* decorative only, never for meaning */
+  --an-text-on-ink:        #FFFFFF;   /* on --an-ink                17.7:1 */
+  --an-text-on-ink-muted:  #B4A8D6;   /* on --an-ink ONLY            8.0:1 */
+
+  /* ---------- Outcome: Lagoon (data, deck and one line on ink) ---------- */
+  --an-outcome:        #22C1CE;   /* the one "it landed / it got paid" mark. Ink text on it 8.1:1, never white */
+  --an-outcome-text:   #0B6E78;   /* Lagoon as type on paper 5.5:1 (6.0:1 on white) */
+  --an-outcome-tint:   #DDF6F8;   /* outcome pill background */
+  --an-outcome-on-ink: #67E3EE;   /* the outcome on the ink field 11.6:1 */
+
+  /* ---------- Status (identical to the Gravity product) ---------- */
+  --an-success: #10B981; --an-success-bg: #ECFDF5; --an-success-text: #047857;
+  --an-warning: #F59E0B; --an-warning-bg: #FFFBEB; --an-warning-text: #B45309;
+  --an-danger:  #EF4444; --an-danger-bg:  #FEF2F2; --an-danger-text:  #B91C1C;
+  --an-info-bg: #F1F5F9; --an-info-text:  #334155;
+
+  /* ---------- Data series (in order) ---------- */
+  --an-series-1: var(--an-plum-600);
+  --an-series-2: var(--an-plum-400);
+  --an-series-3: var(--an-plum-200);
+  --an-series-4: #64748B;
+  --an-series-highlight: var(--an-outcome);
+  --an-series-highlight-on-ink: var(--an-outcome-on-ink);
+  --an-series-1-on-ink: var(--an-plum-300);
+  --an-series-2-on-ink: #8E86B8;
+  --an-series-3-on-ink: #4A4270;
+  --an-grid: var(--an-border);
+
+  /* ---------- Type ---------- */
+  --an-font-display: 'Urbanist', 'Avenir Next', 'Century Gothic', system-ui, sans-serif;
+  --an-font:         'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --an-font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* size / line-height / weight / tracking */
+  --an-display: 600 56px/1.04 var(--an-font-display);  --an-display-tracking: -.025em;
+  --an-h1:      600 40px/1.1  var(--an-font-display);  --an-h1-tracking: -.02em;
+  --an-h2:      600 30px/1.16 var(--an-font-display);  --an-h2-tracking: -.015em;
+  --an-h3:      600 20px/1.3  var(--an-font-display);  --an-h3-tracking: -.01em;
+  --an-lead:    400 19px/1.6  var(--an-font);
+  --an-body:    400 16px/1.65 var(--an-font);
+  --an-small:   400 14px/1.6  var(--an-font);
+  --an-caption: 400 13px/1.5  var(--an-font);
+  --an-eyebrow: 600 11px/1.4  var(--an-font-mono);     --an-eyebrow-tracking: .14em;   /* the only all-caps */
+
+  /* ---------- The device: line and node ---------- */
+  --an-node-eyebrow: 7px;   /* eyebrow marker */
+  --an-node-list:    9px;   /* list marker, chart endpoint */
+  --an-node-hero:   14px;   /* hero, section closer */
+  --an-node-booth:  26px;   /* booth panel, one per panel */
+  --an-hairline:    1px solid var(--an-border);
+  --an-hairline-on-ink: 1px solid rgba(255,255,255,.35);
+
+  /* ---------- Layout ---------- */
+  --an-container: 1200px;  --an-gutter: 32px;
+  --an-space-1: 4px;  --an-space-2: 8px;  --an-space-3: 12px; --an-space-4: 16px;
+  --an-space-5: 20px; --an-space-6: 24px; --an-space-8: 32px; --an-space-10: 40px;
+  --an-space-12: 48px; --an-space-16: 64px; --an-space-20: 80px; --an-space-24: 96px;
+  --an-radius-sm: 6px;  --an-radius-md: 8px;  --an-radius-lg: 14px;  --an-radius-xl: 20px;  --an-radius-full: 999px;
+
+  --an-shadow-sm: 0 1px 3px  rgba(27,20,48,.06);
+  --an-shadow-md: 0 4px 12px rgba(27,20,48,.08);
+  --an-shadow-lg: 0 14px 34px rgba(27,20,48,.16);
+
+  --an-ease: cubic-bezier(.4,0,.2,1);
+  --an-duration-fast: 120ms;  --an-duration-base: 200ms;  --an-duration-slow: 360ms;
+}
+
+/* ============================================================
+   The ten rules (also in the guidelines, §9)
+   1  The logo is black or white. Never recoloured, never on a gradient.
+   2  One accent per surface, at full strength. Quiet = tint, never a faded accent.
+   3  No gradients as colour. Anywhere. Including product buttons.
+   4  On ink, the accent is --an-on-ink. --an-plum-600 on ink is 2.9:1 and forbidden.
+   5  Accent as text is --an-plum-700; --an-plum-600 is for fills.
+   6  Lagoon is an outcome, never a status. Once per surface, never a field on the web,
+      never a pill or dot beside a success pill: shape and size keep it apart from green.
+   7  On ink, hierarchy comes from weight and size, never opacity.
+   8  One node per surface as a graphic. It never pulses and never becomes a network.
+   9  Status colours mean the same thing on the website and in the product.
+   10 Retired and never used: the arc, orange, magenta, hospital blue, agent colours.
+   ============================================================ */

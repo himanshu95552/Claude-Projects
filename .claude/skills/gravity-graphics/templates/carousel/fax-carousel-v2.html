@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Carousel: one fax, five steps (brand v2.0)</title>
+<link rel="stylesheet" href="../../reference/plum-tokens.css">
+<style>
+@font-face{font-family:Urbanist;font-weight:500;src:url(../../assets/fonts/Urbanist-500.ttf)}
+@font-face{font-family:Urbanist;font-weight:600;src:url(../../assets/fonts/Urbanist-600.ttf)}
+@font-face{font-family:Inter;font-weight:400;src:url(../../assets/fonts/Inter-400.ttf)}
+@font-face{font-family:Inter;font-weight:500;src:url(../../assets/fonts/Inter-500.ttf)}
+@font-face{font-family:Inter;font-weight:600;src:url(../../assets/fonts/Inter-600.ttf)}
+@font-face{font-family:"JetBrains Mono";font-weight:500;src:url(../../assets/fonts/JetBrainsMono-500.ttf)}
+@font-face{font-family:"JetBrains Mono";font-weight:600;src:url(../../assets/fonts/JetBrainsMono-600.ttf)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:var(--an-paper)}
+#c{position:relative;width:1080px;height:1080px;background:var(--an-paper);color:var(--an-text);font-family:var(--an-font)}
+#c.ink{background:var(--an-ink);color:var(--an-text-on-ink)}
+.abs{position:absolute}
+#logo{left:72px;top:64px;height:56px;width:auto}
+/* eyebrow: the device as a marker (7px node + 22px hairline) */
+.eb{display:flex;align-items:center;gap:12px;font:600 21px var(--an-font-mono);letter-spacing:var(--an-eyebrow-tracking);text-transform:uppercase;color:var(--an-primary-text)}
+.eb::before{content:"";flex:none;width:36px;height:12px;
+  background:radial-gradient(circle at 30px 6px,var(--an-primary) 5.6px,transparent 6.4px),
+             linear-gradient(var(--an-text-tertiary-alt),var(--an-text-tertiary-alt)) 0 50%/22px 1.5px no-repeat}
+.ink .eb{color:var(--an-on-ink)}
+.ink .eb::before{background:radial-gradient(circle at 30px 6px,var(--an-on-ink) 5.6px,transparent 6.4px),
+  linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)) 0 50%/22px 1.5px no-repeat}
+#text{left:72px;top:176px;width:936px}
+#head{font-family:var(--an-font-display);font-weight:600;letter-spacing:var(--an-display-tracking);line-height:1.04;margin-top:26px;white-space:nowrap}
+#head em{font-style:normal;color:var(--an-primary-text)}
+.ink #head em{color:var(--an-on-ink)}
+#body{margin-top:22px;font:400 32px/1.45 var(--an-font);color:var(--an-text-secondary);width:936px}
+.ink #body{color:var(--an-text-on-ink-muted)}
+#foot{left:72px;top:984px;width:936px;height:1px;background:var(--an-border)}
+.ink #foot{background:rgba(255,255,255,.35)}
+#footL,#footR{top:1008px;font:600 18px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-tertiary-alt)}
+.ink #footL,.ink #footR{color:var(--an-text-on-ink-muted)}
+#footL{left:72px}#footR{right:72px}
+/* components */
+.card{position:absolute;background:var(--an-surface);border:1px solid var(--an-border);border-radius:var(--an-radius-lg)}
+.row{display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 28px;border-top:1px solid var(--an-border)}
+.row:first-child{border-top:none}
+.lab{font:600 17px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-tertiary)}
+.val{font:600 28px var(--an-font);color:var(--an-text);letter-spacing:-.01em}
+.nm{position:relative;padding-left:34px}
+.nm::before{content:"";position:absolute;left:0;top:50%;width:16px;height:1.5px;background:var(--an-text-tertiary-alt)}
+.nm::after{content:"";position:absolute;left:10px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:var(--an-primary)}
+.pill{display:inline-block;font:600 16px var(--an-font-mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:4px;white-space:nowrap}
+.pill.tag{background:var(--an-plum-50);color:var(--an-primary-text)}
+.pill.ok{background:var(--an-success-bg);color:var(--an-success-text)}
+.pill.info{background:var(--an-info-bg);color:var(--an-info-text)}
+.btn{position:absolute;display:inline-flex;align-items:center;gap:8px;font:600 28px var(--an-font);padding:20px 38px;border-radius:var(--an-radius-md);min-height:44px;background:var(--an-on-ink);color:var(--an-ink)}
+.caption{font:400 22px/1.5 var(--an-font);color:var(--an-text-on-ink-muted)}
+.closer{position:absolute;left:72px;width:936px;display:flex;align-items:center}
+.closer::before{content:"";flex:1;height:1px;background:rgba(255,255,255,.35)}
+.closer i{width:var(--an-node-hero);height:var(--an-node-hero);border-radius:50%;background:var(--an-on-ink);flex:none}
+.lag{position:absolute;background:var(--an-outcome);color:var(--an-ink);border-radius:var(--an-radius-lg)}
+</style>
+</head>
+<body>
+<div id="c">
+  <img id="logo" class="abs" alt="Alpha Nodus">
+  <div id="text" class="abs"><div class="eb" id="eb"></div><div id="head"></div><div id="body"></div></div>
+  <div id="vis"></div>
+  <div id="foot" class="abs"></div><div id="footL" class="abs">Gravity</div><div id="footR" class="abs"></div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);
+const FRAME=+(q.get('frame')||1), TOTAL=8;
+const $=id=>document.getElementById(id);
+const el=(html)=>{const d=document.createElement('div');d.innerHTML=html.trim();while(d.firstChild)$('vis').appendChild(d.firstChild);};
+const INK=[1,8].includes(FRAME);
+if(INK)$('c').classList.add('ink');
+$('logo').src='../../assets/logos/logo-horizontal-'+(INK?'white':'black')+'.svg';
+const F={
+1:{eb:'Order intake',size:150,head:'One fax.',body:'',draw(){
+  $('head').innerHTML+='<div style="font-size:78px;line-height:1.08;margin-top:14px">'+'<em>Five steps</em><br>before anyone touches it.</div>';
+  el('<div class="abs" style="left:72px;top:640px;font:400 34px/1.45 var(--an-font);color:var(--an-text-on-ink-muted);width:936px">Swipe for each one, and for where a person steps in.</div>');
+  el('<div class="closer" style="top:880px"><i></i></div>');
+}},
+2:{eb:'Step 1 of 5',size:88,head:'Every page is<br><em>read and sorted.</em>',body:'Order, insurance card, progress note, records request. Each one indexed and linked to the right record.',draw(){
+  const rows=['Order','Insurance card','Progress note','Records request'].map(t=>`<div class="row"><span class="val nm">${t}</span><span class="pill ok">Linked</span></div>`).join('');
+  el(`<div class="card" style="left:72px;top:600px;width:936px"><div class="row" style="height:56px;background:var(--an-surface-muted);border-radius:14px 14px 0 0"><span class="lab">Incoming fax</span><span class="lab">Indexed</span></div>${rows}</div>`);
+}},
+3:{eb:'Step 2 of 5',size:88,head:'Several patients, one fax:<br><em>split.</em>',body:'The pages are split by patient and put in order.',draw(){
+  const cols=[['Patient A',['P1','P3']],['Patient B',['P2','P4','P6']],['Patient C',['P5']]].map(([n,p],i)=>`<div class="card" style="left:${72+i*324}px;top:600px;width:288px;height:250px;padding:28px"><div class="lab">${n}</div><div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">${p.map(x=>`<span class="pill tag">${x}</span>`).join('')}</div><div class="val" style="margin-top:34px;font-size:24px">${p.length} ${p.length>1?'pages':'page'}, in order</div></div>`).join('');
+  el(cols);
+  el('<div class="abs" style="left:72px;top:880px;font:600 18px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-tertiary-alt)">Received: P1 P2 P3 P4 P5 P6</div>');
+}},
+4:{eb:'Step 3 of 5',size:88,head:'The patient is<br><em>looked up first.</em>',body:'Found on file, or flagged as new. Then the referring provider and the exam are checked.',draw(){
+  el(`<div class="card" style="left:72px;top:600px;width:936px;height:96px;display:flex;align-items:center;padding:0 28px"><span class="lab" style="margin-right:24px">Patient lookup</span><span class="val">Found on file, or new</span></div>`);
+  el(`<div class="card" style="left:72px;top:722px;width:456px;height:112px;padding:26px 28px"><span class="pill ok">Found on file</span><div class="val" style="margin-top:12px;font-size:24px">Linked to the record</div></div>`);
+  el(`<div class="card" style="left:552px;top:722px;width:456px;height:112px;padding:26px 28px"><span class="pill info">Flagged as new</span><div class="val" style="margin-top:12px;font-size:24px">New record started</div></div>`);
+  el(`<div class="card" style="left:72px;top:860px;width:936px"><div class="row" style="height:56px"><span class="val nm" style="font-size:24px">Referring provider</span><span class="pill ok">Checked</span></div><div class="row" style="height:56px"><span class="val nm" style="font-size:24px">Exam</span><span class="pill ok">Checked</span></div></div>`);
+}},
+5:{eb:'Step 4 of 5',size:88,head:'Duplicates are<br><em>checked first.</em>',body:'Before a new order or a new patient is created, Gravity looks for one that already exists.',draw(){
+  const c=(x,t)=>`<div class="card" style="left:${x}px;top:600px;width:456px;height:200px"><div class="row" style="height:56px;background:var(--an-surface-muted);border-radius:14px 14px 0 0"><span class="lab">${t}</span></div><div class="row" style="height:72px"><span class="lab">Patient</span><span class="val" style="font-size:24px">Patient A</span></div><div class="row" style="height:72px"><span class="lab">Exam</span><span class="val" style="font-size:24px">MRI lumbar spine</span></div></div>`;
+  el(c(72,'Incoming order'));el(c(552,'Already on file'));
+  el('<div class="abs" style="left:72px;top:836px"><span class="pill info" style="font-size:18px;padding:12px 18px">No match: create new</span></div>');
+  el('<div class="abs" style="left:552px;top:836px"><span class="pill info" style="font-size:18px;padding:12px 18px">Match: link to existing</span></div>');
+}},
+6:{eb:'Step 5 of 5',size:88,head:'<em>Step 5 of 5:</em><br><em>the order.</em>',body:'',draw(){
+  /* the stepper device: Plum nodes on a hairline, the final node is the outcome (Lagoon) */
+  el('<div class="abs" style="left:72px;top:600px;width:936px;height:1px;background:var(--an-border-strong)"></div>');
+  el('<div class="abs" style="left:72px;top:592px;width:16px;height:16px;border-radius:50%;background:var(--an-primary)"></div>');
+  el('<div class="abs" style="left:982px;top:587px;width:26px;height:26px;border-radius:50%;background:var(--an-outcome)"></div>');
+  el('<div class="abs" style="left:72px;top:630px;width:440px;font:600 30px/1.25 var(--an-font);color:var(--an-text)">Patient, provider and exam all match</div>');
+  el('<div class="abs" style="right:72px;top:630px;width:360px;text-align:right;font:600 30px/1.25 var(--an-font);color:var(--an-text)">The order is created.</div>');
+  el(`<div class="card" style="left:72px;top:770px;width:936px;height:170px;padding:30px 32px;background:var(--an-plum-50);border-color:var(--an-plum-100)"><span class="pill tag" style="background:var(--an-surface)">Exit ramp</span><div class="val" style="margin-top:18px;font-weight:500;font-size:30px;line-height:1.35">Anything uncertain goes to a person, fax attached.</div></div>`);
+}},
+7:{eb:'Order intake',size:88,head:'',body:'',draw(){
+  $('head').style.display='none';
+  el('<div class="lag" style="left:72px;top:290px;width:936px;height:300px;padding:38px 44px"><div style="font:600 168px/1 var(--an-font-display);letter-spacing:-.03em">5.7 million</div><div style="margin-top:22px;font:600 36px/1.25 var(--an-font);letter-spacing:-.01em">imaging orders a year run on Gravity.</div></div>');
+  el('<div class="abs" style="left:72px;top:624px;font:600 20px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-tertiary-alt)">As of September 2026</div>');
+}},
+8:{eb:'Order intake',size:110,head:'See one fax<br><em>become an order.</em>',body:'Your team reviews what didn’t match. Nobody re‑types the rest.',draw(){
+  el('<div class="btn" style="left:72px;top:640px">Link in the first comment</div>');
+  el('<div class="abs caption" style="left:72px;top:782px;width:860px">Gravity is the Agentic Operations System (AOS) for imaging centers.</div>');
+  el('<div class="closer" style="top:900px"><i></i></div>');
+}}
+};
+const f=F[FRAME];
+$('eb').textContent=f.eb;
+$('head').innerHTML=f.head;$('head').style.fontSize=f.size+'px';
+if(f.body){$('body').textContent=f.body}else{$('body').style.display='none'}
+$('footR').textContent=String(FRAME).padStart(2,'0')+' / 0'+TOTAL;
+f.draw();
+if(INK){/* ink frames carry their node as the closer; no footer rule */$('foot').style.display='none'}
+window.render=()=>{};
+</script>
+</body>
+</html>
