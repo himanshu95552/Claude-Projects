@@ -57,9 +57,10 @@ const sizes={sq:[112,88,72],'45':[116,92,76],wide:[96,76,60]}[FMT];
 if(THUMB){
   /* thumbnail: the hook question, brand type only, one Plum 300 word, one node */
   c.innerHTML='';
+  const T={wide:[150,112,22],sq:[250,124,20],'45':[360,130,20]}[FMT];
   mk('<img id="logo" src="../../assets/logos/logo-horizontal-white.svg" alt="Alpha Nodus" style="left:72px;top:56px;height:52px;position:absolute">');
-  mk(`<div class="abs" style="left:72px;top:150px;width:${W-144}px"><div class="eb" style="margin-bottom:22px">For imaging centers</div><div class="h" style="font-size:112px;line-height:1.02">How many <em>referrals</em><br>did you lose<br>last month?</div></div>`);
-  mk(`<div class="abs" style="left:72px;top:${H-132}px;font:600 22px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-on-ink-muted)">Gravity · The Agentic Operations System (AOS) for imaging</div>`);
+  mk(`<div class="abs" style="left:72px;top:${T[0]}px;width:${W-144}px"><div class="eb" style="margin-bottom:22px">For imaging centers</div><div class="h" style="font-size:${T[1]}px;line-height:1.02">How many <em>referrals</em><br>did you lose<br>last month?</div></div>`);
+  mk(`<div class="abs" style="left:72px;top:${H-132}px;font:600 ${T[2]}px var(--an-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--an-text-on-ink-muted);white-space:nowrap">Gravity · The Agentic Operations System (AOS) for imaging</div>`);
   mk(`<div class="closer" style="top:${H-64}px"><i></i></div>`);
   window.render=()=>{};
 }else{
