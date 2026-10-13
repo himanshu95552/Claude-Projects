@@ -115,6 +115,8 @@ def main():
         if not evid: stats["no_evidence"] += 1; continue
         votes = collections.Counter(pn for pn, _ in evid)
         top = votes.most_common(2)
+        if site in tool_pat and top[0][0] != tool_pat[site]:   # a pattern stated in domain_patterns.csv beats the few matched people when they disagree
+            votes = collections.Counter({tool_pat[site]: 99}); top = votes.most_common(2); stats["tool_pattern_over_people"] += 1
         if len(top) > 1 and top[0][1] == top[1][1]: stats["conflicting_pattern"] += 1; continue
         pat, n = top[0]; edom = domains.most_common(1)[0][0]
         c = dshape.get(site)
