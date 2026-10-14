@@ -42,25 +42,39 @@ def join_linkedin(orgs_csv, merged_csv, out_csv):
 PREFER = ["info", "contact", "contactus", "hello", "office", "appointments", "scheduling", "reception", "admin"]
 
 
-def join_org_emails(orgs_csv, emails_csv, out_csv):
+def load_status(pattern):
+    """email -> Reacher status from every results file matching the glob (a 'valid' answer wins over any other)."""
+    import glob, os
+    st = {}
+    for path in glob.glob(os.path.expanduser(pattern)):
+        for r in csv.DictReader(open(path, newline="", encoding="utf-8")):
+            e, s = (r.get("email") or "").strip().lower(), (r.get("status") or "").strip().lower()
+            if e and (e not in st or s == "valid"): st[e] = s
+    return st
+
+
+def join_org_emails(orgs_csv, emails_csv, out_csv, results_glob=""):
     """Add each organization's general (info@-type) addresses, matched on the website domain. Also folds in the crawl's emails_role."""
     dom = lambda u: (u or "").strip().lower().replace("https://", "").replace("http://", "").replace("www.", "").split("/")[0]
     by = {}
     for r in csv.DictReader(open(emails_csv, newline="", encoding="utf-8")):
         by.setdefault(r["domain"].strip().lower(), []).append(r["email"].strip().lower())
     rows = list(csv.DictReader(open(orgs_csv, newline="", encoding="utf-8")))
-    n = 0
+    status = load_status(results_glob) if results_glob else {}
+    n = v = 0
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(list(rows[0]) + ["general_emails", "org_email_primary", "org_email_source"])
+        w = csv.writer(f); w.writerow(list(rows[0]) + ["general_emails", "org_email_primary", "org_email_source", "org_email_primary_status", "general_emails_valid"])
         for r in rows:
             snov = by.get(dom(r.get("website")), [])
             crawl = [e.strip().lower() for e in re.split(r"[;,\s|]+", r.get("emails_role") or "") if "@" in e]
             allx = list(dict.fromkeys(snov + crawl))
-            pick = next((e for p in PREFER for e in allx if e.split("@")[0] == p), allx[0] if allx else "")
+            good = [e for e in allx if status.get(e) == "valid"]
+            order = lambda pool: next((e for p in PREFER for e in pool if e.split("@")[0] == p), pool[0] if pool else "")
+            pick = order(good) or order(allx)   # a verified address beats an unverified one
             src = "snov_domain_search" if pick in snov else ("website_crawl" if pick else "")
-            n += bool(allx)
-            w.writerow(list(r.values()) + ["; ".join(allx), pick, src])
-    print(f"  organizations with a general email: {n}/{len(rows)}")
+            n += bool(allx); v += bool(good)
+            w.writerow(list(r.values()) + ["; ".join(allx), pick, src, status.get(pick, "") if pick else "", "; ".join(good)])
+    print(f"  organizations with a general email: {n}/{len(rows)}; with a Reacher-verified one: {v}")
 
 
 def main():
@@ -78,7 +92,7 @@ def main():
     oe = Path(a.org_emails).expanduser()
     if oe.exists():
         base = src / ("orgs_with_linkedin.csv" if (src / "orgs_with_linkedin.csv").exists() else "orgs_final.csv")
-        join_org_emails(base, oe, src / "orgs_with_emails.csv")
+        join_org_emails(base, oe, src / "orgs_with_emails.csv", str(src / "reacher_org_*.csv"))
         files = [(n, (src / "orgs_with_emails.csv") if n == "Organizations" else p) for n, p in files]
     if a.facilities:
         fj = src / "facilities_enriched.csv"
