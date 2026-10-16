@@ -1,0 +1,9 @@
+Email,First Name,Last Name,Company,Test Purpose
+yourname+reply1@gmail.com,Alex,Reply,Test Co,Reply test - answer this email
+yourname+reply2@gmail.com,Sam,Second,Test Co,Reply test - answer this email
+yourname+noreply@gmail.com,Jordan,Silent,Test Co,No reply test - ignore this email
+yourname+optout@gmail.com,Riley,Optout,Test Co,Opt-out test - click unsubscribe
+yourname+autoreply@gmail.com,Casey,Away,Test Co,Auto reply test - set Gmail vacation responder
+nobody.hardbounce@example.com,Taylor,Hardbounce,Fake Co,Hard bounce test - invalid address
+no-such-user-98213@gmail.com,Morgan,Invalid,Fake Co,Hard bounce test - mailbox does not exist
+yourname+softbounce@gmail.com,Jamie,Softbounce,Test Co,Soft bounce test - fill this mailbox or use a full-inbox account
