@@ -1,5 +1,5 @@
 Email,First Name,Last Name,Title,Organization,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes
-joan.barnecett@cancerspecialistsnf.com,Joan,Barnecett,Office Manager,Cancer Specialists Of North Florida,high,Microsoft,A,Who re-keys your faxes?,"Hi Joan,
+joan.barnecett@cancerspecialistsnf.com,Joan,Barnecett,Office Manager,Cancer Specialists Of North Florida,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -8,14 +8,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Joan,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Joan,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -23,7 +23,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-jfollick@rmipc.net,Jill,Follick,MRI Manager,RMIPC,high,Microsoft,B,The 4:30 empty slot,"Hi Jill,
+jfollick@rmipc.net,Jill,Follick,MRI Manager,RMIPC,high,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -32,14 +32,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -47,7 +47,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",Org name inferred from domain; verify
-lkeesler@entflorida.com,Laurie,Keesler,Practice Administrator,ENT Florida,high,Microsoft,C,Your team isn't the problem,"Hi Laurie,
+lkeesler@entflorida.com,Laurie,Keesler,Practice Administrator,ENT Florida,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -56,14 +56,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Laurie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Laurie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -71,7 +71,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-kalcantara@atradiology.cc,Kiara,Alcantara,Winter Haven Manager,Advance Technological Radiology,high,Microsoft,D,The patient who arrives without an auth,"Hi Kiara,
+kalcantara@atradiology.cc,Kiara,Alcantara,Winter Haven Manager,Advance Technological Radiology,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -80,14 +80,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kiara,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kiara,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -95,7 +95,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-jdonlon@1sturology.com,Jessica,Donlon,East End Area Manager,Southern Indiana Radiation Therapy Center,high,Microsoft,A,Who re-keys your faxes?,"Hi Jessica,
+jdonlon@1sturology.com,Jessica,Donlon,East End Area Manager,Southern Indiana Radiation Therapy Center,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -104,14 +104,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jessica,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jessica,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -119,7 +119,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-tarbuckle@1sturology.com,Tammy,Arbuckle,Senior Indiana Area Office Manager,Southern Indiana Radiation Therapy Center,high,Microsoft,A,Who re-keys your faxes?,"Hi Tammy,
+tarbuckle@1sturology.com,Tammy,Arbuckle,Senior Indiana Area Office Manager,Southern Indiana Radiation Therapy Center,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -128,14 +128,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tammy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tammy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -143,7 +143,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-jsheets@disradiology.com,Jennifer,Sheets,Administrator,Mid South Imaging Therapeutics,high,Microsoft,B,The 4:30 empty slot,"Hi Jennifer,
+jsheets@disradiology.com,Jennifer,Sheets,Administrator,Mid South Imaging Therapeutics,high,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -152,14 +152,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -167,7 +167,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-lrobles@professionalradiologyep.com,Laura,Robles,Westside Manager,Professional Radiology,high,Microsoft,C,Your team isn't the problem,"Hi Laura,
+lrobles@professionalradiologyep.com,Laura,Robles,Westside Manager,Professional Radiology,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -176,14 +176,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Laura,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Laura,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -191,7 +191,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-mdena@professionalradiologyep.com,Marisa,Dena,Eastside Manager,Professional Radiology,high,Microsoft,C,Your team isn't the problem,"Hi Marisa,
+mdena@professionalradiologyep.com,Marisa,Dena,Eastside Manager,Professional Radiology,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -200,14 +200,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Marisa,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Marisa,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -215,7 +215,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-kimi.elliott@caspermedicalimaging.net,Kimi,Elliott,Radiology Manager Outpatient Radiology East,Casper Medical Imaging,high,Microsoft,D,The patient who arrives without an auth,"Hi Kimi,
+kimi.elliott@caspermedicalimaging.net,Kimi,Elliott,Radiology Manager Outpatient Radiology East,Casper Medical Imaging,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -224,14 +224,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kimi,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kimi,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -239,7 +239,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-ccampos@oncologyconsultants.com,Cecilia,Campos,Senior Practice Administrator,Oncology Consultants,high,Microsoft,A,Who re-keys your faxes?,"Hi Cecilia,
+ccampos@oncologyconsultants.com,Cecilia,Campos,Senior Practice Administrator,Oncology Consultants,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -248,14 +248,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cecilia,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cecilia,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -263,7 +263,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,high,Microsoft,B,The 4:30 empty slot,"Hi Lindy,
+lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,high,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -272,14 +272,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Lindy,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Lindy,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -287,7 +287,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-lreeser@standupmriofbrevard.com,Lindsay,Reeser,FACILITY MANAGER,Central Florida Radiology,high,Microsoft,C,Your team isn't the problem,"Hi Lindsay,
+lreeser@standupmriofbrevard.com,Lindsay,Reeser,FACILITY MANAGER,Central Florida Radiology,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -296,14 +296,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Lindsay,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Lindsay,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -311,7 +311,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-ekelly@clinton-med.com,Emily,Kelly,Assistant Administrator,Clinton Medical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi Emily,
+ekelly@clinton-med.com,Emily,Kelly,Assistant Administrator,Clinton Medical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -320,14 +320,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Emily,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Emily,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -335,7 +335,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mrobinson@clinton-med.com,Matthew,Robinson,Practice Administrator,Clinton Medical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi Matthew,
+mrobinson@clinton-med.com,Matthew,Robinson,Practice Administrator,Clinton Medical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -344,14 +344,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Matthew,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Matthew,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -359,7 +359,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-amiracle@umimri.com,Anna,Miracle,Office Manager,Doctors Resources Company,high,Microsoft,A,Who re-keys your faxes?,"Hi Anna,
+amiracle@umimri.com,Anna,Miracle,Office Manager,Doctors Resources Company,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -368,14 +368,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Anna,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Anna,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -383,7 +383,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-bstewart@exceldiagnostics.com,Brittney,Stewart,Office Manager,Excel Diagnostics Nuclear Oncology Center,high,Microsoft,B,The 4:30 empty slot,"Hi Brittney,
+bstewart@exceldiagnostics.com,Brittney,Stewart,Office Manager,Excel Diagnostics Nuclear Oncology Center,high,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -392,14 +392,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brittney,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brittney,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -407,7 +407,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-jmuhr@tavaresradiation.com,Julie,Muhr,Office Manager,Florida Oncology Tavares,high,Microsoft,C,Your team isn't the problem,"Hi Julie,
+jmuhr@tavaresradiation.com,Julie,Muhr,Office Manager,Florida Oncology Tavares,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -416,14 +416,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Julie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Julie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -431,7 +431,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-srentsch@gabrailcancercenter.com,Shelly,Rentsch,Administrator,Gabrail Cancer Center,high,Microsoft,D,The patient who arrives without an auth,"Hi Shelly,
+srentsch@gabrailcancercenter.com,Shelly,Rentsch,Administrator,Gabrail Cancer Center,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -440,14 +440,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Shelly,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Shelly,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -455,7 +455,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-kwavery@mspulmonary.com,Kim,Avery,Administrator,Mid South Pulmonary Specialists,high,Microsoft,A,Who re-keys your faxes?,"Hi Kim,
+kwavery@mspulmonary.com,Kim,Avery,Administrator,Mid South Pulmonary Specialists,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -464,14 +464,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Kim,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Kim,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -479,7 +479,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-mwells@naturecoasthealthcare.com,Marcela,Wells,Operations Manager,Nature Coast Health Care Radiology,high,Microsoft,B,The 4:30 empty slot,"Hi Marcela,
+mwells@naturecoasthealthcare.com,Marcela,Wells,Operations Manager,Nature Coast Health Care Radiology,high,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -488,14 +488,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Marcela,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Marcela,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -503,7 +503,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-dgeiger@nebraskacancer.com,Danielle,Geiger,Practice Administrator,Nebraska Cancer Specialists,high,Microsoft,C,Your team isn't the problem,"Hi Danielle,
+dgeiger@nebraskacancer.com,Danielle,Geiger,Practice Administrator,Nebraska Cancer Specialists,high,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -512,14 +512,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Danielle,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Danielle,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -527,7 +527,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-dmetcalf@pinehurstsurgical.com,Don,Metcalf,Facilities Manager,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi Don,
+dmetcalf@pinehurstsurgical.com,Don,Metcalf,Facilities Manager,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -536,14 +536,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Don,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Don,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -551,7 +551,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}","Facilities role, not the buyer persona; consider skipping"
-jmacneil@pinehurstsurgical.com,Jill,MacNeil,Department Manager,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi Jill,
+jmacneil@pinehurstsurgical.com,Jill,MacNeil,Department Manager,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -560,14 +560,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -575,7 +575,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-lkidd@pinehurstsurgical.com,Lindsey,Kidd,Executive Administrator,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi Lindsey,
+lkidd@pinehurstsurgical.com,Lindsey,Kidd,Executive Administrator,Pinehurst Surgical Clinic,high,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -584,14 +584,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Lindsey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Lindsey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -599,7 +599,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-ashleyf@grothpainandspine.com,Ashley,Foglia,Practice Manager,Timothy D Groth Md,high,Microsoft,A,Who re-keys your faxes?,"Hi Ashley,
+ashleyf@grothpainandspine.com,Ashley,Foglia,Practice Manager,Timothy D Groth Md,high,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -608,14 +608,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Ashley,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Ashley,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -623,7 +623,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-eakyuz@eastriverimaging.com,Ekaterina,Akyuz,Group Practice Manager,East River Medical Imaging,medium,Microsoft,B,The 4:30 empty slot,"Hi Ekaterina,
+eakyuz@eastriverimaging.com,Ekaterina,Akyuz,Group Practice Manager,East River Medical Imaging,medium,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -632,14 +632,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Ekaterina,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Ekaterina,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -647,7 +647,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-tgolden@mspulmonary.com,Teresa,Golden,Practice Manager,Mid South Pulmonary Specialists,medium,Microsoft,A,Who re-keys your faxes?,"Hi Teresa,
+tgolden@mspulmonary.com,Teresa,Golden,Practice Manager,Mid South Pulmonary Specialists,medium,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -656,14 +656,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Teresa,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Teresa,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -671,7 +671,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-christiem@grothpainandspine.com,Christie,Macias,Practice Manager,Timothy D Groth Md,medium,Microsoft,A,Who re-keys your faxes?,"Hi Christie,
+christiem@grothpainandspine.com,Christie,Macias,Practice Manager,Timothy D Groth Md,medium,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -680,14 +680,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Christie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Christie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -695,7 +695,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-michelep@grothpainandspine.com,Michele,Purita,Office Manager,Timothy D Groth Md,medium,Microsoft,A,Who re-keys your faxes?,"Hi Michele,
+michelep@grothpainandspine.com,Michele,Purita,Office Manager,Timothy D Groth Md,medium,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -704,14 +704,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Michele,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Michele,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -719,7 +719,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-bahareh.kossari@akumin.com,Bahareh,Kossari,Senior Manager of Operations and Access,Akumin,unproven,Microsoft,C,Your team isn't the problem,"Hi Bahareh,
+bahareh.kossari@akumin.com,Bahareh,Kossari,Senior Manager of Operations and Access,Akumin,unproven,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -728,14 +728,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Bahareh,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Bahareh,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -743,7 +743,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-abs@radiologyassociatesimaging.com,Amber,BS,"Manager, Radiology Associates New Smyrna Beach",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Amber,
+abs@radiologyassociatesimaging.com,Amber,BS,"Manager, Radiology Associates New Smyrna Beach",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -752,14 +752,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Amber,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Amber,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -767,7 +767,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",Last name looks like initials
-emonroe@radiologyassociatesimaging.com,Elizabeth,Monroe,"Manager, Radiology Associates Twin lakes",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Elizabeth,
+emonroe@radiologyassociatesimaging.com,Elizabeth,Monroe,"Manager, Radiology Associates Twin lakes",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -776,14 +776,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Elizabeth,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Elizabeth,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -791,7 +791,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-gjones@radiologyassociatesimaging.com,Glenda,Jones,"Manager, Radiology Associates Port Orange",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Glenda,
+gjones@radiologyassociatesimaging.com,Glenda,Jones,"Manager, Radiology Associates Port Orange",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -800,14 +800,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Glenda,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Glenda,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -815,7 +815,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-skanesmith@radiologyassociatesimaging.com,Stacy,Kane-Smith,"Manager, Radiology Associates Palm Coast",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Stacy,
+skanesmith@radiologyassociatesimaging.com,Stacy,Kane-Smith,"Manager, Radiology Associates Palm Coast",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -824,14 +824,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Stacy,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Stacy,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -839,7 +839,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-smcdowell@radiologyassociatesimaging.com,Stephanie,McDowell,"Manager, Radiology Associates Town Center",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Stephanie,
+smcdowell@radiologyassociatesimaging.com,Stephanie,McDowell,"Manager, Radiology Associates Town Center",East Central Florida Outpatient Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -848,14 +848,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Stephanie,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Stephanie,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -863,7 +863,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-vlugo@3tradiology.com,Vanessa,Lugo,Regional Manager,3T Radiology,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Vanessa,
+vlugo@3tradiology.com,Vanessa,Lugo,Regional Manager,3T Radiology,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -872,14 +872,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Vanessa,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Vanessa,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -887,7 +887,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-rlima@openadvantagemri.com,Rachel,Lima,Operations Manager - Sacramento/Roseville,Open Advantage MRI,unproven,Microsoft,B,The 4:30 empty slot,"Hi Rachel,
+rlima@openadvantagemri.com,Rachel,Lima,Operations Manager - Sacramento/Roseville,Open Advantage MRI,unproven,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -896,14 +896,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Rachel,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Rachel,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -911,7 +911,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-skent@petctfla.com,Stacey,Kent,Office Manager,Pet Services Of Florida,unproven,Microsoft,C,Your team isn't the problem,"Hi Stacey,
+skent@petctfla.com,Stacey,Kent,Office Manager,Pet Services Of Florida,unproven,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -920,14 +920,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Stacey,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Stacey,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -935,7 +935,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-jkay@evolution-imaging.com,Juanita,Kay,OFFICE MANAGER,Amrad Evolution Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Juanita,
+jkay@evolution-imaging.com,Juanita,Kay,OFFICE MANAGER,Amrad Evolution Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -944,14 +944,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Juanita,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Juanita,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -959,7 +959,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-ksullenger@evolution-imaging.com,Kearstin,Sullenger,OFFICE MANAGER,Amrad Evolution Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Kearstin,
+ksullenger@evolution-imaging.com,Kearstin,Sullenger,OFFICE MANAGER,Amrad Evolution Imaging,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -968,14 +968,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kearstin,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kearstin,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -983,7 +983,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-hcollier@athensneuro.com,Holly,Collier,Clinic Manager,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Holly,
+hcollier@athensneuro.com,Holly,Collier,Clinic Manager,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -992,14 +992,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Holly,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Holly,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1007,7 +1007,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-jjackson@athensneuro.com,Jennifer,Jackson,Assistant Practice Administrator,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Jennifer,
+jjackson@athensneuro.com,Jennifer,Jackson,Assistant Practice Administrator,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1016,14 +1016,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1031,7 +1031,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-jmahaffey@athensneuro.com,Joy,Mahaffey,Practice Administrator,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Joy,
+jmahaffey@athensneuro.com,Joy,Mahaffey,Practice Administrator,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1040,14 +1040,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Joy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Joy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1055,7 +1055,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-lstewart@athensneuro.com,Lisa,Stewart,Business Office Manager,Athens Neurological Associates,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Lisa,
+lstewart@athensneuro.com,Lisa,Stewart,Business Office Manager,Athens Neurological Associates,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1064,14 +1064,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Lisa,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Lisa,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1079,7 +1079,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-rrepetske@athensneuro.com,Ryan,Repetske,Operations Manager,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Ryan,
+rrepetske@athensneuro.com,Ryan,Repetske,Operations Manager,Athens Neurological Associates,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1088,14 +1088,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Ryan,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Ryan,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1103,7 +1103,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-ksmith@bluewaterradiology.com,Kylie,Smith,Business Operations Manager,Bluewater Radiology,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Kylie,
+ksmith@bluewaterradiology.com,Kylie,Smith,Business Operations Manager,Bluewater Radiology,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1112,14 +1112,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kylie,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kylie,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1127,7 +1127,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-bbrassfield@capitalortho.com,Brittany,Brassfield,Clinic Manager,Capital Orthopaedic Clinic,unproven,Microsoft,C,Your team isn't the problem,"Hi Brittany,
+bbrassfield@capitalortho.com,Brittany,Brassfield,Clinic Manager,Capital Orthopaedic Clinic,unproven,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1136,14 +1136,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Brittany,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Brittany,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1151,7 +1151,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-pmillevoi@thewrightent.com,Patricia,Millevoi,Office Manager,ENT and Allergy Associates of Florida,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Patricia,
+pmillevoi@thewrightent.com,Patricia,Millevoi,Office Manager,ENT and Allergy Associates of Florida,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1160,14 +1160,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Patricia,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Patricia,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1175,7 +1175,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mleonard@entsinuscenter.com,McKenna,Leonard,Operations Manager,ENT and Sinus Center,unproven,Microsoft,A,Who re-keys your faxes?,"Hi McKenna,
+mleonard@entsinuscenter.com,McKenna,Leonard,Operations Manager,ENT and Sinus Center,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1184,14 +1184,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi McKenna,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi McKenna,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1199,7 +1199,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-zmarcano@floridalungdoctors.com,Zenaida,Marcano,Practice Administrator,Florida Lung Asthma And Sleep Specialists,unproven,Microsoft,B,The 4:30 empty slot,"Hi Zenaida,
+zmarcano@floridalungdoctors.com,Zenaida,Marcano,Practice Administrator,Florida Lung Asthma And Sleep Specialists,unproven,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1208,14 +1208,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Zenaida,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Zenaida,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1223,7 +1223,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-smims@hdielko.com,Steve,Mims,Administrator,High Desert Imaging,unproven,Microsoft,C,Your team isn't the problem,"Hi Steve,
+smims@hdielko.com,Steve,Mims,Administrator,High Desert Imaging,unproven,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1232,14 +1232,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Steve,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Steve,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1247,7 +1247,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-jgrall@hudson-imaging.com,Jill,Grall,Clinic Manager,Hudson Imaging Partners,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Jill,
+jgrall@hudson-imaging.com,Jill,Grall,Clinic Manager,Hudson Imaging Partners,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1256,14 +1256,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jill,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1271,7 +1271,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-aramos@hopemri.com,Adriana,Ramos,Office Manager,Indian River Mri,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Adriana,
+aramos@hopemri.com,Adriana,Ramos,Office Manager,Indian River Mri,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1280,14 +1280,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Adriana,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Adriana,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1295,7 +1295,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-bbradley@hopemri.com,Brenda,Bradley,Office Administrator,Indian River Mri,unproven,Microsoft,A,Who re-keys your faxes?,"Hi Brenda,
+bbradley@hopemri.com,Brenda,Bradley,Office Administrator,Indian River Mri,unproven,Microsoft,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1304,14 +1304,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Brenda,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Brenda,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1319,7 +1319,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-cjohnson@ccsreno.com,Catherine,Johnson,Site Manager – Personalized Radiation Oncology,John A Shields Md And Steven A Schiff Md A Professional Corporation,unproven,Microsoft,B,The 4:30 empty slot,"Hi Catherine,
+cjohnson@ccsreno.com,Catherine,Johnson,Site Manager – Personalized Radiation Oncology,John A Shields Md And Steven A Schiff Md A Professional Corporation,unproven,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1328,14 +1328,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Catherine,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Catherine,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1343,7 +1343,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-jlorwanphet@ccsreno.com,Jeffrey,Lorwanphet,Administrative Operations Manager,John A Shields Md And Steven A Schiff Md A Professional Corporation,unproven,Microsoft,B,The 4:30 empty slot,"Hi Jeffrey,
+jlorwanphet@ccsreno.com,Jeffrey,Lorwanphet,Administrative Operations Manager,John A Shields Md And Steven A Schiff Md A Professional Corporation,unproven,Microsoft,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1352,14 +1352,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jeffrey,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jeffrey,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1367,7 +1367,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-anerida@neuraleffects.com,Anna,Nerida,General Manager at Neural Effects,Neural Effects,unproven,Microsoft,C,Your team isn't the problem,"Hi Anna,
+anerida@neuraleffects.com,Anna,Nerida,General Manager at Neural Effects,Neural Effects,unproven,Microsoft,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1376,14 +1376,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Anna,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Anna,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1391,7 +1391,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-rlucas@river-ent.com,Rick,Lucas,Practice Administrator,River Ent,unproven,Microsoft,D,The patient who arrives without an auth,"Hi Rick,
+rlucas@river-ent.com,Rick,Lucas,Practice Administrator,River Ent,unproven,Microsoft,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1400,14 +1400,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Rick,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Rick,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1415,7 +1415,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-alococo@precisionimagingcenters.com,Amy,Lococo,"Center Manager, Jacksonville Beach & Mandarin",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi Amy,
+alococo@precisionimagingcenters.com,Amy,Lococo,"Center Manager, Jacksonville Beach & Mandarin",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1424,14 +1424,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Amy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Amy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1439,7 +1439,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-kgawlik@precisionimagingcenters.com,Katie,Gawlik,"Center Manager, Fleming Island",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi Katie,
+kgawlik@precisionimagingcenters.com,Katie,Gawlik,"Center Manager, Fleming Island",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1448,14 +1448,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Katie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Katie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1463,7 +1463,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi Mark,
+mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1472,14 +1472,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Mark,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Mark,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1487,7 +1487,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-tthomas@precisionimagingcenters.com,Tasha,Thomas,"Center Manager, Gate Pkwy.",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi Tasha,
+tthomas@precisionimagingcenters.com,Tasha,Thomas,"Center Manager, Gate Pkwy.",Precision Imaging Centers,high,Google,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1496,14 +1496,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tasha,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tasha,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1511,7 +1511,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-cfreeman@mckinleyortho.com,Cassandra,Freeman,Office Manager & Surgical Planner,McKinley Imaging,high,Google,B,The 4:30 empty slot,"Hi Cassandra,
+cfreeman@mckinleyortho.com,Cassandra,Freeman,Office Manager & Surgical Planner,McKinley Imaging,high,Google,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1520,14 +1520,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cassandra,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cassandra,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1535,7 +1535,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-scorbin@medimageks.com,Shaundel,Corbin,Medical Administrator,Advanced Medical Imaging,unproven,Google,C,Your team isn't the problem,"Hi Shaundel,
+scorbin@medimageks.com,Shaundel,Corbin,Medical Administrator,Advanced Medical Imaging,unproven,Google,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1544,14 +1544,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Shaundel,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Shaundel,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1559,7 +1559,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-trobinson@medimageks.com,Trisha,Robinson,Office Manager,Advanced Medical Imaging,unproven,Google,C,Your team isn't the problem,"Hi Trisha,
+trobinson@medimageks.com,Trisha,Robinson,Office Manager,Advanced Medical Imaging,unproven,Google,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1568,14 +1568,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Trisha,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Trisha,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1583,7 +1583,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-nmorrabal@homestead-diagnostic.com,Nayibe,Morrabal,Office Manager,Homestead Diagnostic Center,unproven,Google,D,The patient who arrives without an auth,"Hi Nayibe,
+nmorrabal@homestead-diagnostic.com,Nayibe,Morrabal,Office Manager,Homestead Diagnostic Center,unproven,Google,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1592,14 +1592,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Nayibe,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Nayibe,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1607,7 +1607,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-cbaker@pennsaukendiagnosticcenter.com,Cynthia,Baker,Office Manager,Pennsauken Diagnostic Center,unproven,Google,A,Who re-keys your faxes?,"Hi Cynthia,
+cbaker@pennsaukendiagnosticcenter.com,Cynthia,Baker,Office Manager,Pennsauken Diagnostic Center,unproven,Google,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1616,14 +1616,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cynthia,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cynthia,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1631,7 +1631,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-bthayer@thecenterforurgentcare.com,Brittnee,Thayer,Practice Administrator,The Center For Urgent Care,unproven,Google,B,The 4:30 empty slot,"Hi Brittnee,
+bthayer@thecenterforurgentcare.com,Brittnee,Thayer,Practice Administrator,The Center For Urgent Care,unproven,Google,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1640,14 +1640,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brittnee,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brittnee,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1655,7 +1655,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-dhostas@ostcwf.com,Dustin,Hostas,OA Office Manager,The MRI Center @ OSTC,unproven,Google,C,Your team isn't the problem,"Hi Dustin,
+dhostas@ostcwf.com,Dustin,Hostas,OA Office Manager,The MRI Center @ OSTC,unproven,Google,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1664,14 +1664,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Dustin,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Dustin,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1679,7 +1679,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-rmartinez@longhornimaging.com,Ramon,Martinez,Operations Manager,Longhorn Imaging Centers,high,Other,D,The patient who arrives without an auth,"Hi Ramon,
+rmartinez@longhornimaging.com,Ramon,Martinez,Operations Manager,Longhorn Imaging Centers,high,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1688,14 +1688,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Ramon,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Ramon,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1703,7 +1703,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-ralvarez@longhornimaging.com,Rita,Alvarez,Office Manager - San Antonio,Longhorn Imaging Centers,high,Other,D,The patient who arrives without an auth,"Hi Rita,
+ralvarez@longhornimaging.com,Rita,Alvarez,Office Manager - San Antonio,Longhorn Imaging Centers,high,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1712,14 +1712,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Rita,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Rita,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1727,7 +1727,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-avega@sararadiology.com,Aisha,Vega,Tucson Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi Aisha,
+avega@sararadiology.com,Aisha,Vega,Tucson Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1736,14 +1736,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Aisha,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Aisha,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1751,7 +1751,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-gsudbeck@sararadiology.com,Grant,Sudbeck,Operations Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi Grant,
+gsudbeck@sararadiology.com,Grant,Sudbeck,Operations Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1760,14 +1760,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Grant,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Grant,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1775,7 +1775,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-kbrown@sararadiology.com,Katee,Brown,Sierra Vista Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi Katee,
+kbrown@sararadiology.com,Katee,Brown,Sierra Vista Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1784,14 +1784,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Katee,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Katee,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1799,7 +1799,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-nhiguera@sararadiology.com,Nilda,Higuera,Green Valley Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi Nilda,
+nhiguera@sararadiology.com,Nilda,Higuera,Green Valley Site Manager,Southern Arizona Rad Associates,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1808,14 +1808,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Nilda,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Nilda,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1823,7 +1823,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-tgonzales@sararadiology.com,Tracey,Gonzales,Business Manager,Southern Arizona Rad Associates,high,Other,D,The patient who arrives without an auth,"Hi Tracey,
+tgonzales@sararadiology.com,Tracey,Gonzales,Business Manager,Southern Arizona Rad Associates,high,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1832,14 +1832,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tracey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tracey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1847,7 +1847,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-hjohnson@valleyentassociates.com,Heather,Johnson,Practice Manager / Operations Specialist,Valley ENT Associates,high,Other,B,The 4:30 empty slot,"Hi Heather,
+hjohnson@valleyentassociates.com,Heather,Johnson,Practice Manager / Operations Specialist,Valley ENT Associates,high,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1856,14 +1856,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Heather,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Heather,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1871,7 +1871,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-lsmith@valleyentassociates.com,Lauren,Smith,Office Manager,Valley ENT Associates,high,Other,B,The 4:30 empty slot,"Hi Lauren,
+lsmith@valleyentassociates.com,Lauren,Smith,Office Manager,Valley ENT Associates,high,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -1880,14 +1880,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Lauren,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Lauren,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -1895,7 +1895,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-trustmounts@cnmri2.com,Tammy,Rust-Mounts,Practice Manager,CNMRI 2.0,high,Other,C,Your team isn't the problem,"Hi Tammy,
+trustmounts@cnmri2.com,Tammy,Rust-Mounts,Practice Manager,CNMRI 2.0,high,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -1904,14 +1904,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Tammy,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Tammy,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -1919,7 +1919,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-sgonzales@entassociates.com,Sylvia,Gonzales,Business Office Manager,Ear Nose and Throat Associates of Corpus Christi,high,Other,D,The patient who arrives without an auth,"Hi Sylvia,
+sgonzales@entassociates.com,Sylvia,Gonzales,Business Office Manager,Ear Nose and Throat Associates of Corpus Christi,high,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1928,14 +1928,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Sylvia,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Sylvia,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1943,7 +1943,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-tcooper@entassociates.com,Tyler,Cooper,Practice Administrator,Ear Nose and Throat Associates of Corpus Christi,high,Other,D,The patient who arrives without an auth,"Hi Tyler,
+tcooper@entassociates.com,Tyler,Cooper,Practice Administrator,Ear Nose and Throat Associates of Corpus Christi,high,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -1952,14 +1952,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tyler,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tyler,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -1967,7 +1967,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-kweston@executiveimagingcenter.com,Kathy,Weston,Operations Manager,Executive Imaging,high,Other,A,Who re-keys your faxes?,"Hi Kathy,
+kweston@executiveimagingcenter.com,Kathy,Weston,Operations Manager,Executive Imaging,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -1976,14 +1976,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Kathy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Kathy,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -1991,7 +1991,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-tseiter@executiveimagingcenter.com,Tesla,Seiter,Operations Manager,Executive Imaging,high,Other,A,Who re-keys your faxes?,"Hi Tesla,
+tseiter@executiveimagingcenter.com,Tesla,Seiter,Operations Manager,Executive Imaging,high,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2000,14 +2000,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tesla,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tesla,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2015,7 +2015,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-cwills@statcaremed.net,Cyndy,Wills,Clinic Operations Manager,Newstat,high,Other,B,The 4:30 empty slot,"Hi Cyndy,
+cwills@statcaremed.net,Cyndy,Wills,Clinic Operations Manager,Newstat,high,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2024,14 +2024,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cyndy,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cyndy,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2039,7 +2039,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-jmassa@statcaremed.net,Jennifer,Massa,Clinic Operations Manager,Newstat,high,Other,B,The 4:30 empty slot,"Hi Jennifer,
+jmassa@statcaremed.net,Jennifer,Massa,Clinic Operations Manager,Newstat,high,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2048,14 +2048,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Jennifer,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2063,7 +2063,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-casey.dye@orthoeast.com,Casey,Dye,Imaging Manager,Orthopaedics East Sports Medicine Center,high,Other,C,Your team isn't the problem,"Hi Casey,
+casey.dye@orthoeast.com,Casey,Dye,Imaging Manager,Orthopaedics East Sports Medicine Center,high,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2072,14 +2072,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Casey,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Casey,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2087,7 +2087,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-mleland10@umphysicians.umn.edu,Megan,Leland,Imaging Manager,University Of Minnesota Physicians,high,Gateway,D,The patient who arrives without an auth,"Hi Megan,
+mleland10@umphysicians.umn.edu,Megan,Leland,Imaging Manager,University Of Minnesota Physicians,high,Gateway,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2096,14 +2096,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Megan,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Megan,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2111,7 +2111,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-tina.mcginley@radnet.com,Tina,McGinley,Regional Manager,Advanced Radiology,medium,Gateway,A,Who re-keys your faxes?,"Hi Tina,
+tina.mcginley@radnet.com,Tina,McGinley,Regional Manager,Advanced Radiology,medium,Gateway,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2120,14 +2120,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tina,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Tina,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2135,7 +2135,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-atimm@sdmi-lv.com,Andrea,Timm,Anthem & Green Valley Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Andrea,
+atimm@sdmi-lv.com,Andrea,Timm,Anthem & Green Valley Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2144,14 +2144,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Andrea,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Andrea,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2159,7 +2159,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-cmadrigal@sdmi-lv.com,Cynthia,Madrigal,Southwest & Blue Diamond Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Cynthia,
+cmadrigal@sdmi-lv.com,Cynthia,Madrigal,Southwest & Blue Diamond Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2168,14 +2168,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cynthia,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Cynthia,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2183,7 +2183,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-hlehan@sdmi-lv.com,Heather,Lehan,Northwest & Summerlin Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Heather,
+hlehan@sdmi-lv.com,Heather,Lehan,Northwest & Summerlin Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2192,14 +2192,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Heather,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Heather,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2207,7 +2207,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-jmarzigliano@sdmi-lv.com,Joe,Marzigliano,Facilities Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Joe,
+jmarzigliano@sdmi-lv.com,Joe,Marzigliano,Facilities Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2216,14 +2216,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Joe,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Joe,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2231,7 +2231,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}","Facilities role, not the buyer persona; consider skipping"
-mmartinez@sdmi-lv.com,Maria,Villegas-Martinez,North Las Vegas & Centennial Hills Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Maria,
+mmartinez@sdmi-lv.com,Maria,Villegas-Martinez,North Las Vegas & Centennial Hills Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2240,14 +2240,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Maria,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Maria,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2255,7 +2255,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-mgaona@sdmi-lv.com,Michelle,Gaona,Galleria & Maryland Parkway Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Michelle,
+mgaona@sdmi-lv.com,Michelle,Gaona,Galleria & Maryland Parkway Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2264,14 +2264,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Michelle,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Michelle,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2279,7 +2279,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-pdelacruz@sdmi-lv.com,Priscilla,DeLaCruz,LVMD & Nellis Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi Priscilla,
+pdelacruz@sdmi-lv.com,Priscilla,DeLaCruz,LVMD & Nellis Office Manager,Steinberg Diagnostic Medical Imaging,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2288,14 +2288,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Priscilla,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Priscilla,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2303,7 +2303,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-jnaegle@tellicaimaging.com,Jackson,Naegle,Manager - Clinic and Facilities Operations,Tellica Imaging,unproven,Gateway,C,Your team isn't the problem,"Hi Jackson,
+jnaegle@tellicaimaging.com,Jackson,Naegle,Manager - Clinic and Facilities Operations,Tellica Imaging,unproven,Gateway,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2312,14 +2312,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Jackson,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Jackson,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2327,7 +2327,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-kmonroe@tellicaimaging.com,Kole,Monroe,Imaging Operations Manager,Tellica Imaging,unproven,Gateway,C,Your team isn't the problem,"Hi Kole,
+kmonroe@tellicaimaging.com,Kole,Monroe,Imaging Operations Manager,Tellica Imaging,unproven,Gateway,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2336,14 +2336,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Kole,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Kole,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2351,7 +2351,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-amoslemian@rockymountaincancercenters.com,Amir,Moslemian,"Practice Administrator, Radiation Oncology",Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi Amir,
+amoslemian@rockymountaincancercenters.com,Amir,Moslemian,"Practice Administrator, Radiation Oncology",Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2360,14 +2360,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Amir,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Amir,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2375,7 +2375,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-jgomez@rockymountaincancercenters.com,Jerome,Gomez,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi Jerome,
+jgomez@rockymountaincancercenters.com,Jerome,Gomez,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2384,14 +2384,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jerome,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Jerome,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2399,7 +2399,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-jprelle@rockymountaincancercenters.com,Joey,Prelle,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi Joey,
+jprelle@rockymountaincancercenters.com,Joey,Prelle,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2408,14 +2408,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Joey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Joey,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2423,7 +2423,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mcampos@rockymountaincancercenters.com,Maribel,Campos,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi Maribel,
+mcampos@rockymountaincancercenters.com,Maribel,Campos,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2432,14 +2432,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Maribel,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Maribel,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2447,7 +2447,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-scass@rockymountaincancercenters.com,Scotty,Cass,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi Scotty,
+scass@rockymountaincancercenters.com,Scotty,Cass,Practice Administrator,Rocky Mountain Cancer Centers,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2456,14 +2456,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Scotty,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Scotty,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2471,7 +2471,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-ismall@citimedny.com,Irina,Small,Diagnostic General Manager CitiMed,Citimedical I,unproven,Other,A,Who re-keys your faxes?,"Hi Irina,
+ismall@citimedny.com,Irina,Small,Diagnostic General Manager CitiMed,Citimedical I,unproven,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2480,14 +2480,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Irina,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Irina,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2495,7 +2495,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-kgonzalez@hillmedical.com,Kristyn,Gonzalez,Imaging Center Manager,Radiant Imaging,unproven,Other,B,The 4:30 empty slot,"Hi Kristyn,
+kgonzalez@hillmedical.com,Kristyn,Gonzalez,Imaging Center Manager,Radiant Imaging,unproven,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2504,14 +2504,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Kristyn,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Kristyn,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2519,7 +2519,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-mlongoria@hillmedical.com,Marisela,Longoria,Imaging Center Manager,Radiant Imaging,unproven,Other,B,The 4:30 empty slot,"Hi Marisela,
+mlongoria@hillmedical.com,Marisela,Longoria,Imaging Center Manager,Radiant Imaging,unproven,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2528,14 +2528,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Marisela,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Marisela,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2543,7 +2543,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-mmorales@muhealth.org,Manny,Morales,Facilities Manager,The Curators Of The University Of Missouri,unproven,Other,C,Your team isn't the problem,"Hi Manny,
+mmorales@muhealth.org,Manny,Morales,Facilities Manager,The Curators Of The University Of Missouri,unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2552,14 +2552,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Manny,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Manny,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2567,7 +2567,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}","Facilities role, not the buyer persona; consider skipping"
-hspears@vsortho.com,Holley,Spears,"Lori Fugate, Practice Manager",Vail Summit Orthopaedics,unproven,Gateway,D,The patient who arrives without an auth,"Hi Holley,
+hspears@vsortho.com,Holley,Spears,"Lori Fugate, Practice Manager",Vail Summit Orthopaedics,unproven,Gateway,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2576,14 +2576,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Holley,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Holley,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2591,7 +2591,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",Title field names another person; check title
-twalker@vsortho.com,Tiffany,Walker,"Lori Fugate, Practice Manager",Vail Summit Orthopaedics,unproven,Gateway,D,The patient who arrives without an auth,"Hi Tiffany,
+twalker@vsortho.com,Tiffany,Walker,"Lori Fugate, Practice Manager",Vail Summit Orthopaedics,unproven,Gateway,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2600,14 +2600,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tiffany,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Tiffany,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2615,7 +2615,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",Title field names another person; check title
-crawlings@sjchs.org,Cheryl,Rawlings,Imaging Manager,St. Joseph's/Candler Health System,unproven,Gateway,A,Who re-keys your faxes?,"Hi Cheryl,
+crawlings@sjchs.org,Cheryl,Rawlings,Imaging Manager,St. Joseph's/Candler Health System,unproven,Gateway,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2624,14 +2624,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cheryl,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Cheryl,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2639,7 +2639,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-alos@3timaging.com,Anna,Los,Operations Manager,3T Imaging Of Morton Grove,unproven,Gateway,B,The 4:30 empty slot,"Hi Anna,
+alos@3timaging.com,Anna,Los,Operations Manager,3T Imaging Of Morton Grove,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2648,14 +2648,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Anna,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Anna,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2663,7 +2663,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-cgonzalez@corpuschristiurology.com,Carrie,Gonzalez,Practice Administrator,Corpus Christi Urology Group,unproven,Other,C,Your team isn't the problem,"Hi Carrie,
+cgonzalez@corpuschristiurology.com,Carrie,Gonzalez,Practice Administrator,Corpus Christi Urology Group,unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2672,14 +2672,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Carrie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Carrie,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2687,7 +2687,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-mhardison@heartvascular.net,Meagan,Hardison,Practice Manager,Delta Clinics,unproven,Other,D,The patient who arrives without an auth,"Hi Meagan,
+mhardison@heartvascular.net,Meagan,Hardison,Practice Manager,Delta Clinics,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2696,14 +2696,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Meagan,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Meagan,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2711,7 +2711,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mvause@ffhcliberty.com,Michelle,Vause,Office Manager,Firm Foundations Healthcare Clinic PC,unproven,Other,A,Who re-keys your faxes?,"Hi Michelle,
+mvause@ffhcliberty.com,Michelle,Vause,Office Manager,Firm Foundations Healthcare Clinic PC,unproven,Other,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2720,14 +2720,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Michelle,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Michelle,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2735,7 +2735,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-ddreibelbis@idurology.com,Doug,Dreibelbis,Business Office Manager,Idaho Urologic Institute,unproven,Gateway,D,The patient who arrives without an auth,"Hi Doug,
+ddreibelbis@idurology.com,Doug,Dreibelbis,Business Office Manager,Idaho Urologic Institute,unproven,Gateway,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2744,14 +2744,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Doug,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Doug,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2759,7 +2759,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mfinales@justwellmedicalgroup.com,Mari,Finales,Lead Administrator,Just Diagnostics,unproven,Other,C,Your team isn't the problem,"Hi Mari,
+mfinales@justwellmedicalgroup.com,Mari,Finales,Lead Administrator,Just Diagnostics,unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2768,14 +2768,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Mari,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Mari,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2783,7 +2783,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-mchanza@justwellmedicalgroup.com,Mayra,Chanza,Administrator,Just Diagnostics,unproven,Other,C,Your team isn't the problem,"Hi Mayra,
+mchanza@justwellmedicalgroup.com,Mayra,Chanza,Administrator,Just Diagnostics,unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2792,14 +2792,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Mayra,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Mayra,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2807,7 +2807,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-kgauer@ledwellimaging.com,Kerri,Gauer,Manager of Outpatient Operations & Imaging,Ledwell Advanced Imaging,unproven,Other,D,The patient who arrives without an auth,"Hi Kerri,
+kgauer@ledwellimaging.com,Kerri,Gauer,Manager of Outpatient Operations & Imaging,Ledwell Advanced Imaging,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2816,14 +2816,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kerri,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kerri,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2831,7 +2831,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mrowan@msurology.com,Madison,Rowan,Practice Administrator,Mississippi Urology Clinic,unproven,Gateway,A,Who re-keys your faxes?,"Hi Madison,
+mrowan@msurology.com,Madison,Rowan,Practice Administrator,Mississippi Urology Clinic,unproven,Gateway,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -2840,14 +2840,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Madison,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Madison,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -2855,7 +2855,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-mlimones@ashtianiheartdoctor.com,Maria,Limones,Office Manager,Ramin Ashtiani Md A Professional Corporation,unproven,Other,B,The 4:30 empty slot,"Hi Maria,
+mlimones@ashtianiheartdoctor.com,Maria,Limones,Office Manager,Ramin Ashtiani Md A Professional Corporation,unproven,Other,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -2864,14 +2864,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Maria,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Maria,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
@@ -2879,7 +2879,7 @@ If shorter hold times and fewer empty slots aren't a priority right now, no worr
 
 Best,
 {{sendingAccountFirstName}}",
-kosborn@tallyent.com,Kelli,Osborn,Business Operations Manager,"Tallahassee Ear, Nose and Throat",unproven,Other,D,The patient who arrives without an auth,"Hi Kelli,
+kosborn@tallyent.com,Kelli,Osborn,Business Operations Manager,"Tallahassee Ear, Nose and Throat",unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2888,14 +2888,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kelli,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Kelli,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2903,7 +2903,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-kquackenbush@tallyent.com,Kim,Quackenbush,Practice Administrator,"Tallahassee Ear, Nose and Throat",unproven,Other,C,Your team isn't the problem,"Hi Kim,
+kquackenbush@tallyent.com,Kim,Quackenbush,Practice Administrator,"Tallahassee Ear, Nose and Throat",unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2912,14 +2912,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Kim,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Kim,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2927,7 +2927,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-ssmith@tallyent.com,Sheri,Smith,Practice Manager,"Tallahassee Ear, Nose and Throat",unproven,Other,C,Your team isn't the problem,"Hi Sheri,
+ssmith@tallyent.com,Sheri,Smith,Practice Manager,"Tallahassee Ear, Nose and Throat",unproven,Other,C,Your team isn't the problem,"Hi {{firstName}},
 
 Most centers don't have a people problem. They have people doing work a system could do: re-keying orders, chasing authorizations, calling patients back.
 
@@ -2936,14 +2936,14 @@ Gravity takes over the tasks, not the people. The routine work completes on its 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Sheri,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 One question, since it comes up in every conversation with a manager: what's the one task your team would happily never touch again?
 
 Whatever it is, we can probably tell you how Gravity handles it.
 
 Best,
-{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi Sheri,
+{{sendingAccountFirstName}}",Re: Your team isn't the problem,"Hi {{firstName}},
 
 I know keeping a team steady and a center running is a full-time job in itself.
 
@@ -2951,7 +2951,7 @@ If giving your staff less paperwork isn't a priority right now, no worries at al
 
 Best,
 {{sendingAccountFirstName}}",
-mflores@trivalleyurology.com,Martha,Flores,Back Office Manager,Tri Valley Urology Medical Group,unproven,Other,D,The patient who arrives without an auth,"Hi Martha,
+mflores@trivalleyurology.com,Martha,Flores,Back Office Manager,Tri Valley Urology Medical Group,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2960,14 +2960,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Martha,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Martha,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2975,7 +2975,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-mkirkendall@trivalleyurology.com,Melissa,Kirkendall,Practice Administrator,Tri Valley Urology Medical Group,unproven,Other,D,The patient who arrives without an auth,"Hi Melissa,
+mkirkendall@trivalleyurology.com,Melissa,Kirkendall,Practice Administrator,Tri Valley Urology Medical Group,unproven,Other,D,The patient who arrives without an auth,"Hi {{firstName}},
 
 A patient shows up and the authorization isn't there. Your front desk makes calls while the schedule backs up, or the exam goes ahead and the claim comes back denied.
 
@@ -2984,14 +2984,14 @@ Gravity can settle prior authorization and eligibility before the exam, so your 
 Authorized before arrival. Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Melissa,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 A denial costs more than an empty slot. Both lose the payment, but for a denial you have already paid for the read: $22.50 an exam in a typical center.
 
 How often does your front desk catch a missing authorization on the day?
 
 Best,
-{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi Melissa,
+{{sendingAccountFirstName}}",Re: The patient who arrives without an auth,"Hi {{firstName}},
 
 I know prior authorizations are one of the things that fill a manager's day.
 
@@ -2999,7 +2999,7 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 
 Best,
 {{sendingAccountFirstName}}",
-jbabbs@touchstoneimaging.com,Jackie,Babbs,Regional Operations Manager,Upmctdi Jv,unproven,Gateway,A,Who re-keys your faxes?,"Hi Jackie,
+jbabbs@touchstoneimaging.com,Jackie,Babbs,Regional Operations Manager,Upmctdi Jv,unproven,Gateway,A,Who re-keys your faxes?,"Hi {{firstName}},
 
 Center managers tell us the same thing: thousands of faxed orders a month, four pages each, and someone on the team typing every one into the system.
 
@@ -3008,14 +3008,14 @@ Gravity can work those orders on its own, from the fax to check-in, on top of th
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jackie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 Quick follow-up on the fax pile. The goal is simple: nothing sits in a queue, and every order becomes an exam.
 
 Is the backlog worse at the start of the week, or is it steady all week?
 
 Best,
-{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi Jackie,
+{{sendingAccountFirstName}}",Re: Who re-keys your faxes?,"Hi {{firstName}},
 
 I know you have your hands full keeping the center running smoothly day to day.
 
@@ -3023,7 +3023,7 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 
 Best,
 {{sendingAccountFirstName}}",
-btate@urologynashville.com,Brian,Tate,Facilities Manager,Urology Associates,unproven,Gateway,B,The 4:30 empty slot,"Hi Brian,
+btate@urologynashville.com,Brian,Tate,Facilities Manager,Urology Associates,unproven,Gateway,B,The 4:30 empty slot,"Hi {{firstName}},
 
 Every center has one: the late-afternoon slot that stays empty because a patient didn't show and nobody had time to fill it, while the phones kept ringing.
 
@@ -3032,14 +3032,14 @@ With Gravity, patients can book by text or by voice, no-shows get refilled on th
 Open to a quick look next Tuesday or Thursday?
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brian,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 Following up on the empty-slot question. What's your hold time like at peak, and how many calls go unanswered by noon?
 
 If the phones are the bottleneck, that's where I'd start.
 
 Best,
-{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi Brian,
+{{sendingAccountFirstName}}",Re: The 4:30 empty slot,"Hi {{firstName}},
 
 I'll keep this short, since your phones are probably ringing.
 
