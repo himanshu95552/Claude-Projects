@@ -1,22 +1,20 @@
 Email,First Name,Last Name,Title,Organization,Tools Org ID,Tools Org Name,RIS,RIS Status,PACS,RCM,Org LinkedIn,Org Facebook,Org Instagram,Org X,Org YouTube,Person LinkedIn,Person Facebook,Person Instagram,Person X,Found In Tools,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes,RIS_Name,Personalization Notes
-mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,ORG00110,Precision Imaging Centers,"eRAD (RIS, portals, RADAR; found online, 2018 press release)",found_online,,,https://www.linkedin.com/company/precisionimagingcenters,https://www.facebook.com/PrecisionImagingCenters,https://www.instagram.com/precisionimagingcentersfl,,,https://www.linkedin.com/in/mark-annis-rt-n-cnmt-75451449,,,,person,high,Google,A,Who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
+mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,ORG00110,Precision Imaging Centers,"eRAD (RIS, portals, RADAR; found online, 2018 press release)",found_online,,,https://www.linkedin.com/company/precisionimagingcenters,https://www.facebook.com/PrecisionImagingCenters,https://www.instagram.com/precisionimagingcentersfl,,,https://www.linkedin.com/in/mark-annis-rt-n-cnmt-75451449,,,,person,high,Google,A,who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Running St. Augustine and Orlando means two sets of faxed orders, two phone queues, and someone keying every order into {{RIS_Name}}.
+Running both St. Augustine and Orlando means two streams of faxed orders and two phone queues, with someone keying each order into {{RIS_Name}}.
 
-Gravity can work those orders on its own, from the fax to check-in, on top of {{RIS_Name}}, in both centers at once. Your teams review the exceptions instead of re-keying the rest. You can <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">see the order's path, step by step</a>.
+Gravity works those orders on its own, from the fax to check-in, on top of {{RIS_Name}}, in both centers. Your teams only see the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
 
 Worth 15 minutes next Tuesday or Thursday?
 
-Best,",Re: Who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
+Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Quick follow-up on the two-center question: when a faxed order lands for Orlando, who sees it first, and how long before it's a scheduled exam in {{RIS_Name}}?
+Following up on the two-center question. When a faxed order comes in for Orlando, who sees it first, and how long until it's a scheduled exam in {{RIS_Name}}?
 
-The goal is simple: nothing sits in a queue, and every order becomes an exam.
+Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Best,",Re: Who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
+I know you have your hands full keeping two centers running day to day.
 
-I know you have your hands full keeping two centers running smoothly day to day.
-
-If taking the fax backlog off your teams' plates isn't a priority right now, no worries at all. If it is, let me know if next Tuesday or Thursday works for a quick chat, or <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a3"">look at the journey first</a> and tell me what you think.
+If taking the fax backlog off your teams' plates isn't a priority right now, no worries at all. If it is, let me know if next Tuesday or Thursday works for a quick chat, or <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a3"">look at the journey first</a>.
 
 Best,",,eRAD,"Sources (web search, LinkedIn not reachable): eRAD press release Feb 2018 says Precision Imaging Centers implemented eRAD RIS, portals and RADAR (cloud; previous RIS vendor stopped enhancing; 4 Jacksonville centers, 80-90k procedures/yr then). Now six centers incl. newest Orlando-Millenia (job postings; opening status conflicts). Title shows he manages St Augustine and Orlando. RIS is from a 2018 vendor release and may have changed. VERIFY before send."

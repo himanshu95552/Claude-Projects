@@ -1,19 +1,19 @@
 Email,First Name,Last Name,Title,Organization,Tools Org ID,Tools Org Name,RIS,RIS Status,PACS,RCM,Org LinkedIn,Org Facebook,Org Instagram,Org X,Org YouTube,Person LinkedIn,Person Facebook,Person Instagram,Person X,Found In Tools,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes,RIS_Name,Personalization Notes
-lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,ORG01081,Boice Willis Clinic,eClinicalWorks (healow),found,,eClinicalWorks (healow),https://www.linkedin.com/company/boice-willis-clinic,https://www.facebook.com/BoiceWillisClinic,,,,https://www.linkedin.com/in/lindy-williams-06308865,,,,person,high,Microsoft,B,The 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
+lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,ORG01081,Boice Willis Clinic,eClinicalWorks (healow),found,,eClinicalWorks (healow),https://www.linkedin.com/company/boice-willis-clinic,https://www.facebook.com/BoiceWillisClinic,,,,https://www.linkedin.com/in/lindy-williams-06308865,,,,person,high,Microsoft,B,the 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
 
-A clinic that has served Rocky Mount for over a century has patients who still expect a person to pick up the phone, and a late-afternoon slot that stays empty when one doesn't show.
+A clinic that's been in Rocky Mount for over a century has patients who expect a real person to pick up the phone. It also has a late-afternoon slot that sits empty whenever someone doesn't show.
 
-With Gravity, patients can book by text or by voice, no-shows get refilled on their own, and the phones quiet down, all on top of {{RIS_Name}}. Here is <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through, step by step</a>.
+Gravity lets patients book by text or by voice, fills no-shows on its own, and the phones quiet down. It runs on top of {{RIS_Name}}. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through</a>.
 
 Open to a quick look next Tuesday or Thursday?
 
-Best,",Re: The 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
+Best,",Re: the 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
 
-Following up on the empty-slot question. Across the clinic's specialties and the imaging center, what's your hold time like at peak, and how many calls go unanswered by noon?
+Following up on the empty-slot note. Across the specialties and the imaging center, what's your hold time at peak, and how many calls go unanswered by noon?
 
-If the phones are the bottleneck, that's where I'd start.
+If the phones are the problem, that's where I'd start.
 
-Best,",Re: The 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
+Best,",Re: the 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
 
 I'll keep this short, since the phones at Boice-Willis are probably ringing.
 
