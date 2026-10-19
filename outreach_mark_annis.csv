@@ -1,15 +1,15 @@
 Email,First Name,Last Name,Title,Organization,Tools Org ID,Tools Org Name,RIS,RIS Status,PACS,RCM,Org LinkedIn,Org Facebook,Org Instagram,Org X,Org YouTube,Person LinkedIn,Person Facebook,Person Instagram,Person X,Found In Tools,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes,RIS_Name,Personalization Notes
 mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,ORG00110,Precision Imaging Centers,"eRAD (RIS, portals, RADAR; found online, 2018 press release)",found_online,,,https://www.linkedin.com/company/precisionimagingcenters,https://www.facebook.com/PrecisionImagingCenters,https://www.instagram.com/precisionimagingcentersfl,,,https://www.linkedin.com/in/mark-annis-rt-n-cnmt-75451449,,,,person,high,Google,A,who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Running both St. Augustine and Orlando means two streams of faxed orders and two phone queues, with someone keying each order into {{RIS_Name}}.
+Running both St. Augustine and Orlando means two streams of faxed orders and two phone queues, with someone keying each order into {{RIS_Name}}. That's where orders leak.
 
-Gravity works those orders on its own, from the fax to check-in, on top of {{RIS_Name}}, in both centers. Your teams only see the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
+Gravity reads the fax, creates the order and carries it from the fax to check-in, in both centers. It can run on top of {{RIS_Name}}. Gravity's agents work the order and your people work the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Following up on the two-center question. When a faxed order comes in for Orlando, who sees it first, and how long until it's a scheduled exam in {{RIS_Name}}?
+Following up on the two-center question. When a faxed order comes in for Orlando, who sees it first, and how long until it's a booked exam in {{RIS_Name}}?
 
 Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 

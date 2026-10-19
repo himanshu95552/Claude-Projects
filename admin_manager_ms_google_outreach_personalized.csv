@@ -232,9 +232,9 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 Best,",,,
 lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,ORG01081,Boice Willis Clinic,eClinicalWorks (healow),found,,eClinicalWorks (healow),https://www.linkedin.com/company/boice-willis-clinic,https://www.facebook.com/BoiceWillisClinic,,,,https://www.linkedin.com/in/lindy-williams-06308865,,,,person,high,Microsoft,B,the 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
 
-A clinic that's been in Rocky Mount for over a century has patients who expect a real person to pick up the phone. It also has a late-afternoon slot that sits empty whenever someone doesn't show.
+A clinic that's been in Rocky Mount for over a century has patients who expect a real person to pick up the phone. It also has a late-afternoon slot that sits empty whenever someone doesn't show. That's an order leak too.
 
-Gravity lets patients book by text or by voice, fills no-shows on its own, and the phones quiet down. It runs on top of {{RIS_Name}}. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through</a>.
+Gravity lets patients book by text or by voice, refills no-shows on its own, and the phones quiet down. It can run on top of {{RIS_Name}}. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through</a>.
 
 Open to a quick look next Tuesday or Thursday?
 
@@ -400,9 +400,9 @@ If fixing them before the patient arrives isn't a priority right now, no worries
 Best,",,,
 kwavery@mspulmonary.com,Kim,Avery,Administrator,Mid South Pulmonary Specialists,ORG01772,Mid South Pulmonary Specialists,NextGen,found,,,https://www.linkedin.com/company/mid-south-pulmonary,https://www.facebook.com/MSPulmonary,https://www.instagram.com/mspulmonary,https://twitter.com/midsouthpulm,https://www.youtube.com/channel/UCtzdRtkMUe6BYPfHotcp2JQ,https://www.linkedin.com/in/kim-avery-jd-mba-a5226832,,,,person,high,Microsoft,A,who keys your providers' orders into {{RIS_Name}}?,"Hi {{firstName}},
 
-How many of the orders from your 17 physicians and 10 nurse practitioners still come in by fax and get typed into {{RIS_Name}} by hand?
+How many of the orders from your 17 physicians and 10 nurse practitioners still come in by fax and get typed into {{RIS_Name}} by hand? That's where orders leak.
 
-Gravity works those orders on its own, from the fax to the schedule, on top of {{RIS_Name}}. Your team only sees the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
+Gravity reads the fax, creates the order and carries it through to booking. It can run on top of {{RIS_Name}}. Gravity's agents work the order and your people work the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
 
 Worth 15 minutes next Tuesday or Thursday?
 
@@ -1280,15 +1280,15 @@ If taking the fax backlog off your team's plate isn't a priority right now, no w
 Best,",,,
 mannis@precisionimagingcenters.com,Mark,Annis,"Center Manager, St Augustine & Orlando",Precision Imaging Centers,ORG00110,Precision Imaging Centers,"eRAD (RIS, portals, RADAR; found online, 2018 press release)",found_online,,,https://www.linkedin.com/company/precisionimagingcenters,https://www.facebook.com/PrecisionImagingCenters,https://www.instagram.com/precisionimagingcentersfl,,,https://www.linkedin.com/in/mark-annis-rt-n-cnmt-75451449,,,,person,high,Google,A,who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Running both St. Augustine and Orlando means two streams of faxed orders and two phone queues, with someone keying each order into {{RIS_Name}}.
+Running both St. Augustine and Orlando means two streams of faxed orders and two phone queues, with someone keying each order into {{RIS_Name}}. That's where orders leak.
 
-Gravity works those orders on its own, from the fax to check-in, on top of {{RIS_Name}}, in both centers. Your teams only see the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
+Gravity reads the fax, creates the order and carries it from the fax to check-in, in both centers. It can run on top of {{RIS_Name}}. Gravity's agents work the order and your people work the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
 
 Worth 15 minutes next Tuesday or Thursday?
 
 Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 
-Following up on the two-center question. When a faxed order comes in for Orlando, who sees it first, and how long until it's a scheduled exam in {{RIS_Name}}?
+Following up on the two-center question. When a faxed order comes in for Orlando, who sees it first, and how long until it's a booked exam in {{RIS_Name}}?
 
 Best,",Re: who keys St. Augustine's faxes into {{RIS_Name}}?,"Hi {{firstName}},
 

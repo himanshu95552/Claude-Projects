@@ -1,9 +1,9 @@
 Email,First Name,Last Name,Title,Organization,Tools Org ID,Tools Org Name,RIS,RIS Status,PACS,RCM,Org LinkedIn,Org Facebook,Org Instagram,Org X,Org YouTube,Person LinkedIn,Person Facebook,Person Instagram,Person X,Found In Tools,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes,RIS_Name,Personalization Notes
 kwavery@mspulmonary.com,Kim,Avery,Administrator,Mid South Pulmonary Specialists,ORG01772,Mid South Pulmonary Specialists,NextGen,found,,,https://www.linkedin.com/company/mid-south-pulmonary,https://www.facebook.com/MSPulmonary,https://www.instagram.com/mspulmonary,https://twitter.com/midsouthpulm,https://www.youtube.com/channel/UCtzdRtkMUe6BYPfHotcp2JQ,https://www.linkedin.com/in/kim-avery-jd-mba-a5226832,,,,person,high,Microsoft,A,who keys your providers' orders into {{RIS_Name}}?,"Hi {{firstName}},
 
-How many of the orders from your 17 physicians and 10 nurse practitioners still come in by fax and get typed into {{RIS_Name}} by hand?
+How many of the orders from your 17 physicians and 10 nurse practitioners still come in by fax and get typed into {{RIS_Name}} by hand? That's where orders leak.
 
-Gravity works those orders on its own, from the fax to the schedule, on top of {{RIS_Name}}. Your team only sees the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
+Gravity reads the fax, creates the order and carries it through to booking. It can run on top of {{RIS_Name}}. Gravity's agents work the order and your people work the exceptions. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=a1"">the order's path, step by step</a>.
 
 Worth 15 minutes next Tuesday or Thursday?
 

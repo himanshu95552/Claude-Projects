@@ -1,9 +1,9 @@
 Email,First Name,Last Name,Title,Organization,Tools Org ID,Tools Org Name,RIS,RIS Status,PACS,RCM,Org LinkedIn,Org Facebook,Org Instagram,Org X,Org YouTube,Person LinkedIn,Person Facebook,Person Instagram,Person X,Found In Tools,Confidence,Mail Provider,Variant,Subject,Body,Followup 1 Subject,Followup 1 Body,Followup 2 Subject,Followup 2 Body,Notes,RIS_Name,Personalization Notes
 lwilliams@boice-willis.com,Lindy,Williams,Executive Administrator,Boice Willis Clinic,ORG01081,Boice Willis Clinic,eClinicalWorks (healow),found,,eClinicalWorks (healow),https://www.linkedin.com/company/boice-willis-clinic,https://www.facebook.com/BoiceWillisClinic,,,,https://www.linkedin.com/in/lindy-williams-06308865,,,,person,high,Microsoft,B,the 4:30 empty slot at Boice-Willis,"Hi {{firstName}},
 
-A clinic that's been in Rocky Mount for over a century has patients who expect a real person to pick up the phone. It also has a late-afternoon slot that sits empty whenever someone doesn't show.
+A clinic that's been in Rocky Mount for over a century has patients who expect a real person to pick up the phone. It also has a late-afternoon slot that sits empty whenever someone doesn't show. That's an order leak too.
 
-Gravity lets patients book by text or by voice, fills no-shows on its own, and the phones quiet down. It runs on top of {{RIS_Name}}. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through</a>.
+Gravity lets patients book by text or by voice, refills no-shows on its own, and the phones quiet down. It can run on top of {{RIS_Name}}. Here's <a href=""https://alphanodus.com/journey?utm_source=cold-email&utm_medium=email&utm_campaign=admin-outreach&utm_content=b1"">how a booking moves through</a>.
 
 Open to a quick look next Tuesday or Thursday?
 
