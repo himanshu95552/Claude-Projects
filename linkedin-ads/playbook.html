@@ -1,0 +1,677 @@
+<title>Order Trace LinkedIn Playbook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky tab bar over a single reading column; ads shown as LinkedIn-style frames in a responsive grid. Palette from radiograph blue-greys with one amber "leak" signal. */
+:root{
+  --bg:#F2F5F8; --surface:#FFFFFF; --ink:#0C1E2C; --muted:#52677A; --line:#D3DEE6;
+  --brand:#0B5FA5; --brand-ink:#FFFFFF; --leak:#C9470F; --ok:#1B7F5C; --soft:#E7EFF5;
+  --art-bg:#0A1620; --art-ink:#EAF2F8; --art-mute:#8FA7B9; --art-line:#26414F; --art-leak:#F08A4B; --art-ok:#4FC08D; --art-blue:#4BA3E8;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08131C; --surface:#0E1E2A; --ink:#E6EEF4; --muted:#93A8B8; --line:#1F3445;
+  --brand:#4BA3E8; --brand-ink:#06121B; --leak:#F08A4B; --ok:#4FC08D; --soft:#12283A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08131C; --surface:#0E1E2A; --ink:#E6EEF4; --muted:#93A8B8; --line:#1F3445;
+  --brand:#4BA3E8; --brand-ink:#06121B; --leak:#F08A4B; --ok:#4FC08D; --soft:#12283A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+header.top{padding-block:28px 8px}
+.eyebrow{font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(28px,5vw,46px)/1.05 var(--f-display);margin:8px 0 10px;text-wrap:balance;letter-spacing:-.01em}
+h2{font:700 clamp(22px,3vw,30px)/1.15 var(--f-display);margin:0 0 6px;text-wrap:balance}
+h3{font:600 16px/1.3 var(--f-body);margin:0 0 6px}
+p{margin:0 0 10px;max-width:68ch}
+.lead{color:var(--muted);font-size:17px;max-width:70ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px}
+nav.tabs button{flex:none;border:0;background:transparent;color:var(--muted);font:500 14px var(--f-body);padding:8px 12px;border-radius:6px;cursor:pointer}
+nav.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg)}
+nav.tabs button:focus-visible,.chip:focus-visible,.copy:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+section.pane{padding-block:28px 60px}
+section.pane[hidden]{display:none}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.box.plain{background:transparent;border-style:dashed}
+.tag{display:inline-block;font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--soft);color:var(--brand)}
+.tag.leak{background:color-mix(in srgb,var(--leak) 14%,transparent);color:var(--leak)}
+.tag.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.muted{color:var(--muted)} .mono{font-family:var(--f-mono)}
+ul.clean{margin:0;padding-left:18px} ul.clean li{margin-bottom:5px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.num{font-variant-numeric:tabular-nums}
+.callout{border-left:3px solid var(--leak);padding:10px 14px;background:color-mix(in srgb,var(--leak) 8%,transparent);border-radius:0 8px 8px 0;margin-block:14px;max-width:80ch}
+.callout.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,transparent)}
+a{color:var(--brand)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:12px 20px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:999px;font:500 13px var(--f-body);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.funnel{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.lvl{border-top:4px solid var(--brand);background:var(--surface);border-radius:0 0 10px 10px;border-inline:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px}
+.lvl.l2{border-top-color:var(--leak)} .lvl.l3{border-top-color:var(--ok)}
+.kpi{font:700 28px var(--f-display)}
+/* ad mockups */
+.ads{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));align-items:start}
+.ad{min-width:0}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fh{display:flex;gap:10px;align-items:center;padding:12px 14px}
+.logo{width:40px;height:40px;border-radius:6px;background:var(--art-bg);color:var(--art-blue);display:grid;place-items:center;font:700 13px var(--f-display);flex:none}
+.fh b{display:block;font-size:14px;line-height:1.2} .fh small{color:var(--muted);font-size:12px}
+.intro{padding:0 14px 12px;font-size:14px;white-space:pre-line}
+.art{position:relative;background:var(--art-bg);color:var(--art-ink);aspect-ratio:1/1;max-width:100%;overflow:hidden;padding:calc(7% + 16px) 7% 7%;display:flex;flex-direction:column;gap:3%}
+.art.wide{aspect-ratio:1.91/1;padding:calc(5% + 14px) 5% 5%}
+.rt{position:absolute;top:10px;left:10px;z-index:2;font:600 clamp(8px,1.7vw,10px) var(--f-mono);letter-spacing:.1em;background:var(--art-blue);color:#06121B;padding:3px 8px;border-radius:3px;max-width:calc(100% - 20px)}
+.art .k{font:500 clamp(9px,1.6vw,11px) var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--art-mute)}
+.art .big{font:700 clamp(22px,5.2vw,38px)/1.02 var(--f-display);text-wrap:balance}
+.art .big em{font-style:normal;color:var(--art-leak)}
+.art .sm{font-size:clamp(11px,2.2vw,14px);color:var(--art-mute)}
+.art svg{width:100%;height:auto;display:block}
+.slot{border:1.5px dashed var(--art-blue);border-radius:8px;color:var(--art-blue);display:grid;place-items:center;text-align:center;font:500 clamp(9px,1.8vw,12px)/1.3 var(--f-mono);padding:8px;flex:1;min-height:60px;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(75,163,232,.06) 10px 20px)}
+.fb{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;background:var(--soft)}
+.fb b{font-size:14px;line-height:1.25} .fb small{color:var(--muted);display:block;font-size:12px}
+.btn{flex:none;border:1px solid var(--brand);color:var(--brand);border-radius:999px;padding:5px 14px;font:600 13px var(--f-body);background:transparent}
+.meta{margin-top:10px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+.copy{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;font:500 12px var(--f-body);padding:3px 9px;cursor:pointer;margin-right:6px;margin-top:6px}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:3%;width:100%}
+.dots i{aspect-ratio:1;border-radius:50%;background:var(--art-line)}
+.dots i.o{background:var(--art-leak)} .dots i.g{background:var(--art-ok)}
+.bubble{background:var(--soft);border-radius:10px;padding:9px 12px;font-size:14px;max-width:88%;margin-bottom:8px}
+.reply{display:inline-block;border:1px solid var(--brand);color:var(--brand);border-radius:999px;padding:4px 12px;font-size:13px;margin:0 6px 6px 0}
+.form div.f{border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin-bottom:8px;font-size:13px}
+.form small{color:var(--muted);display:block;font-size:11px}
+pre.prompt{white-space:pre-wrap;background:var(--soft);padding:12px;border-radius:8px;font:13px/1.5 var(--f-mono);margin:8px 0 0;overflow-wrap:anywhere}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s);font:500 13px var(--f-mono);width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--brand);display:grid;place-items:center}
+.bar{height:10px;border-radius:5px;background:var(--soft);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--brand)}
+@media (prefers-reduced-motion:no-preference){.chip,nav.tabs button{transition:background .15s}}
+</style>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">Alpha Nodus · LinkedIn B2B campaign · prepared 21 Oct 2026</div>
+  <h1>Talk like the front desk. Land on one page.</h1>
+  <p class="lead">A three-level LinkedIn plan for owners, managers, billing leads and radiologists at independent imaging centers. The ads are written in the language of the people who run these centers. Every click goes to one landing page where they book a free 30-minute Order Trace.</p>
+</div>
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
+</header>
+
+<main class="wrap">
+
+<section class="pane" id="strategy" data-title="Strategy" hidden>
+  <h2>The plan in one page</h2>
+  <p class="lead">Describe a moment the reader has lived, show we understand the cost, then ask for something small: a 30-minute call where we trace one of their real orders.</p>
+  <div class="grid g3" style="margin-block:18px">
+    <div class="box"><span class="tag">Goal</span><h3 style="margin-top:8px">Book qualified calls</h3><p class="muted">Primary conversion: a Calendly booking. Secondary: content leads that retargeting can warm up.</p></div>
+    <div class="box"><span class="tag">Audience</span><h3 style="margin-top:8px">Four buyers, one center</h3><p class="muted">Owner, operations manager, revenue-cycle lead, radiologist-owner. Each gets the leak that hurts them most.</p></div>
+    <div class="box"><span class="tag">Offer</span><h3 style="margin-top:8px">The Order Trace</h3><p class="muted">Cold: a 15-question checklist. Warm: a free 30-minute working session that maps the order from referral to payment.</p></div>
+  </div>
+
+  <h3>What the research says (and how much to trust it)</h3>
+  <div class="grid g2">
+    <div class="box">
+      <span class="tag">LinkedIn performance</span>
+      <ul class="clean" style="margin-top:10px">
+        <li>Vendor benchmark blogs disagree. Treat them as ranges, not promises. Sponsored content CTR is reported around 0.44–0.65%; cost per lead roughly $68–$200, with demo-request leads far higher (one study: $343 median).</li>
+        <li>Native Lead Gen Forms are reported to cut cost per lead by about 20–30% versus sending people to a landing page, because the profile pre-fills.</li>
+        <li>Conversation ads and thought-leader ads are reported to outperform plain single-image ads (vendor studies; one cites ~40% form completion for conversation ads).</li>
+        <li>Match offer to warmth: content for cold, a call for warm.</li>
+      </ul>
+      <p class="meta">Sources: <a href="https://www.clickminded.com/linkedin-ads-benchmarks/">ClickMinded</a>, <a href="https://www.linkedist.com/blog-geo/7-linkedin-ads-tactics-that-actually-work-in-2026">Linkedist</a>, <a href="https://kiin.co/linkedin-ads-benchmarks">Kiin</a>, <a href="https://benly.ai/learn/linkedin-ads/linkedin-ads-benchmarks">Benly</a>.</p>
+    </div>
+    <div class="box">
+      <span class="tag leak">Imaging-center reality</span>
+      <ul class="clean" style="margin-top:10px">
+        <li>Payers are using AI to review claims faster, and prior-authorization lists have grown, with advanced imaging among the largest increases.</li>
+        <li>Technologist vacancies are reported near record highs (CT 19.4%, MRI 17.4%, cited from ASRT by a staffing firm).</li>
+        <li>Alpha Nodus's own site says denials can surface about 45 days after the exam, and that a typical center fills about 65% of its slots.</li>
+        <li>Avoid vendor-only stats such as "$2M leaked per center". No stated method, so we will not use them.</li>
+      </ul>
+      <p class="meta">Sources: <a href="https://www.getmagical.com/blog/radiology-rcm-trends">Magical</a>, <a href="https://www.amergis.com/resources/blog/imaging-technologist-shortages-insurance-denials/">Amergis</a>, <a href="https://www.alphanodus.com/aos">alphanodus.com/aos</a>.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px">Facts we can use sparingly (checked against alphanodus.com)</h3><p class="muted">The ads are not written from the website. These facts are only for credibility on the landing page and in small supporting lines. None of them are in headlines.</p>
+  <div class="scroll"><table>
+    <tr><th>Claim</th><th>Where it came from</th><th>How to use it</th></tr>
+    <tr><td>460+ imaging centers run on Gravity</td><td>Homepage</td><td>One trust line on the landing page</td></tr>
+    <tr><td>5.7 million imaging orders a year</td><td>Homepage</td><td>Landing page only</td></tr>
+    <tr><td>$26 of every $100 spent on getting the order, completing the exam, getting paid; ~$5 kept; net income "up 170%" with the same team</td><td>Homepage, <b>modeled</b> for a typical large independent center</td><td>Not used in any ad. Keep for sales conversations, labeled "modeled".</td></tr>
+    <tr><td>RSNA 2021 Quality Improvement Award (report by Tower Radiology, Tampa General, USF); peer-reviewed 2024 article; KLAS-reviewed 2023</td><td>About page</td><td>Landing page and the checklist PDF</td></tr>
+    <tr><td>From $1,000 a month, tiered by exam volume</td><td>Pricing page</td><td>Mirror the tiers in the form volume question</td></tr>
+    <tr><td>HIPAA BAA, US-only AWS hosting, Trust Center</td><td>Pricing page</td><td>Landing page FAQ</td></tr>
+  </table></div>
+  <div class="callout ok"><b>Real proof exists.</b> The customers page on alphanodus.com has named stories with numbers: Iowa Radiology (prior-auth backlog cleared in days, no one added to the team, Gravity handles at least 80% of authorizations) and Downtown Radiology (patient self-booking 19.7% to 43.8% in twelve months, 94.2% of self-booked exams completed). Two ads use them (B4, B5). Get each customer's written approval before running them as ads. Two archived stories are older and one has no confirmed result, so I left them out.</div>
+
+  <h3 style="margin-top:20px">Creative principles</h3>
+  <ul class="clean">
+    <li>One moment per ad. The first line (visible before "see more") must be a situation the reader recognizes.</li>
+    <li>Every ad names its reader in the first line and carries a role tag on the image. The "Make it theirs" tab has the full rules.</li>
+    <li>Write like the operator talks: faxes, front desk, call-backs, denials, auth, A/R. No product-module names, no slogans from the site, no "AI-powered".</li>
+    <li>The founder's real story earns attention, but the post must end up in his own words. I drafted it for him to rewrite.</li>
+    <li>Photos show places and hands (fax tray, front desk, scanner room), not stock smiles. Never show a patient or readable patient data.</li>
+    <li>Healthcare compliance: keep the LinkedIn Insight Tag off any consumer or patient-facing page. LinkedIn's own guidance says to exclude pages with health-related consumer services. This is not legal advice. <a href="https://www.linkedin.com/help/lms/answer/106247">LinkedIn help</a>.</li>
+  </ul>
+</section>
+
+<section class="pane" id="buyers" data-title="Buyers" hidden>
+  <h2>Four buyers, four mindsets</h2>
+  <p class="lead">All four sit in one center and each carries a different worry. The targeting is shared; the message is not.</p>
+  <div class="grid g2" id="personas"></div>
+</section>
+
+<section class="pane" id="funnel" data-title="Funnel" hidden>
+  <h2>Three levels, one story</h2>
+  <p class="lead">Every level continues the last one. Someone who watched a video in level 1 sees a document in level 2 and a call offer in level 3.</p>
+  <div class="funnel" style="margin-top:18px">
+    <div class="lvl"><span class="tag">Level 1 · Awareness</span><h3 style="margin-top:10px">"That's my Monday."</h3>
+      <p class="muted">Cold audience: matched account list + titles. Goal: attention and a warm pool.</p>
+      <ul class="clean"><li>"Your Monday isn't a staffing problem"</li><li>"Busy isn't the same as profitable"</li><li>Founder thought-leader post</li><li>15-second video: the 4:55 p.m. call</li></ul>
+      <p class="meta"><b>Objective:</b> Brand awareness / video views<br><b>Success:</b> CTR, 50%+ video views, new retargeting pool</p></div>
+    <div class="lvl l2"><span class="tag leak">Level 2 · Consideration</span><h3 style="margin-top:10px">"Where does mine go wrong?"</h3>
+      <p class="muted">Warm: engaged with level 1, plus the cold list. Goal: a lead and a data point about the center.</p>
+      <ul class="clean"><li>Document ad: The Order Leak Checklist (15 questions)</li><li>Lead Gen Form with a monthly-exam-volume question</li><li>Conversation ad asking where orders go wrong</li><li>Two customer-story ads: Iowa Radiology and Downtown Radiology</li></ul>
+      <p class="meta"><b>Objective:</b> Lead generation<br><b>Success:</b> Cost per lead, form completion, share in the 1,001+ exam tiers</p></div>
+    <div class="lvl l3"><span class="tag ok">Level 3 · Decision</span><h3 style="margin-top:10px">"Fine, look at one of mine."</h3>
+      <p class="muted">Hot: site visitors, doc readers, form openers, pricing viewers. Goal: a booked call.</p>
+      <ul class="clean"><li>Free Order Trace session, 30 minutes, booked on the landing page</li><li>Role-specific ads: billing, operations, radiologist, plus a product-screen ad</li><li>RSNA 2026 booth 6537 working session</li></ul>
+      <p class="meta"><b>Objective:</b> Website conversions<br><b>Success:</b> Booked calls, show rate, pipeline</p></div>
+  </div>
+  <h3 style="margin-top:26px">The one landing page every ad points to</h3>
+  <p class="muted">Ads do the persuading; the page only has to make booking easy. Build it once at a dedicated address (suggested <span class="mono">alphanodus.com/order-trace</span>) and tag the link per audience so the headline can match the ad.</p>
+  <div class="grid g2">
+    <div class="box"><span class="tag">Above the fold</span><ul class="clean" style="margin-top:10px"><li>Headline that echoes the ad the visitor clicked (swap with <span class="mono">?role=ops|rcm|owner|rad</span>).</li><li>One sentence: pick one real order, and in 30 minutes we follow it from referral to payment and show where it stalled.</li><li>Booking calendar embedded right there, with three questions: role, monthly exam volume, current RIS and billing system.</li></ul></div>
+    <div class="box"><span class="tag">Below the fold</span><ul class="clean" style="margin-top:10px"><li>What happens in the 30 minutes, step by step.</li><li>Who it is for: independent imaging centers.</li><li>One trust line (460+ centers) and the security note (HIPAA BAA).</li><li>FAQ: cost (free), what to bring, what you keep, whether there is a pitch.</li><li>A customer quote once you have one.</li></ul></div>
+  </div>
+  <p class="meta">I can draft the landing page copy and build the page next if you want.</p>
+<h3 style="margin-top:26px">Offers I propose</h3>
+  <div class="scroll"><table>
+    <tr><th>Offer</th><th>Level</th><th>What the buyer gets</th><th>What you need to build</th></tr>
+    <tr><td><b>The Order Leak Checklist</b></td><td>2</td><td>15-question self-check (5 questions in each of three parts) with a scoring guide</td><td>A short PDF, 6 pages. I can draft the content.</td></tr>
+    <tr><td><b>Order Trace session</b></td><td>3</td><td>30 minutes following one real order from referral to payment, ending with a written list of where it stalled</td><td>A fixed agenda and a Calendly event type with 3 qualifying questions</td></tr>
+    <tr><td><b>Demo</b></td><td>3 (fallback)</td><td>The standard 30-minute demo</td><td>Already exists on your site</td></tr>
+    <tr><td><b>RSNA working session</b></td><td>3 (time-boxed)</td><td>Meeting at booth 6537</td><td>A separate Calendly link for booth slots</td></tr>
+  </table></div>
+</section>
+
+<section class="pane" id="simple" data-title="Simple ads" hidden>
+  <h2>Simple ads: ask the question, answer with the fix</h2>
+  <p class="lead">Each ad does three things: asks one plain question the right person answers "yes" to, answers it with the one thing Gravity does about it, and sends them to the page that explains that fix. Sixteen ads, one pain each.</p>
+  <div class="grid g3" style="margin-block:16px">
+    <div class="box"><span class="tag">The question</span><ul class="clean" style="margin-top:10px"><li>Twelve words or fewer.</li><li>One pain, in the words they use.</li><li>Starts with "Still…", "Do you…", "Which…" or names the symptom.</li><li>Names no product and no jargon.</li></ul></div>
+    <div class="box"><span class="tag ok">The answer</span><ul class="clean" style="margin-top:10px"><li>One sentence: what Gravity does, with a verb.</li><li>Matches the question exactly: fax question, fax answer.</li><li>Never "solves everything". Staff review the exceptions.</li><li>Proof only from approved customer stories.</li></ul></div>
+    <div class="box"><span class="tag leak">The picture</span><ul class="clean" style="margin-top:10px"><li>One scene from their day that shows the pain.</li><li>Drawn here as an illustration. Each ad has a photo prompt that turns the same scene into a realistic photo.</li><li>No faces, no readable text, a freestanding center, never a hospital.</li></ul></div>
+  </div>
+
+  <h3 style="margin-top:24px">What the research says, and how far to trust it</h3>
+  <p class="muted">Most sources are vendor blogs and trade press. I used them only to choose the pains and the wording. <b>None of these numbers appear in the ads.</b> The ads use Gravity facts from your site and your approved customer stories.</p>
+  <div class="scroll"><table>
+    <tr><th>Pain</th><th>What the sources say</th><th>Trust</th><th>Used in</th></tr>
+    <tr><td>Retyping faxed orders, chasing missing info</td><td>Staff re-key patient, exam, ICD and CPT codes by hand. Incomplete orders get a cover sheet faxed back and then tracked. One vendor case claims 150+ staff hours saved per 10,000 faxes. <a href="https://www.abbadox.com/blog/scheduling-workflow-is-missing-the-mark">AbbaDox</a>, <a href="https://www.infinx.com/how-ai-is-replacing-manual-fax-intake-in-radiology-prior-authorization/">Infinx</a>, <a href="https://www.efax.com/blog/radiology-referral-leakage-ai-intake-solution">eFax</a></td><td>Low to medium, vendor</td><td>P1, P2</td></tr>
+    <tr><td>Calling patients to book, no-shows</td><td>Average no-show about 8–9%, with mammography highest. A modeled $1M yearly loss for a large academic center. Anecdotes of 20–40%. <a href="https://healthimaging.com/topics/healthcare-management/healthcare-economics/radiology-departments-lose-1m-year-due-no-shows">Health Imaging</a></td><td>Medium, modeled</td><td>P3, P4</td></tr>
+    <tr><td>Prior auth and denials</td><td>A vendor claims 25–30% of imaging requests are denied or delayed. Staff time on prior auth is reported rising. Per-request effort at one imaging group: 3–10 minutes. <a href="https://greenlight.medivis.com/">Medivis</a>, <a href="https://radiologybusiness.com/topics/healthcare-management/medical-practice-management/60-radiologists-and-other-docs-surveyed-say-staff-devoting-more-time-billing-compliance">Radiology Business</a></td><td>Low to medium</td><td>O2, R1, R4</td></tr>
+    <tr><td>Referrers and referrals</td><td>Relationships drive imaging-center success. Referrers want to know the referral arrived, was booked, and the patient showed. Faster reports raised referrer satisfaction (78% to 91%) at one center. <a href="https://www.auntminnie.com/practice-management/article/15575296/referral-physician-relationships-drive-imaging-center-success">AuntMinnie</a></td><td>Medium, older trade press</td><td>O4, D1–D3</td></tr>
+    <tr><td>Patient estimates and surprise bills</td><td>Uninsured and self-pay patients are owed a good faith estimate. Insured patients get an Advanced Explanation of Benefits from the insurer, so R3 is about the patient's share, not a legal estimate. <a href="https://CMS.gov/cciio/resources/regulations-and-guidance/downloads/guidance-good-faith-estimate-patient-provider-dispute-resolution-process-for-providers-facilities-cms-9908-ifc.pdf">CMS guidance</a></td><td>High, regulatory</td><td>R3</td></tr>
+    <tr><td>Hiring and staffing</td><td>Technologist vacancies reported near record highs (CT 19.4%, MRI 17.4%). <a href="https://www.amergis.com/resources/blog/imaging-technologist-shortages-insurance-denials/">Amergis</a></td><td>Medium, staffing-firm blog</td><td>O3</td></tr>
+  </table></div>
+
+  <h3 style="margin-top:24px">The full plan: question, answer, proof, page</h3>
+  <div class="scroll"><table id="plantable"></table></div>
+
+  <div class="callout ok"><b>All four open items are handled below.</b> <b>1.</b> Referral ads O4 and D3 now run as early-access sign-ups. <b>2.</b> Customer proof is off by default, so every ad can run today without it, and the toggle below switches proof on once approved. <b>3.</b> The eligibility ad says "electronically", so it makes no promise about payers without electronic checks. <b>4.</b> The Order Trace page is built, and O1 points to it.</div>
+  <div class="grid g2" style="margin-block:16px">
+    <div class="box"><span class="tag">Files</span><p style="margin-top:10px"><b>16 square creatives (1080 × 1080 PNG)</b> and a copy sheet are saved in the repository under <span class="mono">linkedin-ads/</span>: <span class="mono">creatives/simple/</span>, <span class="mono">simple-ads-copy.csv</span>, and <span class="mono">order-trace.html</span> (the landing page, also <a href="https://claude.ai/artifact/DVo5xY3pv6gqsYMJrBMTzf">previewable here</a>). Publish it at alphanodus.com/order-trace and add your booking link. Every ad below is shown exactly as exported.</p></div>
+    <div class="box"><span class="tag">LinkedIn buttons</span><p style="margin-top:10px">LinkedIn only allows buttons from its own list (for example Learn more, Request demo, Sign up, Download, Register). Custom wording like "See how" is not available, so the buttons here use that list. Confirm the current list in Campaign Manager.</p></div>
+  </div>
+  <h3 style="margin-top:24px">Customer approval, ready to send</h3>
+  <p class="muted">The numbers are already public on your site. An ad is a different use, so get a written yes. Until then, leave the proof toggle off.</p>
+  <div class="scroll"><table>
+    <tr><th>Customer</th><th>Claims used</th><th>Ads</th><th>Status</th></tr>
+    <tr><td>Iowa Radiology</td><td>Gravity handles at least 80% of authorizations. Backlog cleared within the week. No one added to the team.</td><td>O2, O3, R4</td><td>Waiting for written approval</td></tr>
+    <tr><td>Downtown Radiology</td><td>Patient self-booking grew from 19.7% to 43.8% in twelve months.</td><td>P3</td><td>Waiting for written approval</td></tr>
+  </table></div>
+  <div class="box" style="margin-top:12px;max-width:760px"><span class="tag">Draft message</span><pre class="prompt">Subject: Okay to feature your results in a LinkedIn ad?
+
+Hi [name],
+
+Thank you again for sharing your story with us. We would like to use these lines from it in a short LinkedIn ad that links back to the full story:
+
+[paste the exact claims from the table]
+
+Would you be comfortable with that? You can reply "yes", ask us to change the wording, or say no. We will not run it until you confirm in writing, and we will take it down any time you ask.
+
+Thank you,
+[your name]</pre><button class="copy" data-t="Subject: Okay to feature your results in a LinkedIn ad?&#10;&#10;Hi [name],&#10;&#10;Thank you again for sharing your story with us. We would like to use these lines from it in a short LinkedIn ad that links back to the full story:&#10;&#10;[paste the exact claims from the table]&#10;&#10;Would you be comfortable with that? You can reply &quot;yes&quot;, ask us to change the wording, or say no. We will not run it until you confirm in writing, and we will take it down any time you ask.&#10;&#10;Thank you,&#10;[your name]">Copy message</button></div>
+
+  <h3 style="margin-top:24px">The ads</h3>
+  <div class="chips" id="schips" role="group" aria-label="Filter simple ads"></div>
+  <div class="ads" id="simplelist"></div>
+
+  <h3 style="margin-top:28px">How to test them</h3>
+  <div class="scroll"><table>
+    <tr><th>Test</th><th>A</th><th>B</th><th>Decide on</th></tr>
+    <tr><td>Question versus scene</td><td>Simple question ad (this tab)</td><td>Scene ad (Ad creatives tab)</td><td>CTR and cost per click, same audience</td></tr>
+    <tr><td>Stacked or single</td><td>O0 (three owner questions)</td><td>O1 to O4 singles</td><td>CTR; does a longer list lose people?</td></tr>
+    <tr><td>Illustration or photo</td><td>Drawn scene</td><td>Real or generated photo</td><td>CTR. Photos often win, but test it.</td></tr>
+    <tr><td>Button</td><td>"See how"</td><td>Specific ("Watch it read a fax")</td><td>Click-through to the page</td></tr>
+  </table></div>
+</section>
+
+<section class="pane" id="relevance" data-title="Make it theirs" hidden>
+  <h2>Make every ad say "this is for you"</h2>
+  <p class="lead">The test is two seconds. A center owner or billing lead should know the ad is about them before they read a full sentence, and everyone else should feel free to scroll. These are the eight rules every ad and variant here follows.</p>
+
+  <h3 style="margin-top:22px">1. Name the reader in the first line</h3>
+  <p class="muted">LinkedIn shows roughly the first 150 characters before "see more". That line is the whole audience filter.</p>
+  <div class="scroll"><table>
+    <tr><th>Pattern</th><th>Template</th><th>Example in the ads</th></tr>
+    <tr><td><b>Direct callout</b></td><td>[Exact audience]: [scene or fact]</td><td>"Imaging center managers: Monday, 7:50 a.m. The phone is lit up…" (A1)</td></tr>
+    <tr><td><b>Self-selecting question</b></td><td>Does/Still [their specific pain]?</td><td>"Does your billing team find out about denials weeks after the scan?" (C2)</td></tr>
+    <tr><td><b>Yes-or-no chore</b></td><td>Still [doing the manual task]?</td><td>"Still keying faxed orders into the schedule by hand?" (C3)</td></tr>
+    <tr><td><b>Conditional</b></td><td>If [their situation], this is for you.</td><td>Use in video captions and carousel cards</td></tr>
+  </table></div>
+
+  <h3 style="margin-top:22px">2. One role tag on every image</h3>
+  <p class="muted">Same position (top-left), same style, same wording as the first line. People who only glance at the picture still get the message.</p>
+  <div class="chips" style="margin-top:8px">
+    <span class="tag">FOR CENTER OWNERS</span><span class="tag">FOR CENTER OPERATIONS</span><span class="tag">FOR BILLING &amp; RCM LEADS</span><span class="tag">FOR RADIOLOGIST-OWNERS</span><span class="tag">FOR MRI CENTERS</span><span class="tag">FOR FLORIDA CENTERS</span>
+  </div>
+  <p class="muted">Rules: all caps, "FOR" plus at most four words, one tag per ad, no tag on ads that speak to everyone except as "FOR IMAGING CENTERS".</p>
+
+  <h3 style="margin-top:22px">3. Show their objects, not stock healthcare</h3>
+  <div class="grid g2">
+    <div class="box"><span class="tag ok">Do show</span><ul class="clean" style="margin-top:10px"><li>A fax tray with paper orders, a requisition clipboard, a sticky-note-covered monitor.</li><li>A small front desk with a tech in scrubs (no faces).</li><li>A freestanding center: plaza storefront, one or two scanners, a modest waiting room.</li><li>A schedule grid, an authorization queue, a denial worklist (blurred or demo data).</li><li>A real screenshot of your product with demo data (ad C6).</li></ul></div>
+    <div class="box"><span class="tag leak">Avoid</span><ul class="clean" style="margin-top:10px"><li>Hospital lobbies, campus signs, giant atriums: they say "not you".</li><li>Smiling doctors with tablets, glowing brain graphics, robots.</li><li>Any readable patient name, date of birth or scan.</li><li>Logos or brand names that are not yours.</li><li>Faces of people who are not real, consenting employees or customers.</li></ul></div>
+  </div>
+
+  <h3 style="margin-top:22px">4. Use their words</h3>
+  <div class="scroll"><table>
+    <tr><th>Say</th><th>Instead of</th></tr>
+    <tr><td>freestanding, independent, referring office, requisition, auth, call-back, no-show, schedule, front desk</td><td>healthcare provider, stakeholders, patient journey, optimize, leverage, AI-powered</td></tr>
+    <tr><td>"Did you schedule that patient?"</td><td>"Improve referral conversion"</td></tr>
+    <tr><td>"keying in the fax"</td><td>"manual data entry"</td></tr>
+  </table></div>
+
+  <h3 style="margin-top:22px">5. Match their size and modality</h3>
+  <p class="muted">The hooks below are hypotheses. Check them with two or three of your sales or customer-success people before launch.</p>
+  <div class="grid g2">
+    <div class="box"><h3>By monthly exams (same bands as your pricing)</h3><ul class="clean"><li><b>Up to 1,000:</b> one or two people run the whole front end.</li><li><b>1,001–5,000:</b> growth has outrun the process.</li><li><b>5,001–20,000:</b> more than one site or shift; orders fall between handoffs.</li><li><b>20,000+:</b> talk to sales directly; use the account list and personal outreach, not broad ads.</li></ul></div>
+    <div class="box"><h3>By modality</h3><ul class="clean"><li><b>MRI:</b> authorizations and slots that are hard to refill.</li><li><b>CT:</b> same-day add-ons and shifting schedules.</li><li><b>X-ray / ultrasound / multi-modality:</b> walk-in traffic and high order volume at the desk.</li></ul><p class="muted">See the Variants tab for the ready-made ads.</p></div>
+  </div>
+
+  <h3 style="margin-top:22px">6. Make it local</h3>
+  <p>Split ad sets by state and name the place in the first line: "Florida imaging center managers:". Alpha Nodus has offices in Sunrise, Florida and Austin, Texas, so those two can add "our team is nearby". Other states get the callout without the proximity line. If a state has too few matched accounts to reach LinkedIn's 300 minimum, group neighbors (for example "Southeast").</p>
+
+  <h3 style="margin-top:22px">7. Prove it with someone like them</h3>
+  <div class="box" style="max-width:760px"><p><b>Peer-proof template</b> (B4 and B5 already follow it with real stories):</p><p class="mono" style="font-size:13px">"[Center type, scanner count, region]. Before: [one concrete problem, in their words]. After: [one concrete result with a number and a time frame]." — [Role], [approved name or "a customer"]</p><p class="muted">Label by size and region even if they do not want a name. Written approval for every name, quote and logo, including association logos like AHRA, RBMA and RSNA.</p></div>
+
+  <h3 style="margin-top:22px">8. Personalize inside the format</h3>
+  <ul class="clean">
+    <li><b>Conversation ads:</b> first-name merge in the greeting. Check in Campaign Manager whether a company-name merge is offered to you.</li>
+    <li><b>One ad per role:</b> each of the four buyers has a headline and image that only fits them. Do not combine roles in one ad.</li>
+    <li><b>Lead form:</b> pre-filled name, title and company make the form feel made for them. Add the exam-volume question.</li>
+    <li><b>Landing page:</b> headline swaps by role using the <span class="mono">?role=</span> tag, so the page echoes the ad.</li>
+  </ul>
+
+  <h3 style="margin-top:22px">Check that it works</h3>
+  <div class="grid g2">
+    <div class="box"><h3>Before launch: the 5-person test</h3><ol class="clean"><li>Show each ad for 3 seconds with the logo covered to five people who work in imaging centers.</li><li>Ask: "Who is this for? What's it about?"</li><li>At least four of five should name the right role and problem. If not, rewrite the first line and the tag.</li></ol></div>
+    <div class="box"><h3>After launch: the signals</h3><ul class="clean"><li>CTR by job-title segment: the intended role should win.</li><li>Lead form titles: if the wrong titles fill it, the callout is too loose.</li><li>Comments: do people reply with their own story? That is the strongest sign of recognition.</li><li>Company-size mix of leads versus the exam-volume question.</li></ul></div>
+  </div>
+</section>
+
+<section class="pane" id="ads" data-title="Ad creatives" hidden>
+  <h2>The ads</h2>
+  <p class="lead">Fifteen ads, including two built on real customer stories from your site. Each opens by naming its reader, carries a role tag in the top-left of the image, and shows objects from their own workplace. Dashed boxes are slots for real photos or screenshots. Every ad lands on the one landing page. Seven more versions (by modality, region and size) are in the Variants tab.</p>
+  <div class="callout ok"><b>Note on images:</b> I cannot produce real photographs. The graphics here are designed artwork, ready to ship as simple data cards. Where a real photo would help, the slot says what to shoot.</div>
+  <div class="chips" id="chips" role="group" aria-label="Filter ads"></div>
+  <div class="ads" id="adlist"></div>
+</section>
+
+<section class="pane" id="variants" data-title="Variants" hidden>
+  <h2>Variants by modality, region and size</h2>
+  <p class="lead">Two base ads get seven variants. Each variant changes the callout, role tag, scene details and photo, so the reader sees their own situation. Everything else stays the same, so results are comparable.</p>
+  <div class="callout"><b>How to run them without wasting budget:</b> launch the base ads first (A1 and C1). Add a variant only when its audience clears LinkedIn's 300-account minimum and you have a reason to expect a different message to win. Run each variant as its own ad set in the same campaign, with the same budget share, and compare CTR and cost per lead after about 2,000 impressions each. Drop the loser, and keep the winner as the new base.</div>
+  <div class="scroll"><table>
+    <tr><th>Variant</th><th>Split by</th><th>What changes</th><th>Ad-set targeting</th></tr>
+    <tr><td>A1-MRI · A1-CT</td><td>Modality</td><td>Callout, tag, scene items, photo</td><td>Titles and skills related to MRI or CT, plus the account list</td></tr>
+    <tr><td>A1-FL · A1-TX</td><td>Region</td><td>Callout, tag, "our team is nearby" line, photo</td><td>Location set to that state; same titles and list</td></tr>
+    <tr><td>C1-S · C1-M · C1-L</td><td>Monthly exams</td><td>Callout, tag, one sentence on that size's pain, headline</td><td>Company-size band plus the account list; lead form volume answer confirms the fit</td></tr>
+  </table></div>
+  <p class="meta">Naming: <span class="mono">L1_A1_MRI_v1</span>, <span class="mono">L3_C1_Size-M_v1</span>. Photo prompts for the swaps are in the last tab.</p>
+  <div class="ads" id="variantlist" style="margin-top:18px"></div>
+</section>
+
+<section class="pane" id="targeting" data-title="Targeting" hidden>
+  <h2>Who sees what</h2>
+  <p class="lead">Start narrow and precise. An imaging-center audience is small, so every wasted impression matters.</p>
+  <div class="grid g2">
+    <div class="box"><span class="tag">Primary: account list</span>
+      <p style="margin-top:10px">Upload a company list of freestanding imaging centers as a Matched Audience (company list). Build it from public provider data (CMS/NPI) or a data vendor. LinkedIn needs at least 300 matched accounts per ad set, so expect to need a list of well over 300 to clear the match rate.</p>
+      <p class="muted">This is the single best lever: the ads reach the right companies even when people list their title loosely.</p></div>
+    <div class="box"><span class="tag">Secondary: attribute targeting</span>
+      <ul class="clean" style="margin-top:10px">
+        <li><b>Location:</b> United States (required). Add state tiers later for budget control.</li>
+        <li><b>Company size:</b> start 2–200, test 201–500. Independent centers are small.</li>
+        <li><b>Industry:</b> hospitals and health care, medical practices, outpatient care (verify exact names in Campaign Manager).</li>
+        <li><b>Seniority:</b> Owner, Partner, CXO, Director, Manager.</li>
+        <li><b>Turn off:</b> Audience Expansion and LinkedIn Audience Network, which both dilute a small audience.</li>
+      </ul></div>
+  </div>
+  <h3 style="margin-top:24px">Job titles by buyer</h3>
+  <div class="scroll"><table>
+    <tr><th>Buyer</th><th>Titles to include</th><th>Skills / groups to test</th></tr>
+    <tr><td>Owner</td><td>Owner, Founder, President, CEO, Managing Partner, Administrator</td><td>Healthcare management, imaging center</td></tr>
+    <tr><td>Operations</td><td>Director of Operations, Practice Manager, Center Manager, Imaging Director, Administrative Director, Patient Access Manager</td><td>Medical imaging management; AHRA members (association for imaging managers)</td></tr>
+    <tr><td>Revenue cycle</td><td>Revenue Cycle Director, Billing Manager, Director of Patient Financial Services, Prior Authorization Manager, A/R Manager</td><td>Revenue cycle management, prior authorization, medical billing</td></tr>
+    <tr><td>Radiologist-owner</td><td>Radiologist, Medical Director, Chief of Radiology, Managing Partner</td><td>Radiology, MRI, practice management; RBMA members</td></tr>
+  </table></div>
+  <h3 style="margin-top:24px">Extra ad sets for the variants</h3><p>Region ad sets use the location facet (state). Modality ad sets add skills such as MRI or CT to the title targeting. Size ad sets use the company-size facet. Each still sits on top of the account list, and each must reach 300 matched members. See the Variants tab.</p>
+  <h3 style="margin-top:24px">Exclusions</h3>
+  <p>Current customers (upload as a list), Alpha Nodus employees, competitors' staff, recruiters, students, and large hospital systems and national chains if you want to stay independent-only.</p>
+
+  <h3 style="margin-top:24px">Retargeting pools</h3>
+  <div class="scroll"><table>
+    <tr><th>Pool</th><th>Window</th><th>Gets</th><th>Why</th></tr>
+    <tr><td>Video viewers, 50%+</td><td>90 days</td><td>Level 2 document ad</td><td>Interested, not yet informed</td></tr>
+    <tr><td>Document ad readers and form openers (did not submit)</td><td>60 days</td><td>Level 3 Order Trace offer</td><td>Closest to a lead without a lead</td></tr>
+    <tr><td>Company page engagers</td><td>90 days</td><td>Level 2 conversation ad</td><td>Already follow the brand</td></tr>
+    <tr><td>Website visitors, all B2B pages</td><td>30 / 90 / 180 days</td><td>Role-specific level 3 ads</td><td>Intent signal</td></tr>
+    <tr><td>Pricing and prior-auth page visitors</td><td>30 days</td><td>Level 3, strongest offer</td><td>Highest intent</td></tr>
+    <tr><td>Lead form submitters (not yet booked)</td><td>45 days</td><td>Order Trace call offer</td><td>Convert a lead into a conversation</td></tr>
+    <tr><td>RSNA event attendees and Chicago geo (during event)</td><td>Event window</td><td>Booth 6537 ad</td><td>Time-boxed</td></tr>
+  </table></div>
+  <div class="callout"><b>Always exclude</b> people who booked a call from every acquisition and retargeting ad set, so nobody sees "book a call" after booking. Use a booking confirmation page as the conversion event.</div>
+  <p class="meta">Setup reference: <a href="https://www.linkedin.com/help/lms/answer/106247">LinkedIn Matched Audiences best practices</a>.</p>
+</section>
+
+<section class="pane" id="setup" data-title="Setup" hidden>
+  <h2>Setup, in order</h2>
+  <p class="lead">Do steps 1–6 before spending a dollar. Most failed B2B campaigns skip the tracking.</p>
+  <ol class="steps">
+    <li><div><h3>Confirm the foundations</h3><p class="muted">Company Page complete, Campaign Manager ad account with billing, and an admin with Content Admin rights so thought-leader posts can be boosted.</p></div></li>
+    <li><div><h3>Install the LinkedIn Insight Tag on B2B pages only</h3><p class="muted">Homepage, Gravity solution pages, pricing, About, demo. Keep it off any consumer or patient-facing page. Verify in Campaign Manager that the tag is firing.</p></div></li>
+    <li><div><h3>Create the booking conversion</h3><p class="muted">Embed the booking calendar on the landing page and send people to a thank-you page after booking (check that your Calendly plan supports a custom redirect). Track that page as the conversion. Add a second conversion for form submits. Set a 30-day click and 7-day view window.</p></div></li>
+    <li><div><h3>Build the audiences</h3><p class="muted">Upload the account list and customer exclusion list. Create the retargeting pools from the table in the Targeting tab. New pools take time to reach the 300-member minimum, so they start small.</p></div></li>
+    <li><div><h3>Create three campaign groups</h3><p class="muted">"L1 Awareness", "L2 Consideration", "L3 Decision". Budget, reporting, and pausing happen at this level.</p></div></li>
+    <li><div><h3>Set the campaign objectives</h3><p class="muted">L1: Brand awareness for single image and Video views for the video. L2: Lead generation. L3: Website conversions. Start with maximum delivery bidding; move to manual bidding only if costs run away after two weeks.</p></div></li>
+    <li><div><h3>Upload creatives with naming</h3><p class="muted">Name format: <span class="mono">L2_Doc_Checklist_RCM_v1</span>. Run three or four ads per campaign. UTM: <span class="mono">utm_source=linkedin&utm_medium=paid&utm_campaign=&lt;level&gt;&utm_content=&lt;ad id&gt;</span>.</p></div></li>
+    <li><div><h3>Connect lead delivery</h3><p class="muted">Send Lead Gen Form submissions to your CRM or email within minutes. Speed matters: follow up the same day with the Calendly link.</p></div></li>
+    <li><div><h3>Add variants only after the base ads have data</h3><p class="muted">Launch A1 and C1 first. Add the modality, region and size variants from the Variants tab as separate ad sets once their audiences clear 300 members.</p></div></li>
+    <li><div><h3>Launch order</h3><p class="muted">Week 1: L1 and L2 on the account list. Week 2: switch on L3 retargeting once pools pass 300. Week 3: first creative pruning. Week 4+: add the two customer-story ads once approved.</p></div></li>
+    <li><div><h3>Weekly rhythm</h3><p class="muted">Review CTR and cost per lead weekly; review booked calls and show rate every two weeks; refresh creative every 3–4 weeks (audiences are small, so fatigue shows up fast). Cap frequency by watching it per audience.</p></div></li>
+  </ol>
+  <h3 style="margin-top:20px">Test plan</h3>
+  <div class="scroll"><table>
+    <tr><th>Test</th><th>A</th><th>B</th><th>Decide on</th></tr>
+    <tr><td>Opening line</td><td>"Your Monday isn't a staffing problem."</td><td>"Busy isn't the same as profitable."</td><td>CTR after ~2,000 impressions each</td></tr>
+    <tr><td>Form vs. landing page</td><td>Lead Gen Form</td><td>Landing page</td><td>Cost per qualified lead</td></tr>
+    <tr><td>Offer</td><td>Checklist PDF</td><td>Free Order Trace session</td><td>Booked calls per $1,000</td></tr>
+    <tr><td>Voice</td><td>Company page</td><td>Founder (thought-leader post)</td><td>CTR and cost per click</td></tr>
+  </table></div>
+</section>
+
+<section class="pane" id="budget" data-title="Budget &amp; KPIs" hidden>
+  <h2>Budget and what to measure</h2>
+  <p class="lead">Recommended start: <b class="num">$10,000 a month</b> for 90 days, then reallocate. Below about $6,000 the retargeting pools are too thin to learn from.</p>
+  <div class="grid g4" style="margin-block:16px" id="budgetcards"></div>
+  <div class="callout"><b>Reading the economics:</b> pricing starts at $1,000 a month, so a customer is worth at least $12,000 a year. If a booked call costs around $343 (the vendor-reported median for demo-type leads) and one in four calls becomes a customer, the cost per customer is roughly $1,400 against $12,000+ in first-year revenue. Those two rates are my assumptions; replace them with your close rate once you have data.</div>
+  <h3>Planning ranges for the first 90 days</h3>
+  <p class="muted">These are estimates from the cited benchmarks, not forecasts. Real results depend on audience size and creative.</p>
+  <div class="scroll"><table>
+    <tr><th>Metric</th><th>Starting target</th><th>Action if worse</th></tr>
+    <tr><td>CTR, single image</td><td class="num">0.5% or higher</td><td>Rewrite the first line; test a new visual</td></tr>
+    <tr><td>Video views at 50%</td><td class="num">Track; no benchmark available</td><td>Cut to 10 seconds; front-load the hook</td></tr>
+    <tr><td>Lead Gen Form completion</td><td class="num">10% or higher</td><td>Remove optional fields; shorten the offer</td></tr>
+    <tr><td>Cost per content lead</td><td class="num">$100–$250</td><td>Narrow titles; tighten the account list</td></tr>
+    <tr><td>Cost per booked call</td><td class="num">$250–$400</td><td>Test the offer; add role-specific retargeting</td></tr>
+    <tr><td>Booked calls per month (steady state)</td><td class="num">8–15</td><td>Check frequency and pool size</td></tr>
+    <tr><td>Show rate</td><td class="num">70% or higher</td><td>Reminder emails; shorten the booking lead time</td></tr>
+    <tr><td>Share of leads in the 1,001+ exam tiers</td><td class="num">Track from day one</td><td>Shift targeting toward larger centers</td></tr>
+  </table></div>
+  <h3 style="margin-top:20px">Reporting</h3>
+  <ul class="clean"><li><b>Weekly:</b> spend, impressions, CTR, cost per lead, frequency by audience.</li><li><b>Fortnightly:</b> booked calls, show rate, opportunities created.</li><li><b>Monthly:</b> pipeline value, cost per opportunity, creative winners, and the next month's reallocation.</li></ul>
+</section>
+
+<section class="pane" id="prompts" data-title="Image prompts" hidden>
+  <h2>Prompts for real-looking photos</h2>
+  <p class="lead">For Nano Banana, Midjourney or Firefly. Each prompt fills one dashed slot. They show places, objects and hands from a freestanding center, never a hospital, and never faces, so nothing looks like a fake customer.</p>
+  <div class="callout"><b>Rules for every image:</b> no readable text or patient data on screens or paper, no logos, no identifiable faces, no fake testimonials. Never caption an AI image as a real customer. Where you can, a real photo of your team or a partner center beats any generated image. Replace generated shots as soon as you have real ones.</div>
+  <div class="grid g2" id="promptlist"></div>
+</section>
+</main>
+
+<footer class="wrap" style="padding-block:10px 40px"><p class="meta">Brand colors and the "AN" mark are placeholders. Swap in the real logo and palette before publishing ads.</p></footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const TABS=[...document.querySelectorAll('section.pane')];
+const tabBar=$('#tabs');
+TABS.forEach(p=>{const b=document.createElement('button');b.role='tab';b.textContent=p.dataset.title.replace('&amp;','&');b.dataset.id=p.id;b.onclick=()=>show(p.id);tabBar.appendChild(b)});
+function show(id){
+  if(!TABS.some(p=>p.id===id))id='strategy';
+  TABS.forEach(p=>p.hidden=p.id!==id);
+  tabBar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.id===id));
+  try{history.replaceState(null,'','#'+id)}catch(e){}
+  window.scrollTo(0,0);
+}
+show(location.hash.slice(1)||'strategy');
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+
+/* personas */
+const PERSONAS=[
+ {n:'Owner / administrator-owner',t:'Owner, CEO, President, Managing Partner',w:'Volume is fine. Why is profit thin?',c:['Margin per exam as payers tighten','Referrer loyalty','Growing without hiring more people'],h:'Show the cost of operations in dollars.',a:'A2, A3, C1'},
+ {n:'Operations / practice manager',t:'Director of Operations, Practice Manager, Center Manager',w:'My front desk drowns in faxes and calls.',c:['Order intake by fax and phone','Schedule gaps and no-shows','Staff turnover and tech shortage'],h:'Show the manual steps disappearing.',a:'A4, B3, C3'},
+ {n:'Revenue-cycle / billing lead',t:'RCM Director, Billing Manager, Patient Financial Services',w:'I find out about the problem 45 days too late.',c:['Denials and prior authorization','Eligibility and patient estimates','A/R days and patient collections'],h:'Move the catch from after the exam to before it.',a:'A1, B1, C2'},
+ {n:'Radiologist-owner / medical director',t:'Radiologist, Medical Director, Chief of Radiology',w:'I want referrers to keep sending me cases, and I do not want another IT project.',c:['Referral relationships','Report delivery back to referrers','Skepticism about "AI" claims'],h:'Be clear that Gravity does not read the scan.',a:'C4, B3'}
+];
+$('#personas').innerHTML=PERSONAS.map(p=>`<div class="box"><span class="tag">${p.n}</span>
+ <p class="muted" style="margin-top:10px"><span class="mono">Titles:</span> ${p.t}</p>
+ <h3>In their head</h3><p style="font-style:italic">"${p.w}"</p>
+ <h3>What they worry about</h3><ul class="clean">${p.c.map(x=>`<li>${x}</li>`).join('')}</ul>
+ <h3 style="margin-top:10px">How to talk to them</h3><p>${p.h}</p>
+ <p class="meta"><b>Ads aimed here:</b> ${p.a}</p></div>`).join('');
+
+/* art visuals */
+const logo='<div class="logo" aria-hidden="true">AN</div>';
+const MON=['Friday afternoon\'s faxes, still in the tray','Voicemails from two referring offices','Walk-ins at the desk, phone ringing','An auth that was "pending" last week'];
+const row=(t,c)=>`<div style="display:flex;gap:10px;align-items:center;border:1px solid var(--art-line);border-radius:6px;padding:8px 11px;font-size:clamp(11px,2.3vw,14px)"><span style="color:${c||'var(--art-leak)'}">●</span><span>${t}</span></div>`;
+const V={
+monday:a=>`<div class="art"><div class="k">${a.vo&&a.vo.k||'Monday · 7:50 a.m.'}</div><div class="big">Your Monday isn't a <em>staffing</em> problem.</div>
+<div style="display:grid;gap:7px;flex:1;align-content:center">${((a.vo&&a.vo.items)||MON).map(t=>row(t)).join('')}</div>
+<div class="sm">Sound familiar? That's the process, not your people.</div></div>`,
+busy:()=>`<div class="art"><div class="k">Illustration, not data</div><div class="big">Busy isn't the same as <em>profitable</em>.</div>
+<svg viewBox="0 0 400 150" role="img" aria-label="Illustration: exam volume rising while take-home stays flat"><g font-family="IBM Plex Mono,monospace" font-size="10" fill="#8FA7B9"><text x="10" y="14">EXAMS</text><text x="10" y="84">TAKE-HOME</text></g>
+<g fill="#4BA3E8"><rect x="10" y="20" width="90" height="12"/><rect x="10" y="36" width="190" height="12"/><rect x="10" y="52" width="300" height="12"/></g>
+<g fill="#4FC08D"><rect x="10" y="90" width="150" height="12"/><rect x="10" y="106" width="150" height="12"/><rect x="10" y="122" width="150" height="12"/></g>
+<g font-family="IBM Plex Mono,monospace" font-size="10" fill="#EAF2F8"><text x="106" y="30">Q1</text><text x="206" y="46">Q2</text><text x="316" y="62">Q3</text><text x="166" y="100">Q1</text><text x="166" y="116">Q2</text><text x="166" y="132">Q3</text></g></svg>
+<div class="sm">More scans. Same month-end number. Where did the work go?</div></div>`,
+founder:()=>`<div class="art wide" style="flex-direction:row;gap:4%;padding-top:9%"><div class="slot" style="flex:0 0 40%">PHOTO · real, candid<br>Founder in a working imaging center<br>(no patients)</div><div style="display:flex;flex-direction:column;justify-content:center;gap:6px"><div class="k">A question for center owners</div><div class="big" style="font-size:clamp(16px,3.6vw,26px)">What's the longest an order has ever sat at your center?</div></div></div>`,
+video:()=>`<div class="art" style="gap:2%"><div class="k">15-second video · storyboard</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1">
+${[['0–3s','4:55 p.m. A phone rings at the front desk. On-screen: "Referring office"'],['3–8s','Hands flip between a paper order, a schedule and an insurance screen. On-screen: "Where is that order?"'],['8–12s','"Let me call you back." The caller hangs up. On-screen: "They remember that."'],['12–15s','End card: "Running an order shouldn\'t take three screens." + Alpha Nodus']].map(f=>`<div class="slot" style="flex-direction:column;gap:4px"><b>${f[0]}</b><span style="font-family:var(--f-body)">${f[1]}</span></div>`).join('')}</div></div>`,
+doc:()=>`<div class="art"><div class="k">Free checklist · 15 questions</div><div class="big">Before you hire another scheduler, answer these.</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1">${[['1','Where orders disappear'],['2','Where visits stall'],['3','Where money slips']].map(x=>`<div style="border:1px solid var(--art-line);border-radius:6px;padding:8px;display:flex;flex-direction:column;justify-content:space-between"><span class="k">Part ${x[0]}</span><b style="font-family:var(--f-display);font-size:clamp(12px,2.6vw,18px)">${x[1]}</b><span class="sm">5 questions</span></div>`).join('')}</div>
+<div class="sm">For independent imaging centers</div></div>`,
+form:()=>`<div class="art"><div class="k">Free · 10 minutes</div><div class="big">Score your center before the next hire.</div>
+<div class="slot" style="flex:0 0 38%">PHOTO · clipboard and pen on a reception desk,<br>no readable text</div></div>`,
+chat:()=>`<div class="art wide" style="justify-content:center"><div class="k">Conversation ad · sent to the inbox</div><div class="big" style="font-size:clamp(18px,4vw,28px)">When an order goes wrong, where does it start?</div><div class="sm">Pick one. We'll send what helps most.</div></div>`,
+trace:a=>`<div class="art"><div class="k">${a.vo&&a.vo.k||'Free · 30 minutes'}</div><div class="big">Pick one order from last week. We'll <em>follow it</em>.</div>
+<svg viewBox="0 0 400 100" role="img" aria-label="An order moving through stages, with stalls marked"><line x1="20" y1="50" x2="380" y2="50" stroke="#26414F" stroke-width="3"/>
+<g fill="#EAF2F8"><circle cx="30" cy="50" r="7"/><circle cx="130" cy="50" r="7"/><circle cx="230" cy="50" r="7"/><circle cx="370" cy="50" r="7"/></g>
+<g fill="#F08A4B"><circle cx="80" cy="50" r="6"/><circle cx="185" cy="50" r="6"/><circle cx="300" cy="50" r="6"/></g>
+<g font-family="IBM Plex Mono,monospace" font-size="9" fill="#8FA7B9" text-anchor="middle"><text x="30" y="30">REFERRAL</text><text x="130" y="30">ORDER</text><text x="230" y="30">EXAM</text><text x="370" y="30">PAID</text><text x="80" y="76" fill="#F08A4B">STALL</text><text x="185" y="76" fill="#F08A4B">STALL</text><text x="300" y="76" fill="#F08A4B">STALL</text></g></svg>
+<div class="sm">You keep the notes either way.</div></div>`,
+denial:()=>`<div class="art"><div class="k">Does your team hear about denials weeks later?</div><div class="big">Fix the denial <em>before</em> the scan.</div>
+<svg viewBox="0 0 400 130" role="img" aria-label="Timeline: check at scheduling versus denial weeks after the scan"><line x1="20" y1="70" x2="380" y2="70" stroke="#26414F" stroke-width="3"/>
+<circle cx="60" cy="70" r="8" fill="#4FC08D"/><circle cx="170" cy="70" r="8" fill="#EAF2F8"/><circle cx="350" cy="70" r="8" fill="#F08A4B"/>
+<g font-family="IBM Plex Mono,monospace" font-size="10" fill="#EAF2F8" text-anchor="middle"><text x="60" y="50" fill="#4FC08D">SCHEDULING</text><text x="60" y="98">coverage, auth,</text><text x="60" y="111">estimate checked</text><text x="170" y="50">SCAN</text><text x="350" y="50" fill="#F08A4B">WEEKS LATER</text><text x="350" y="98">denial arrives</text></g></svg>
+<div class="sm">Most denials were visible when the patient booked.</div></div>`,
+retype:()=>`<div class="art"><div class="k">Still keying faxed orders by hand?</div><div class="big">Your best scheduler shouldn't be a human photocopier.</div>
+<div class="slot" style="flex:0 0 40%">PHOTO · fax tray and a stack of printed orders at a small front desk,<br>no readable text</div><div class="sm">Reading, finding, matching, keying. Every day. That's skilled time spent copying.</div></div>`,
+referrer:()=>`<div class="art"><div class="k">Radiologist-owners</div><div class="big">Referrers remember how fast you got <em>back</em> to them.</div>
+<div style="display:grid;gap:7px;flex:1;align-content:center">${['Order received','Patient scheduled','Report sent to your office'].map(t=>`<div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--art-line);border-radius:6px;padding:8px 12px;font-size:clamp(11px,2.3vw,14px)"><span>${t}</span><span style="color:var(--art-ok)">✓</span></div>`).join('')}</div>
+<div class="sm">What your referring office sees, without calling you.</div></div>`,
+screen:()=>`<div class="art"><div class="k">Product view · demo data</div><div class="big">Every order, and exactly what it's <em>waiting on</em>.</div>
+<div class="slot" style="flex:1;flex-direction:column;gap:6px;align-content:center"><b>REAL SCREENSHOT</b><span style="font-family:var(--f-body)">Order worklist with demo data only (no patient names).<br>Callouts: "Waiting on auth" · "Missing info" · "Ready to schedule"</span></div>
+<div class="sm">Replace this slot with a screenshot your team recognizes as their own workflow.</div></div>`,
+rsna:()=>`<div class="art"><div class="k">RSNA 2026 · Chicago</div><div class="big" style="font-size:clamp(46px,14vw,92px)">6537</div><div class="big" style="font-size:clamp(16px,3.6vw,26px)">Bring the workflow that eats your week.</div><div class="sm">We'll sketch a better version before your coffee gets cold.</div></div>`,
+stat:a=>`<div class="art"><div class="k">${esc(a.kicker)}</div><div class="big" style="font-size:clamp(18px,4.4vw,30px)">${esc(a.big)}</div><div style="display:grid;gap:8px;flex:1;align-content:center">${a.stats.map(s=>`<div style="display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--art-line);padding-top:7px"><b style="font-family:var(--f-display);font-size:clamp(22px,5.6vw,40px);color:var(--art-ok);flex:none">${esc(s[0])}</b><span style="font-size:clamp(11px,2.3vw,14px);color:var(--art-mute)">${esc(s[1])}</span></div>`).join('')}</div><div class="sm">Source: customer story on alphanodus.com. Customer approval needed for ad use.</div></div>`,
+proof:()=>`<div class="art"><div class="k">Customer proof · waiting on your story</div><div class="big">A [N]-scanner independent in [region] cut [metric] by [X].</div><div class="slot">REAL PHOTO · customer-approved<br>+ real, approved numbers only</div></div>`
+};
+
+/* ads */
+const LP='Landing page (to build): alphanodus.com/order-trace';
+const ADS=[
+{id:'A1',lv:1,p:'Operations · Owner',tag:'FOR CENTER OPERATIONS',fmt:'Single image',obj:'Brand awareness',v:'monday',intro:'Imaging center managers: Monday, 7:50 a.m. The phone is lit up, three people are at the desk, and Friday afternoon\'s faxes are still in the tray.\n\nNone of it shows up on your volume report. All of it costs you exams.\n\nIf that\'s your Monday, you\'re not behind. The process is.',hl:'Your Monday isn\'t a staffing problem.',sub:'alphanodus.com',cta:'See why',why:'The first line names the reader. The scene proves we know the job.',test:'Versus the "Busy isn\'t the same as profitable" opener. Base for the modality and region variants.',dest:LP,variants:true},
+{id:'A2',lv:1,p:'Owner',tag:'FOR CENTER OWNERS',fmt:'Single image',obj:'Brand awareness',v:'busy',intro:'Independent imaging center owners: you added a scanner slot, extended the hours, hired another tech.\n\nVolume went up. Somehow the month-end number didn\'t move the way you expected.\n\nThe gap usually isn\'t the equipment or the payer mix. It\'s the work between the referral and the payment that nobody counts.',hl:'Busy isn\'t the same as profitable.',sub:'alphanodus.com',cta:'Find the gap',why:'Names owners directly. The graphic is labeled as an illustration so it never reads as a claim.',test:'Single image versus carousel with three owner questions.',dest:LP},
+{id:'A3',lv:1,p:'Owner · Radiologist',tag:'FOR CENTER OWNERS',fmt:'Thought-leader ad',obj:'Brand awareness',v:'founder',author:['Shamit Patel','Founder & CEO, Alpha Nodus'],intro:'Draft in the founder\'s voice. Needs Shamit\'s edits and approval before it runs.\n\nA question for independent imaging center owners: what\'s the longest an order has ever sat at your center?\n\nA relative of mine needed a scan and waited six weeks. The scanner was never the problem. The paperwork around it moved at its own pace.\n\nThat stuck with me, so before we wrote any code we worked the front desk ourselves.',hl:'What\'s the longest an order has sat at your center?',sub:'From the founder',cta:'Read more',why:'Opens with a question only center owners can answer. Comments widen a thought-leader ad\'s reach.',test:'Founder voice versus company page.',dest:LP},
+{id:'A4',lv:1,p:'Operations',tag:'FOR FRONT DESK & OPS',fmt:'Video, 15 seconds',obj:'Video views',v:'video',intro:'Front-desk teams at imaging centers: 4:55 p.m. A referring office calls and asks, "Did you schedule that patient?"\n\nYou flip between a paper order, the schedule and an insurance screen. "Let me call you back."\n\nThey remember that.',hl:'Running an order shouldn\'t take three screens.',sub:'alphanodus.com',cta:'Learn more',why:'Silent-friendly with on-screen text. Shoot it in a real, small center if you can.',test:'Retarget 50%+ viewers with B1.',dest:LP},
+{id:'B1',lv:2,p:'All',tag:'FOR IMAGING CENTERS',fmt:'Document ad',obj:'Lead generation',v:'doc',intro:'Thinking about another front-desk hire at your imaging center? Answer these 15 questions first.\n\nThey take about 10 minutes and cover where orders disappear, where visits stall and where money slips. Most centers find one answer they didn\'t expect.',hl:'15 questions to answer before your next front-desk hire',sub:'Free checklist · PDF',cta:'Download',why:'Plain, practical, and tied to a decision they are already weighing.',test:'Native form versus landing page.',dest:'Lead Gen Form first; landing page for non-submitters'},
+{id:'B2',lv:2,p:'All',tag:'FREE · IMAGING CENTERS',fmt:'Lead Gen Form',obj:'Lead generation',v:'form',form:true,intro:'Imaging center leaders: score your center in 10 minutes, before the next hire.\n\nTell us where you work and we\'ll send the checklist. We\'ll also ask roughly how many exams you do a month so we can send the version that fits your size.',hl:'Score your center before the next hire',sub:'Form opens inside LinkedIn',cta:'Download',why:'Pre-filled profile fields cut friction. The volume question qualifies without a sales call.',test:'With and without the volume question.',dest:'Thank-you page with the Order Trace booking link'},
+{id:'B3',lv:2,p:'Ops · RCM · Radiologist',tag:'FOR IMAGING TEAMS',fmt:'Conversation ad',obj:'Lead generation',v:'chat',chat:true,intro:'(Sent as an inbox message from a named Alpha Nodus person. Uses the first-name merge; check in Campaign Manager whether a company-name merge is available.)',hl:'When an order goes wrong, where does it start?',sub:'',cta:'Reply',why:'One easy question, four honest answers, and each answer gets a reply written for that role.',test:'Sender: founder versus customer success.',dest:LP},
+{id:'B4',lv:2,p:'Owner · RCM',tag:'FOR CENTER OWNERS & RCM',fmt:'Customer story',obj:'Website visits',v:'stat',kicker:'Iowa Radiology · customer story',big:'A prior-auth backlog, gone in days.',stats:[['80%+','of authorizations now handled by Gravity'],['1 week','to clear the backlog'],['0','people added to the team']],approve:true,intro:'Prior authorization backlog piling up, and no room in the budget to hire?\n\nIowa Radiology went live in days and cleared its backlog within the week. Gravity now handles at least 80% of its authorizations. No one was added to the team.',hl:'Iowa Radiology: backlog gone in days',sub:'Read the story',cta:'Read story',why:'A named, specific result answers the hiring and prior-auth pain at once. Peers trust peers.',test:'Retarget with this to anyone who engaged with O2 or O3.',dest:'https://www.alphanodus.com/customers/iowa-radiology'},
+{id:'B5',lv:2,p:'Owner · Operations',tag:'FOR OPS & OWNERS',fmt:'Customer story',obj:'Website visits',v:'stat',kicker:'Downtown Radiology · customer story',big:'Full schedules, without more schedulers.',stats:[['19.7% → 43.8%','of exams self-booked, in twelve months'],['94.2%','of self-booked exams were completed']],approve:true,intro:'Want a full schedule without hiring more schedulers?\n\nAt Downtown Radiology, patient self-booking grew from 19.7% to 43.8% of exams in twelve months, and 94.2% of those self-booked exams were completed.',hl:'Downtown Radiology: full schedules, no extra schedulers',sub:'Read the story',cta:'Read story',why:'Speaks to schedule gaps and hiring together, with numbers the reader can compare to their own.',test:'Versus P3 (schedule gaps question).',dest:'https://www.alphanodus.com/customers/downtown-radiology'},
+{id:'C1',lv:3,p:'All',tag:'FOR INDEPENDENT CENTERS',fmt:'Single image',obj:'Website conversions',v:'trace',intro:'Run an independent imaging center? Pick any order from last week. One that took longer than it should have.\n\nIn 30 minutes we\'ll walk it from the referral to the payment and mark every place it stalled. You keep the notes whether or not we ever work together.',hl:'Trace one order with us. 30 minutes, free.',sub:'Book a time',cta:'Book now',why:'A small, concrete ask. It lowers the risk of saying yes compared with a demo.',test:'Versus "Book a demo". Base for the volume-band variants.',dest:LP,variants:true},
+{id:'C2',lv:3,p:'RCM',tag:'FOR BILLING & RCM LEADS',fmt:'Single image',obj:'Website conversions',v:'denial',intro:'Does your billing team find out about denials weeks after the scan?\n\nMost of them were visible when the patient booked: coverage, authorization, the estimate.\n\nWhat if you caught them there?',hl:'Fix the denial before the scan, not after.',sub:'Trace one order · 30 minutes · free',cta:'Book now',why:'A self-selecting question: only billing people feel it. The timeline then shows the way out.',test:'Prior-auth and pricing page visitors only.',dest:LP},
+{id:'C3',lv:3,p:'Operations',tag:'FOR OPS & FRONT DESK',fmt:'Single image',obj:'Website conversions',v:'retype',intro:'Still keying faxed orders into the schedule by hand?\n\nSomebody at your center reads the fax, finds the patient, picks the exam, checks the code and types it in. Every day.\n\nIt\'s skilled work spent copying, and it\'s where wrong-exam and missing-info mistakes begin.',hl:'Your best scheduler shouldn\'t be a human photocopier.',sub:'Trace one order · 30 minutes · free',cta:'Book now',why:'A yes-or-no question the right reader answers instantly. Best with a real photo.',test:'Photo versus graphic only.',dest:LP},
+{id:'C4',lv:3,p:'Radiologist',tag:'FOR RADIOLOGIST-OWNERS',fmt:'Single image',obj:'Website conversions',v:'referrer',intro:'Radiologist-owners: a great read that reaches the ordering office three days late gets remembered as a slow center.\n\nReferral relationships are built in the follow-up: status, report, answer. Make that automatic and your time goes to reading, not chasing.',hl:'Referrers remember how fast you got back to them.',sub:'Trace one order · 30 minutes · free',cta:'Book now',why:'Speaks to what a radiologist-owner actually protects: referrers.',test:'Radiologist and medical-director titles only.',dest:LP},
+{id:'C5',lv:3,p:'All · Event',tag:'FOR RSNA ATTENDEES',fmt:'Single image',obj:'Website conversions',v:'rsna',intro:'Imaging center leaders heading to RSNA in Chicago?\n\nWe\'re at booth 6537. Pick a time and bring the one workflow that eats your week. We\'ll sketch a better version before your coffee gets cold.',hl:'Bring the workflow that eats your week.',sub:'RSNA 2026 · Booth 6537',cta:'Book a slot',why:'A friendly, time-boxed invitation instead of a hard sell.',test:'Run only in the weeks before and during RSNA. Confirm show dates.',dest:'Event landing section with booth-slot booking'},
+{id:'C6',lv:3,p:'Ops · RCM',tag:'FOR OPS & BILLING',fmt:'Single image',obj:'Website conversions',v:'screen',intro:'Ever open the schedule and wonder which orders are stuck, and why?\n\nThis is the view your team would work from: every order, what it\'s waiting on, and who needs to act. (Screenshot uses demo data.)',hl:'Every order, and exactly what it\'s waiting on.',sub:'Trace one order · 30 minutes · free',cta:'Book now',why:'Operators trust a screen they recognize more than a drawing. Needs your real screenshot.',test:'Screenshot versus the C3 photo.',dest:LP}
+];
+
+/* variants of the two base ads */
+const VARIANTS=[
+{base:'A1',id:'A1-MRI',dim:'Modality · MRI',patch:{tag:'FOR MRI CENTERS',intro:'MRI center managers: Monday, 7:50 a.m. Tomorrow\'s scan is still waiting on an authorization, the phone is lit up, and Friday\'s faxes are in the tray.\n\nAn empty MRI slot is hard to win back, and a stalled order is how it happens.\n\nIf that\'s your Monday, you\'re not behind. The process is.',vo:{k:'Monday · 7:50 a.m. · MRI',items:['Tomorrow\'s MRI still waiting on an authorization','Friday afternoon\'s faxes, still in the tray','Voicemail: "did you schedule that patient?"','Walk-ins at the desk, phone ringing']}},photo:'MRI suite exterior and control room, freestanding center',targeting:'Skills and titles around MRI and MR technologists, imaging directors'},
+{base:'A1',id:'A1-CT',dim:'Modality · CT',patch:{tag:'FOR CT CENTERS',intro:'CT center managers: Monday, 7:50 a.m. Same-day add-ons from referring offices, a full fax tray, and a schedule that changes every hour.\n\nNone of it shows up on your volume report. All of it costs you exams.\n\nIf that\'s your Monday, you\'re not behind. The process is.',vo:{k:'Monday · 7:50 a.m. · CT',items:['Same-day add-on requests from referring offices','Friday afternoon\'s faxes, still in the tray','Orders with missing information, waiting on a call-back','Walk-ins at the desk, phone ringing']}},photo:'CT room and scheduling desk, freestanding center',targeting:'Skills and titles around CT and imaging operations'},
+{base:'A1',id:'A1-FL',dim:'Region · Florida',patch:{tag:'FOR FLORIDA CENTERS',intro:'Florida imaging center managers: Monday, 7:50 a.m. The phone is lit up, three people are at the desk, and Friday afternoon\'s faxes are still in the tray.\n\nOur team is based in Sunrise, so if you\'d rather talk to people down the road, we\'re close.\n\nIf that\'s your Monday, you\'re not behind. The process is.',vo:{k:'Monday · 7:50 a.m. · Florida'}},photo:'Florida-feeling exterior (palms, low-rise medical plaza), no signage',targeting:'Location: Florida; same titles and account list filtered to FL'},
+{base:'A1',id:'A1-TX',dim:'Region · Texas',patch:{tag:'FOR TEXAS CENTERS',intro:'Texas imaging center managers: Monday, 7:50 a.m. The phone is lit up, three people are at the desk, and Friday afternoon\'s faxes are still in the tray.\n\nWe have a team in Austin, so help is local.\n\nIf that\'s your Monday, you\'re not behind. The process is.',vo:{k:'Monday · 7:50 a.m. · Texas'}},photo:'Texas-feeling exterior (low-rise plaza, bright sun), no signage',targeting:'Location: Texas; same titles and account list filtered to TX'},
+{base:'C1',id:'C1-S',dim:'Volume · up to 1,000 exams/month',patch:{tag:'FOR SMALLER CENTERS',intro:'Centers doing up to 1,000 exams a month: when one or two people run the whole front end, every fax, call and call-back lands on the same desk.\n\nPick one order from last week that took longer than it should have. In 30 minutes we follow it from referral to payment and mark where it stalled. You keep the notes either way.',hl:'One desk, every task. Let\'s trace one order.',vo:{k:'Up to 1,000 exams a month'}},photo:'Small front desk, one person at the phone, no face',targeting:'Company size 2–50 plus the account list; form answer "up to 1,000"'},
+{base:'C1',id:'C1-M',dim:'Volume · 1,001–5,000 exams/month',patch:{tag:'FOR GROWING CENTERS',intro:'Centers doing 1,000 to 5,000 exams a month: volume is growing, but the process hasn\'t changed since you had half as many scans.\n\nPick one order from last week that took longer than it should have. In 30 minutes we follow it from referral to payment and mark where it stalled. You keep the notes either way.',hl:'Growing faster than your process? Trace one order.',vo:{k:'1,001 to 5,000 exams a month'}},photo:'Busy but orderly front desk, two staff, no faces',targeting:'Company size 11–200 plus the account list; form answer "1,001–5,000"'},
+{base:'C1',id:'C1-L',dim:'Volume · 5,000+ exams/month',patch:{tag:'FOR MULTI-SITE CENTERS',intro:'Centers doing 5,000+ exams a month, across more than one site or shift: things fall between handoffs.\n\nPick one order from last week that took longer than it should have. In 30 minutes we follow it from referral to payment and mark where it stalled. You keep the notes either way.',hl:'Where does an order fall between handoffs?',vo:{k:'5,000+ exams a month'}},photo:'Two small schedule screens at a shared desk, nothing readable',targeting:'Company size 51–500 plus the account list; form answer "5,001+"'}
+];
+
+const LV={1:'Level 1 · Awareness',2:'Level 2 · Consideration',3:'Level 3 · Decision'};
+const chipBox=$('#chips');
+let filter='all';
+const chipDefs=[['all','All ads'],['1','Level 1'],['2','Level 2'],['3','Level 3']];
+chipDefs.forEach(([k,t])=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.setAttribute('aria-pressed',k==='all');b.onclick=()=>{filter=k;chipBox.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderAds()};chipBox.appendChild(b)});
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function adHTML(a,extra){
+  const name=a.author?a.author[0]:'Alpha Nodus';
+  const sub=a.author?a.author[1]:'Promoted';
+  const head=a.author?`<div class="logo" style="border-radius:50%;background:var(--soft);color:var(--brand)" aria-hidden="true">SP</div>`:logo;
+  let art=V[a.v](a).replace(/(<div class="art[^"]*"[^>]*>)/,`$1<span class="rt">${esc(a.tag)}</span>`);
+  let mid=art;
+  if(a.form) mid+=`<div class="form" style="padding:12px 14px"><b style="font-size:13px">Form fields</b><div class="f" style="margin-top:6px">First name, last name, email, job title, company<small>Pre-filled from the LinkedIn profile</small></div><div class="f">Approx. monthly exams<small>Up to 1,000 · 1,001–5,000 · 5,001–20,000 · 20,000+</small></div></div>`;
+  if(a.chat) mid+=`<div style="padding:10px 14px 12px"><div class="bubble">Hi {first name}, quick question. When something goes wrong with an order at your center, where does it usually start?</div><div><span class="reply">The order never makes it in</span><span class="reply">Scheduling falls apart</span><span class="reply">Insurance says no</span><span class="reply">Honestly, all of the above</span></div><div class="bubble" style="background:transparent;border:1px dashed var(--line);color:var(--muted)">Each button gets a short reply written for that problem, then a button to the landing page.</div></div>`;
+  return `<article class="ad"><div class="frame">
+    <div class="fh">${head}<div><b>${esc(name)}</b><small>${esc(sub)}</small></div></div>
+    <div class="intro">${esc(a.intro)}</div>${mid}
+    <div class="fb"><div><b>${esc(a.hl)}</b>${a.sub?`<small>${esc(a.sub)}</small>`:''}</div><span class="btn">${esc(a.cta)}</span></div></div>
+    <div class="meta"><span class="tag ${a.lv===1?'':a.lv===2?'leak':'ok'}">${a.id} · ${LV[a.lv]}</span> ${a.locked?'<span class="tag leak">Needs confirmation</span>':''} ${a.approve?'<span class="tag leak">Get customer approval</span>':''} ${a.variants?'<span class="tag">Has variants</span>':''}<br>
+      <b>Buyer:</b> ${esc(a.p)} · <b>Format:</b> ${esc(a.fmt)} · <b>Objective:</b> ${esc(a.obj)}<br>
+      <b>Role tag:</b> <span class="mono">${esc(a.tag)}</span><br>
+      <b>Why it should work:</b> ${esc(a.why)}<br><b>Test:</b> ${esc(a.test)}${a.dest?`<br><b>Destination:</b> ${/^https?:/.test(a.dest)?`<a href="${esc(a.dest)}">${esc(a.dest.replace('https://www.',''))}</a>`:esc(a.dest)}`:''}${extra||''}<br>
+      <button class="copy" data-t="${esc(a.intro)}">Copy intro text</button><button class="copy" data-t="${esc(a.hl)}">Copy headline</button></div></article>`;
+}
+function renderAds(){
+  $('#adlist').innerHTML=ADS.filter(a=>filter==='all'||String(a.lv)===filter).map(a=>adHTML(a)).join('');
+}
+renderAds();
+$('#variantlist').innerHTML=VARIANTS.map(v=>{
+  const b=ADS.find(x=>x.id===v.base);
+  const a=Object.assign({},b,v.patch,{id:v.id,variants:false});
+  return adHTML(a,`<br><b>Variant of:</b> ${v.base} · <b>${esc(v.dim)}</b><br><b>Photo/image swap:</b> ${esc(v.photo)}<br><b>Ad-set targeting:</b> ${esc(v.targeting)}`);
+}).join('');
+
+/* simple ads */
+const sv=(b)=>`<svg viewBox="0 0 400 190" role="img" aria-hidden="true" style="flex:1;min-height:0">${b}</svg>`;
+const P='fill="#EAF2F8"',PN='fill="#12283A" stroke="#26414F" stroke-width="2"',BL='#4BA3E8',AM='#F08A4B',GR='#4FC08D',LN='#26414F',MU='#8FA7B9';
+const lines=(x,y,w,n,c)=>Array.from({length:n},(_,i)=>`<rect x="${x}" y="${y+i*9}" width="${w-(i%2?14:0)}" height="3" rx="1.5" fill="${c||'#8FA7B9'}" opacity=".7"/>`).join('');
+const phone=(x,y,w,h,inner)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" ${PN}/><rect x="${x+6}" y="${y+14}" width="${w-12}" height="${h-28}" rx="4" fill="#0A1620"/>${inner}`;
+const SC={
+fax:()=>sv(`<rect x="30" y="100" width="120" height="60" rx="6" ${PN}/><rect x="45" y="50" width="70" height="55" ${P} transform="rotate(-6 80 78)"/>${lines(52,60,52,4)}<rect x="115" y="70" width="46" height="36" ${P} opacity=".85" transform="rotate(8 138 88)"/><circle cx="135" cy="150" r="5" fill="${AM}"/><path d="M168 105 h40" stroke="${MU}" stroke-width="3"/><path d="M208 105 l-8 -6 v12z" fill="${MU}"/><rect x="225" y="55" width="140" height="85" rx="6" ${PN}/><rect x="235" y="65" width="120" height="65" rx="3" fill="#0A1620"/><rect x="243" y="75" width="60" height="5" fill="${AM}"/><rect x="243" y="88" width="90" height="5" fill="${MU}" opacity=".6"/><rect x="243" y="101" width="40" height="5" fill="${MU}" opacity=".6"/><rect x="258" y="145" width="90" height="12" rx="3" ${PN}/><text x="295" y="178" font-family="IBM Plex Mono,monospace" font-size="11" fill="${AM}" text-anchor="middle">RETYPING</text>`),
+chase:()=>sv(`<rect x="45" y="25" width="120" height="145" ${P}/>${lines(58,40,94,4)}<rect x="58" y="82" width="94" height="22" fill="${AM}" opacity=".25" stroke="${AM}"/><text x="105" y="98" font-family="IBM Plex Mono,monospace" font-size="12" fill="${AM}" text-anchor="middle">MISSING</text>${lines(58,115,94,3)}<path d="M180 100 h45" stroke="${MU}" stroke-width="3" stroke-dasharray="5 4"/><rect x="240" y="55" width="55" height="100" rx="10" ${PN}/><rect x="248" y="68" width="39" height="60" rx="3" fill="#0A1620"/><circle cx="267" cy="142" r="5" fill="${LN}"/><path d="M305 80 q14 15 0 30 M318 70 q22 25 0 50" stroke="${AM}" stroke-width="3" fill="none"/>`),
+textbook:()=>sv(`${phone(135,10,130,172,`<rect x="148" y="40" width="104" height="30" rx="10" fill="${BL}"/><text x="200" y="60" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#06121B" text-anchor="middle">Pick a time</text>${Array.from({length:12},(_,i)=>`<rect x="${150+(i%4)*26}" y="${84+Math.floor(i/4)*26}" width="22" height="20" rx="3" fill="${[1,6,9].includes(i)?GR:'#12283A'}"/>`).join('')}`)}<path d="M80 60 q-30 20 0 50" stroke="${MU}" stroke-width="3" fill="none" stroke-dasharray="4 4"/><path d="M320 60 q30 20 0 50" stroke="${MU}" stroke-width="3" fill="none" stroke-dasharray="4 4"/><text x="55" y="130" font-family="IBM Plex Mono,monospace" font-size="11" fill="${MU}">ORDER IN</text><text x="288" y="130" font-family="IBM Plex Mono,monospace" font-size="11" fill="${GR}">BOOKED</text>`),
+gaps:()=>sv(Array.from({length:30},(_,i)=>{const c=i%6,r=Math.floor(i/6),x=40+c*55,y=20+r*30,e=[4,8,13,17,22,26].includes(i);return `<rect x="${x}" y="${y}" width="48" height="24" rx="4" ${e?`fill="none" stroke="${AM}" stroke-dasharray="4 3" stroke-width="2"`:`fill="${BL}" opacity=".75"`}/>`}).join('')+`<text x="40" y="184" font-family="IBM Plex Mono,monospace" font-size="11" fill="${AM}">EMPTY SLOTS</text>`),
+auth:()=>sv(`${[0,1,2].map(i=>`<rect x="${50+i*12}" y="${35+i*10}" width="110" height="120" ${P} opacity="${1-i*.2}" stroke="#0A1620"/>`).join('')}${lines(82,70,70,4,'#52677A')}<circle cx="300" cy="95" r="48" ${PN}/><path d="M300 65 v32 l20 12" stroke="${AM}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M180 95 h50" stroke="${MU}" stroke-width="3"/><path d="M232 95 l-8 -6 v12z" fill="${MU}"/>`),
+authstack:()=>sv(`${[0,1,2,3].map(i=>`<rect x="${40+i*10}" y="${25+i*12}" width="110" height="120" ${P} opacity="${1-i*.15}" stroke="#0A1620"/>`).join('')}<rect x="190" y="70" width="170" height="50" rx="8" ${PN}/><circle cx="220" cy="95" r="12" fill="${GR}"/><path d="M214 95 l5 6 l10 -12" stroke="#06121B" stroke-width="3" fill="none"/><text x="244" y="100" font-family="IBM Plex Mono,monospace" font-size="12" fill="#EAF2F8">APPROVED</text>`),
+timeline:()=>sv(`<line x1="30" y1="95" x2="370" y2="95" stroke="${LN}" stroke-width="4"/><circle cx="70" cy="95" r="10" fill="${GR}"/><circle cx="180" cy="95" r="10" fill="#EAF2F8"/><circle cx="340" cy="95" r="10" fill="${AM}"/><g font-family="IBM Plex Mono,monospace" font-size="11" fill="#EAF2F8" text-anchor="middle"><text x="70" y="70" fill="${GR}">ORDER</text><text x="70" y="128">checked here</text><text x="180" y="70">SCAN</text><text x="340" y="70" fill="${AM}">WEEKS LATER</text><text x="340" y="128">denied</text></g>`),
+card:()=>sv(`<rect x="40" y="45" width="160" height="100" rx="10" ${PN}/><rect x="55" y="62" width="30" height="22" rx="4" fill="${AM}" opacity=".8"/>${lines(55,100,120,3)}<path d="M215 95 h45" stroke="${MU}" stroke-width="3"/><path d="M262 95 l-8 -6 v12z" fill="${MU}"/><rect x="275" y="55" width="90" height="80" rx="8" ${PN}/><text x="320" y="82" font-family="IBM Plex Mono,monospace" font-size="10" fill="${MU}" text-anchor="middle">COPAY</text><text x="320" y="98" font-family="IBM Plex Mono,monospace" font-size="10" fill="${MU}" text-anchor="middle">DEDUCTIBLE</text><circle cx="320" cy="120" r="9" fill="${GR}"/><path d="M315 120 l4 5 l8 -9" stroke="#06121B" stroke-width="3" fill="none"/>`),
+phonepay:()=>sv(`${phone(140,8,120,176,`<text x="200" y="70" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="${MU}" text-anchor="middle">Your estimate</text><text x="200" y="104" font-family="IBM Plex Sans,sans-serif" font-size="28" font-weight="700" fill="#EAF2F8" text-anchor="middle">$ ···</text><rect x="158" y="124" width="84" height="26" rx="13" fill="${GR}"/><text x="200" y="141" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#06121B" text-anchor="middle">Pay now</text>`)}<path d="M80 95 h45" stroke="${MU}" stroke-width="3" stroke-dasharray="4 4"/><text x="40" y="130" font-family="IBM Plex Mono,monospace" font-size="11" fill="${MU}">BEFORE</text><text x="40" y="145" font-family="IBM Plex Mono,monospace" font-size="11" fill="${MU}">THE VISIT</text>`),
+network:()=>sv(`<circle cx="130" cy="95" r="26" fill="${BL}"/><circle cx="290" cy="95" r="22" fill="none" stroke="${AM}" stroke-width="3"/>${[[40,35],[60,150],[200,25],[210,165],[110,22]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" ${P}/><path d="M${x} ${y} L130 95" stroke="${GR}" stroke-width="2.5"/>`).join('')}${[[350,40],[355,150],[250,30],[260,160]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" ${P}/><path d="M${x} ${y} L290 95" stroke="${AM}" stroke-width="2.5" stroke-dasharray="5 4"/>`).join('')}<text x="130" y="100" font-family="IBM Plex Mono,monospace" font-size="10" fill="#06121B" text-anchor="middle">YOU</text><text x="290" y="99" font-family="IBM Plex Mono,monospace" font-size="9" fill="${AM}" text-anchor="middle">OTHER</text>`),
+report:()=>sv(`<rect x="50" y="40" width="90" height="115" ${P}/>${lines(62,56,66,5,'#52677A')}<text x="95" y="146" font-family="IBM Plex Mono,monospace" font-size="10" fill="#52677A" text-anchor="middle">SIGNED</text><path d="M155 98 h60" stroke="${GR}" stroke-width="4"/><path d="M218 98 l-9 -7 v14z" fill="${GR}"/><rect x="235" y="55" width="110" height="100" ${PN}/>${Array.from({length:9},(_,i)=>`<rect x="${248+(i%3)*30}" y="${68+Math.floor(i/3)*24}" width="20" height="16" fill="${i===4?GR:'#0A1620'}"/>`).join('')}<text x="290" y="48" font-family="IBM Plex Mono,monospace" font-size="10" fill="${MU}" text-anchor="middle">REFERRING OFFICE</text>`),
+status:()=>sv(`<rect x="70" y="20" width="260" height="150" rx="8" ${PN}/>${['Order received','Patient scheduled','Exam completed','Report signed'].map((t,i)=>`<circle cx="100" cy="${52+i*35}" r="9" fill="${GR}"/><path d="M95 ${52+i*35} l4 5 l8 -9" stroke="#06121B" stroke-width="2.5" fill="none"/><text x="120" y="${56+i*35}" font-family="IBM Plex Sans,sans-serif" font-size="14" fill="#EAF2F8">${t}</text>`).join('')}`),
+hiring:()=>sv(`<rect x="195" y="30" width="10" height="150" fill="${LN}"/><rect x="95" y="45" width="210" height="62" rx="6" fill="${AM}"/><text x="200" y="72" font-family="IBM Plex Sans,sans-serif" font-size="18" font-weight="700" fill="#06121B" text-anchor="middle">NOW HIRING</text><text x="200" y="94" font-family="IBM Plex Sans,sans-serif" font-size="13" fill="#06121B" text-anchor="middle">Front desk · Scheduler · Biller</text><circle cx="90" cy="150" r="14" fill="none" stroke="${MU}" stroke-width="2"/><text x="90" y="155" font-family="IBM Plex Sans,sans-serif" font-size="14" fill="${MU}" text-anchor="middle">$</text><circle cx="315" cy="150" r="14" fill="none" stroke="${MU}" stroke-width="2"/><text x="315" y="155" font-family="IBM Plex Sans,sans-serif" font-size="14" fill="${MU}" text-anchor="middle">$</text>`),
+profit:()=>sv(`<circle cx="95" cy="95" r="55" fill="none" stroke="${BL}" stroke-width="16"/><circle cx="95" cy="95" r="28" fill="#0A1620" stroke="${LN}" stroke-width="2"/><rect x="190" y="120" width="26" height="45" fill="${BL}" opacity=".6"/><rect x="226" y="95" width="26" height="70" fill="${BL}" opacity=".75"/><rect x="262" y="65" width="26" height="100" fill="${BL}"/><rect x="298" y="35" width="26" height="130" fill="${BL}"/><path d="M190 110 H335" stroke="${AM}" stroke-width="4" stroke-dasharray="7 5"/><text x="338" y="114" font-family="IBM Plex Mono,monospace" font-size="10" fill="${AM}">PROFIT</text>`)
+};
+V.sq=a=>`<div class="art"><div class="big" style="font-size:clamp(20px,5vw,34px)">${esc(a.q)}</div>${SC[a.scene]()}<div style="border-top:1px solid var(--art-line);padding-top:3%;display:flex;gap:10px;align-items:center;font-size:clamp(12px,2.5vw,16px)"><span style="color:var(--art-ok);font-weight:700">AI</span><span>${esc(a.short)}</span></div></div>`;
+V.q3=a=>`<div class="art"><div style="display:grid;gap:8px;flex:1;align-content:center">${a.qs.map(t=>`<div style="border:1px solid var(--art-line);border-radius:6px;padding:10px 12px;font-family:var(--f-display);font-weight:600;font-size:clamp(14px,3.2vw,22px);line-height:1.15">${esc(t)}</div>`).join('')}</div><div style="border-top:1px solid var(--art-line);padding-top:3%;display:flex;gap:10px;align-items:center;font-size:clamp(12px,2.5vw,16px)"><span style="color:var(--art-ok);font-weight:700">AI</span><span>${esc(a.short)}</span></div></div>`;
+const W='https://www.alphanodus.com';
+const BASEP=' Freestanding outpatient imaging center, not a hospital, modest plaza setting. No readable text, no logos, no identifiable faces, no patient data. Realistic documentary photograph, natural light, shallow depth of field.';
+const S=(id,grp,tag,q,a,short,hl,cta,path,scene,photo,why,x)=>Object.assign({id,lv:1,grp,p:grp,tag,fmt:'Single image',obj:'Website visits',v:'sq',q,ans:a,short,intro0:q+'\n\n'+a,intro1:q+'\n\n'+a+((x&&x.proof)?'\n\n'+x.proof:''),intro:q+'\n\n'+a,hl,sub:'alphanodus.com',cta,dest:W+path,scene,photo:photo+BASEP,why,test:'Versus the scene ad for the same role.'},x||{});
+const SIMPLE=[
+S('O0','Owner / Administrator','FOR CENTER OWNERS','Adding scanner time every month, but profit is flat?','Let AI do the routine work. Your team just reviews the exceptions.','Hire an AI for the job →','Hire an AI for the job','Learn more','/journey','profit','MRI scanner room seen through a doorway, a calm empty corridor in the foreground.','Three owner pains in one ad. The reader says "yes" to at least one.',{v:'q3',qs:['Adding scanner time every month, but profit is flat?','Prior auth list growing, and denials too?','Hiring for your center hard and expensive?'],intro:'Adding scanner time every month, but profit is flat?\n\nPrior auth list growing, and denials too?\n\nHiring for your center hard and expensive?\n\nLet AI do the routine work. Your team just reviews the exceptions.'}),
+S('O1','Owner / Administrator','FOR CENTER OWNERS','Adding scanner time, but profit is still flat?','Trace one order from referral to payment and see where the money slips. Free, 30 minutes.','Free 30-minute order trace →','Find where the profit goes','Request demo','/order-trace','profit','MRI scanner room seen from the doorway, an empty corridor in the foreground, calm and clean, bright but unstaged.','Owners feel volume rising while profit stays flat. The ask is small and free.',{note:'Lands on the new Order Trace page (built, see the landing page link in the Simple ads tab). Publish it at /order-trace. Until then, point the ad to /demo.'}),
+S('O2','Owner / Administrator','FOR CENTER OWNERS','Prior auths up, and denials too?','Gravity starts each authorization when the order arrives, and holds booking until the payer is ready.','Gravity starts the auth for you →','Authorization, started for you','Learn more','/solutions/prior-authorization-automation','auth','A tidy stack of authorization paperwork on a desk beside a phone and a mug, softly blurred monitor behind.','Payers keep adding prior-auth requirements. The answer matches the page it lands on.',{proof:'Iowa Radiology: Gravity now handles at least 80% of its authorizations.',approve:true}),
+S('O3','Owner / Administrator','FOR CENTER OWNERS','Is hiring for your front desk hard and costly?','Let AI do the routine work. Your staff handles the exceptions.','Let AI do the routine work →','Add capacity, not headcount','Learn more','/customers/iowa-radiology','hiring','A small imaging center reception desk with a "now hiring" paper sign taped to a window, a phone and a clipboard, no people.','Technologist and staff vacancies are near record highs. The Iowa story shows capacity without new hires.',{proof:'Iowa Radiology added no one to its team.',approve:true}),
+S('O4','Owner / Administrator','FOR CENTER OWNERS','Which doctors send you imaging, and which send it elsewhere?','Be first to see who refers, who stopped, and who sends orders elsewhere.','Get early access →','Know your referrers','Sign up','/solutions/referral-tracking','network','Wall map of a metro area with small pins and string between them, soft office light, no readable labels.','Relationships decide referrals. Owners rarely see where volume goes.',{locked:true,note:'Platform is being built, so run this as an early-access sign-up: Lead Gen Form, LinkedIn button Sign up. If the regional view goes live, switch the button to Learn more and link the page.'}),
+S('P1','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Still retyping faxed orders into the system?','Gravity reads each fax, matches the patient and exam, and drafts the order. You just confirm.','Gravity drafts the order for you →','The fax reads itself','Learn more','/solutions/fax-order-intake','fax','Fax machine output tray overflowing with paper orders at a small front desk, a second monitor with a blurred data-entry screen behind it.','Re-keying patient, exam and codes is the most common intake chore.',{proof:null}),
+S('P2','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Still chasing referring offices for missing order info?','Gravity spots what is missing, asks the referring office for it, and tracks the reply.','Gravity chases the missing info →','Stop chasing, start scheduling','Learn more','/solutions/fax-order-intake','chase','A hand holding a desk phone receiver beside a printed order with a highlighted blank field, no face, soft light.','Incomplete orders mean cover sheets, call-backs and tracking by hand.'),
+S('P3','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Still calling patients one by one to book them?','Patients get a text the moment the order arrives and book themselves, day or night.','Patients book themselves by text →','Let patients book themselves','Learn more','/solutions/radiology-patient-booking','textbook','A patient\'s hand holding a smartphone in a modest waiting area, screen turned away and blurred, no face.','Manual call-back booking is slow, and openings are often found too late.',{proof:'Downtown Radiology: patient self-booking grew from 19.7% to 43.8% in twelve months.',approve:true}),
+S('P4','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Missed appointments leaving gaps in your schedule?','Gravity marks no-shows daily, reaches out to rebook, and offers earlier openings to booked patients.','Gravity rebooks the no-shows →','Fill the gaps, automatically','Learn more','/solutions/radiology-patient-booking','gaps','A wall-mounted paper or screen schedule at an imaging front desk with several empty blocks, blurred and unreadable.','No-shows average roughly 8 to 9%, and empty slots are lost revenue.'),
+S('R1','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Finding out about denials weeks after the scan?','Gravity flags coverage and authorization gaps when the order is created, before the exam.','Caught before the exam →','Fix it before the claim','Learn more','/solutions/radiology-revenue-cycle','timeline','A billing desk with a stack of returned claims and a calendar showing weeks passing, blurred, no faces.','Most denial causes are visible at order time. Billing finds out last.'),
+S('R2','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Still checking eligibility by phone?','Gravity checks benefits electronically before the visit: copay, deductible, and what is left.','Eligibility checked for you →','Know coverage before they arrive','Learn more','/solutions/radiology-revenue-cycle','card','A desk phone on hold beside an insurance card and a notepad, headset on the desk, no face.','Coverage is often checked by phone or not at all.',{note:'Says "electronically" on purpose: payer-portal checks for payers without electronic eligibility are a professional service, not standard. Do not promise every payer. The landing page revenue-cycle FAQ should say so too.'}),
+S('R3','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Are patients surprised by their bill after the scan?','Send an accurate estimate to their phone before the visit, and let them pay it there.','Estimate sent to their phone →','Estimate it before they arrive','Learn more','/solutions/radiology-revenue-cycle','phonepay','A patient\'s hand holding a phone showing a blurred payment screen at a reception counter, no face.','Patients learn their share after the visit, which hurts collections.'),
+S('R4','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Prior auths piling up on your desk?','Gravity starts each one the moment the order is created, so approvals arrive before the patient does.','Approved before they arrive →','Approvals before arrival','Learn more','/solutions/prior-authorization-automation','authstack','A busy billing desk with stacks of authorization forms and a calm monitor showing a blurred status list.','Staff time on prior auth is reported rising.',{proof:'Iowa Radiology: Gravity now handles at least 80% of its authorizations.',approve:true}),
+S('D1','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Do referring offices keep calling for your reports?','Signed reports go to the referring office automatically, and again if amended. Every send is logged.','Reports sent automatically →','Reports find their way back','Learn more','/solutions/report-and-image-delivery','report','A radiologist\'s reading room desk seen from behind with a dim monitor, a signed report printout beside the keyboard, no face.','Referrers judge a center by how fast they hear back.'),
+S('D2','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Can referrers see their patient\'s status without calling you?','Give them a portal with live order status, plus the report and images as soon as the read is signed.','Live status, no phone calls →','Live status for referrers','Learn more','/products/gravity-referral','status','A referring physician\'s office desk with a laptop showing a blurred status list, a coffee and a stethoscope, no face.','Referrers want to know it arrived, was booked, and the patient showed.'),
+S('D3','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Losing referrals to the hospital down the road?','Get early access to see who stopped sending, and win them back.','Get early access →','Win your referrers back','Sign up','/solutions/referral-tracking','network','A doctor\'s hand shaking another hand across a desk, faces out of frame, office background.','Referral relationships decide volume.',{locked:true,note:'Platform is being built, so run this as an early-access sign-up: Lead Gen Form, LinkedIn button Sign up. If the regional view goes live, switch the button to Learn more and link the page.'})
+];
+const SGRP=['all','Owner / Administrator','Operations / Practice manager','Billing / Revenue cycle','Radiologist-owner'];
+let sfilter='all',useProof=false;
+const sc=$('#schips');
+const pb=document.createElement('button');pb.className='chip';pb.textContent='Show customer proof (only after approval)';pb.setAttribute('aria-pressed','false');pb.onclick=()=>{useProof=!useProof;pb.setAttribute('aria-pressed',String(useProof));renderSimple()};
+SGRP.forEach(g=>{const b=document.createElement('button');b.className='chip';b.textContent=g==='all'?'All 16 ads':g;b.setAttribute('aria-pressed',g==='all');b.onclick=()=>{sfilter=g;sc.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderSimple()};sc.appendChild(b)});
+function renderSimple(){SIMPLE.forEach(a=>{a.intro=(useProof&&a.proof)?a.intro1:a.intro0});$('#simplelist').innerHTML=SIMPLE.filter(a=>sfilter==='all'||a.grp===sfilter).map(a=>adHTML(a,`<br><b>Question:</b> ${esc(a.q)}<br><b>Answer:</b> ${esc(a.ans)}${a.proof?`<br><b>Proof:</b> ${esc(a.proof)}`:''}${a.note?`<br><b>Note:</b> ${esc(a.note)}`:''}<details style="margin-top:8px"><summary style="cursor:pointer">Photo prompt (realistic version of this scene)</summary><pre class="prompt">${esc(a.photo)}</pre><button class="copy" data-t="${esc(a.photo)}">Copy prompt</button></details>`)).join('')}
+sc.appendChild(pb);
+renderSimple();
+$('#plantable').innerHTML='<tr><th>Ad</th><th>Role</th><th>Question</th><th>Answer</th><th>Proof</th><th>Button, page</th></tr>'+SIMPLE.map(a=>`<tr><td>${a.id}</td><td>${esc(a.grp)}</td><td><b>${esc(a.q)}</b></td><td>${esc(a.ans)}</td><td>${a.proof?esc(a.proof)+' <span class="tag leak">approval</span>':'<span class="muted">none</span>'}</td><td>${esc(a.cta)}<br><a href="${esc(a.dest)}">${esc(a.dest.replace('https://www.',''))}</a></td></tr>`).join('');
+
+/* budget */
+const BUD=[['Level 1 · Awareness',3000,30,'Single image, thought-leader, video'],['Level 2 · Consideration',3000,30,'Document ad, forms, conversation ad'],['Level 3 · Decision',2500,25,'Retargeting and booking ads'],['Reserve · Test and event',1500,15,'RSNA window, new creative, boosts']];
+$('#budgetcards').innerHTML=BUD.map(b=>`<div class="box"><div class="eyebrow">${b[0]}</div><div class="kpi num">$${b[1].toLocaleString()}</div><div class="muted">${b[2]}% · ${b[3]}</div><div class="bar" aria-hidden="true"><i style="width:${b[2]*3}%"></i></div></div>`).join('');
+
+/* prompts */
+const BASE=' Freestanding outpatient imaging center, not a hospital: modest plaza setting, no hospital signage. No readable text, no logos, no identifiable faces.';
+const PR=[
+['A4 / C3 · Fax tray','Documentary photograph of a fax machine output tray at a small outpatient imaging center front desk, a stack of printed order forms with blurred, illegible text, soft window light, shallow depth of field, 35mm lens, muted blue-grey palette, no people.'+BASE],
+['A4 · Three screens','Close-up photograph of a front-desk worker\'s hands moving between a paper referral form, a keyboard and a second monitor, screens out of focus, natural light, shallow depth of field, editorial style, no faces.'+BASE],
+['A1 / C3 · Small front desk','Photograph of a small, busy reception desk at a freestanding imaging center, a staff member in scrubs seen from behind talking on the phone, a clipboard and a sticky-note-covered monitor, natural daylight, documentary style, no faces.'+BASE],
+['B2 · Checklist','Overhead photograph of a clipboard with a blank checklist, a pen and a coffee on a clean reception desk of an outpatient imaging center, soft daylight, calm blue-grey tones, no people.'+BASE],
+['A1-MRI · MRI suite','Wide photograph of an empty MRI suite and control room in an independent outpatient imaging center, warm ambient light, realistic and unstaged, no patients, no staff.'+BASE],
+['A1-CT · CT room','Photograph of an empty CT scanner room with a scheduling desk visible in the background, bright clean lighting, realistic and unstaged, no patients, no staff.'+BASE],
+['A1-FL · Florida exterior','Daytime photograph of the exterior of a low-rise outpatient medical plaza in Florida, palm trees, bright sun, an unmarked storefront-style imaging center entrance, no readable signage, no people.'],
+['A1-TX · Texas exterior','Daytime photograph of the exterior of a low-rise outpatient medical plaza in central Texas, bright sun, clear sky, an unmarked storefront-style imaging center entrance, no readable signage, no people.'],
+['C1-S · One-desk center','Photograph of a very small imaging center reception with a single staff member seen from behind at the desk, phone and paper orders, soft daylight, no face.'+BASE],
+['C1-L · Shared scheduling desk','Photograph of a shared scheduling desk with two small monitors showing blurred, non-readable schedule grids and a headset, late-afternoon light, shallow depth of field, no faces.'+BASE],
+['C2 · Billing desk','Photograph of a billing office workstation with two monitors showing blurred, non-readable spreadsheets, a headset and a notepad, late-afternoon window light, shallow depth of field, no faces.'+BASE],
+['C4 · Reading room','Photograph of a radiologist\'s reading room seen from behind, two monitors with abstract grayscale images (no recognizable patient data), dim ambient light, calm and focused mood, no face visible.'+BASE],
+['C5 · Trade-show aisle','Photograph of a medical imaging trade-show exhibit aisle, blurred attendees, booth signage with no readable text, bright convention-hall lighting, shallow depth of field.'],
+['C6 · Screen on a desk','Photograph over the shoulder of a person at a front desk looking at a monitor showing a blurred worklist table with colored status chips, no readable text, soft daylight, no face.'+BASE+' (Replace with your real product screenshot as soon as you have one.)']
+];
+$('#promptlist').innerHTML=PR.map(p=>`<div class="box"><h3>${p[0]}</h3><pre class="prompt">${esc(p[1])}</pre><button class="copy" data-t="${esc(p[1])}">Copy prompt</button></div>`).join('');
+</script>
