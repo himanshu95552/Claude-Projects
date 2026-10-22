@@ -286,6 +286,7 @@ h1,h2{font-weight:600}
 .bn .tg::before,.rt::before{content:"";position:absolute;left:0;top:50%;width:4.2cqw;height:1.4cqw;transform:translateY(-50%);background:radial-gradient(circle at 3.5cqw 50%,#C9B3FF .62cqw,transparent .7cqw),linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)) 0 50%/3cqw 1px no-repeat}
 .bn.land .tg{padding-left:4.2cqw}
 .bn.ph .tg{padding:1.1cqw 2.4cqw 1.1cqw 7cqw;border-radius:99px}.bn.ph .tg::before{left:2cqw}
+.deckrow .bn.sq{flex:none;width:420px;scroll-snap-align:start}
 </style>
 
 <header class="top"><div class="wrap">
@@ -417,13 +418,16 @@ h1,h2{font-weight:600}
 
 <section class="pane" id="formats" data-title="Decks &amp; video" hidden>
   <h2>Decks, video and posts</h2>
-  <p class="lead">The formats from your research, built for real: three swipeable document decks, two silent 17-second videos, and thought-leader posts. Files are in <span class="mono">linkedin-ads/</span> in the repository.</p>
+  <p class="lead">The formats from your research, built for real: three swipeable document decks, five silent 14-second videos, five carousels, and thought-leader posts. Files are in <span class="mono">linkedin-ads/</span> in the repository.</p>
   <h3 style="margin-top:20px">Document ads: one deck per stage</h3>
   <p class="muted">Five portrait slides each (1080 × 1350), exported as slide images and a PDF, ready to upload as a LinkedIn Document ad. Swipe sideways to preview.</p>
   <div id="decks"></div>
-  <h3 style="margin-top:28px">Videos (silent, captioned, about 17 seconds)</h3>
+  <h3 style="margin-top:28px">Videos (silent, captioned, 14 seconds)</h3>
   <p class="muted">Each one is exported as an MP4 (1080 × 1080) from the frames below. Silent is deliberate, since most people watch with the sound off.</p>
   <div id="videos"></div>
+  <h3 style="margin-top:28px">Carousel ads: swipeable cards</h3>
+  <p class="muted">Five carousels of 4 to 6 square cards (1080 × 1080), each exported as card images and a PDF. Use them as a LinkedIn Carousel ad, or upload the PDF as a Document ad.</p>
+  <div id="carousels"></div>
   <h3 style="margin-top:28px">Thought-leader posts</h3>
   <p class="muted">Post these from a real person's profile, boosted as a thought-leader ad. Each has a version without customer proof and one with it, for use only after approval.</p>
   <div class="grid g2" id="posts"></div>
@@ -496,7 +500,7 @@ h1,h2{font-weight:600}
 
 <section class="pane" id="simple" data-title="Simple ads" hidden>
   <h2>Simple ads: ask the question, answer with the fix</h2>
-  <p class="lead">Each ad does three things: asks one plain question the right person answers "yes" to, answers it with the one thing Gravity does about it, and sends them to the page that explains that fix. Sixteen ads, one pain each.</p>
+  <p class="lead">Each ad does three things: asks one plain question the right person answers "yes" to, answers it with the one thing Gravity does about it, and sends them to the page that explains that fix. Thirty ads, one pain each.</p>
   <div class="grid g3" style="margin-block:16px">
     <div class="box"><span class="tag">The question</span><ul class="clean" style="margin-top:10px"><li>Twelve words or fewer.</li><li>One pain, in the words they use.</li><li>Starts with "Still…", "Do you…", "Which…" or names the symptom.</li><li>Names no product and no jargon.</li></ul></div>
     <div class="box"><span class="tag ok">The answer</span><ul class="clean" style="margin-top:10px"><li>One sentence: what Gravity does, with a verb.</li><li>Matches the question exactly: fax question, fax answer.</li><li>Never "solves everything". Staff review the exceptions.</li><li>Proof only from approved customer stories.</li></ul></div>
@@ -1016,13 +1020,27 @@ S('R3','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Are patients surpris
 S('R4','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Prior auths piling up on your desk?','Gravity starts each one the moment the order is created, so approvals arrive before the patient does.','Approved before they arrive →','Approvals before arrival','Learn more','/solutions/prior-authorization-automation','authstack','A busy billing desk with stacks of authorization forms and a calm monitor showing a blurred status list.','Staff time on prior auth is reported rising.',{proof:'Iowa Radiology: Gravity now handles at least 80% of its authorizations.',approve:true}),
 S('D1','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Do referring offices keep calling for your reports?','Signed reports go to the referring office automatically, and again if amended. Every send is logged.','Reports sent automatically →','Reports find their way back','Learn more','/solutions/report-and-image-delivery','report','A radiologist\'s reading room desk seen from behind with a dim monitor, a signed report printout beside the keyboard, no face.','Referrers judge a center by how fast they hear back.'),
 S('D2','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Can referrers see their patient\'s status without calling you?','Give them a portal with live order status, plus the report and images as soon as the read is signed.','Live status, no phone calls →','Live status for referrers','Learn more','/products/gravity-referral','status','A referring physician\'s office desk with a laptop showing a blurred status list, a coffee and a stethoscope, no face.','Referrers want to know it arrived, was booked, and the patient showed.'),
-S('D3','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Losing referrals to the imaging center down the road?','See who stopped sending, and win them back with outreach and live order status.','Win your referrers back →','Win your referrers back','Learn more','/solutions/referral-tracking','network','A doctor\'s hand shaking another hand across a desk, faces out of frame, office background.','Referral relationships decide volume.',{note:'Runs as a live feature: your referral-tracking page describes this market view as current. Check it in the product before launch.'})
+S('D3','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Losing referrals to the imaging center down the road?','See who stopped sending, and win them back with outreach and live order status.','Win your referrers back →','Win your referrers back','Learn more','/solutions/referral-tracking','network','A doctor\'s hand shaking another hand across a desk, faces out of frame, office background.','Referral relationships decide volume.',{note:'Runs as a live feature: your referral-tracking page describes this market view as current. Check it in the product before launch.'}),
+S('O5','Owner / Administrator','FOR CENTER OWNERS','Which referring offices sent you fewer orders this quarter?','Gravity flags referrers whose volume is rising or falling, so you can call them first.','See who went quiet →','Spot the quiet referrers','Learn more','/solutions/referral-tracking','network','A paper calendar with a few circled weeks beside a phone, a modest practice office, no people.','Quiet referrers do not announce themselves. A trend line does.'),
+S('O6','Owner / Administrator','FOR CENTER OWNERS','Who books your patients at 9 p.m. on a Sunday?','Patients get a text with open times and book themselves, day or night.','Patients book after hours →','Let patients book after hours','Learn more','/solutions/radiology-patient-booking','phone','A smartphone on a nightstand glowing softly, a lamp beside it, no face, no readable text.','After-hours booking is a clear owner benefit with a measured example.',{proof:'At Downtown Radiology, 16.5% of patient self-bookings happen in the evening, overnight or at the weekend.',approve:true}),
+S('O7','Owner / Administrator','FOR CENTER OWNERS','Does every new clinic mean another authorization hire?','Gravity handles the routine authorizations. Your specialists work the exceptions.','Add clinics, not headcount →','Add clinics, not headcount','Learn more','/customers/iowa-radiology','hiring','A quiet desk with two monitors and a folder labelled with a clinic name, no readable text, no people.','Growth without matching headcount is the owner question.',{proof:'Iowa Radiology: two specialists keep up with four clinics, and Gravity handles at least 80% of its authorizations.',approve:true}),
+S('O8','Owner / Administrator','FOR CENTER OWNERS','Can you follow one order from referral to payment?','Gravity puts every step of an order on one timeline: who did what, and when.','See the whole order →','Every step on one timeline','Learn more','/journey','timeline','A long hallway of an imaging center with a line of floor tape leading to a door, calm and bright, no people.','Owners cannot see across CRM, RIS and billing. One timeline fixes that.'),
+S('P5','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Fax, phone, text, portal: how many lists is your team working from?','Gravity puts every call, text, fax and email on one worklist, assigned by capacity and skill.','One worklist for everything →','One list, not four','Learn more','/products/gravity-work','worklist','A desk with a phone, a fax tray and a laptop side by side, softly blurred, no readable text.','Four channels, four places to look. One worklist ends that.'),
+S('P6','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','A line at the front desk just to check in?','Patients check in on a lobby tablet. Scan a license and the appointment comes up.','Check in at a tablet →','Check-in at a lobby tablet','Learn more','/products/gravity-greeter','kiosk','A tablet on a stand in a small imaging center lobby with a few empty chairs, no people, no readable text.','The front desk line is visible every morning.'),
+S('P7','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Still handing patients a clipboard of forms?','One text link for forms, ID, insurance and copay, filled in before the visit.','Forms before the visit →','Forms done before they arrive','Learn more','/products/gravity-visit','form','A clipboard with a pen on a reception counter beside a smartphone, no readable text, no people.','Paper forms slow every check-in.'),
+S('P8','Operations / Practice manager','FOR OPS & PRACTICE MANAGERS','Booking exams that still need an authorization nobody started?','Gravity starts the authorization when the order arrives, and holds booking until the payer is ready.','Booked when it is cleared →','Book only what is cleared','Learn more','/solutions/prior-authorization-automation','authstack','A schedule screen beside a stack of authorization forms with a sticky note, no readable text, no people.','Booking before the auth is ready is a reschedule waiting to happen.'),
+S('R5','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Is Medicare listed as primary when it should not be?','A Verify Medicare worklist catches it before the claim goes out.','Verify before you bill →','Catch the wrong primary payer','Learn more','/customers/mri-associates','checklist','A billing desk with an insurance card beside a keyboard, shallow focus, no readable text, no people.','A concrete coverage error with a concrete fix.',{proof:'MRI Associates found Medicare wrongly primary on nearly one in three appointments and built a Verify Medicare worklist the same day.',approve:true,chips:false}),
+S('R6','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Is a card terminal one more thing to reconcile?','Card payments go straight onto the order, with no separate terminal to reconcile.','Payments land on the order →','Payments land on the order','Learn more','/products/gravity-pay','card','A small card reader on a reception counter beside a printed receipt, no readable text, no people.','Reconciliation is a billing lead pain.'),
+S('R7','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Patients ignoring the paper statement?','Patients pay their share from their phone, with no login.','Pay from the phone →','Let patients pay from their phone','Learn more','/products/gravity-pay','phonepay','A hand holding a smartphone over a stack of unopened envelopes, no face, no readable text.','Collection gets easier when paying is one tap.'),
+S('R8','Billing / Revenue cycle','FOR BILLING & RCM LEADS','Do your estimates start from the wrong benefit line?','Gravity picks the benefit line that fits each exam and network, even when a payer sends dozens.','Estimates from the right line →','The right benefit line, every time','Learn more','/products/gravity-estimate','card','A benefits printout with many lines on a desk beside a calculator, no readable text, no people.','Payers return many competing lines. Picking the right one is the work.'),
+S('D4','Radiologist-owner','FOR RADIOLOGIST-OWNERS','Is your referral CRM just a list of names?','Gravity keeps an NPI-checked record of every referring provider, current from the national registry.','A clean referrer record →','A referrer list you can trust','Learn more','/products/gravity-grow','network','A wall of small index cards pinned in rows with string between a few, no readable text, no people.','Clean referrer data is the base for outreach.'),
+S('D5','Radiologist-owner','FOR RADIOLOGIST-OWNERS','What does the software touch?','Not the read. Gravity handles the work around it and makes sure the signed report gets back.','We make sure it gets back →','We do not read the scan','Learn more','/solutions/report-and-image-delivery','report','A closed laptop and a printed report on a quiet reading-room desk, no readable text, no people.','The first question a radiologist-owner asks.'),
 ];
 const SGRP=['all','Owner / Administrator','Operations / Practice manager','Billing / Revenue cycle','Radiologist-owner'];
 let sfilter='all',useProof=true;
 const sc=$('#schips');
 const pb=document.createElement('button');pb.className='chip';pb.textContent='Show customer proof';pb.setAttribute('aria-pressed','true');pb.onclick=()=>{useProof=!useProof;pb.setAttribute('aria-pressed',String(useProof));renderSimple()};
-SGRP.forEach(g=>{const b=document.createElement('button');b.className='chip';b.textContent=g==='all'?'All 16 ads':g;b.setAttribute('aria-pressed',g==='all');b.onclick=()=>{sfilter=g;sc.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderSimple()};sc.appendChild(b)});
+SGRP.forEach(g=>{const b=document.createElement('button');b.className='chip';b.textContent=g==='all'?'All '+SIMPLE.length+' ads':g;b.setAttribute('aria-pressed',g==='all');b.onclick=()=>{sfilter=g;sc.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderSimple()};sc.appendChild(b)});
 function renderSimple(){SIMPLE.forEach(a=>{a.intro=(useProof&&a.proof)?a.intro1:a.intro0});$('#simplelist').innerHTML=SIMPLE.filter(a=>sfilter==='all'||a.grp===sfilter).map(a=>adHTML(a,`<br><b>Question:</b> ${esc(a.q)}<br><b>Answer:</b> ${esc(a.ans)}${a.proof?`<br><b>Proof:</b> ${esc(a.proof)}`:''}${a.note?`<br><b>Note:</b> ${esc(a.note)}`:''}<details style="margin-top:8px"><summary style="cursor:pointer">Photo prompt (realistic version of this scene)</summary><pre class="prompt">${esc(a.photo)}</pre><button class="copy" data-t="${esc(a.photo)}">Copy prompt</button></details>`)).join('')}
 sc.appendChild(pb);fmtChips(sc);
 renderSimple();
@@ -1102,9 +1120,49 @@ const VK={gaps:'gaps',chase:'chase',textbook:'phone',fax:'fax',status:'status'};
 const vf=(sc,cap,end)=>`<div class="vf brand"><div class="in">${sc?`<div class="vis"><div class="vw"><img alt="" src="${s3(VK[sc]||sc).img}"></div></div>`:''}<div class="vcap${end?' end':''}">${gt(cap)}</div></div>${end?`<div class="ft"><span class="lg"></span><span class="pill">Learn more at alphanodus.com</span></div>`:`<div class="vlogo"><span class="lg"></span></div>`}</div>`;
 const VIDS=[
 {id:'video-1-the-empty-slot',name:'Video 1 · The empty slot (Gravity Booking)',frames:[['gaps','3:15 p.m., Tuesday. The scanner is ready. The tech is ready.'],['gaps','One slot is still empty.'],['chase','Someone is still calling patients back, one at a time.'],['textbook','Gravity Booking texts the patient the moment the order arrives. They book themselves.'],[null,'Fill the schedule, not the call list.',1]]},
-{id:'video-2-the-fax-queue',name:'Video 2 · The fax queue (Gravity Doc)',frames:[['fax','Monday, 8:02 a.m. The fax tray is full.'],['fax','Every page opened, read and keyed by hand.'],['chase','Missing a detail? Call the referring office.'],['status','Gravity Doc reads the fax and drafts the order. Your team confirms.'],[null,'Fax in. Order drafted. Staff review the exceptions.',1]]}
+{id:'video-2-the-fax-queue',name:'Video 2 · The fax queue (Gravity Doc)',frames:[['fax','Monday, 8:02 a.m. The fax tray is full.'],['fax','Every page opened, read and keyed by hand.'],['chase','Missing a detail? Call the referring office.'],['status','Gravity Doc reads the fax and drafts the order. Your team confirms.'],[null,'Fax in. Order drafted. Staff review the exceptions.',1]]},
+{id:'video-3-the-status-call',name:'Video 3 · The status call (Gravity Referral)',frames:[['status','Friday, 4:55 p.m. A referring office calls: where is my patient\'s order?'],['chase','Someone checks three screens to answer.'],['status','Gravity Referral gives the office live status.'],['report','The signed report goes back the day it is signed.'],[null,'No phone call needed.',1]]},
+{id:'video-4-before-they-arrive',name:'Video 4 · Before they arrive (Gravity Estimate and Pay)',frames:[['card','Tuesday. A patient arrives. Nobody knows what insurance covers.'],['timeline','The claim comes back weeks later.'],['card','Gravity Estimate checks coverage before the visit.'],['phonepay','The patient sees what they owe, and pays from their phone.'],[null,'Know it before they arrive.',1]]},
+{id:'video-5-the-authorization',name:'Video 5 · The authorization that started itself (Gravity PriorAuth)',frames:[['authstack','The order arrives. It needs an authorization.'],['chase','Someone has to log in to a payer portal. Again.'],['authstack','Gravity PriorAuth starts it the moment the order arrives.'],['approved','Booking waits until the payer is ready.'],[null,'Approved before the patient arrives.',1]]}
 ];
 $('#videos').innerHTML=VIDS.map(v=>`<h3 style="margin-top:16px">${v.name}</h3><div class="deckrow" data-vid="${v.id}">${v.frames.map(f=>vf(f[0],f[1],f[2])).join('')}</div>`).join('');
+
+/* carousels */
+const CARS=[
+{id:'car-1-where-an-order-gets-lost',name:'Carousel 1 · Where an order gets lost (owners and ops)',cards:[
+ {tag:'FOR CENTER OWNERS',q:'Where does an imaging order get lost?',sub:'Three places. Swipe.',scene:'network'},
+ {tag:'LEAK 1 · BEFORE IT ARRIVES',q:'The referring office quietly sends it elsewhere.',sub:'No cancellation, no call. Just an order that never came.',scene:'network'},
+ {tag:'LEAK 2 · BEFORE IT IS SCANNED',q:'The fax sits, or the authorization is not ready.',sub:'Someone reads, keys, calls and waits before the slot fills.',scene:'fax'},
+ {tag:'LEAK 3 · BEFORE IT IS PAID',q:'The denial arrives weeks later.',sub:'Most of it was knowable when the patient booked.',scene:'timeline'},
+ {tag:'FREE · 30 MINUTES',q:'Trace one order from referral to payment.',sub:'Bring one order, no patient names. You keep the notes.',scene:'trace',pill:'Learn more →'}]},
+{id:'car-2-before-you-hire-a-scheduler',name:'Carousel 2 · Before you hire another scheduler (ops)',cards:[
+ {tag:'FOR OPS & PRACTICE MANAGERS',q:'Before you hire another scheduler, ask four questions.',sub:'Two minutes. Swipe.',scene:'hiring'},
+ {tag:'QUESTION 1',q:'How old is your oldest unentered faxed order?',sub:'If you do not know, that is the first answer.',scene:'fax'},
+ {tag:'QUESTION 2',q:'How many bookings need more than one phone call?',sub:'Every call-back is a slot that fills later.',scene:'textbook'},
+ {tag:'QUESTION 3',q:'Who chases missing details, and how?',sub:'If the answer is whoever has time, that is the work to automate.',scene:'chase'},
+ {tag:'FREE · 30 MINUTES',q:'Bring one order. We will trace it together.',sub:'No patient names. You keep the notes.',scene:'trace',pill:'Learn more →'}]},
+{id:'car-3-one-order-five-steps',name:'Carousel 3 · One order, no one carrying it (owners and ops)',cards:[
+ {tag:'FOR CENTER OWNERS & OPS',q:'What if an order moved itself?',sub:'Watch one go from fax to paid.',scene:'flow'},
+ {tag:'RECEIVED',q:'Read from the fax, drafted as an order.',sub:'Gravity Doc reads it. Your team confirms.',scene:'fax'},
+ {tag:'AUTHORIZED',q:'Started the moment the order arrived.',sub:'Gravity PriorAuth submits and tracks it on the payer portal.',scene:'authstack'},
+ {tag:'SCHEDULED',q:'The patient books by text.',sub:'Gravity Booking and Visit handle open times, forms and copay.',scene:'textbook'},
+ {tag:'PAID',q:'Collected before they arrive.',sub:'Gravity Estimate and Pay show the patient share and collect it.',scene:'phonepay'},
+ {tag:'SEE IT ON YOUR ORDER',q:'Watch one order from referral to report to payment.',sub:'A 30-minute demo on Google Meet.',scene:'trace',pill:'Learn more →'}]},
+{id:'car-4-three-checks-at-booking',name:'Carousel 4 · Three checks that prevent a denial (billing)',cards:[
+ {tag:'FOR BILLING & RCM LEADS',q:'Three checks at booking that prevent a denial.',sub:'Most denials were visible before the scan.',scene:'timeline'},
+ {tag:'CHECK 1',q:'Is it the right payer?',sub:'MRI Associates found Medicare wrongly primary on nearly one in three appointments.',scene:'checklist'},
+ {tag:'CHECK 2',q:'Does the exam need an authorization?',sub:'Rules by payer and code, with the status on the order.',scene:'authstack'},
+ {tag:'CHECK 3',q:'What will the patient owe?',sub:'An estimate on their phone before the visit.',scene:'phonepay'},
+ {tag:'CATCH IT EARLY',q:'See where your claims go wrong.',sub:'Free 30-minute order trace.',scene:'trace',pill:'Learn more →'}]},
+{id:'car-5-we-do-not-read-the-scan',name:'Carousel 5 · We do not read the scan (radiologist-owners)',cards:[
+ {tag:'FOR RADIOLOGIST-OWNERS',q:'Does the software touch the read?',sub:'No. Swipe for what it does do.',scene:'report'},
+ {tag:'WHAT IT DOES NOT DO',q:'It does not read the scan or write the report.',sub:'Your radiologists keep the clinical work.',scene:'shield'},
+ {tag:'WHAT IT DOES',q:'The work around the scan.',sub:'Orders, booking, coverage, payment, and returning the signed report.',scene:'worklist'},
+ {tag:'YOUR CALL',q:'You decide how much a person reviews.',sub:'Review every run, let it finish on its own, or turn it off.',scene:'status'},
+ {tag:'WE MAKE SURE IT GETS BACK',q:'Reports reach the referring office, and again if amended.',sub:'Every send is logged.',scene:'report',pill:'Learn more →'}]}
+];
+function carCard(c,i,n){const keep=FMT;FMT='sq-a';try{return V.sq({id:'car',tag:c.tag,q:c.q,bsub:c.sub,pill:i<n-1?'Swipe →':(c.pill||'Learn more →'),scene:c.scene,chips:i===0})}finally{FMT=keep}}
+$('#carousels').innerHTML=CARS.map(c=>`<h3 style="margin-top:16px">${c.name}</h3><div class="deckrow" data-car="${c.id}">${c.cards.map((x,i)=>carCard(x,i,c.cards.length)).join('')}</div>`).join('');
 
 /* posts */
 const POSTS=[
