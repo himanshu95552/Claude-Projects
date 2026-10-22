@@ -1212,7 +1212,7 @@ const CSS=`
 .rv-t{--rv-bg:#fff;--rv-fg:#0F172A;--rv-mut:#5B6878;--rv-ln:#E5E7EB;--rv-ac:#5B2FD1;--rv-acf:#fff;--rv-ok:#047857;--rv-soft:#F3EEFE;--rv-warn:#B45309}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rv-t{--rv-bg:#2A2050;--rv-fg:#fff;--rv-mut:#B4A8D6;--rv-ln:#4A4270;--rv-ac:#C9B3FF;--rv-acf:#1B1430;--rv-ok:#34D399;--rv-soft:#3A2E66;--rv-warn:#F5B84B}}
 :root[data-theme="dark"] .rv-t{--rv-bg:#2A2050;--rv-fg:#fff;--rv-mut:#B4A8D6;--rv-ln:#4A4270;--rv-ac:#C9B3FF;--rv-acf:#1B1430;--rv-ok:#34D399;--rv-soft:#3A2E66;--rv-warn:#F5B84B}
-.rv-bar{font:14px/1.45 Inter,system-ui,sans-serif;color:var(--rv-fg);background:var(--rv-bg);border:1px solid var(--rv-ln);border-radius:8px;padding:8px 10px;margin:8px 0;max-width:100%;box-sizing:border-box}
+.rv-bar{position:relative;z-index:5;font:14px/1.45 Inter,system-ui,sans-serif;color:var(--rv-fg);background:var(--rv-bg);border:1px solid var(--rv-ln);border-radius:8px;padding:8px 10px;margin:8px 0;max-width:100%;box-sizing:border-box}
 .rv-bar.in{border-color:var(--rv-ok)}
 .rv-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .rv-bar button,.rv-pan button{font:600 13px Inter,system-ui,sans-serif;border:1px solid var(--rv-ln);background:var(--rv-bg);color:var(--rv-fg);padding:6px 11px;border-radius:8px;cursor:pointer}
@@ -1222,6 +1222,17 @@ const CSS=`
 .rv-bar button:focus-visible,.rv-bar textarea:focus-visible,.rv-pan button:focus-visible,.rv-fab:focus-visible{outline:2px solid var(--rv-ac);outline-offset:2px}
 .rv-bar textarea{width:100%;box-sizing:border-box;min-height:54px;margin-top:8px;padding:8px;border:1px solid var(--rv-ln);border-radius:8px;font:14px Inter,system-ui,sans-serif;background:var(--rv-bg);color:var(--rv-fg);resize:vertical}
 .rv-st{font-size:12.5px;color:var(--rv-mut)}.rv-st.w{color:var(--rv-warn)}
+.rv-st.run::before{content:"";display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px;border:2px solid var(--rv-ln);border-top-color:var(--rv-ac);border-radius:50%;animation:rvspin .8s linear infinite}
+@keyframes rvspin{to{transform:rotate(360deg)}}
+.rv-st.ok{color:var(--rv-ok);font-weight:600}.rv-st.err{color:#B91C1C;font-weight:600}
+:root[data-theme="dark"] .rv-st.err{color:#FCA5A5}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rv-st.err{color:#FCA5A5}}
+.rv-prog{height:4px;border-radius:2px;background:var(--rv-ln);overflow:hidden;margin-top:8px}
+.rv-prog i{display:block;height:100%;width:35%;background:var(--rv-ac);border-radius:2px;animation:rvslide 1.1s ease-in-out infinite}
+@keyframes rvslide{0%{margin-left:-35%}100%{margin-left:100%}}
+@media (prefers-reduced-motion:reduce){.rv-prog i,.rv-st.run::before{animation:none}}
+.rv-lab{font:600 11px/1.4 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--rv-mut);margin:10px 0 2px}
+.rv-out.new{border:1px solid var(--rv-ok)}.rv-out.wip{border:1px dashed var(--rv-ac)}
+.rv-bar details{margin-top:6px;font-size:13px}.rv-bar details pre{white-space:pre-wrap;font:inherit;margin:6px 0 0;color:var(--rv-mut);max-height:200px;overflow:auto}
 .rv-out{margin-top:8px;padding:8px 10px;background:var(--rv-soft);border-radius:8px;white-space:pre-wrap;font-size:14px;max-height:320px;overflow:auto}
 .rv-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147483000;font:600 14px Inter,system-ui,sans-serif;background:var(--rv-ac);color:var(--rv-acf);border:0;border-radius:999px;padding:11px 18px;cursor:pointer;box-shadow:0 14px 34px rgba(27,20,48,.28)}
 .rv-pan{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:2147483001;width:min(460px,calc(100vw - 32px));max-height:min(70vh,640px);overflow:auto;background:var(--rv-bg);color:var(--rv-fg);border:1px solid var(--rv-ln);border-radius:14px;padding:14px;box-shadow:0 14px 34px rgba(27,20,48,.28);font:14px/1.5 Inter,system-ui,sans-serif}
@@ -1230,34 +1241,53 @@ const CSS=`
 `;
 const RULES=`You are revising one marketing draft for Alpha Nodus, which sells Gravity, the Agentic Operations System (AOS), to independent imaging centers in the USA. Not hospitals.
 Rules: plain, specific, operator voice. Sentence case, no exclamation marks, no emoji. Say "system", not "platform"; "agentic", not "AI-powered". Keep every fact, number and quote exactly as given. Do not invent statistics, quotes, customers, certifications or claims. Keep placeholders such as {first_name} and links as they are. Keep the same format and roughly the same length unless the comment asks otherwise. Return only the revised text.`;
+const ERR={not_granted:'Claude is not allowed for this page yet. Allow it from the page Permissions menu, then try again.',sampling_disabled:'Claude is not available for this account.',rate_limited:'Too many requests, or your usage limit was reached. Wait a minute and try again.',session_expired:'Sign in again, then try again.',upstream_error:'The service had a temporary problem. Try again.',refused:'Claude declined this input. Change the comment and try again.',empty_completion:'Nothing came back. Make the comment more specific and try again.',prompt_too_large:'This item is too long to send.',invalid_request:'The request was malformed.',capability_disabled:'Regenerate is not usable in this view.',not_declared:'Regenerate is not enabled for this page.'};
 const S={};let db=null,sample=null,dl=null,cfg={},uid=0,scanTimer=0,panel=null;
 const h=s=>{let x=5381;for(const c of s)x=((x<<5)+x+c.charCodeAt(0))|0;return (x>>>0).toString(36)};
 function pid(el,txt){const pane=el.closest('[id]');return (cfg.prefix||'i')+'-'+h((pane?pane.id:'')+'|'+txt.slice(0,80))}
 function title(el,txt){const t=el.querySelector('.hl,.big,.q,h3,h2');return (cfg.title?cfg.title(el):'')||(t&&t.innerText.trim().slice(0,90))||txt.split('\n').map(x=>x.trim()).find(x=>x.length>3)||'Creative'}
 const cur=r=>(S[r]&&S[r].regen)||(S[r]&&S[r].text)||'';
 function save(id,p){S[id]=Object.assign({id},S[id],p);if(db)db.doc('review/'+id).set(S[id]).catch(e=>st(id,'Not saved: '+(e.message||e.code),1));updFab()}
-function st(id,t,w){document.querySelectorAll('[data-rvst="'+id+'"]').forEach(e=>{e.textContent=t;e.className='rv-st'+(w?' w':'')})}
+function st(id,t,k){document.querySelectorAll('[data-rvst="'+id+'"],[data-rvst2="'+id+'"]').forEach(e=>{e.textContent=t;e.className='rv-st'+(k===1?' w':k?' '+k:'')})}
 function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();const vis=!!el.querySelector('img,svg,canvas,.bn')||/\b(bn|art|brand|slide|vf)\b/.test(el.className);if(txt.length<(cfg.min||30)&&!vis)return;if(!el.offsetParent&&!el.getClientRects().length)return;
  const id=pid(el,txt);if(el.dataset.rv)return;el.dataset.rv=id;
  const b=document.createElement('div');b.className='rv-t rv-bar';b.dataset.rvbar=id;
- b.innerHTML=`<div class="rv-row"><button class="add" aria-pressed="false">Add to final draft</button><button class="cm">Comment</button><span class="rv-st" data-rvst="${id}"></span></div><div class="rv-box" hidden><textarea placeholder="Leave a comment, e.g. shorter, warmer, mention X, remove Y" aria-label="Comment"></textarea><div class="rv-row" style="margin-top:8px"><button class="go rg">Regenerate with comment</button><button class="rs" hidden>Reset</button></div><div class="rv-out" hidden></div></div>`;
+ b.innerHTML=`<div class="rv-row"><button class="add" aria-pressed="false">Add to final draft</button><button class="cm">Comment</button><span class="rv-st" data-rvst="${id}"></span></div><div class="rv-box" hidden><textarea placeholder="Leave a comment, e.g. shorter, warmer, mention X, remove Y" aria-label="Comment"></textarea><div class="rv-row" style="margin-top:8px"><button class="go rg">Regenerate with comment</button><button class="sp" hidden>Stop</button><button class="rs" hidden>Reset to original</button><span class="rv-st" data-rvst2="${id}"></span></div><div class="rv-prog" hidden><i></i></div><div class="rv-lab" hidden></div><div class="rv-out" hidden></div><details class="rv-orig" hidden><summary>Show original</summary><pre></pre></details></div>`;
  const par=el.parentElement,pd=par?getComputedStyle(par).display:'block';
  if(/flex|grid/.test(pd)){const cs=getComputedStyle(el),w=document.createElement('div');w.style.cssText='min-width:0;flex:'+cs.flex+';scroll-snap-align:'+(cs.scrollSnapAlign||'none')+(parseFloat(cs.flexGrow)===0?';width:'+el.offsetWidth+'px':'')+';grid-column:'+cs.gridColumnStart+'/'+cs.gridColumnEnd;el.replaceWith(w);w.appendChild(el);w.appendChild(b)}else el.insertAdjacentElement('afterend',b);
  const ta=b.querySelector('textarea'),out=b.querySelector('.rv-out'),add=b.querySelector('.add'),box=b.querySelector('.rv-box'),rg=b.querySelector('.rg'),rs=b.querySelector('.rs');
  b.querySelector('.cm').onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)ta.focus()};
  add.onclick=()=>{const on=!(S[id]&&S[id].inc);save(id,{inc:on,title:title(el,txt),text:txt});sync(id)};
  ta.onchange=()=>save(id,{comment:ta.value,title:title(el,txt),text:txt});
- rs.onclick=()=>{save(id,{regen:''});sync(id)};
- rg.onclick=async()=>{const c=ta.value.trim();if(!c){st(id,'Write a comment first.',1);return}
-  if(!sample){st(id,'Regenerate is not available here.',1);return}
-  rg.disabled=true;st(id,'Regenerating...');out.hidden=false;out.textContent='';save(id,{comment:c,title:title(el,txt),text:txt});
-  try{const r=await sample(`${RULES}\n\nDRAFT:\n${cur(id)||txt}\n\nREVIEWER COMMENT:\n${c}`,{modelTier:'default',cache:false,onText:u=>{out.textContent=u.text}});
-   save(id,{regen:r.text.trim()});st(id,'Regenerated. It is used in the final draft if added.');sync(id)}catch(e){st(id,'Could not regenerate: '+(e.message||e.code||'try again'),1)}rg.disabled=false}
+ rs.onclick=()=>{save(id,{regen:''});out.textContent='';out.hidden=true;b.querySelector('.rv-lab').hidden=true;orig.hidden=true;st(id,'Reset to the original.');sync(id)};
+ const prog=b.querySelector('.rv-prog'),lab=b.querySelector('.rv-lab'),sp=b.querySelector('.sp'),orig=b.querySelector('.rv-orig');let ctl=null;
+ sp.onclick=()=>{if(ctl)ctl.abort()};
+ rg.onclick=async()=>{const c=ta.value.trim();box.hidden=false;
+  if(!c){st(id,'Write a comment first, then regenerate.',1);ta.focus();return}
+  if(!sample){st(id,'Regenerate is not available in this view.','err');return}
+  const base=cur(id)||txt;save(id,{comment:c,title:title(el,txt),text:txt});
+  rg.disabled=true;sp.hidden=false;prog.hidden=false;lab.hidden=false;lab.textContent='New version, in progress';out.hidden=false;out.className='rv-out wip';out.textContent='';orig.hidden=true;
+  const t0=Date.now();let got=false,tick=setInterval(()=>{if(!got)st(id,'Claude is thinking... '+Math.round((Date.now()-t0)/1000)+'s','run')},1000);
+  st(id,'Sending to Claude...','run');ctl=new AbortController();
+  const cap=setTimeout(()=>{if(ctl)ctl.abort()},180000);
+  try{
+   try{const p=await claude.use('permissions');if(p){let ps=await p.state('sample');if(ps==='prompt'){st(id,'Waiting for your permission to use Claude...','run');ps=((await p.request(['sample']))||{}).sample||ps}
+     if(ps==='denied')throw {code:'not_granted'}}}catch(e){if(e&&e.code==='not_granted')throw e}
+   st(id,'Claude is thinking... 0s','run');
+   const r=await sample(`${RULES}\n\nDRAFT:\n${base}\n\nREVIEWER COMMENT:\n${c}`,{modelTier:base.length>1500?'default':'quick',cache:false,signal:ctl.signal,onText:u=>{if(!got){got=true;lab.textContent='New version, writing...'}out.textContent=u.text;st(id,'Writing... '+u.text.split(/\s+/).length+' words','run')}});
+   const nt=(r.text||'').trim();if(!nt)throw {code:'empty_completion'};
+   save(id,{regen:nt});out.textContent=nt;out.className='rv-out new';lab.textContent='New version, saved';
+   orig.hidden=false;orig.querySelector('pre').textContent=base;
+   st(id,'Updated at '+new Date().toLocaleTimeString()+(r.truncated?' (cut short)':''),'ok');rs.hidden=false;
+  }catch(e){const code=(e&&e.code)||'upstream_error';
+   if(code==='cancelled'){st(id,'Stopped.',1);out.className='rv-out';if(e.text&&e.text.length>20)out.textContent=e.text;else out.hidden=true;lab.hidden=true}
+   else{st(id,(ERR[code]||ERR.upstream_error)+(e&&e.message&&!ERR[code]?' ('+e.message+')':''),'err');lab.textContent='Not updated';out.className='rv-out';if(e&&e.text)out.textContent=e.text;else{out.hidden=true;lab.hidden=true}}}
+  finally{clearInterval(tick);clearTimeout(cap);ctl=null;rg.disabled=false;sp.hidden=true;prog.hidden=true}}
  sync(id)}
 function sync(id){document.querySelectorAll('[data-rvbar="'+id+'"]').forEach(b=>{const s=S[id]||{},add=b.querySelector('.add'),ta=b.querySelector('textarea'),out=b.querySelector('.rv-out'),rs=b.querySelector('.rs');
  add.setAttribute('aria-pressed',!!s.inc);add.textContent=s.inc?'In final draft':'Add to final draft';b.classList.toggle('in',!!s.inc);
  if(document.activeElement!==ta&&ta.value!==(s.comment||''))ta.value=s.comment||'';
- if(s.regen){out.hidden=false;out.textContent=s.regen;rs.hidden=false;b.querySelector('.rv-box').hidden=false}else{rs.hidden=true;if(!out.textContent)out.hidden=true}});}
+ if(b.querySelector('.sp').hidden){if(s.regen){out.hidden=false;out.textContent=s.regen;out.className='rv-out new';const l=b.querySelector('.rv-lab');l.hidden=false;l.textContent='Regenerated version';rs.hidden=false;b.querySelector('.rv-box').hidden=false}else{rs.hidden=true;if(!out.textContent){out.hidden=true;b.querySelector('.rv-lab').hidden=true}}}});}
 function scan(){(cfg.tiers||[cfg.selector]).forEach(sel=>{[...document.querySelectorAll(sel)].filter(e=>!e.dataset.rv&&!e.closest('.rv-bar,.rv-pan')&&!(e.parentElement&&e.parentElement.closest(sel))).forEach(bar)})}
 function sched(){clearTimeout(scanTimer);scanTimer=setTimeout(scan,250)}
 function items(){return Object.values(S).filter(s=>s.inc)}
