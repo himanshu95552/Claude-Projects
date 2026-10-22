@@ -29,3 +29,9 @@ Cards on dark: fill white at 5 to 6%, 1px border white at 14 to 16%.
 
 ## Logo
 `alphanodus-logo-white.svg` for dark backgrounds, `alphanodus-logo-black.svg` for light. Taken from the website.
+
+## Background (matched to the site hero)
+Flat deep ink `#1B1430`, with a strong violet glow at the lower right (`#422988` to `#5B2FD1`) and a softer one at the top left (`#2D1B5D`), plus a faint grid.
+
+## Audience tags
+IMAGING CENTER OWNERS, IMAGING CENTER MANAGERS, IMAGING BILLING LEADS, RADIOLOGIST OWNERS, IMAGING CENTER TEAMS, IMAGING CENTER ADMINS.

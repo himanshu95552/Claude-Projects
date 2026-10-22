@@ -1,6 +1,6 @@
 # LinkedIn and Google ads for Alpha Nodus (Gravity)
 
-All creatives use the Alpha Nodus website brand (deep ink and violet, lavender buttons, Urbanist and Inter, the real logo). Tokens and logos are in `brand/`.
+All creatives use the Alpha Nodus website brand (deep ink `#1B1430` with the site's violet glow, lavender buttons, Urbanist and Inter, the real logo) and real lit 3D illustrations. Tokens and logos are in `brand/`. Each ad comes in three formats: square layout A (headline first), square layout B in `variants-b/` (picture first), and landscape 1200 x 627 in `landscape/`. `creatives/compare/` shows six ads in all three. The 3D scenes (source and renderer) are in `scenes3d/`.
 
 - `playbook.html`: the full plan (open in a browser). Also published as an artifact.
 - `order-trace.html`: landing page for the free 30-minute Order Trace offer. Publish at alphanodus.com/order-trace and add the booking link.
