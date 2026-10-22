@@ -1315,6 +1315,7 @@ const FL={headline:'Banner headline',sub:'Banner sub-line',button:'Button',intro
 const fmtF=f=>Object.keys(FL).filter(k=>f&&f[k]!=null).map(k=>FL[k]+': '+f[k]).join('\n');
 function parseF(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw{code:'invalid_json'};let o;try{o=JSON.parse(t.slice(a,b+1))}catch(e){throw{code:'invalid_json'}}const f={};for(const k of Object.keys(FL)){if(typeof o[k]!=='string'||!o[k].trim())throw{code:'invalid_json'};f[k]=o[k].trim()}return f}
 function rerender(id,adId){const el=ELS[id];if(!el||!el.isConnected)return null;const n=cfg.structured.render(el,adId);if(n){n.dataset.rv=id;ELS[id]=n;if(cfg.dl)addDl(n,adId)}return n}
+let DLQ=Promise.resolve(),DLN=0;
 function loadH2C(){return window.html2canvas?Promise.resolve():new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';sc.onload=res;sc.onerror=()=>rej({code:'lib'});document.head.appendChild(sc)})}
 const WIDTHS=[[540,'540 px'],[1080,'1080 px (LinkedIn standard)'],[1200,'1200 px'],[1600,'1600 px'],[2160,'2160 px (2x)'],[2400,'2400 px'],[0,'Custom width']];
 const FMTS=[['png','PNG','image/png'],['jpg','JPG','image/jpeg'],['webp','WebP','image/webp']];
@@ -1335,7 +1336,7 @@ function addDl(el,adId){if(!cfg.dl||!el.isConnected)return;const bn=el.querySele
   [ly,wd,cw,fm].forEach(x=>x.oninput=upd);upd();
   ly.onchange=()=>{if(wd.value==='1080'||wd.value==='1200')wd.value=ly.value==='land'?'1200':'1080';upd()};
   q('.cl').onclick=()=>{pop.remove();pop=null};
-  dd.onclick=async()=>{dd.disabled=true;stt.className='rv-st run';stt.textContent='Rendering...';
+  const job=async()=>{stt.className='rv-st run';stt.textContent='Rendering...';
    try{await loadH2C();const x=W();const f=FMTS.find(z=>z[0]===fm.value);const html=legacy?'':cfg.dl.html(adId,ly.value);
     let target,host=null,scale=1,outW=x;
     if(html&&/class="bn/.test(html)){host=document.createElement('div');host.style.cssText='position:fixed;left:-20000px;top:0;width:'+x+'px';host.innerHTML=html;document.body.appendChild(host);target=host.firstElementChild}
@@ -1349,8 +1350,10 @@ function addDl(el,adId){if(!cfg.dl||!el.isConnected)return;const bn=el.querySele
      await dl.save({filename:adId+'-'+(ly.value||'as-shown')+'-'+cv.width+'x'+cv.height+'.'+f[0],data:blob});
      stt.className='rv-st ok';stt.textContent='Saved '+cv.width+' \u00d7 '+cv.height+' '+f[1]}
     finally{if(host)host.remove()}
-   }catch(e){stt.className='rv-st err';stt.textContent=e&&e.code==='declined'?'Save cancelled.':e&&e.code==='lib'?'Could not load the image tool. Check your connection and try again.':e&&e.code==='unavailable'?'Downloads are not available in this view.':'Could not create the image. Try a smaller width or another layout.'}
-   dd.disabled=false}};
+   }catch(e){stt.className='rv-st err';stt.textContent=e&&e.code==='declined'?'Save cancelled.':e&&e.code==='lib'?'Could not load the image tool. Check your connection and try again.':e&&e.code==='unavailable'?'Downloads are not available in this view.':e&&e.code==='rate_limited'?'A save confirmation is already open. Confirm or cancel it, then download again.':e&&e.code==='too_large'?'The file is too large. Choose a smaller width.':'Could not create the image ('+((e&&(e.code||e.message))||'unknown')+'). Try a smaller width or another layout.'}
+   dd.disabled=false};
+  dd.onclick=()=>{dd.disabled=true;stt.className='rv-st run';stt.textContent=DLN>0?'Queued, waiting for '+DLN+' other download'+(DLN>1?'s':'')+'...':'Starting...';DLN++;DLQ=DLQ.then(job).catch(()=>{}).then(()=>{DLN--})};
+};
  document.addEventListener('click',function off(e){if(pop&&!pop.contains(e.target)&&e.target!==btn){pop.remove();pop=null}if(!w.isConnected)document.removeEventListener('click',off)});
 }
 const S={};let db=null,sample=null,dl=null,cfg={},uid=0,scanTimer=0,panel=null;
