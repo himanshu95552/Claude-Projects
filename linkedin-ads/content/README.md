@@ -11,4 +11,8 @@ Everything beyond static ads. Facts come from alphanodus.com and its customer pa
 - `tools/value-calculator.html` arithmetic only, on the user's own inputs
 - `faq/faq.md`
 
-Open items: customer approvals, offer terms (free, no patient names, notes kept), module descriptions, security/certification wording, official logo, booking link.
+Approvals (given by the project owner): customer stories and quotes, free order trace terms (30 minutes, no patient names, notes kept by the customer), module copy (now taken from each alphanodus.com product page), security sheet (SSO, permissions, audit trail only; no certifications claimed).
+
+Still not claimed anywhere: the RSNA 2021 award as Alpha Nodus's own, SOC 2 or any other certification, KLAS or journal items. Add them only with exact source wording.
+
+Booking links: RSNA uses alphanodus.cal.com/iris/rsna-2026; order trace and demo point to alphanodus.com. Swap in a dedicated cal.com link when created. Logo: the white logo from alphanodus.com in `brand/`.

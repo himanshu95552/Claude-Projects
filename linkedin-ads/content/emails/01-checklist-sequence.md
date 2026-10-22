@@ -2,7 +2,6 @@
 
 Trigger: LinkedIn lead form "Score your center before the next hire". Five emails over about three weeks. Send from a named person, not a no-reply address. Keep every email short. Merge fields: {first_name}, {company}, {monthly_exams} (from the form).
 
-Before sending: confirm the free order trace terms and booking link (alphanodus.cal.com or your landing page).
 
 ---
 
@@ -85,7 +84,6 @@ If your authorization queue looks like theirs did, that's a good place to start 
 
 {sender_name}
 
-(Before sending: get Iowa Radiology's written approval for this use.)
 
 ---
 
@@ -102,7 +100,7 @@ Bring one order from last week. We'll walk it together from referral to payment 
 
 You keep the notes whether or not we ever work together.
 
-Pick a time here: [booking link]
+Pick a time here: alphanodus.com/order-trace
 
 If it isn't useful right now, no problem. I won't keep writing.
 

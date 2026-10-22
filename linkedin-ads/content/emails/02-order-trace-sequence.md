@@ -2,7 +2,6 @@
 
 Trigger: someone books an order trace. Four messages. Merge fields: {first_name}, {company}, {call_time}, {sender_name}.
 
-Before sending: confirm the offer terms (free, no patient names needed, they keep the notes) and the video link.
 
 ---
 
@@ -56,7 +55,7 @@ Hi {first_name},
 
 Looks like today didn't work out, and that's fine. Things happen at imaging centers.
 
-Here's the link if you'd like to pick another time: [booking link]. If it's easier to tell me what's going on first, just reply.
+Here's the link if you'd like to pick another time: alphanodus.com/order-trace. If it's easier to tell me what's going on first, just reply.
 
 {sender_name}
 

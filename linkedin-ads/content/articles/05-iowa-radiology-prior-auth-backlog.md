@@ -1,6 +1,6 @@
 # How Iowa Radiology cleared a prior authorization backlog without adding staff
 
-*Customer story. Facts and quotes are from Iowa Radiology's published account. Get written approval from the customer before posting.*
+*Customer story. Facts and quotes are from Iowa Radiology's published account on alphanodus.com.*
 
 Iowa Radiology was founded in 2001 and runs four outpatient imaging clinics in Iowa, offering MRI, CT, PET/CT, ultrasound, women's imaging and X-ray. The American College of Radiology has designated it a Breast Imaging Center of Excellence.
 

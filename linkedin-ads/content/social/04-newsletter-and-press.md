@@ -13,13 +13,13 @@ Monthly, about 500 words each. One order, traced, with the stalls marked. Anonym
 - Open: a denial three weeks after the visit.
 - The trace: what was knowable at booking.
 - Five checks at booking (from article 02).
-- Customer note: MRI Associates and the Medicare primary issue (approval).
+- Customer note: MRI Associates and the Medicare primary issue.
 - Link: article 02.
 
 ## Issue 3: The booking nobody made
 - Open: a slot that stayed open overnight.
 - The trace: callback vs. a text with open times.
-- Customer note: Downtown Radiology self-booking figures (approval).
+- Customer note: Downtown Radiology self-booking figures.
 - One thing to try: measure how long a booking request waits.
 - Link: article 07.
 

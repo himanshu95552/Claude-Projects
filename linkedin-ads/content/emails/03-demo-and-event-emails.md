@@ -87,7 +87,7 @@ We'll be at RSNA in Chicago, booth 6537 (North Hall, Level 3). If you're going, 
 
 Bring a question about referrals, booking, prior authorization or denials. We'll show you where your three leaks are, and walk one order from the fax that brings it in to the payment.
 
-Pick a time here: [booking link]. Walk-ins are welcome too, but a booking holds a time with the team.
+Pick a time here: alphanodus.com/order-trace. Walk-ins are welcome too, but a booking holds a time with the team.
 
 If you're not going, you can book an online demo that walks through the same order: [demo link].
 
@@ -102,7 +102,7 @@ Hi {first_name},
 
 Quick reminder. We're at booth 6537, North Hall, Level 3, from Sunday, Nov 29 through Wednesday, Dec 2, 10 a.m. to 5 p.m.
 
-If you've booked, your time is in your calendar. If you haven't, you can still pick one: [booking link]. Or just stop by.
+If you've booked, your time is in your calendar. If you haven't, you can still pick one: alphanodus.com/order-trace. Or just stop by.
 
 {sender_name}
 
@@ -115,6 +115,6 @@ Hi {first_name},
 
 Thanks for stopping by, if you did. If we missed each other, here's the same order walkthrough online: [demo link].
 
-If you'd like to trace one of your own orders from referral to payment, I'm offering free 30-minute sessions for the next few weeks: [booking link].
+If you'd like to trace one of your own orders from referral to payment, I'm offering free 30-minute sessions for the next few weeks: alphanodus.com/order-trace.
 
 {sender_name}

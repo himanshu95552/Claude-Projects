@@ -1,6 +1,6 @@
 # What happens when patients book their own exams
 
-*Customer story. Facts and quotes are from Downtown Radiology's published account. Get written approval from the customer before posting.*
+*Customer story. Facts and quotes are from Downtown Radiology's published account on alphanodus.com.*
 
 Until October 2025, a person on Downtown Radiology's booking team booked every exam. When an order arrived, staff had to reach the patient and agree on a time.
 

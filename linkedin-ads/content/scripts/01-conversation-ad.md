@@ -4,7 +4,6 @@ Sender: a named person at Alpha Nodus (photo + name), not "Alpha Nodus Team".
 Audience: owners, administrators, practice managers, billing leads at US imaging centers.
 Button text must come from LinkedIn's list. Confirm character limits in Campaign Manager.
 
-Before launch: confirm the free order trace terms and booking link.
 
 ---
 
@@ -48,7 +47,6 @@ One center we work with, Downtown Radiology, saw self-booking go from 19.7% to 4
 - Book an order trace
 - Not now
 
-(Before sending: Downtown Radiology approval.)
 
 ## Branch 3. "Insurance says no"
 

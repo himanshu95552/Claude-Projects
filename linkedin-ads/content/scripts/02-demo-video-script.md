@@ -4,7 +4,6 @@ Length: 90 seconds, with 30-second and 15-second cutdowns.
 Format: screen recording of the Gravity demo environment, with simple captions. No stock footage, no voice-over music bed that competes with speech. Square 1:1 and 16:9 versions.
 Data: demo data only. No real patient information appears on screen, ever.
 
-Before shooting: confirm with product which screens are current and that the demo data is synthetic.
 
 ---
 

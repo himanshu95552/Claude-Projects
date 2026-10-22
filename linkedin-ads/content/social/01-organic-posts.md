@@ -1,6 +1,6 @@
 # Organic LinkedIn posts (drafts)
 
-Voice: plain, specific, no hype. Written for a company page or a named founder/leader. Links go in the first comment. Facts come from the Alpha Nodus site and customer pages; items marked (approval) need the customer's sign-off.
+Voice: plain, specific, no hype. Written for a company page or a named founder/leader. Links go in the first comment. Facts come from the Alpha Nodus site and customer pages; items marked need the customer's sign-off.
 
 ---
 
@@ -40,17 +40,17 @@ One test for any "AI" product: can you turn the automation down per task?
 
 In Gravity, each center decides how much a person reviews. Start with everything reviewed. Loosen it as you see the work.
 
-**7. Iowa Radiology (approval)**
+**7. Iowa Radiology**
 Four clinics. Two specialists handling all prior authorizations. A backlog months deep after a system change.
 
 On day one with Gravity, about 430 orders were waiting. By day three or four, the backlog was gone. No staff added.
 
-**8. Downtown Radiology (approval)**
+**8. Downtown Radiology**
 "One in six books in the evening or at the weekend, when nobody could have picked up the phone." Arshia Bivadi, CEO, Downtown Radiology.
 
 16.5% of their self-bookings happen off-hours.
 
-**9. MRI Associates (approval)**
+**9. MRI Associates**
 "I've worked with plenty of vendors, but none identified the root problem like Alpha Nodus did." Amanda Maple, CAO, MRI Associates.
 
 The root problem: Medicare was wrongly listed as primary on nearly one in three appointments. A "Verify Medicare" worklist was built the same day.
@@ -65,7 +65,7 @@ Where do orders disappear, where do visits stall, where does money slip? Fifteen
 Pick one order from last week that took too long. Write down each step, who touched it and how long it waited. You'll find three stalls. Want company while you do it? Free 30-minute order trace: [link].
 
 **13. Patients book themselves**
-At Downtown Radiology, 56.5% of texted patients book themselves. 83.5% of those within a day. Median time: 1.8 hours. (approval)
+At Downtown Radiology, 56.5% of texted patients book themselves. 83.5% of those within a day. Median time: 1.8 hours.
 
 **14. Staff time goes to exceptions**
 Self-booking didn't replace the booking team. It took the routine calls off their day so they could handle the patients who need a person.
