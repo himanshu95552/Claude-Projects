@@ -1235,6 +1235,14 @@ const CSS=`
 .rv-lab{font:600 11px/1.4 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--rv-mut);margin:10px 0 2px}
 .rv-out.new{border:1px solid var(--rv-ok)}.rv-out.wip{border:1px dashed var(--rv-ac)}
 .rv-bar details{margin-top:6px;font-size:13px}.rv-bar details pre{white-space:pre-wrap;font:inherit;margin:6px 0 0;color:var(--rv-mut);max-height:200px;overflow:auto}
+.rv-dlw{position:relative}
+.rv-dlb{position:absolute;top:10px;right:10px;z-index:6;font:600 12px Inter,system-ui,sans-serif;color:#fff;background:#1B1430;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:6px 10px;cursor:pointer;box-shadow:0 4px 12px rgba(27,20,48,.35)}
+.rv-dlb:hover{background:#2A2050}.rv-dlb:focus-visible,.rv-dlp select:focus-visible,.rv-dlp input:focus-visible{outline:2px solid #C9B3FF;outline-offset:2px}
+.rv-dlp{position:absolute;top:48px;right:10px;z-index:7;width:min(280px,calc(100% - 20px));box-sizing:border-box;background:var(--rv-bg);color:var(--rv-fg);border:1px solid var(--rv-ln);border-radius:12px;padding:12px;box-shadow:0 14px 34px rgba(27,20,48,.35);font:13px/1.4 Inter,system-ui,sans-serif}
+.rv-dlp label{display:block;font-weight:600;margin:8px 0 3px}.rv-dlp select,.rv-dlp input{width:100%;box-sizing:border-box;padding:7px;border:1px solid var(--rv-ln);border-radius:8px;font:inherit;background:var(--rv-bg);color:var(--rv-fg)}
+.rv-dlp .sz{margin-top:8px;color:var(--rv-mut)}.rv-dlp .row2{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
+.rv-dlp button{font:600 13px Inter,system-ui,sans-serif;border:1px solid var(--rv-ln);background:var(--rv-bg);color:var(--rv-fg);padding:6px 11px;border-radius:8px;cursor:pointer}
+.rv-dlp button.go{background:var(--rv-ac);border-color:var(--rv-ac);color:var(--rv-acf)}.rv-dlp button:disabled{opacity:.55}
 .rv-out{margin-top:8px;padding:8px 10px;background:var(--rv-soft);border-radius:8px;white-space:pre-wrap;font-size:14px;max-height:320px;overflow:auto}
 .rv-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:2147483000;font:600 14px Inter,system-ui,sans-serif;background:var(--rv-ac);color:var(--rv-acf);border:0;border-radius:999px;padding:11px 18px;cursor:pointer;box-shadow:0 14px 34px rgba(27,20,48,.28)}
 .rv-pan{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:2147483001;width:min(460px,calc(100vw - 32px));max-height:min(70vh,640px);overflow:auto;background:var(--rv-bg);color:var(--rv-fg);border:1px solid var(--rv-ln);border-radius:14px;padding:14px;box-shadow:0 14px 34px rgba(27,20,48,.28);font:14px/1.5 Inter,system-ui,sans-serif}
@@ -1248,7 +1256,45 @@ const ELS={},APPLIED={};
 const FL={headline:'Banner headline',sub:'Banner sub-line',button:'Button',intro:'Post text',cardHeadline:'Card headline'};
 const fmtF=f=>Object.keys(FL).filter(k=>f&&f[k]!=null).map(k=>FL[k]+': '+f[k]).join('\n');
 function parseF(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw{code:'invalid_json'};let o;try{o=JSON.parse(t.slice(a,b+1))}catch(e){throw{code:'invalid_json'}}const f={};for(const k of Object.keys(FL)){if(typeof o[k]!=='string'||!o[k].trim())throw{code:'invalid_json'};f[k]=o[k].trim()}return f}
-function rerender(id,adId){const el=ELS[id];if(!el||!el.isConnected)return null;const n=cfg.structured.render(el,adId);if(n){n.dataset.rv=id;ELS[id]=n}return n}
+function rerender(id,adId){const el=ELS[id];if(!el||!el.isConnected)return null;const n=cfg.structured.render(el,adId);if(n){n.dataset.rv=id;ELS[id]=n;if(cfg.dl)addDl(n,adId)}return n}
+function loadH2C(){return window.html2canvas?Promise.resolve():new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';sc.onload=res;sc.onerror=()=>rej({code:'lib'});document.head.appendChild(sc)})}
+const WIDTHS=[[540,'540 px'],[1080,'1080 px (LinkedIn standard)'],[1200,'1200 px'],[1600,'1600 px'],[2160,'2160 px (2x)'],[2400,'2400 px'],[0,'Custom width']];
+const FMTS=[['png','PNG','image/png'],['jpg','JPG','image/jpeg'],['webp','WebP','image/webp']];
+function addDl(el,adId){if(!cfg.dl||!el.isConnected)return;const bn=el.querySelector('.bn, .art');if(!bn||bn.parentElement.classList.contains('rv-dlw'))return;
+ const w=document.createElement('div');w.className='rv-dlw';bn.replaceWith(w);w.appendChild(bn);
+ const btn=document.createElement('button');btn.className='rv-dlb';btn.type='button';btn.textContent='\u2193 Download';btn.setAttribute('aria-haspopup','dialog');w.appendChild(btn);
+ let pop=null;
+ btn.onclick=e=>{e.stopPropagation();if(pop){pop.remove();pop=null;return}
+  const L=cfg.dl.layouts();const legacy=!w.querySelector('.bn');
+  pop=document.createElement('div');pop.className='rv-t rv-dlp';pop.setAttribute('role','dialog');pop.setAttribute('aria-label','Download banner');
+  pop.innerHTML=`<label>Layout</label><select class="ly">${legacy?'<option value="">As shown</option>':L.map(l=>`<option value="${l[0]}">${l[1]}</option>`).join('')}</select><label>Width</label><select class="wd">${WIDTHS.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('')}</select><input class="cw" type="number" min="200" max="4000" value="1080" aria-label="Custom width in pixels" hidden><label>Format</label><select class="fm">${FMTS.map(f=>`<option value="${f[0]}">${f[1]}</option>`).join('')}</select><div class="sz"></div><div class="row2"><button class="go dd" type="button">Download</button><button class="cl" type="button">Close</button><span class="rv-st"></span></div>`;
+  w.appendChild(pop);
+  const q=x=>pop.querySelector(x),ly=q('.ly'),wd=q('.wd'),cw=q('.cw'),fm=q('.fm'),sz=q('.sz'),dd=q('.dd'),stt=q('.rv-st');
+  if(!legacy)ly.value=cfg.dl.current();wd.value=(ly.value==='land')?'1200':'1080';
+  const ratio=()=>{const l=L.find(x=>x[0]===ly.value);return l?l[2]:(w.querySelector('.bn,.art').offsetHeight/w.querySelector('.bn,.art').offsetWidth)};
+  const W=()=>wd.value==='0'?Math.max(200,Math.min(4000,+cw.value||1080)):+wd.value;
+  const upd=()=>{cw.hidden=wd.value!=='0';const x=W();sz.textContent=x+' \u00d7 '+Math.round(x*ratio())+' px, '+fm.options[fm.selectedIndex].text};
+  [ly,wd,cw,fm].forEach(x=>x.oninput=upd);upd();
+  ly.onchange=()=>{if(wd.value==='1080'||wd.value==='1200')wd.value=ly.value==='land'?'1200':'1080';upd()};
+  q('.cl').onclick=()=>{pop.remove();pop=null};
+  dd.onclick=async()=>{dd.disabled=true;stt.className='rv-st run';stt.textContent='Rendering...';
+   try{await loadH2C();const x=W();const f=FMTS.find(z=>z[0]===fm.value);const html=legacy?'':cfg.dl.html(adId,ly.value);
+    let target,host=null,scale=1,outW=x;
+    if(html&&/class="bn/.test(html)){host=document.createElement('div');host.style.cssText='position:fixed;left:-20000px;top:0;width:'+x+'px';host.innerHTML=html;document.body.appendChild(host);target=host.firstElementChild}
+    else{target=w.querySelector('.bn,.art');scale=x/target.offsetWidth}
+    try{await document.fonts.ready;if(host)await Promise.all([...host.querySelectorAll('img')].map(i=>i.decode().catch(()=>{})));
+     const rect=target.getBoundingClientRect();
+     const cv=await html2canvas(target,{scale:scale,width:Math.round(rect.width),height:Math.round(rect.height),backgroundColor:'#1B1430',logging:false,useCORS:true});
+     const blob=await new Promise(r=>cv.toBlob(r,f[2],0.92));if(!blob)throw {code:'render'};
+     const dl=await claude.use('downloads');if(!dl)throw {code:'unavailable'};
+     stt.className='rv-st run';stt.textContent='Waiting for you to confirm the save...';
+     await dl.save({filename:adId+'-'+(ly.value||'as-shown')+'-'+cv.width+'x'+cv.height+'.'+f[0],data:blob});
+     stt.className='rv-st ok';stt.textContent='Saved '+cv.width+' \u00d7 '+cv.height+' '+f[1]}
+    finally{if(host)host.remove()}
+   }catch(e){stt.className='rv-st err';stt.textContent=e&&e.code==='declined'?'Save cancelled.':e&&e.code==='lib'?'Could not load the image tool. Check your connection and try again.':e&&e.code==='unavailable'?'Downloads are not available in this view.':'Could not create the image. Try a smaller width or another layout.'}
+   dd.disabled=false}};
+ document.addEventListener('click',function off(e){if(pop&&!pop.contains(e.target)&&e.target!==btn){pop.remove();pop=null}if(!w.isConnected)document.removeEventListener('click',off)});
+}
 const S={};let db=null,sample=null,dl=null,cfg={},uid=0,scanTimer=0,panel=null;
 const h=s=>{let x=5381;for(const c of s)x=((x<<5)+x+c.charCodeAt(0))|0;return (x>>>0).toString(36)};
 function pid(el,txt){const pane=el.closest('[id]');return (cfg.prefix||'i')+'-'+h((pane?pane.id:'')+'|'+txt.slice(0,80))}
@@ -1257,7 +1303,7 @@ const cur=r=>(S[r]&&S[r].regen)||(S[r]&&S[r].text)||'';
 function save(id,p){S[id]=Object.assign({id},S[id],p);if(db)db.doc('review/'+id).set(S[id]).catch(e=>st(id,'Not saved: '+(e.message||e.code),1));updFab()}
 function st(id,t,k){document.querySelectorAll('[data-rvst="'+id+'"],[data-rvst2="'+id+'"]').forEach(e=>{e.textContent=t;e.className='rv-st'+(k===1?' w':k?' '+k:'')})}
 function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();const vis=!!el.querySelector('img,svg,canvas,.bn')||/\b(bn|art|brand|slide|vf)\b/.test(el.className);if(txt.length<(cfg.min||30)&&!vis)return;if(!el.offsetParent&&!el.getClientRects().length)return;
- const adId=cfg.structured?cfg.structured.id(el):null;if(el.dataset.rv)return;const pane0=el.closest('[id]');const id=adId?(cfg.prefix||'i')+'-'+(pane0?pane0.id:'')+'-'+adId:pid(el,txt);el.dataset.rv=id;ELS[id]=el;const curTxt=()=>adId?fmtF(cfg.structured.fields(adId,ELS[id])):txt;
+ const adId=cfg.structured?cfg.structured.id(el):null;if(el.dataset.rv)return;const pane0=el.closest('[id]');const id=adId?(cfg.prefix||'i')+'-'+(pane0?pane0.id:'')+'-'+adId:pid(el,txt);el.dataset.rv=id;ELS[id]=el;if(adId&&cfg.dl)addDl(el,adId);const curTxt=()=>adId?fmtF(cfg.structured.fields(adId,ELS[id])):txt;
  const b=document.createElement('div');b.className='rv-t rv-bar';b.dataset.rvbar=id;
  b.innerHTML=`<div class="rv-row"><button class="add" aria-pressed="false">Add to final draft</button><button class="cm">Comment</button><span class="rv-st" data-rvst="${id}"></span></div><div class="rv-box" hidden><textarea placeholder="Leave a comment, e.g. shorter, warmer, mention X, remove Y" aria-label="Comment"></textarea><div class="rv-row" style="margin-top:8px"><button class="go rg">Regenerate with comment</button><button class="sp" hidden>Stop</button><button class="rs" hidden>Reset to original</button><span class="rv-st" data-rvst2="${id}"></span></div><div class="rv-prog" hidden><i></i></div><div class="rv-lab" hidden></div><div class="rv-out" hidden></div><details class="rv-orig" hidden><summary>Show original</summary><pre></pre></details></div>`;
  const par=el.parentElement,pd=par?getComputedStyle(par).display:'block';
@@ -1329,5 +1375,8 @@ RV.init({prefix:'pb',min:40,tiers:['article.ad, .deckrow, .scroll, .bn, .art, .v
    const o=OVR[id];if(o&&!n.querySelector('.bn')){const bg=n.querySelector('.art .big');if(bg&&o.q)bg.innerHTML=gt(o.q);const sm=n.querySelector('.art .sm');if(sm&&o.bsub)sm.textContent=o.bsub}
    el.replaceWith(n);return n},
   refresh:()=>{[renderAds,renderSimple,renderMods,renderRS,renderPhotos,renderVariants].forEach(f=>{try{f()}catch(e){}})}
- }}
+ },
+ dl:{layouts:()=>[['sq-a','Square, layout A',1],['sq-b','Square, layout B',1],['land','Landscape 1.91:1',627/1200]],current:()=>FMT,
+  html:(id,layout)=>{const r=AD_REG[id];if(!r)return '';const a=Object.assign({},r.a,OVR[id]||{});const keep=FMT;FMT=layout;try{return V[a.v](a)}finally{FMT=keep}}}
+}
 );</script>
