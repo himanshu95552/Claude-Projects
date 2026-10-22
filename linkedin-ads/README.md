@@ -7,6 +7,8 @@ Built from the live site at alphanodus.com. Nothing here was invented: every cla
 | Path | What it is |
 |---|---|
 | `ad-copy.md` / `ad-copy.csv` | 18 ads across 7 campaigns (intro text, headline, description, CTA, landing URL, suggested creative). Every field is inside LinkedIn's recommended limits. |
+| `ad-variants.md` / `ad-variants.csv` | 17 A/B test variants: hook styles (question, stat, pain, benefit), 8 job-title-specific ads, and proof formats. Includes how to run each test. |
+| `creatives/landscape-1200x627/` and `creatives/square-1080x1080/` | 35 finished ad images (18 core ads + 17 variants) with the headline, sub-line and CTA overlaid in the site's purple branding (Inter font). File names match the ad IDs in the copy files. |
 | `images/original-png/` | 68 unique full-resolution images from the site, converted from WebP (LinkedIn does not accept WebP). |
 | `images/landscape-1200x627/` | The same images cropped to LinkedIn's 1.91:1 single-image size. |
 | `images/square-1080x1080/` | The same images fitted into a 1:1 square on a matching background colour. |
