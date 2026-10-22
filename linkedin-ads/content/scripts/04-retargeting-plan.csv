@@ -1,0 +1,11 @@
+stage,audience,asset,format,button,send_after,exit_rule,notes
+Awareness,"Imaging center owners/administrators/practice managers/billing leads, US, company list + job titles",Simple question ads,Single image,Learn more,Day 0,Click or video view 50%,Cold; frequency cap 3 per week
+Awareness,Same,Thought-leader posts (articles 01 02 03),Thought leader / article ad,Learn more,Day 0,Click,Boost organic posts from named people
+Engaged,Video viewers 50%+ and ad engagers (last 60 days),Customer proof ads (Iowa / Downtown / MRI Associates),Single image or carousel,Learn more,Day 3 to 14,Lead form or site visit,Customer approval required first
+Engaged,Website visitors (any page) last 90 days,Checklist,Lead gen form,Download,Day 1 to 30,Form submit,Insight Tag on B2B pages only
+Consideration,Checklist downloaders,Order Trace offer,Single image or conversation ad,Sign up or Register,Day 5 to 21,Booked,Matches email 5 of checklist sequence
+Consideration,Visitors to /order-trace without booking,Order Trace reminder + demo video 30s,Video,Learn more,Day 1 to 14,Booked,Exclude booked
+Decision,Visitors to demo or pricing pages,Demo video 90s + demo agenda,Video or document,Request demo,Day 0 to 30,Demo booked,Highest priority audience
+Decision,Order trace or demo no-shows,Reschedule message,Message ad or email,Register,Day 1 to 7,Rescheduled,Use email first
+Event,Target accounts + past engagers,RSNA invite and reminders,Event ad + single image,Register,Oct 29 to Nov 29,Booked or attended,Align with scripts/03
+Exclusion,Customers and booked meetings,,,,,,Upload customer list; exclude from all prospecting

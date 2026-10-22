@@ -1,0 +1,14 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Order Value Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@700&family=Inter:wght@400;600&display=swap" rel=stylesheet>
+<style>:root{--bg:#F6F4FA;--ink:#1B1430;--card:#fff;--v:#6B3FE4;--mut:#6b6585;--ln:#E6E0F2}@media(prefers-color-scheme:dark){:root{--bg:#1B1430;--ink:#fff;--card:#2A2050;--mut:#B4A8D6;--ln:#4A4270}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,sans-serif}main{max-width:720px;margin:0 auto;padding:32px 16px}h1{font:700 32px Urbanist;letter-spacing:-.03em;margin:0 0 6px}
+.c{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:20px;margin:16px 0}label{display:block;margin:12px 0 4px;font-weight:600}input{width:100%;padding:10px;border:1px solid var(--ln);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
+.r{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--ln)}.r b{color:var(--v)}small{color:var(--mut)}</style>
+<main><h1>What is one point worth?</h1><p>Plain arithmetic on your own numbers. Nothing is compared to a benchmark, and nothing leaves this page.</p>
+<div class=c><label>Exams per month<input id=a type=number value=1500></label><label>Average revenue per exam ($)<input id=b type=number value=300></label>
+<label>Minutes of staff time to enter one faxed order<input id=m type=number value=8></label><label>Faxed orders per month<input id=f type=number value=600></label><label>Staff cost per hour ($)<input id=h type=number value=25></label></div>
+<div class=c id=o></div><small>Each line answers “what changes if this number moves by one point or one minute?”. It does not predict your results.</small></main>
+<script>const $=i=>+document.getElementById(i).value||0,fm=n=>'$'+Math.round(n).toLocaleString();
+function u(){const a=$('a'),b=$('b'),m=$('m'),f=$('f'),h=$('h');const pt=a*b*.01;
+document.getElementById('o').innerHTML=[['One point of exams (no-shows, denials or unbooked), monthly',fm(pt)],['Same, yearly',fm(pt*12)],['Staff time spent entering faxed orders, monthly',fm(m*f/60*h)],['One minute saved per faxed order, monthly',fm(f/60*h)]].map(x=>`<div class=r><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}
+document.querySelectorAll('input').forEach(i=>i.oninput=u);u()</script>
