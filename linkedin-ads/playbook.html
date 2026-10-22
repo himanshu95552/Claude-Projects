@@ -1233,15 +1233,16 @@ Rules: plain, specific, operator voice. Sentence case, no exclamation marks, no 
 const S={};let db=null,sample=null,dl=null,cfg={},uid=0,scanTimer=0,panel=null;
 const h=s=>{let x=5381;for(const c of s)x=((x<<5)+x+c.charCodeAt(0))|0;return (x>>>0).toString(36)};
 function pid(el,txt){const pane=el.closest('[id]');return (cfg.prefix||'i')+'-'+h((pane?pane.id:'')+'|'+txt.slice(0,80))}
-function title(el,txt){return (cfg.title?cfg.title(el):'')||txt.split('\n').map(x=>x.trim()).find(x=>x.length>3)||'Item'}
+function title(el,txt){const t=el.querySelector('.hl,.big,.q,h3,h2');return (cfg.title?cfg.title(el):'')||(t&&t.innerText.trim().slice(0,90))||txt.split('\n').map(x=>x.trim()).find(x=>x.length>3)||'Creative'}
 const cur=r=>(S[r]&&S[r].regen)||(S[r]&&S[r].text)||'';
 function save(id,p){S[id]=Object.assign({id},S[id],p);if(db)db.doc('review/'+id).set(S[id]).catch(e=>st(id,'Not saved: '+(e.message||e.code),1));updFab()}
 function st(id,t,w){document.querySelectorAll('[data-rvst="'+id+'"]').forEach(e=>{e.textContent=t;e.className='rv-st'+(w?' w':'')})}
-function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();if(txt.length<(cfg.min||30))return;
+function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();const vis=!!el.querySelector('img,svg,canvas,.bn')||/\b(bn|art|brand|slide|vf)\b/.test(el.className);if(txt.length<(cfg.min||30)&&!vis)return;if(!el.offsetParent&&!el.getClientRects().length)return;
  const id=pid(el,txt);if(el.dataset.rv)return;el.dataset.rv=id;
  const b=document.createElement('div');b.className='rv-t rv-bar';b.dataset.rvbar=id;
  b.innerHTML=`<div class="rv-row"><button class="add" aria-pressed="false">Add to final draft</button><button class="cm">Comment</button><span class="rv-st" data-rvst="${id}"></span></div><div class="rv-box" hidden><textarea placeholder="Leave a comment, e.g. shorter, warmer, mention X, remove Y" aria-label="Comment"></textarea><div class="rv-row" style="margin-top:8px"><button class="go rg">Regenerate with comment</button><button class="rs" hidden>Reset</button></div><div class="rv-out" hidden></div></div>`;
- el.insertAdjacentElement('afterend',b);
+ const par=el.parentElement,pd=par?getComputedStyle(par).display:'block';
+ if(/flex|grid/.test(pd)){const cs=getComputedStyle(el),w=document.createElement('div');w.style.cssText='min-width:0;flex:'+cs.flex+';scroll-snap-align:'+(cs.scrollSnapAlign||'none')+(parseFloat(cs.flexGrow)===0?';width:'+el.offsetWidth+'px':'')+';grid-column:'+cs.gridColumnStart+'/'+cs.gridColumnEnd;el.replaceWith(w);w.appendChild(el);w.appendChild(b)}else el.insertAdjacentElement('afterend',b);
  const ta=b.querySelector('textarea'),out=b.querySelector('.rv-out'),add=b.querySelector('.add'),box=b.querySelector('.rv-box'),rg=b.querySelector('.rg'),rs=b.querySelector('.rs');
  b.querySelector('.cm').onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)ta.focus()};
  add.onclick=()=>{const on=!(S[id]&&S[id].inc);save(id,{inc:on,title:title(el,txt),text:txt});sync(id)};
@@ -1257,7 +1258,7 @@ function sync(id){document.querySelectorAll('[data-rvbar="'+id+'"]').forEach(b=>
  add.setAttribute('aria-pressed',!!s.inc);add.textContent=s.inc?'In final draft':'Add to final draft';b.classList.toggle('in',!!s.inc);
  if(document.activeElement!==ta&&ta.value!==(s.comment||''))ta.value=s.comment||'';
  if(s.regen){out.hidden=false;out.textContent=s.regen;rs.hidden=false;b.querySelector('.rv-box').hidden=false}else{rs.hidden=true;if(!out.textContent)out.hidden=true}});}
-function scan(){const els=[...document.querySelectorAll(cfg.selector)].filter(e=>!e.dataset.rv&&!e.closest('.rv-bar,.rv-pan')&&!(e.parentElement&&e.parentElement.closest(cfg.selector)));els.forEach(bar)}
+function scan(){(cfg.tiers||[cfg.selector]).forEach(sel=>{[...document.querySelectorAll(sel)].filter(e=>!e.dataset.rv&&!e.closest('.rv-bar,.rv-pan')&&!(e.parentElement&&e.parentElement.closest(sel))).forEach(bar)})}
 function sched(){clearTimeout(scanTimer);scanTimer=setTimeout(scan,250)}
 function items(){return Object.values(S).filter(s=>s.inc)}
 function txt(){return items().map(s=>'# '+(s.title||'Item')+'\n\n'+cur(s.id)).join('\n\n---\n\n')}
@@ -1276,4 +1277,4 @@ window.RV={async init(c){cfg=c;const st=document.createElement('style');st.textC
  if(db){try{db.collection('review').onSnapshot(s=>{s.docs.forEach(d=>{S[d.id]=d.data()});document.querySelectorAll('[data-rvbar]').forEach(b=>sync(b.dataset.rvbar));updFab()})}catch(e){}}}};
 })();
 
-RV.init({selector:'article.ad, .box, .callout',prefix:'pb',min:40});</script>
+RV.init({prefix:'pb',min:40,tiers:['article.ad, .deckrow, .scroll, .bn, .art, .vf, .slide, .brand','.box, .callout']});</script>
