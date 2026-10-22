@@ -1,6 +1,6 @@
 # Research set: posts, ad copy and video script
 
-Built from the pasted research. Lines that were not true are corrected (see the Research set tab). Button for all of these: Register. Link: https://www.alphanodus.com/events/rsna-2026 . RSNA 2026 runs Nov 29 to Dec 3 in Chicago.
+Built from the pasted research. Lines that were not true are corrected (see the Research set tab). Button for all of these: Register. Link: https://www.alphanodus.com/events/rsna-2026 . RSNA 2026 runs Nov 29 to Dec 2 in Chicago.
 
 ## Gravity Grow post
 
