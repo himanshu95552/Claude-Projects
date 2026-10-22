@@ -34,7 +34,12 @@ const CSS=`
 `;
 const RULES=`You are revising one marketing draft for Alpha Nodus, which sells Gravity, the Agentic Operations System (AOS), to independent imaging centers in the USA. Not hospitals.
 Rules: plain, specific, operator voice. Sentence case, no exclamation marks, no emoji. Say "system", not "platform"; "agentic", not "AI-powered". Keep every fact, number and quote exactly as given. Do not invent statistics, quotes, customers, certifications or claims. Keep placeholders such as {first_name} and links as they are. Keep the same format and roughly the same length unless the comment asks otherwise. Return only the revised text.`;
-const ERR={not_granted:'Claude is not allowed for this page yet. Allow it from the page Permissions menu, then try again.',sampling_disabled:'Claude is not available for this account.',rate_limited:'Too many requests, or your usage limit was reached. Wait a minute and try again.',session_expired:'Sign in again, then try again.',upstream_error:'The service had a temporary problem. Try again.',refused:'Claude declined this input. Change the comment and try again.',empty_completion:'Nothing came back. Make the comment more specific and try again.',prompt_too_large:'This item is too long to send.',invalid_request:'The request was malformed.',capability_disabled:'Regenerate is not usable in this view.',not_declared:'Regenerate is not enabled for this page.'};
+const ERR={not_granted:'Claude is not allowed for this page yet. Allow it from the page Permissions menu, then try again.',sampling_disabled:'Claude is not available for this account.',rate_limited:'Too many requests, or your usage limit was reached. Wait a minute and try again.',session_expired:'Sign in again, then try again.',upstream_error:'The service had a temporary problem. Try again.',refused:'Claude declined this input. Change the comment and try again.',empty_completion:'Nothing came back. Make the comment more specific and try again.',prompt_too_large:'This item is too long to send.',invalid_request:'The request was malformed.',invalid_json:'The reply could not be read as ad copy. Try again, or make the comment more specific.',capability_disabled:'Regenerate is not usable in this view.',not_declared:'Regenerate is not enabled for this page.'};
+const ELS={},APPLIED={};
+const FL={headline:'Banner headline',sub:'Banner sub-line',button:'Button',intro:'Post text',cardHeadline:'Card headline'};
+const fmtF=f=>Object.keys(FL).filter(k=>f&&f[k]!=null).map(k=>FL[k]+': '+f[k]).join('\n');
+function parseF(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw{code:'invalid_json'};let o;try{o=JSON.parse(t.slice(a,b+1))}catch(e){throw{code:'invalid_json'}}const f={};for(const k of Object.keys(FL)){if(typeof o[k]!=='string'||!o[k].trim())throw{code:'invalid_json'};f[k]=o[k].trim()}return f}
+function rerender(id,adId){const el=ELS[id];if(!el||!el.isConnected)return null;const n=cfg.structured.render(el,adId);if(n){n.dataset.rv=id;ELS[id]=n}return n}
 const S={};let db=null,sample=null,dl=null,cfg={},uid=0,scanTimer=0,panel=null;
 const h=s=>{let x=5381;for(const c of s)x=((x<<5)+x+c.charCodeAt(0))|0;return (x>>>0).toString(36)};
 function pid(el,txt){const pane=el.closest('[id]');return (cfg.prefix||'i')+'-'+h((pane?pane.id:'')+'|'+txt.slice(0,80))}
@@ -43,22 +48,22 @@ const cur=r=>(S[r]&&S[r].regen)||(S[r]&&S[r].text)||'';
 function save(id,p){S[id]=Object.assign({id},S[id],p);if(db)db.doc('review/'+id).set(S[id]).catch(e=>st(id,'Not saved: '+(e.message||e.code),1));updFab()}
 function st(id,t,k){document.querySelectorAll('[data-rvst="'+id+'"],[data-rvst2="'+id+'"]').forEach(e=>{e.textContent=t;e.className='rv-st'+(k===1?' w':k?' '+k:'')})}
 function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();const vis=!!el.querySelector('img,svg,canvas,.bn')||/\b(bn|art|brand|slide|vf)\b/.test(el.className);if(txt.length<(cfg.min||30)&&!vis)return;if(!el.offsetParent&&!el.getClientRects().length)return;
- const id=pid(el,txt);if(el.dataset.rv)return;el.dataset.rv=id;
+ const adId=cfg.structured?cfg.structured.id(el):null;if(el.dataset.rv)return;const pane0=el.closest('[id]');const id=adId?(cfg.prefix||'i')+'-'+(pane0?pane0.id:'')+'-'+adId:pid(el,txt);el.dataset.rv=id;ELS[id]=el;const curTxt=()=>adId?fmtF(cfg.structured.fields(adId,ELS[id])):txt;
  const b=document.createElement('div');b.className='rv-t rv-bar';b.dataset.rvbar=id;
  b.innerHTML=`<div class="rv-row"><button class="add" aria-pressed="false">Add to final draft</button><button class="cm">Comment</button><span class="rv-st" data-rvst="${id}"></span></div><div class="rv-box" hidden><textarea placeholder="Leave a comment, e.g. shorter, warmer, mention X, remove Y" aria-label="Comment"></textarea><div class="rv-row" style="margin-top:8px"><button class="go rg">Regenerate with comment</button><button class="sp" hidden>Stop</button><button class="rs" hidden>Reset to original</button><span class="rv-st" data-rvst2="${id}"></span></div><div class="rv-prog" hidden><i></i></div><div class="rv-lab" hidden></div><div class="rv-out" hidden></div><details class="rv-orig" hidden><summary>Show original</summary><pre></pre></details></div>`;
  const par=el.parentElement,pd=par?getComputedStyle(par).display:'block';
  if(/flex|grid/.test(pd)){const cs=getComputedStyle(el),w=document.createElement('div');w.style.cssText='min-width:0;flex:'+cs.flex+';scroll-snap-align:'+(cs.scrollSnapAlign||'none')+(parseFloat(cs.flexGrow)===0?';width:'+el.offsetWidth+'px':'')+';grid-column:'+cs.gridColumnStart+'/'+cs.gridColumnEnd;el.replaceWith(w);w.appendChild(el);w.appendChild(b)}else el.insertAdjacentElement('afterend',b);
  const ta=b.querySelector('textarea'),out=b.querySelector('.rv-out'),add=b.querySelector('.add'),box=b.querySelector('.rv-box'),rg=b.querySelector('.rg'),rs=b.querySelector('.rs');
  b.querySelector('.cm').onclick=()=>{box.hidden=!box.hidden;if(!box.hidden)ta.focus()};
- add.onclick=()=>{const on=!(S[id]&&S[id].inc);save(id,{inc:on,title:title(el,txt),text:txt});sync(id)};
- ta.onchange=()=>save(id,{comment:ta.value,title:title(el,txt),text:txt});
- rs.onclick=()=>{save(id,{regen:''});out.textContent='';out.hidden=true;b.querySelector('.rv-lab').hidden=true;orig.hidden=true;st(id,'Reset to the original.');sync(id)};
+ add.onclick=()=>{const on=!(S[id]&&S[id].inc);save(id,{inc:on,title:title(ELS[id],txt),text:curTxt()});sync(id)};
+ ta.onchange=()=>save(id,{comment:ta.value,title:title(ELS[id],txt),text:curTxt()});
+ rs.onclick=()=>{if(adId){cfg.structured.set(adId,null);rerender(id,adId);APPLIED[id]='';save(id,{regen:'',fields:null,text:curTxt()})}else save(id,{regen:''});out.textContent='';out.hidden=true;b.querySelector('.rv-lab').hidden=true;orig.hidden=true;st(id,'Reset to the original.');sync(id)};
  const prog=b.querySelector('.rv-prog'),lab=b.querySelector('.rv-lab'),sp=b.querySelector('.sp'),orig=b.querySelector('.rv-orig');let ctl=null;
  sp.onclick=()=>{if(ctl)ctl.abort()};
  rg.onclick=async()=>{const c=ta.value.trim();box.hidden=false;
   if(!c){st(id,'Write a comment first, then regenerate.',1);ta.focus();return}
   if(!sample){st(id,'Regenerate is not available in this view.','err');return}
-  const base=cur(id)||txt;save(id,{comment:c,title:title(el,txt),text:txt});
+  const base=adId?curTxt():(cur(id)||txt);const baseF=adId?cfg.structured.fields(adId,ELS[id]):null;save(id,{comment:c,title:title(ELS[id],txt),text:curTxt(),adId:adId||undefined});
   rg.disabled=true;sp.hidden=false;prog.hidden=false;lab.hidden=false;lab.textContent='New version, in progress';out.hidden=false;out.className='rv-out wip';out.textContent='';orig.hidden=true;
   const t0=Date.now();let got=false,tick=setInterval(()=>{if(!got)st(id,'Claude is thinking... '+Math.round((Date.now()-t0)/1000)+'s','run')},1000);
   st(id,'Sending to Claude...','run');ctl=new AbortController();
@@ -67,11 +72,15 @@ function bar(el){const txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();c
    try{const p=await claude.use('permissions');if(p){let ps=await p.state('sample');if(ps==='prompt'){st(id,'Waiting for your permission to use Claude...','run');ps=((await p.request(['sample']))||{}).sample||ps}
      if(ps==='denied')throw {code:'not_granted'}}}catch(e){if(e&&e.code==='not_granted')throw e}
    st(id,'Claude is thinking... 0s','run');
-   const r=await sample(`${RULES}\n\nDRAFT:\n${base}\n\nREVIEWER COMMENT:\n${c}`,{modelTier:base.length>1500?'default':'quick',cache:false,signal:ctl.signal,onText:u=>{if(!got){got=true;lab.textContent='New version, writing...'}out.textContent=u.text;st(id,'Writing... '+u.text.split(/\s+/).length+' words','run')}});
-   const nt=(r.text||'').trim();if(!nt)throw {code:'empty_completion'};
-   save(id,{regen:nt});out.textContent=nt;out.className='rv-out new';lab.textContent='New version, saved';
-   orig.hidden=false;orig.querySelector('pre').textContent=base;
-   st(id,'Updated at '+new Date().toLocaleTimeString()+(r.truncated?' (cut short)':''),'ok');rs.hidden=false;
+   const prompt=adId?`${RULES}\n\nThis is a LinkedIn ad. Return only a JSON object with exactly these string keys: headline, sub, button, intro, cardHeadline. Limits: headline up to 12 words; sub up to 20 words; button up to 22 characters; intro up to 40 words; cardHeadline up to 8 words. Change only what the comment asks and keep the other fields as they are.\n\nCURRENT:\n${JSON.stringify(baseF,null,1)}\n\nREVIEWER COMMENT:\n${c}`:`${RULES}\n\nDRAFT:\n${base}\n\nREVIEWER COMMENT:\n${c}`;
+   const r=await sample(prompt,{modelTier:(adId||base.length<=1500)?'quick':'default',cache:false,signal:ctl.signal,onText:u=>{if(!got){got=true;lab.textContent='New version, writing...'}if(!adId)out.textContent=u.text;else out.textContent='Claude is writing the new ad copy...';st(id,'Writing... '+u.text.split(/\s+/).length+' words','run')}});
+   let nt=(r.text||'').trim();if(!nt)throw {code:'empty_completion'};
+   if(adId){const f=parseF(nt);cfg.structured.set(adId,f);const n=rerender(id,adId);APPLIED[id]=JSON.stringify(f);nt=fmtF(f);save(id,{regen:nt,fields:f,text:nt,adId});
+    if(n){n.scrollIntoView({behavior:'smooth',block:'center'});n.style.outline='3px solid var(--rv-ok)';n.style.outlineOffset='3px';setTimeout(()=>{n.style.outline='';n.style.outlineOffset=''},2500)}}
+   else save(id,{regen:nt});
+   out.textContent=nt;out.className='rv-out new';lab.textContent=adId?'New copy, applied to the banner above':'New version, saved';
+   orig.hidden=false;orig.querySelector('pre').textContent=adId?fmtF(baseF):base;
+   st(id,'Updated at '+new Date().toLocaleTimeString()+(adId?'. The banner above now shows the new copy.':'')+(r.truncated?' (cut short)':''),'ok');rs.hidden=false;
   }catch(e){const code=(e&&e.code)||'upstream_error';
    if(code==='cancelled'){st(id,'Stopped.',1);out.className='rv-out';if(e.text&&e.text.length>20)out.textContent=e.text;else out.hidden=true;lab.hidden=true}
    else{st(id,(ERR[code]||ERR.upstream_error)+(e&&e.message&&!ERR[code]?' ('+e.message+')':''),'err');lab.textContent='Not updated';out.className='rv-out';if(e&&e.text)out.textContent=e.text;else{out.hidden=true;lab.hidden=true}}}
@@ -97,5 +106,5 @@ window.RV={async init(c){cfg=c;const st=document.createElement('style');st.textC
  const f=document.createElement('button');f.id='rv-fab';f.className='rv-t rv-fab';f.textContent='Final draft · 0';f.onclick=togglePanel;document.body.appendChild(f);
  scan();new MutationObserver(sched).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});addEventListener('hashchange',sched);
  try{db=await claude.use('db');sample=await claude.use('sample');dl=await claude.use('downloads')}catch(e){}
- if(db){try{db.collection('review').onSnapshot(s=>{s.docs.forEach(d=>{S[d.id]=d.data()});document.querySelectorAll('[data-rvbar]').forEach(b=>sync(b.dataset.rvbar));updFab()})}catch(e){}}}};
+ if(db){try{db.collection('review').onSnapshot(s=>{let changed=false;s.docs.forEach(d=>{const x=d.data();S[d.id]=x;if(cfg.structured&&x.adId){const k=x.fields?JSON.stringify(x.fields):'';cfg.structured.set(x.adId,x.fields||null);if((APPLIED[d.id]||'')!==k){APPLIED[d.id]=k;changed=true;if(!cfg.structured.refresh)rerender(d.id,x.adId)}}});if(changed&&cfg.structured.refresh)cfg.structured.refresh();document.querySelectorAll('[data-rvbar]').forEach(b=>sync(b.dataset.rvbar));updFab()})}catch(e){}}}};
 })();
