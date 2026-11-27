@@ -56,14 +56,10 @@ a(f'<rect x="{p(-BLEED)}" y="{p(-BLEED)}" width="{p(tw)}" height="{p(th)}" fill=
 a(f'<rect id="Purple glow" x="{p(-BLEED)}" y="{p(-BLEED)}" width="{p(tw)}" height="{p(th)}" fill="url(#glow)"/>')
 a('</g>')
 
-# logo (traced from the original at 8x)
-svg = (SRC / "an.svg").read_text()
-paths = re.findall(r'<path d="([^"]+)"', svg, re.S)
-vbh = float(re.search(r'viewBox="([^"]+)"', svg).group(1).split()[3])
-a(f'<g id="AlphaNodus logo" transform="translate({p(68)} {p(55)}) scale({K / 8:.6f}) translate(0 {vbh}) scale(0.1 -0.1)" fill="#ffffff">')
-for d_ in paths:
-    a(f'<path d="{" ".join(d_.split())}"/>')
-a('</g>')
+# official Alpha Nodus v2 logo (brand-guidelines/assets/logo-horizontal-white.svg), same footprint as the original art
+sys.path.insert(0, str(Path(__file__).parent))
+from logo import official_logo
+a(official_logo(BUILD / "an_official_white.svg", 72, 59, 48, K, "anf"))
 
 a('<g id="Eyebrow">'); t("mono1", CYAN); t("mono2", CYAN); a('</g>')
 a('<g id="Headline">'); t("h1a", "#ffffff"); t("h1b", "#ffffff"); t("h1c", CYAN); a('</g>')

@@ -42,10 +42,11 @@ had only flat 300-dpi images.
 3. The QR carries the UTM tags. The printed URL does not.
 
 **Both sides**
-- The AlphaNodus logos are traced from the raster. Swap in the official vector logo.
+- The logos are the official `logo-horizontal-white.svg` from the brand guidelines (v2.0). See `BRAND-CHECK.md` for the full brand audit.
 - The files are RGB, because Figma only works in RGB. Ask the printer for a CMYK proof, since the navy, purple and cyan may shift.
 
 ## Rebuild (source/)
 
 `clean_panels.py` → `fit_front.py` → `make_front.py`; `make_back.py`; then
-`rsvg-convert -f pdf` (on a copy with width/height in `pt`) → `boxes.py` (sets TrimBox/BleedBox, crop-mark version).
+`rsvg-convert -f pdf` (on a copy with width/height in `pt`; the back uses `SHADOW=vector`) → `boxes.py` (sets TrimBox/BleedBox, crop-mark version).
+Outlined SVGs: `outline.py <svg> <out>` outlines the text only, so every graphic stays vector.

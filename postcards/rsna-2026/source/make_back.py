@@ -157,18 +157,11 @@ text(600, 1594, "Use your own mobile number and a made-up patient.", 28.5, 600, 
 FT = 1640
 a('<g id="Footer">')
 rect(-BLEED, FT, tw, H + BLEED - FT, FOOT)
-svg = (SRC / "an.svg").read_text()
-paths = re.findall(r'<path d="([^"]+)"', svg, re.S)
-vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', svg).group(1).split()]
-lw = 218.0                                   # logo width on the card, px
-s = lw / vb[2]
-lh = vb[3] * s
-lx, ly = 72, (FT + 1800) / 2 - lh / 2 - 5
-# potrace: translate(0,H) scale(0.1,-0.1) in its own viewBox units
-a(f'<g id="AlphaNodus logo" transform="translate({p(lx)} {p(ly)}) scale({s * K:.6f}) translate(0 {vb[3]}) scale(0.1 -0.1)" fill="#ffffff">')
-for d_ in paths:
-    a(f'<path d="{" ".join(d_.split())}"/>')
-a('</g>')
+# official Alpha Nodus v2 logo (brand-guidelines/assets/logo-horizontal-white.svg)
+sys.path.insert(0, str(Path(__file__).parent))
+from logo import official_logo
+LH = 38
+a(official_logo(Path(__file__).parent / "an_official_white.svg", 72, (FT + 1800) / 2 - LH / 2 - 5, LH, K, "anb"))
 y0 = 1688
 text(320, y0, "A demonstration center built by Alpha Nodus.", 28, 500, LILAC)
 a(f'<text x="{p(320)}" y="{p(y0 + 35)}" font-family="Inter" font-size="{p(28)}" font-weight="500" fill="{LILAC}">'
