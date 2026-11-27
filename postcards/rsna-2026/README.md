@@ -1,29 +1,50 @@
-# RSNA 2026 postcard: Sunrise Imaging side (back)
+# RSNA 2026 postcard: vector rebuild with print bleed
 
-Vector rebuild of the Sunrise Imaging side of the "photo-in-hand" postcard. The
-original PDF had only flat 300-dpi images. This version has the new QR and URL.
+Both sides of the "photo-in-hand" postcard, rebuilt as vector. The original PDF
+had only flat 300-dpi images.
 
-- **QR + printed URL:** `https://alphanodus.com/sunrise-imaging/rsna`
-  (QR version 4, error correction Q, 4-module quiet zone, decode-tested).
-  It replaces `alphanodus.com/sunrise-imaging?utm_…` (old QR) and `alphanodus.com/demo` (old footer link).
 - **Size:** 4 × 6 in trim, 0.125 in bleed on every side, so 4.25 × 6.25 in (306 × 450 pt) overall.
+- **Vector:** all text, the QR codes, the logos, the shapes and the gradients. The only images are the photos, at 300 ppi.
+- **Fonts:** Urbanist, Inter, Inter Display and JetBrains Mono. All are Google Fonts, available in Figma.
 
-| File | Use |
-|---|---|
-| `sunrise-back-figma.svg` | Import into Figma (drag in). Frame is 306 × 450, so 1 px = 1 pt and a Figma PDF export comes out at print size. Text stays editable (Inter / Inter Display). |
-| `sunrise-back-outlined.svg` | The same artwork with all text converted to outlines. Use it if Figma replaces the fonts. |
-| `sunrise-back-print-bleed.pdf` | Print-ready PDF for the printer: 4.25 × 6.25 in, TrimBox 4 × 6 in, CFF fonts embedded, 300-ppi photo |
-| `sunrise-back-print-cropmarks.pdf` | The same PDF with crop marks and a slug line |
-| `qr-sunrise-imaging-rsna*.svg` | The QR code on its own (navy and black), with the quiet zone |
-| `source/` | Generator script and the original art it was rebuilt from |
+| Side | Figma (editable text) | Figma (text outlined) | Print PDF | Print PDF with crop marks |
+|---|---|---|---|---|
+| Front ("3 ways…") | `front-figma.svg` | `front-outlined.svg` | `front-print-bleed.pdf` | `front-print-cropmarks.pdf` |
+| Back (Sunrise Imaging) | `sunrise-back-figma.svg` | `sunrise-back-outlined.svg` | `sunrise-back-print-bleed.pdf` | `sunrise-back-print-cropmarks.pdf` |
 
-## Things to check before print
+`postcard-front-and-back-print-bleed.pdf` holds both sides as pages 1 and 2, ready for a printer.
 
-1. **AlphaNodus logo:** the footer logo is traced from the raster. Swap in the official vector logo from the brand files.
-2. **Footer moved up by 20 px at 300 dpi (≈1.7 mm).** The original URL line sat about 2 mm from the trim, inside the cut-risk zone. The text now ends about 3 mm from the trim.
-3. **Footer copy:** it now reads "Or book a demo: alphanodus.com/sunrise-imaging/rsna". Check that this page has a demo-booking path, or reword the line.
-4. **Color:** the file is RGB, because Figma only works in RGB. Ask the printer to convert to CMYK, or ask for a proof. Navy `#12283a` and orange `#f08a3c` may shift.
-5. The UTM parameters from the old QR are gone because the new URL is used exactly as given.
+## QR codes (all decode-tested in every output)
 
-Rebuild: `python3 source/make_back.py <dir with img-001.png + an.svg> out.svg`, then
-`rsvg-convert -f pdf` (on a copy with width/height in `pt`), then `python3 source/boxes.py`.
+- **Front:** unchanged destination, `alphanodus.com/the-imaging-center?utm_source=rsna2026&…&utm_content=series_qr`.
+  It is regenerated as vector, version 6, with 0.47 mm modules.
+- **Back:** `https://alphanodus.com/sunrise-imaging/rsna` (new). Version 4-Q, 4-module quiet zone.
+  The printed footer URL changed to match.
+
+## Importing into Figma
+
+1. Drag the `*-figma.svg` onto the canvas, or press Cmd/Ctrl+Shift+K.
+2. The frame should be 306 × 450. Don't resize it.
+3. Trim guides are at x 9 / 297 and y 9 / 441. Keep text a further 9 px inside them.
+4. To export, select the frame and add a PDF export. It comes out at 4.25 × 6.25 in with the bleed included.
+
+## What changed from the original, and what to check before print
+
+**Front**
+1. The step text on the three photos was baked into the images. It was removed from the photos and set again as live text in the same positions.
+2. The left and right photos reach the edge of the card. They were extended 0.125 in into the bleed by mirroring their outer edges, because no image exists beyond the original edge. You only see this area if the cut drifts.
+3. Panel 1's text moved 6 px at 300 dpi (0.5 mm) to the right, so it clears the 0.125 in safe zone.
+
+**Back**
+1. The footer moved up by 20 px at 300 dpi (≈1.7 mm) so the URL clears the safe zone.
+2. The footer now reads "Or book a demo: alphanodus.com/sunrise-imaging/rsna". Check that this page has a way to book a demo.
+3. The UTM parameters from the old QR are dropped. The new URL is used exactly as given.
+
+**Both sides**
+- The AlphaNodus logos are traced from the raster. Swap in the official vector logo.
+- The files are RGB, because Figma only works in RGB. Ask the printer for a CMYK proof, since the navy, purple and cyan may shift.
+
+## Rebuild (source/)
+
+`clean_panels.py` → `fit_front.py` → `make_front.py`; `make_back.py`; then
+`rsvg-convert -f pdf` (on a copy with width/height in `pt`) → `boxes.py` (sets TrimBox/BleedBox, crop-mark version).
