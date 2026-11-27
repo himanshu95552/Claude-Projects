@@ -11,7 +11,8 @@ import segno
 
 SRC = Path(sys.argv[1])          # scratchpad/src
 OUT = Path(sys.argv[2])          # output svg
-URL = "https://alphanodus.com/sunrise-imaging/rsna"
+URL = ("https://alphanodus.com/sunrise-imaging/rsna?utm_source=rsna2026&utm_medium=postcard"
+       "&utm_campaign=rsna2026_booth&utm_content=demo_qr")   # same UTM scheme as the front (series_qr)
 PRINTED_URL = "alphanodus.com/sunrise-imaging/rsna"
 
 import os
@@ -118,7 +119,7 @@ a('</g>')
 a('<g id="Scan card">')
 rect(72, 1272, 1056, 276, NAVY, r=30)
 rect(92, 1292, 236, 236, "#ffffff", r=18)
-qr = segno.make(URL, error="q", micro=False)
+qr = segno.make(URL, error="l", micro=False)   # boost_error raises the level if it still fits
 n = qr.symbol_size(border=0)[0]
 mod = 236 / (n + 8)                       # 4-module quiet zone inside the white tile
 ox = oy = None
@@ -134,7 +135,7 @@ for r, row in enumerate(qr.matrix):
             d.append(f"M{p(ox + s * mod)} {p(oy + r * mod)}h{p((c - s) * mod)}v{p(mod)}h{p(-(c - s) * mod)}z")
         else:
             c += 1
-a(f'<path id="QR {URL}" d="{"".join(d)}" fill="{NAVY}" shape-rendering="crispEdges"/>')
+a(f'<path id="QR sunrise-imaging-rsna (utm demo_qr)" d="{"".join(d)}" fill="{NAVY}" shape-rendering="crispEdges"/>')
 text(361, 1360, "WHY SCAN?", 22.5, 600, PEACH, ls=0.07)
 text(360, 1415, "Send the order your team dreads.", 46, 700, "#ffffff", ls=-0.024)
 text(361, 1469, "Then watch your phone.", 31, 600, PEACH, ls=-0.017)

@@ -18,8 +18,9 @@ had only flat 300-dpi images.
 
 - **Front:** unchanged destination, `alphanodus.com/the-imaging-center?utm_source=rsna2026&…&utm_content=series_qr`.
   It is regenerated as vector, version 6, with 0.47 mm modules.
-- **Back:** `https://alphanodus.com/sunrise-imaging/rsna` (new). Version 4-Q, 4-module quiet zone.
-  The printed footer URL changed to match.
+- **Back:** `https://alphanodus.com/sunrise-imaging/rsna?utm_source=rsna2026&utm_medium=postcard&utm_campaign=rsna2026_booth&utm_content=demo_qr`.
+  It uses the same UTM scheme as the front, with `utm_content=demo_qr` (the value the old Sunrise QR used). Version 6, 0.41 mm modules, 4-module quiet zone.
+  The printed footer URL stays short and clean, `alphanodus.com/sunrise-imaging/rsna`, with no UTM so people can type it.
 
 ## Importing into Figma
 
@@ -38,7 +39,7 @@ had only flat 300-dpi images.
 **Back**
 1. The footer moved up by 20 px at 300 dpi (≈1.7 mm) so the URL clears the safe zone.
 2. The footer now reads "Or book a demo: alphanodus.com/sunrise-imaging/rsna". Check that this page has a way to book a demo.
-3. The UTM parameters from the old QR are dropped. The new URL is used exactly as given.
+3. The QR carries the UTM tags. The printed URL does not.
 
 **Both sides**
 - The AlphaNodus logos are traced from the raster. Swap in the official vector logo.
