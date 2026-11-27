@@ -47,8 +47,13 @@ a(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/
 a('<title>Sunrise Imaging postcard back (4x6 in, 0.125 in bleed)</title>')
 a('<defs>')
 a(f'<clipPath id="photoClip"><rect x="{p(652)}" y="{p(464)}" width="{p(476)}" height="{p(744)}" rx="{p(36)}"/></clipPath>')
-a(f'<filter id="cardShadow" x="-20%" y="-20%" width="140%" height="150%">'
-  f'<feDropShadow dx="0" dy="{p(22)}" stdDeviation="{p(22)}" flood-color="#12283a" flood-opacity="0.20"/></filter>')
+a(f'<filter id="cardShadow" x="{p(600)}" y="{p(440)}" width="{p(580)}" height="{p(860)}" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">'
+  f'<feFlood flood-opacity="0" result="BackgroundImageFix"/>'
+  f'<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>'
+  f'<feOffset dy="{p(22)}"/><feGaussianBlur stdDeviation="{p(22)}"/>'
+  f'<feColorMatrix type="matrix" values="0 0 0 0 0.0706 0 0 0 0 0.157 0 0 0 0 0.227 0 0 0 0.2 0"/>'
+  f'<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>'
+  f'<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter>')
 a('</defs>')
 
 # background (bleeds)
