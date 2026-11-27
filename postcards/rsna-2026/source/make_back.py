@@ -110,7 +110,18 @@ photo = Image.open(SRC / "img-001.png").convert("RGB").crop((654, 466, 1126, 120
 buf = io.BytesIO(); photo.save(buf, "JPEG", quality=95, subsampling=0)
 b64 = base64.b64encode(buf.getvalue()).decode()
 a('<g id="Photo card">')
-a(f'<rect x="{p(652)}" y="{p(464)}" width="{p(476)}" height="{p(744)}" rx="{p(36)}" fill="{NAVY}" filter="url(#cardShadow)"/>')
+if os.environ.get("SHADOW", "filter") == "vector":
+    # print/outlined: shadow as stacked translucent rounded rects (pure vector, no 72-ppi raster)
+    N, SIG, DY, OP = 24, 22.0, 22.0, 0.22
+    a_ = 1 - (1 - OP) ** (1 / N)
+    a('<g id="Photo shadow">')
+    for k in range(N):
+        e = -SIG + 2.0 * SIG * k / (N - 1)
+        a(f'<rect x="{p(652 - e)}" y="{p(464 + DY - e)}" width="{p(476 + 2 * e)}" height="{p(744 + 2 * e)}" '
+          f'rx="{p(max(0.0, 36 + e))}" fill="{NAVY}" fill-opacity="{a_:.4f}"/>')
+    a('</g>')
+else:
+    a(f'<rect x="{p(652)}" y="{p(464)}" width="{p(476)}" height="{p(744)}" rx="{p(36)}" fill="{BG}" filter="url(#cardShadow)"/>')
 a(f'<image clip-path="url(#photoClip)" x="{p(652)}" y="{p(464)}" width="{p(476)}" height="{p(744)}" '
   f'preserveAspectRatio="none" xlink:href="data:image/jpeg;base64,{b64}"/>')
 a('</g>')
